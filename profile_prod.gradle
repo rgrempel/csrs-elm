@@ -1,0 +1,31 @@
+apply plugin: 'spring-boot'
+apply plugin: 'com.moowork.node'
+
+
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: spring_boot_version
+}
+
+bootRun {
+  args = ["--spring.profiles.active=prod"]
+}
+
+task setProdProperties(dependsOn: bootRun) << {
+    doFirst {
+        System.setProperty('spring.profiles.active', 'prod')
+    }
+}
+
+
+task gruntBuild(type: Exec) {
+   commandLine 'grunt', '--force', 'build'
+}
+task gruntTest(type: Exec) {
+   commandLine 'grunt', 'test'
+}
+gruntBuild.dependsOn 'npmInstall'
+gruntBuild.dependsOn 'bower'
+processResources.dependsOn gruntBuild
+test.dependsOn gruntTest
+bootRun.dependsOn gruntTest
+
