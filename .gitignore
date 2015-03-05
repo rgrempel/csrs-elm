@@ -12,4 +12,5 @@ node_modules
 .DS_Store
 src/main/webapp/dist
 .gradle
+.swp
 build
