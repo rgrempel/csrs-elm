@@ -1,0 +1,4 @@
+task upload(type: Exec) {
+    commandLine('/usr/bin/rsync', '-av', '--delete', '.git', 'admin@frodo.fulliautomatix.com:csrs.git')
+}
+

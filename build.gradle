@@ -34,6 +34,8 @@ apply from: 'liquibase.gradle'
 
 apply from: 'gatling.gradle'
 
+apply from: 'local.gradle'
+
 if (project.hasProperty('prod')) {
     profile = 'prod'
 } else if (project.hasProperty('fast')) {
