@@ -1,0 +1,27 @@
+{
+    "csrsApp": {
+        "contact" : {
+            "home": {
+                "title": "Contacts",
+                "createLabel": "Create a new Contact",
+                "createOrEditLabel": "Create or edit a Contact"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete Contact {{ id }}?"
+            },
+            "detail": {
+                "title": "Contact"
+            },
+            "code": "Code",
+            "firstName": "FirstName",
+            "lastName": "LastName",
+            "salutation": "Salutation",
+            "street": "Street",
+            "city": "City",
+            "region": "Region",
+            "country": "Country",
+            "postalCode": "PostalCode",
+            "email": "Email"
+        }
+    }
+}
