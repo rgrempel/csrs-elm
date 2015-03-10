@@ -117,8 +117,6 @@ public class AccountResourceTest {
 
         User user = new User();
         user.setLogin("test");
-        user.setFirstName("john");
-        user.setLastName("doe");
         user.setEmail("john.doe@jhipter.com");
         user.setAuthorities(authorities);
         when(mockUserService.getUserWithAuthorities()).thenReturn(user);
@@ -128,8 +126,6 @@ public class AccountResourceTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.login").value("test"))
-                .andExpect(jsonPath("$.firstName").value("john"))
-                .andExpect(jsonPath("$.lastName").value("doe"))
                 .andExpect(jsonPath("$.email").value("john.doe@jhipter.com"))
                 .andExpect(jsonPath("$.roles").value(AuthoritiesConstants.ADMIN));
     }
@@ -149,8 +145,6 @@ public class AccountResourceTest {
         UserDTO u = new UserDTO(
             "joe",                  // login
             "password",             // password
-            "Joe",                  // firstName
-            "Shmoe",                // lastName
             "joe@example.com",      // e-mail
             "en",                   // langKey
             Arrays.asList(AuthoritiesConstants.USER)
@@ -172,8 +166,6 @@ public class AccountResourceTest {
         UserDTO u = new UserDTO(
             "funky-log!n",          // login <-- invalid
             "password",             // password
-            "Funky",                // firstName
-            "One",                  // lastName
             "funky@example.com",    // e-mail
             "en",                   // langKey
             Arrays.asList(AuthoritiesConstants.USER)
@@ -195,8 +187,6 @@ public class AccountResourceTest {
         UserDTO u = new UserDTO(
             "bob",              // login
             "password",         // password
-            "Bob",              // firstName
-            "Green",            // lastName
             "invalid",          // e-mail <-- invalid
             "en",               // langKey
             Arrays.asList(AuthoritiesConstants.USER)
@@ -219,8 +209,6 @@ public class AccountResourceTest {
         UserDTO u = new UserDTO(
             "alice",                // login
             "password",             // password
-            "Alice",                // firstName
-            "Something",            // lastName
             "alice@example.com",    // e-mail
             "en",                   // langKey
             Arrays.asList(AuthoritiesConstants.USER)
@@ -255,8 +243,6 @@ public class AccountResourceTest {
         UserDTO u = new UserDTO(
             "john",                 // login
             "password",             // password
-            "John",                 // firstName
-            "Doe",                  // lastName
             "john@example.com",     // e-mail
             "en",                   // langKey
             Arrays.asList(AuthoritiesConstants.USER)
@@ -290,8 +276,6 @@ public class AccountResourceTest {
         UserDTO u = new UserDTO(
             "badguy",               // login
             "password",             // password
-            "Bad",                  // firstName
-            "Guy",                  // lastName
             "badguy@example.com",   // e-mail
             "en",                   // langKey
             Arrays.asList(AuthoritiesConstants.ADMIN) // <-- only admin should be able to do that

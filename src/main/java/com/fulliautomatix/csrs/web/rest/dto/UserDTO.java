@@ -18,12 +18,6 @@ public class UserDTO {
     @Size(min = 5, max = 100)
     private String password;
 
-    @Size(max = 50)
-    private String firstName;
-
-    @Size(max = 50)
-    private String lastName;
-
     @Email
     @Size(min = 5, max = 100)
     private String email;
@@ -36,12 +30,9 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(String login, String password, String firstName, String lastName, String email, String langKey,
-                   List<String> roles) {
+    public UserDTO(String login, String password, String email, String langKey, List<String> roles) {
         this.login = login;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.email = email;
         this.langKey = langKey;
         this.roles = roles;
@@ -53,14 +44,6 @@ public class UserDTO {
 
     public String getLogin() {
         return login;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
     }
 
     public String getEmail() {
@@ -80,8 +63,6 @@ public class UserDTO {
         return "UserDTO{" +
         "login='" + login + '\'' +
         ", password='" + password + '\'' +
-        ", firstName='" + firstName + '\'' +
-        ", lastName='" + lastName + '\'' +
         ", email='" + email + '\'' +
         ", langKey='" + langKey + '\'' +
         ", roles=" + roles +
