@@ -1,0 +1,53 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "contact",
+            "relationshipNameCapitalized": "Contact",
+            "relationshipFieldName": "contact",
+            "otherEntityName": "contact",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "Contact",
+            "otherEntityField": "lastName"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "year",
+            "fieldType": "Integer",
+            "fieldNameCapitalized": "Year",
+            "fieldNameUnderscored": "year"
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "membership",
+            "fieldType": "Integer",
+            "fieldNameCapitalized": "Membership",
+            "fieldNameUnderscored": "membership"
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "iter",
+            "fieldType": "Boolean",
+            "fieldNameCapitalized": "Iter",
+            "fieldNameUnderscored": "iter"
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "rr",
+            "fieldType": "Integer",
+            "fieldNameCapitalized": "RR",
+            "fieldNameUnderscored": "rr"
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": false,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20150312123511",
+    "pagination": "infinite-scroll"
+}

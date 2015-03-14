@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <!--
+        Added the entity Annual.
+    -->
+    <changeSet id="20150312123511" author="jhipster">
+        <createTable tableName="T_ANNUAL">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="year" type="integer"/>
+            <column name="membership" type="integer"/>
+            <column name="iter" type="bit"/>
+            <column name="rr" type="integer"/>
+            <column name="contact_id" type="bigint"/>
+        </createTable>
+        
+        <addForeignKeyConstraint baseColumnNames="contact_id"
+                                 baseTableName="T_ANNUAL"
+                                 constraintName="fk_annual_contact_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_CONTACT"/>
+    </changeSet>
+
+    <changeSet id="addIndexestoAnnual" author="ryan">
+        <addColumn tableName="T_ANNUAL">
+            <column name="code" type="varchar" />
+        </addColumn>
+        
+        <createIndex indexName="idx_annual_code" tableName="T_ANNUAL">
+            <column name="code" />
+        </createIndex>
+        
+        <createIndex indexName="idx_annual_year" tableName="T_ANNUAL">
+            <column name="year" />
+        </createIndex>
+
+        <createIndex indexName="idx_annual_membership" tableName="T_ANNUAL">
+            <column name="membership" />
+        </createIndex>
+        
+        <createIndex indexName="idx_annual_iter" tableName="T_ANNUAL">
+            <column name="iter" />
+        </createIndex>
+        
+        <createIndex indexName="idx_annual_rr" tableName="T_ANNUAL">
+            <column name="rr" />
+        </createIndex>
+        
+        <createIndex indexName="idx_annual_contact_id" tableName="T_ANNUAL">
+            <column name="contact_id" />
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

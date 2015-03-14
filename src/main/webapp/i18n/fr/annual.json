@@ -1,0 +1,23 @@
+{
+    "csrsApp": {
+        "annual" : {
+            "home": {
+                "title": "Annuals",
+                "createLabel": "Créer un nouveau Annual",
+                "createOrEditLabel": "Créer ou éditer un Annual"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Annual {{ id }} ?"
+            },
+            "detail": {
+                "title": "Annual"
+            },
+            "year": "Year",
+            "membership": "Membership",
+            "iter": "Iter",
+            "rr": "RR",
+            "contact": "contact"
+        }
+    }
+}
+

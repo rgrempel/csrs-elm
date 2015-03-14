@@ -5,6 +5,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * A Contact.
@@ -47,6 +48,9 @@ public class Contact implements Serializable {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy="contact")
+    private List<Annual> annuals;
 
     public Long getId() {
         return id;
