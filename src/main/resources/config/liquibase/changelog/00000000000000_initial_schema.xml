@@ -162,5 +162,10 @@
                                  referencedColumnNames="event_id"
                                  referencedTableName="T_PERSISTENT_AUDIT_EVENT"/>
     </changeSet>
-    
+
+    <changeSet id="addCaseInsensitiveIndexToUserEmail" author="ryan">
+        <createIndex indexName="idx_user_email_lower" tableName="T_USER" unique="true">
+            <column name="lower(email)" />
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>

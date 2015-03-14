@@ -28,4 +28,37 @@
         </createTable>
         
     </changeSet>
+
+    <changeSet id="addIndexToContact" author="ryan">
+        <createIndex indexName="idx_contact_code" tableName="T_CONTACT" unique="true">
+            <column name="code" />
+        </createIndex>
+
+        <createIndex indexName="idx_contact_first_name" tableName="T_CONTACT">
+            <column name="first_name" />
+        </createIndex>
+        
+        <createIndex indexName="idx_contact_last_name" tableName="T_CONTACT">
+            <column name="last_name" />
+        </createIndex>
+        
+        <createIndex indexName="idx_contact_email" tableName="T_CONTACT">
+            <column name="lower(email)" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="addDepartmentAndAffiliationToContact" author="ryan">
+        <addColumn tableName="T_CONTACT">
+            <column name="department" type="varchar" />
+            <column name="affiliation" type="varchar" />
+        </addColumn>
+
+        <createIndex indexName="idx_contact_department" tableName="T_CONTACT">
+            <column name="department" />
+        </createIndex>
+        
+        <createIndex indexName="idx_contact_affiliation" tableName="T_CONTACT">
+            <column name="affiliation" />
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>
