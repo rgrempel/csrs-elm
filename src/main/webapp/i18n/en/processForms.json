@@ -1,0 +1,29 @@
+{
+    "csrsApp": {
+        "processForms" : {
+            "home": {
+                "title": "Process Forms",
+                "createLabel": "Create a new Contact",
+                "createOrEditLabel": "Create or edit a Contact"
+            },
+            "search": "Search",
+            "search.placeholder": "Type beginning of first or last name to search",
+            "delete": {
+                "question": "Are you sure you want to delete Contact {{ id }}?"
+            },
+            "detail": {
+                "title": "Contact"
+            },
+            "code": "Code",
+            "firstName": "FirstName",
+            "lastName": "LastName",
+            "salutation": "Salutation",
+            "street": "Street",
+            "city": "City",
+            "region": "Region",
+            "country": "Country",
+            "postalCode": "PostalCode",
+            "email": "Email"
+        }
+    }
+}

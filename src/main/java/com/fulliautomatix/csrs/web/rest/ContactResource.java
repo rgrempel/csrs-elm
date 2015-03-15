@@ -79,6 +79,29 @@ public class ContactResource {
     }
 
     /**
+     * GET  /contacts?fullNameSearch=bob -> do a fullNameSearch.
+     */
+    @RequestMapping(
+        value = "/contacts",
+        params = "fullNameSearch",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Timed
+    public ResponseEntity<List<Contact>> getAll (
+        @RequestParam(value = "page" , required = false) Integer offset,
+        @RequestParam(value = "per_page", required = false) Integer limit,
+        @RequestParam(value = "fullNameSearch") String search
+    ) throws URISyntaxException {
+//      Page<Contact> page = contactRepository.searchByFullName(search.toLowerCase(), PaginationUtil.generatePageRequest(offset, limit));
+//      HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/contacts", offset, limit);
+//      return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
+        List<Contact> contacts = contactRepository.searchByFullNameLikeLower((search + "%").toLowerCase());
+        return new ResponseEntity<List<Contact>>(contacts, HttpStatus.OK);
+    }
+    
+    /**
      * GET  /contacts/:id -> get the "id" contact.
      */
     @RequestMapping(value = "/contacts/{id}",

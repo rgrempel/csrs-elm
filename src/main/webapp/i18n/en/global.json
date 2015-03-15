@@ -19,6 +19,10 @@
                 "logout": "Log out",
                 "register": "Register"
             },
+            "tasks": {
+                "main": "Tasks",
+                "processForms": "Process Forms"
+            },
             "admin": {
                 "main": "Administration",
                 "tracker": "User tracker",

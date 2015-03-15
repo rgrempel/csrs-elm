@@ -47,6 +47,16 @@
         </createIndex>
     </changeSet>
 
+    <changeSet id="caseInsensitiveIndexForContactNames" author="ryan">
+        <createIndex indexName="idx_contact_first_name_lower" tableName="T_CONTACT">
+            <column name="lower(first_name)" />
+        </createIndex>
+        
+        <createIndex indexName="idx_contact_last_name_lower" tableName="T_CONTACT">
+            <column name="lower(last_name)" />
+        </createIndex>
+    </changeSet>
+
     <changeSet id="addDepartmentAndAffiliationToContact" author="ryan">
         <addColumn tableName="T_CONTACT">
             <column name="department" type="varchar" />

@@ -19,6 +19,10 @@
                 "logout": "Déconnexion",
                 "register": "Créer un compte"
             },
+            "tasks": {
+                "main": "Tâches",
+                "processForms": "Traiter les formulaires"
+            },
             "admin": {
                 "main": "Administration",
                 "tracker": "Suivi des utilisateurs",
