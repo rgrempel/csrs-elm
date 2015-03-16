@@ -2,6 +2,8 @@ package com.fulliautomatix.csrs.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +15,12 @@ import java.util.List;
 @Entity
 @Table(name = "T_CONTACT")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@NamedEntityGraph(
+    name = "Contact.WithAnnuals",
+    attributeNodes = {
+        @NamedAttributeNode("annuals")
+    }
+)
 public class Contact implements Serializable {
 
     @Id
@@ -160,6 +168,11 @@ public class Contact implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @JsonManagedReference("contact-annuals")
+    public List<Annual> getAnnuals () {
+        return this.annuals;
     }
 
     @Override

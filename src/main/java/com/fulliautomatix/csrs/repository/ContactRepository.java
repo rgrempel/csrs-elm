@@ -12,9 +12,13 @@ import java.util.List;
  */
 public interface ContactRepository extends JpaRepository<Contact,Long> {
 
-    @Query("SELECT c FROM Contact c WHERE LOWER(c.firstName) LIKE ?1 OR LOWER(c.lastName) LIKE ?1")
+    @Query("SELECT DISTINCT c FROM Contact c WHERE LOWER(c.firstName) LIKE ?1 OR LOWER(c.lastName) LIKE ?1")
     Page<Contact> searchByFullNameLikeLower (String fullName, Pageable page);
 
-    @Query("SELECT c FROM Contact c WHERE LOWER(c.firstName) LIKE ?1 OR LOWER(c.lastName) LIKE ?1")
+    @Query("SELECT DISTINCT c FROM Contact c WHERE LOWER(c.firstName) LIKE ?1 OR LOWER(c.lastName) LIKE ?1")
+    @EntityGraph(
+        value = "Contact.WithAnnuals",
+        type = EntityGraph.EntityGraphType.LOAD
+    )
     List<Contact> searchByFullNameLikeLower (String fullName);
 }

@@ -3,6 +3,7 @@ package com.fulliautomatix.csrs.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -76,6 +77,7 @@ public class Annual implements Serializable {
         this.rr = rr;
     }
 
+    @JsonBackReference("conntact-annuals")
     public Contact getContact() {
         return contact;
     }
