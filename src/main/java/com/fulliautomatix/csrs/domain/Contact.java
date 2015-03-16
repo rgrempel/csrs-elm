@@ -22,14 +22,20 @@ public class Contact implements Serializable {
     @Column(name = "code")
     private String code;
 
+    @Column(name = "salutation")
+    private String salutation;
+
     @Column(name = "first_name")
     private String firstName;
 
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "salutation")
-    private String salutation;
+    @Column(name = "department")
+    private String department;
+
+    @Column(name = "affiliation")
+    private String affiliation;
 
     @Column(name = "street")
     private String street;
@@ -82,6 +88,22 @@ public class Contact implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getDepartment () {
+        return department;
+    }
+
+    public void setDepartment (String department) {
+        this.department = department;
+    }
+
+    public String getAffiliation () {
+        return affiliation;
+    }
+
+    public void setAffiliation (String affiliation) {
+        this.affiliation = affiliation;
     }
 
     public String getSalutation() {

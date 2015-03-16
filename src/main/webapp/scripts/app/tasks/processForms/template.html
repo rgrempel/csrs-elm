@@ -1,0 +1,17 @@
+<div>
+    <input type="text" 
+           class="input-sm form-control"
+           auto-focus
+           ng-model="search"
+           ng-model-options="{debounce: 500}"
+           ng-change="performSearch()"
+           placeholder="{{'csrsApp.processForms.search.placeholder' | translate}}" />
+
+    <div class="container">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 contact-list" ng-repeat="contact in results">
+            <div><a ui-sref="processFormsDetail({id: contact.id})">{{contact.firstName}} {{contact.lastName}}</a></div>
+            <div ng-show="contact.department">{{contact.department}}</div>
+            <div ng-show="contact.affiliation">{{contact.affiliation}}</div>
+        </div>
+    </div>
+</div>

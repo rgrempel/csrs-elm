@@ -4,6 +4,10 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
 @import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+.contact-list {
+    padding: 8px;
+}
+
 body {
     background: #fafafa;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
