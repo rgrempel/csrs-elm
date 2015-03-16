@@ -55,6 +55,26 @@ angular.module('csrsApp', ['LocalStorageModule', 'tmh.dynamicLocale',
         //Cache everything except rest api requests
         httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/], true);
 
+        // Initialize angular-translate
+        $translateProvider.useLoader('$translatePartialLoader', {
+            urlTemplate: 'i18n/{lang}/{part}.json'
+        });
+
+        var navigator = window.navigator;
+        var language = (navigator.languages && navigator.languages[0]) ||
+                        navigator.language ||
+                        navigator.browserLanguage ||
+                        navigator.systemLanguage ||
+                        navigator.userLanguage;
+
+        if (language && (language.substr(0, 2).toLowerCase() == "fr")) {
+            $translateProvider.preferredLanguage('fr');
+        } else {
+            $translateProvider.preferredLanguage('en');
+        }
+
+        $translateProvider.useCookieStorage();
+        
         $urlRouterProvider.otherwise('/');
         $stateProvider.state('site', {
             'abstract': true,
@@ -78,15 +98,6 @@ angular.module('csrsApp', ['LocalStorageModule', 'tmh.dynamicLocale',
             }
         });
         
-
-        // Initialize angular-translate
-        $translateProvider.useLoader('$translatePartialLoader', {
-            urlTemplate: 'i18n/{lang}/{part}.json'
-        });
-
-        $translateProvider.preferredLanguage('en');
-        $translateProvider.useCookieStorage();
-
         tmhDynamicLocaleProvider.localeLocationPattern('bower_components/angular-i18n/angular-locale_{{locale}}.js');
         tmhDynamicLocaleProvider.useCookieStorage('NG_TRANSLATE_LANG_KEY');
     });
