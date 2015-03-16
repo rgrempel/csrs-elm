@@ -14,6 +14,8 @@
             "detail": {
                 "title": "Contact"
             },
+            "lastMember": "Member:",
+            
             "code": "Code",
             "firstName": "FirstName",
             "lastName": "LastName",
