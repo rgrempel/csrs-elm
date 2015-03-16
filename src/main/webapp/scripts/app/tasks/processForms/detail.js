@@ -1,28 +1,16 @@
 'use strict';
 
-angular.module('csrsApp').config(function ($stateProvider) {
-    $stateProvider.state('processForms', {
-        parent: 'tasks',
-        url: '/process-forms?search',
-        reloadOnSearch: false,
-        data: {
-            roles: ['ROLE_ADMIN'],
-            pageTitle: 'csrsApp.processForms.home.title'
-        },
-        views: {
-            'content@': {
-                templateUrl: 'scripts/app/tasks/processForms/template.html',
-                controller: 'ProcessFormsController'
-            }
-        },
-        resolve: {
-            translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                $translatePartialLoader.addPart('processForms');
-                return $translate.refresh();
-            }]
-        }
-    });
+angular.module('csrsApp').controller('ProcessFormsDetailController', function ($scope, $stateParams, Contact) {
+    $scope.contact = {};
+    $scope.load = function (id) {
+        Contact.get({id: id}, function(result) {
+            $scope.contact = result;
+        });
+    };
+    $scope.load($stateParams.id);
+});
 
+angular.module('csrsApp').config(function ($stateProvider) {
     $stateProvider.state('processFormsDetail', {
         parent: 'processForms',
         url: '/processForms/contact/:id',

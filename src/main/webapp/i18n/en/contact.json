@@ -13,15 +13,17 @@
                 "title": "Contact"
             },
             "code": "Code",
-            "firstName": "FirstName",
-            "lastName": "LastName",
+            "firstName": "First Name",
+            "lastName": "Last Name",
             "salutation": "Salutation",
             "street": "Street",
             "city": "City",
             "region": "Region",
             "country": "Country",
-            "postalCode": "PostalCode",
-            "email": "Email"
+            "postalCode": "Postal Code",
+            "email": "Email",
+            "department": "Department",
+            "affiliation": "University / Affiliation"
         }
     }
 }

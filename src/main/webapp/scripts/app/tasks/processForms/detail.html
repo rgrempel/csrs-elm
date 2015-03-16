@@ -1,102 +1,31 @@
-
 <div>
-    <h2><span translate="csrsApp.contact.detail.title">Contact</span> {{contact.id}}</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th translate="entity.detail.field">Field</th>
-                    <th translate="entity.detail.value">Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <span translate="csrsApp.contact.code">Code</span>
-                    </td>
-                    <td>
-                        <input type="text" class="input-sm form-control" value="{{contact.code}}" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span translate="csrsApp.contact.firstName">FirstName</span>
-                    </td>
-                    <td>
-                        <input type="text" class="input-sm form-control" value="{{contact.firstName}}" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span translate="csrsApp.contact.lastName">LastName</span>
-                    </td>
-                    <td>
-                        <input type="text" class="input-sm form-control" value="{{contact.lastName}}" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span translate="csrsApp.contact.salutation">Salutation</span>
-                    </td>
-                    <td>
-                        <input type="text" class="input-sm form-control" value="{{contact.salutation}}" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span translate="csrsApp.contact.street">Street</span>
-                    </td>
-                    <td>
-                        <input type="text" class="input-sm form-control" value="{{contact.street}}" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span translate="csrsApp.contact.city">City</span>
-                    </td>
-                    <td>
-                        <input type="text" class="input-sm form-control" value="{{contact.city}}" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span translate="csrsApp.contact.region">Region</span>
-                    </td>
-                    <td>
-                        <input type="text" class="input-sm form-control" value="{{contact.region}}" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span translate="csrsApp.contact.country">Country</span>
-                    </td>
-                    <td>
-                        <input type="text" class="input-sm form-control" value="{{contact.country}}" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span translate="csrsApp.contact.postalCode">PostalCode</span>
-                    </td>
-                    <td>
-                        <input type="text" class="input-sm form-control" value="{{contact.postalCode}}" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span translate="csrsApp.contact.email">Email</span>
-                    </td>
-                    <td>
-                        <input type="text" class="input-sm form-control" value="{{contact.email}}" readonly>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div>
+        <strong>
+            <span ng-show="contact.salutation">{{contact.salutation}} </span>
+            <span ng-show="contact.firstName">{{contact.firstName}} </span>
+            <span>{{contact.lastName}}</span>
+        </strong>
     </div>
 
-    <button type="submit"
-            ui-sref="contact"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
-    </button>
+    <div ng-show="contact.street" class="multi-line">{{contact.street}}</div>
+    <div ng-show="contact.city || contact.region">
+        <span ng-show="contact.city">{{contact.city}}, </span>
+        <span ng-show="contact.region">{{contact.region}}</span>
+    </div>
+
+    <div ng-show="contact.country">{{contact.country}}</div>
+    <div ng-show="contact.postalCode">{{contact.postalCode}}</div>
+
+    <div ng-show="contact.department || contact.affiliation">
+        <div>&nbsp;</div>
+        <div>
+            <strong>
+                <span ng-show="contact.department" translate="csrsApp.contact.department">Department</span>
+                <span ng-show="contact.department && contact.affiliation"> / </span>
+                <span ng-show="contact.affiliation" translate="csrsApp.contact.affiliation">Affiliation</span>
+            </strong>
+        </div>
+        <div ng-show="contact.department">{{contact.department}}</div>
+        <div ng-show="contact.affiliation">{{contact.affiliation}}</div>
+    </div>
 </div>

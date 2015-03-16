@@ -4,9 +4,15 @@ $icon-font-path: "../../bower_components/bootstrap-sass/assets/fonts/bootstrap/"
 @import "bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+.multi-line {
+    white-space: pre-line;
+}
+
 .contact-list {
     padding: 8px;
 }
+
+
 
 body {
     background: #fafafa;

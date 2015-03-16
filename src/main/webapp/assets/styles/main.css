@@ -8540,23 +8540,28 @@ button.close {
   }
 }
 /* line 7, ../../../scss/main.scss */
+.multi-line {
+  white-space: pre-line;
+}
+
+/* line 11, ../../../scss/main.scss */
 .contact-list {
   padding: 8px;
 }
 
-/* line 11, ../../../scss/main.scss */
+/* line 17, ../../../scss/main.scss */
 body {
   background: #fafafa;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #333;
 }
 
-/* line 17, ../../../scss/main.scss */
+/* line 23, ../../../scss/main.scss */
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
 
-/* line 21, ../../../scss/main.scss */
+/* line 27, ../../../scss/main.scss */
 .development {
   position: absolute;
   width: 149px;
@@ -8570,13 +8575,13 @@ body {
   background-repeat: no-repeat;
 }
 
-/* line 34, ../../../scss/main.scss */
+/* line 40, ../../../scss/main.scss */
 .navbar-version {
   font-size: 10px;
   color: #ccc;
 }
 
-/* line 39, ../../../scss/main.scss */
+/* line 45, ../../../scss/main.scss */
 .browserupgrade {
   margin: 0.2em 0;
   background: #ccc;
@@ -8584,7 +8589,7 @@ body {
   padding: 0.2em 0;
 }
 
-/* line 46, ../../../scss/main.scss */
+/* line 52, ../../../scss/main.scss */
 .hero-unit {
   margin: 50px auto 0 auto;
   width: 300px;
@@ -8596,20 +8601,20 @@ body {
   padding: 60px;
 }
 
-/* line 57, ../../../scss/main.scss */
+/* line 63, ../../../scss/main.scss */
 .hero-unit h1 {
   font-size: 60px;
   line-height: 1;
   letter-spacing: -1px;
 }
 
-/* line 63, ../../../scss/main.scss */
+/* line 69, ../../../scss/main.scss */
 .error {
   color: white;
   background-color: red;
 }
 
-/* line 68, ../../../scss/main.scss */
+/* line 74, ../../../scss/main.scss */
 .hipster {
   display: inline-block;
   width: 347px;
@@ -8620,20 +8625,20 @@ body {
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
-  /* line 84, ../../../scss/main.scss */
+  /* line 90, ../../../scss/main.scss */
   .hipster {
     background: url("../images/hipster2x.png") no-repeat center top;
     background-size: contain;
   }
 }
 /* make sure browsers use the pointer cursor for anchors, even with no href */
-/* line 91, ../../../scss/main.scss */
+/* line 97, ../../../scss/main.scss */
 a:hover {
   cursor: pointer;
 }
 
 /* start Password strength bar style */
-/* line 97, ../../../scss/main.scss */
+/* line 103, ../../../scss/main.scss */
 ul#strength {
   display: inline;
   list-style: none;
@@ -8643,12 +8648,12 @@ ul#strength {
   vertical-align: 2px;
 }
 
-/* line 106, ../../../scss/main.scss */
+/* line 112, ../../../scss/main.scss */
 .point:last {
   margin: 0 !important;
 }
 
-/* line 109, ../../../scss/main.scss */
+/* line 115, ../../../scss/main.scss */
 .point {
   background: #DDD;
   border-radius: 2px;

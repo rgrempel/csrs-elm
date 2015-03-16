@@ -21,7 +21,9 @@
             "region": "Region",
             "country": "Country",
             "postalCode": "PostalCode",
-            "email": "Email"
+            "email": "Email",
+            "department": "Département",
+            "affiliation": "Université / Affiliation"
         }
     }
 }
