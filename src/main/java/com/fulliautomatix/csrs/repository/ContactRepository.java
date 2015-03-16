@@ -21,4 +21,11 @@ public interface ContactRepository extends JpaRepository<Contact,Long> {
         type = EntityGraph.EntityGraphType.LOAD
     )
     List<Contact> searchByFullNameLikeLower (String fullName);
+
+    @Query("SELECT DISTINCT c FROM Contact c WHERE c.id = ?1")
+    @EntityGraph(
+        value = "Contact.WithAnnuals",
+        type = EntityGraph.EntityGraphType.LOAD
+    )
+    Contact findOneWithAnnuals (Long id);
 }

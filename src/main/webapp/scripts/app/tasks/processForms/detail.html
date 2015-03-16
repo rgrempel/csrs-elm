@@ -1,20 +1,20 @@
 <div>
     <div>
         <strong>
-            <span ng-show="contact.salutation">{{contact.salutation}} </span>
-            <span ng-show="contact.firstName">{{contact.firstName}} </span>
-            <span>{{contact.lastName}}</span>
+            <span ng-show="contact.salutation" ng-bind="contact.salutation">Mr.</span>
+            <span ng-show="contact.firstName" ng-bind="contact.firstName">Paul</span>
+            <span ng-bind="contact.lastName">>Dyck</span>
         </strong>
     </div>
 
-    <div ng-show="contact.street" class="multi-line">{{contact.street}}</div>
+    <div ng-show="contact.street" class="multi-line" ng-bind="contact.street">Street</div>
     <div ng-show="contact.city || contact.region">
         <span ng-show="contact.city">{{contact.city}}, </span>
-        <span ng-show="contact.region">{{contact.region}}</span>
+        <span ng-show="contact.region" ng-bind="contact.region">Region</span>
     </div>
 
-    <div ng-show="contact.country">{{contact.country}}</div>
-    <div ng-show="contact.postalCode">{{contact.postalCode}}</div>
+    <div ng-show="contact.country" ng-bind="contact.country">Country</div>
+    <div ng-show="contact.postalCode" ng-bind="contact.postalCode">Postal Code</div>
 
     <div ng-show="contact.department || contact.affiliation">
         <div>&nbsp;</div>
@@ -25,7 +25,29 @@
                 <span ng-show="contact.affiliation" translate="csrsApp.contact.affiliation">Affiliation</span>
             </strong>
         </div>
-        <div ng-show="contact.department">{{contact.department}}</div>
-        <div ng-show="contact.affiliation">{{contact.affiliation}}</div>
+        <div ng-show="contact.department" ng-bind="contact.department">Department</div>
+        <div ng-show="contact.affiliation" ng-bind="contact.affiliation">Affiliation</div>
+    </div>
+
+    <div ng-if="contact.annuals && (contact.annuals.length > 0)">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="csrsApp.annual.year">Year</th>
+                    <th translate="csrsApp.annual.membership">Membership Status</th>
+                    <th translate="csrsApp.annual.iter">ITER</th>
+                    <th translate="csrsApp.annual.rr">Renaissance and Reformation</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                <tr ng-repeat="annual in contact.annuals | orderBy: '-year'">
+                    <td ng-bind="annual.year"></td>
+                    <td translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</td>
+                    <td><span ng-show="annual.iter" class="glyphicon glyphicon-ok"></span></td>
+                    <td translate="csrsApp.annual.data.rr.{{annual.rr}}">Renaissance and Reformation</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>

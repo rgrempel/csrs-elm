@@ -3,7 +3,10 @@
 angular.module('csrsApp').controller('ProcessFormsDetailController', function ($scope, $stateParams, Contact) {
     $scope.contact = {};
     $scope.load = function (id) {
-        Contact.get({id: id}, function(result) {
+        Contact.get({
+            id: id,
+            withAnnuals: true
+        }, function(result) {
             $scope.contact = result;
         });
     };
@@ -28,6 +31,7 @@ angular.module('csrsApp').config(function ($stateProvider) {
             translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                 $translatePartialLoader.addPart('processForms');
                 $translatePartialLoader.addPart('contact');
+                $translatePartialLoader.addPart('annual');
                 return $translate.refresh();
             }]
         }

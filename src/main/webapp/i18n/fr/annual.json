@@ -12,11 +12,27 @@
             "detail": {
                 "title": "Annual"
             },
-            "year": "Year",
-            "membership": "Membership",
-            "iter": "Iter",
-            "rr": "RR",
-            "contact": "contact"
+            "year": "Année",
+            "membership": "Statut d'adhésion",
+            "iter": "ITER",
+            "rr": "Renaissance et Réforme",
+            "contact": "contact",
+
+            "data": {
+                "membership": {
+                    "0": "Aucun",
+                    "1": "Membre bienfaiteur",
+                    "2": "Membre régulier",
+                    "3": "Ph.D. sans emploi à temps plein",
+                    "4": "Professeur à la retraite",
+                    "5": "Étudiant(e)"
+                },
+                "rr": {
+                    "0": "",
+                    "1": "Imprimée",
+                    "2": "Electronique"
+                }
+            }
         }
     }
 }

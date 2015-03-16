@@ -102,6 +102,22 @@ public class ContactResource {
     }
     
     /**
+     * GET  /contacts/:id -> get the "id" contact with annuals
+     */
+    @RequestMapping(value = "/contacts/{id}",
+            params = "withAnnuals",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Contact> getWithAnnuals(@PathVariable Long id) {
+        log.debug("REST request to get Contact : {}", id);
+        return Optional.ofNullable(contactRepository.findOneWithAnnuals(id))
+            .map(contact -> new ResponseEntity<>(
+                contact,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+    /**
      * GET  /contacts/:id -> get the "id" contact.
      */
     @RequestMapping(value = "/contacts/{id}",
