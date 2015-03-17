@@ -1,35 +1,57 @@
-<div>
-    <div>
-        <strong>
-            <span ng-show="contact.salutation" ng-bind="contact.salutation">Mr.</span>
-            <span ng-show="contact.firstName" ng-bind="contact.firstName">Paul</span>
-            <span ng-bind="contact.lastName">>Dyck</span>
-        </strong>
-    </div>
-
-    <div ng-show="contact.street" class="multi-line" ng-bind="contact.street">Street</div>
-    <div ng-show="contact.city || contact.region">
-        <span ng-show="contact.city">{{contact.city}}, </span>
-        <span ng-show="contact.region" ng-bind="contact.region">Region</span>
-    </div>
-
-    <div ng-show="contact.country" ng-bind="contact.country">Country</div>
-    <div ng-show="contact.postalCode" ng-bind="contact.postalCode">Postal Code</div>
-
-    <div ng-show="contact.department || contact.affiliation">
-        <div>&nbsp;</div>
+<div class="row">
+    <div class="col-xs-6">
         <div>
             <strong>
-                <span ng-show="contact.department" translate="csrsApp.contact.department">Department</span>
-                <span ng-show="contact.department && contact.affiliation"> / </span>
-                <span ng-show="contact.affiliation" translate="csrsApp.contact.affiliation">Affiliation</span>
+                <span ng-show="contact.salutation" ng-bind="contact.salutation">Mr.</span>
+                <span ng-show="contact.firstName" ng-bind="contact.firstName">Paul</span>
+                <span ng-bind="contact.lastName">>Dyck</span>
             </strong>
         </div>
-        <div ng-show="contact.department" ng-bind="contact.department">Department</div>
-        <div ng-show="contact.affiliation" ng-bind="contact.affiliation">Affiliation</div>
+
+        <div ng-show="contact.street" class="multi-line" ng-bind="contact.street">Street</div>
+
+        <div ng-show="contact.city || contact.region">
+            <span ng-show="contact.city">{{contact.city}}, </span>
+            <span ng-show="contact.region" ng-bind="contact.region">Region</span>
+        </div>
+
+        <div ng-show="contact.country" ng-bind="contact.country">Country</div>
+        <div ng-show="contact.postalCode" ng-bind="contact.postalCode">Postal Code</div>
+        
+        <div ng-show="contact.email">
+            <div>&nbsp;</div>
+            <div ng-bind="contact.email">Email</div>
+        </div>
+
+        <div ng-show="contact.department || contact.affiliation">
+            <div>&nbsp;</div>
+            <div>
+                <strong>
+                    <span ng-show="contact.department" translate="csrsApp.contact.department">Department</span>
+                    <span ng-show="contact.department && contact.affiliation"> / </span>
+                    <span ng-show="contact.affiliation" translate="csrsApp.contact.affiliation">Affiliation</span>
+                </strong>
+            </div>
+            <div ng-show="contact.department" ng-bind="contact.department">Department</div>
+            <div ng-show="contact.affiliation" ng-bind="contact.affiliation">Affiliation</div>
+        </div>
     </div>
 
-    <div ng-if="contact.annuals && (contact.annuals.length > 0)">
+    <div class="col-xs-3">
+        <button class="btn btn-primary">
+            <span class="glyphicon glyphicon-pencil"></span> <span translate="entity.action.edit"></span>
+        </button>
+    </div>
+
+    <div class="col-xs-3">
+        <button class="btn btn-danger">
+            <span class="glyphicon glyphicon-trash"></span> <span translate="entity.action.delete"></span>
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -37,6 +59,7 @@
                     <th translate="csrsApp.annual.membership">Membership Status</th>
                     <th translate="csrsApp.annual.iter">ITER</th>
                     <th translate="csrsApp.annual.rr">Renaissance and Reformation</th>
+                    <th><button class="btn btn-sm btn-default"><span class="glyphicon glyphicon-plus"></span></button></th>
                 </tr>
             </thead>
             
@@ -46,6 +69,8 @@
                     <td translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</td>
                     <td><span ng-show="annual.iter" class="glyphicon glyphicon-ok"></span></td>
                     <td translate="csrsApp.annual.data.rr.{{annual.rr}}">Renaissance and Reformation</td>
+                    <td><button class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                    <td><button class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span></button></td>
                 </tr>
             </tbody>
         </table>

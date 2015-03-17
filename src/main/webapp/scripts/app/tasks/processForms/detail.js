@@ -32,6 +32,7 @@ angular.module('csrsApp').config(function ($stateProvider) {
                 $translatePartialLoader.addPart('processForms');
                 $translatePartialLoader.addPart('contact');
                 $translatePartialLoader.addPart('annual');
+                $translatePartialLoader.addPart('global');
                 return $translate.refresh();
             }]
         }
