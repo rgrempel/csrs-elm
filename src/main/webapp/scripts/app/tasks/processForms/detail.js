@@ -2,15 +2,46 @@
 
 angular.module('csrsApp').controller('ProcessFormsDetailController', function ($scope, $stateParams, Contact) {
     $scope.contact = {};
+
     $scope.load = function (id) {
         Contact.get({
             id: id,
             withAnnuals: true
         }, function(result) {
             $scope.contact = result;
+            $('#saveContactModal').modal('hide');
+        }, function(error) {
+            
         });
     };
+
     $scope.load($stateParams.id);
+
+    $scope.startEditing = function () {
+        $('#saveContactModal').modal('show');
+    };
+
+    $scope.save = function () {
+        Contact.update({}, $scope.contact, function () {
+            $scope.load($scope.contact.id);
+        }, function (error) {
+            
+        });
+    };
+
+    $scope.cancel = function () {
+        $scope.load($stateParams.id);
+    };
+
+    $scope.checkDelete = function () {
+        $('#deleteContactConfirmation').modal('show');
+    };
+
+    $scope.doDelete = function () {
+        Contact.delete({id: contact.id}, function () {
+            // Change state ...
+        });
+    };
 });
 
 angular.module('csrsApp').config(function ($stateProvider) {

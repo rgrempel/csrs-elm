@@ -1,78 +1,166 @@
-<div class="row">
-    <div class="col-xs-6">
+<div>
+    <button class="btn btn-default" ng-click="startEditing()">
+        <span class="glyphicon glyphicon-pencil"></span>
+    </button>
+    
+    <span>&nbsp;</span>
+    
+    <button class="btn btn-default" ng-click="checkDelete()">
+        <span class="glyphicon glyphicon-trash"></span>
+    </button>
+
+    <div>&nbsp;</div>
+</div>
+
+<div>
+    <div>
+        <strong>
+            <span ng-show="contact.salutation" ng-bind="contact.salutation">Mr.</span>
+            <span ng-show="contact.firstName" ng-bind="contact.firstName">Paul</span>
+            <span ng-bind="contact.lastName">>Dyck</span>
+        </strong>
+    </div>
+
+    <div ng-show="contact.street" class="multi-line" ng-bind="contact.street">Street</div>
+
+    <div ng-show="contact.city || contact.region">
+        <span ng-show="contact.city">{{contact.city}}, </span>
+        <span ng-show="contact.region" ng-bind="contact.region">Region</span>
+    </div>
+
+    <div ng-show="contact.country" ng-bind="contact.country">Country</div>
+    <div ng-show="contact.postalCode" ng-bind="contact.postalCode">Postal Code</div>
+
+    <div ng-show="contact.email">
+        <div>&nbsp;</div>
+        <div ng-bind="contact.email">Email</div>
+    </div>
+
+    <div ng-show="contact.department || contact.affiliation">
+        <div>&nbsp;</div>
         <div>
             <strong>
-                <span ng-show="contact.salutation" ng-bind="contact.salutation">Mr.</span>
-                <span ng-show="contact.firstName" ng-bind="contact.firstName">Paul</span>
-                <span ng-bind="contact.lastName">>Dyck</span>
+                <span ng-show="contact.department" translate="csrsApp.contact.department">Department</span>
+                <span ng-show="contact.department && contact.affiliation"> / </span>
+                <span ng-show="contact.affiliation" translate="csrsApp.contact.affiliation">Affiliation</span>
             </strong>
         </div>
-
-        <div ng-show="contact.street" class="multi-line" ng-bind="contact.street">Street</div>
-
-        <div ng-show="contact.city || contact.region">
-            <span ng-show="contact.city">{{contact.city}}, </span>
-            <span ng-show="contact.region" ng-bind="contact.region">Region</span>
-        </div>
-
-        <div ng-show="contact.country" ng-bind="contact.country">Country</div>
-        <div ng-show="contact.postalCode" ng-bind="contact.postalCode">Postal Code</div>
-        
-        <div ng-show="contact.email">
-            <div>&nbsp;</div>
-            <div ng-bind="contact.email">Email</div>
-        </div>
-
-        <div ng-show="contact.department || contact.affiliation">
-            <div>&nbsp;</div>
-            <div>
-                <strong>
-                    <span ng-show="contact.department" translate="csrsApp.contact.department">Department</span>
-                    <span ng-show="contact.department && contact.affiliation"> / </span>
-                    <span ng-show="contact.affiliation" translate="csrsApp.contact.affiliation">Affiliation</span>
-                </strong>
-            </div>
-            <div ng-show="contact.department" ng-bind="contact.department">Department</div>
-            <div ng-show="contact.affiliation" ng-bind="contact.affiliation">Affiliation</div>
-        </div>
-    </div>
-
-    <div class="col-xs-3">
-        <button class="btn btn-primary">
-            <span class="glyphicon glyphicon-pencil"></span> <span translate="entity.action.edit"></span>
-        </button>
-    </div>
-
-    <div class="col-xs-3">
-        <button class="btn btn-danger">
-            <span class="glyphicon glyphicon-trash"></span> <span translate="entity.action.delete"></span>
-        </button>
+        <div ng-show="contact.department" ng-bind="contact.department">Department</div>
+        <div ng-show="contact.affiliation" ng-bind="contact.affiliation">Affiliation</div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th translate="csrsApp.annual.year">Year</th>
-                    <th translate="csrsApp.annual.membership">Membership Status</th>
-                    <th translate="csrsApp.annual.iter">ITER</th>
-                    <th translate="csrsApp.annual.rr">Renaissance and Reformation</th>
-                    <th><button class="btn btn-sm btn-default"><span class="glyphicon glyphicon-plus"></span></button></th>
-                </tr>
-            </thead>
-            
-            <tbody>
-                <tr ng-repeat="annual in contact.annuals | orderBy: '-year'">
-                    <td ng-bind="annual.year"></td>
-                    <td translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</td>
-                    <td><span ng-show="annual.iter" class="glyphicon glyphicon-ok"></span></td>
-                    <td translate="csrsApp.annual.data.rr.{{annual.rr}}">Renaissance and Reformation</td>
-                    <td><button class="btn btn-sm btn-default"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                    <td><button class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-trash"></span></button></td>
-                </tr>
-            </tbody>
-        </table>
+<table class="table table-striped table-condensed">
+    <thead>
+        <tr>
+            <th translate="csrsApp.annual.year">Year</th>
+            <th translate="csrsApp.annual.membership">Membership Status</th>
+            <th translate="csrsApp.annual.iter">ITER</th>
+            <th translate="csrsApp.annual.rr">Renaissance and Reformation</th>
+        </tr>
+        <tr ng-show="editMode">
+            <th><button class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span></button></th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        <tr ng-repeat="annual in contact.annuals | orderBy: '-year'">
+            <td ng-bind="annual.year"></td>
+            <td translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</td>
+            <td><span ng-show="annual.iter" class="glyphicon glyphicon-ok"></span></td>
+            <td translate="csrsApp.annual.data.rr.{{annual.rr}}">Renaissance and Reformation</td>
+            <td ng-show="editMode"><button class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span></button></td>
+            <td ng-show="editMode"><button class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="modal fade" id="saveContactModal" tabindex="-1" role="dialog" aria-labelledby="myContactLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="editForm" role="form" novalidate
+                  class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
+                  ng-submit="save()">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</button>
+                    <h4 class="modal-title" id="myContactLabel" translate="csrsApp.contact.home.createOrEditLabel">Create or edit a Contact</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label translate="csrsApp.contact.salutation">Salutation</label>
+                        <input type="text" class="form-control" name="salutation" ng-model="contact.salutation" />
+                    </div>
+                    <div class="form-group">
+                        <label translate="csrsApp.contact.firstName">First Name</label>
+                        <input type="text" class="form-control" name="firstName" ng-model="contact.firstName" />
+                    </div>
+                    <div class="form-group">
+                        <label translate="csrsApp.contact.lastName">Last Name</label>
+                        <input type="text" class="form-control" name="lastName" ng-model="contact.lastName" />
+                    </div>
+                    <div class="form-group">
+                        <label translate="csrsApp.contact.street">Street</label>
+                        <textarea class="form-control" name="street" ng-model="contact.street" />
+                    </div>
+                    <div class="form-group">
+                        <label translate="csrsApp.contact.city">City</label>
+                        <input type="text" class="form-control" name="city" ng-model="contact.city" />
+                    </div>
+                    <div class="form-group">
+                        <label translate="csrsApp.contact.region">Region</label>
+                        <input type="text" class="form-control" name="region" ng-model="contact.region" />
+                    </div>
+                    <div class="form-group">
+                        <label translate="csrsApp.contact.country">Country</label>
+                        <input type="text" class="form-control" name="country" ng-model="contact.country" />
+                    </div>
+                    <div class="form-group">
+                        <label translate="csrsApp.contact.postalCode">Postal Code</label>
+                        <input type="text" class="form-control" name="postalCode" ng-model="contact.postalCode" />
+                    </div>
+                    <div class="form-group">
+                        <label translate="csrsApp.contact.email">Email</label>
+                        <input type="text" class="form-control" name="email" ng-model="contact.email" />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">
+                        <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                    </button>
+
+                    <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+<div class="modal fade" id="deleteContactConfirmation">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="deleteForm" ng-submit="confirmDelete(contact.id)">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="clear()">&times;</button>
+                    <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
+                </div>
+                <div class="modal-body">
+                    <p translate="csrsApp.contact.delete.question" translate-values="{id: '{{contact.id}}'}">Are you sure you want to delete this Contact?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                        <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                    </button>
+                    <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
+                        <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

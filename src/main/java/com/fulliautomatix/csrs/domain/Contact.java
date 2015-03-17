@@ -4,6 +4,9 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,6 +18,7 @@ import java.util.List;
 @Entity
 @Table(name = "T_CONTACT")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @NamedEntityGraph(
     name = "Contact.WithAnnuals",
     attributeNodes = {
@@ -63,6 +67,7 @@ public class Contact implements Serializable {
     @Column(name = "email")
     private String email;
 
+    @JsonIgnore
     @OneToMany(mappedBy="contact")
     private List<Annual> annuals;
 
@@ -170,9 +175,15 @@ public class Contact implements Serializable {
         this.email = email;
     }
 
+    @JsonProperty
     @JsonManagedReference("contact-annuals")
     public List<Annual> getAnnuals () {
         return this.annuals;
+    }
+
+    @JsonIgnore
+    public void setAnnuals (List<Annual> annuals) {
+        this.annuals = annuals;
     }
 
     @Override
