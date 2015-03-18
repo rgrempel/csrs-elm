@@ -42,6 +42,10 @@ angular.module('csrsApp').controller('ProcessFormsDetailController', function ($
             // Change state ...
         });
     };
+
+    $scope.createAnnual = function () {
+        
+    };
 });
 
 angular.module('csrsApp').config(function ($stateProvider) {

@@ -3,29 +3,14 @@
         "processForms" : {
             "home": {
                 "title": "Traiter les formulaires",
-                "createLabel": "Create a new Contact",
-                "createOrEditLabel": "Create or edit a Contact"
+                "createLabel": "Créer un nouveau Contact",
+                "createOrEditLabel": "Créer ou éditer un Contact"
             },
+            
             "search": "Rechercher",
             "search.placeholder": "Tapez début du nom ou le prénom de recherche",
-            "delete": {
-                "question": "Are you sure you want to delete Contact {{ id }}?"
-            },
-            "detail": {
-                "title": "Contact"
-            },
-            "lastMember": "Adhérent:",
             
-            "code": "Code",
-            "firstName": "FirstName",
-            "lastName": "LastName",
-            "salutation": "Salutation",
-            "street": "Street",
-            "city": "City",
-            "region": "Region",
-            "country": "Country",
-            "postalCode": "PostalCode",
-            "email": "Email"
+            "lastMember": "Adhérent:" 
         }
     }
 }

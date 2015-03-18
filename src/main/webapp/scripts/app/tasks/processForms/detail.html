@@ -1,4 +1,4 @@
-<div style="display: inline-block">
+<div style="display: inline-block" class="well">
     <div>
         <strong>
             <span ng-show="contact.salutation" ng-bind="contact.salutation">Mr.</span>
@@ -50,31 +50,32 @@
     </div>
 </div>
 
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th class="col-xs-1 col-md-1 col-lg-1" translate="csrsApp.annual.year">Year</th>
-            <th class="col-xs-4 col-md-2 col-lg-1" translate="csrsApp.annual.membership">Membership Status</th>
-            <th class="col-xs-1 col-md-1 col-lg-1" translate="csrsApp.annual.iter">ITER</th>
-            <th class="col-xs-3 col-md-2 col-lg-1" translate="csrsApp.annual.rr">Renaissance and Reformation</th>
-            <th class="col-xs-3 col-md-1 col-lg-1 text-center"><button class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus"></span></button></th>
-        </tr>
-    </thead>
-    
-    <tbody>
-        <tr ng-repeat="annual in contact.annuals | orderBy: '-year'">
-            <td ng-bind="annual.year" style="vertical-align: middle;"></td>
-            <td style="vertical-align: middle;" translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</td>
-            <td style="vertical-align: middle;"><span ng-show="annual.iter" class="glyphicon glyphicon-ok"></span></td>
-            <td style="vertical-align: middle;" translate="csrsApp.annual.data.rr.{{annual.rr}}">Renaissance and Reformation</td>
-            <td style="vertical-align: middle;" class="text-center">
-                <button class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil"></span></button>
-                <button class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="well">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="col-xs-1 col-md-1 col-lg-1" translate="csrsApp.annual.year">Year</th>
+                <th class="col-xs-3 col-md-2 col-lg-1 text-center" translate="csrsApp.annual.membership">Membership Status</th>
+                <th class="col-xs-1 col-md-1 col-lg-1" translate="csrsApp.annual.iter">ITER</th>
+                <th class="col-xs-3 col-md-2 col-lg-1 text-center" translate="csrsApp.annual.rr">Renaissance and Reformation</th>
+                <th class="col-xs-4 col-md-1 col-lg-1 text-center"><button ng-click="createAnnual()" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus"></span></button></th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <tr ng-repeat="annual in contact.annuals | orderBy: '-year'">
+                <td ng-bind="annual.year" style="vertical-align: middle;"></td>
+                <td style="vertical-align: middle;" translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</td>
+                <td style="vertical-align: middle;"><span ng-show="annual.iter" class="glyphicon glyphicon-ok"></span></td>
+                <td style="vertical-align: middle;" translate="csrsApp.annual.data.rr.{{annual.rr}}">Renaissance and Reformation</td>
+                <td style="vertical-align: middle;" class="text-center">
+                    <button class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></button>
+                    <button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <div class="modal fade" id="saveContactModal" tabindex="-1" role="dialog" aria-labelledby="myContactLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -172,7 +173,7 @@
 <div class="modal fade" id="deleteContactConfirmation">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form name="deleteForm" ng-submit="confirmDelete(contact.id)">
+            <form name="deleteForm" ng-submit="doDelete(contact.id)">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="clear()">&times;</button>
                     <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
