@@ -29,6 +29,8 @@ module.exports = function (config) {
             'main/webapp/bower_components/angular-cache-buster/angular-cache-buster.js',
             'main/webapp/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
             'main/webapp/bower_components/angular-auto-focus/angular-auto-focus.js',
+            'main/webapp/bower_components/angular-filter/dist/angular-filter.js',
+            'main/webapp/bower_components/lodash/lodash.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',
