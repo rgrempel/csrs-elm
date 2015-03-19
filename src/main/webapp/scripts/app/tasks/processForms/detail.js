@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('csrsApp').controller('ProcessFormsDetailController', function ($scope, $stateParams, Contact) {
+angular.module('csrsApp').controller('ProcessFormsDetailController', function ($scope, $stateParams, Contact, Annual, _, $http) {
     $scope.contact = {};
 
     $scope.load = function (id) {
@@ -44,7 +44,32 @@ angular.module('csrsApp').controller('ProcessFormsDetailController', function ($
     };
 
     $scope.createAnnual = function () {
-        
+        // Default to the current year, or the next year if there
+        // is already an entry for the current year
+        var thisYear = new Date().getFullYear();
+        while (_.find($scope.contact.annuals, {year: thisYear})) {
+            thisYear += 1;
+        }
+
+        var newAnnual = {
+            year: thisYear,
+            membership: 2, // default to regular member
+            iter: false,
+            rr: 0,
+            contact: {
+                id: $scope.contact.id
+            }
+        };
+
+        Annual.save({}, newAnnual, function (value, headers) {
+            $http.get(headers('location')).success(function (data) {
+                $scope.contact.annuals.push(data);
+            }).error(function () {
+                // Shouldn't happen ...
+            });
+        }, function (httpResponse) {
+            // error
+        });
     };
 });
 

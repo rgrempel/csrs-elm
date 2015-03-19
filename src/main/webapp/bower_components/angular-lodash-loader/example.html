@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="AppLodash">
+<head>
+	<title>
+		Angular Lodash Test
+	</title>
+
+
+	<!-- Latest compiled and minified CSS & JS -->
+	<link rel="stylesheet" media="screen" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+	<script type="text/javascript" src='//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.1/jquery.js'></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.0rc3/angular.js"></script>
+	
+	<!-- insert the lodash link -->
+	<script type="text/javascript" src='//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js'></script>
+
+	<script type="text/javascript" src='src/nglodash.js'></script>
+	<script type="text/javascript" src='example/app.js'></script>
+</head>
+<body>
+
+	<div class="container">
+		<h1> Angular Lodash Test </h1>
+
+		<div class="row" ng-controller="TestCtrl">
+			
+			<div class="col-md-3">
+				<ul class="list-unstyled">
+					<li>
+						<button ng-click="pluckTest()">Pluck Test</button>
+					</li>
+					<li>
+						<button ng-click="rejectTest()">Flatten Test</button>
+					</li>
+				</ul>
+			</div>
+
+			<div class="col-md-9">
+				<h2> {{ sCurrentAction }} </h2>
+
+				<div style="border:1px dotted green; padding: 10px 20px">
+					{{ sResult }}
+				</div>
+				
+			</div>
+
+		</div>
+
+	</div>
+
+
+</body>
+</html>
