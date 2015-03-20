@@ -1,40 +1,4 @@
-<div style="display: inline-block" class="well">
-    <div>
-        <strong>
-            <span ng-show="contact.salutation" ng-bind="contact.salutation">Mr.</span>
-            <span ng-show="contact.firstName" ng-bind="contact.firstName">Paul</span>
-            <span ng-bind="contact.lastName">>Dyck</span>
-        </strong>
-    </div>
-    
-    <div ng-show="contact.street" class="multi-line" ng-bind="contact.street">Street</div>
-
-    <div ng-show="contact.city || contact.region">
-        <span ng-show="contact.city">{{contact.city}}, </span>
-        <span ng-show="contact.region" ng-bind="contact.region">Region</span>
-    </div>
-
-    <div ng-show="contact.country" ng-bind="contact.country">Country</div>
-    <div ng-show="contact.postalCode" ng-bind="contact.postalCode">Postal Code</div>
-
-    <div ng-show="contact.email">
-        <div>&nbsp;</div>
-        <div ng-bind="contact.email">Email</div>
-    </div>
-
-    <div ng-show="contact.department || contact.affiliation">
-        <div>&nbsp;</div>
-        <div>
-            <strong>
-                <span ng-show="contact.department" translate="csrsApp.contact.department">Department</span>
-                <span ng-show="contact.department && contact.affiliation"> / </span>
-                <span ng-show="contact.affiliation" translate="csrsApp.contact.affiliation">Affiliation</span>
-            </strong>
-        </div>
-        <div ng-show="contact.department" ng-bind="contact.department">Department</div>
-        <div ng-show="contact.affiliation" ng-bind="contact.affiliation">Affiliation</div>
-    </div>
-</div>
+<div csrs-contact-label="contact" style="display: inline-block" class="well" />
    
 <div style="display: inline-block; vertical-align: top; padding-left: 18px; padding-top: 6px;">
     <div>
