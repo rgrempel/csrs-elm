@@ -14,7 +14,7 @@
     </thead>
     
     <tbody>
-        <tr ng-repeat="annual in annualsCtrl.contact.annuals | orderBy: '-year' track by annual.id">
+        <tr ng-repeat="annual in annualsCtrl.contact.annuals | orderBy: '-year' track by annual.id" class="move">
             <td ng-bind="annual.year" style="vertical-align: middle;"></td>
             <td style="vertical-align: middle;" translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</td>
             <td style="vertical-align: middle;"><span ng-show="annual.iter" class="glyphicon glyphicon-ok"></span></td>
