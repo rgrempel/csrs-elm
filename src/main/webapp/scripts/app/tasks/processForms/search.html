@@ -10,7 +10,7 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 contact-list" ng-repeat="contact in results track by contact.id">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 contact-list yoyo" ng-repeat="contact in results track by contact.id">
             <div><a ui-sref="processFormsDetail({id: contact.id})">{{contact.firstName}} {{contact.lastName}}</a></div>
             <div ng-show="contact.department">{{contact.department}}</div>
             <div ng-show="contact.affiliation">{{contact.affiliation}}</div>

@@ -32,6 +32,7 @@ module.exports = function (config) {
             'main/webapp/bower_components/angular-auto-focus/angular-auto-focus.js',
             'main/webapp/bower_components/angular-filter/dist/angular-filter.js',
             'main/webapp/bower_components/angular-lodash-loader/src/min/nglodash.min.js',
+            'main/webapp/bower_components/angular-animate/angular-animate.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

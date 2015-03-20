@@ -8554,19 +8554,55 @@ button.close {
   padding: 12px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000319}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000320}}
+.yoyo.ng-enter,
+.yoyo.ng-leave {
+  -webkit-transition: 400ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  -moz-transition: 400ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  -ms-transition: 400ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  -o-transition: 400ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  transition: 400ms cubic-bezier(0.25, 0.25, 0.75, 0.75) all;
+  position: relative;
+  display: block;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000331}}
+.yoyo-ng-leave.ng-leave-active,
+.yoyo.ng-enter {
+  -webkit-transform: rotateX(90deg) rotateZ(90deg);
+  -moz-transform: rotateX(90deg) rotateZ(90deg);
+  -ms-transform: rotateX(90deg) rotateZ(90deg);
+  -o-transform: rotateX(90deg) rotateZ(90deg);
+  transform: rotateX(90deg) rotateZ(90deg);
+  opacity: 0;
+  height: 0px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000342}}
+.yoyo.ng-enter.ng-enter-active,
+.yoyo.ng-leave {
+  -webkit-transform: rotateX(0deg) rotateZ(0deg);
+  -moz-transform: rotateX(0deg) rotateZ(0deg);
+  -ms-transform: rotateX(0deg) rotateZ(0deg);
+  -o-transform: rotateX(0deg) rotateZ(0deg);
+  transform: rotateX(0deg) rotateZ(0deg);
+  opacity: 1;
+  height: 30px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000354}}
 body {
   background: #fafafa;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #333;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000325}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000360}}
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000329}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000364}}
 .development {
   position: absolute;
   width: 149px;
@@ -8580,13 +8616,13 @@ body {
   background-repeat: no-repeat;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000342}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000377}}
 .navbar-version {
   font-size: 10px;
   color: #ccc;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000347}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000382}}
 .browserupgrade {
   margin: 0.2em 0;
   background: #ccc;
@@ -8594,7 +8630,7 @@ body {
   padding: 0.2em 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000354}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000389}}
 .hero-unit {
   margin: 50px auto 0 auto;
   width: 300px;
@@ -8606,20 +8642,20 @@ body {
   padding: 60px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000365}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003100}}
 .hero-unit h1 {
   font-size: 60px;
   line-height: 1;
   letter-spacing: -1px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000371}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003106}}
 .error {
   color: white;
   background-color: red;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000376}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003111}}
 .hipster {
   display: inline-block;
   width: 347px;
@@ -8630,20 +8666,20 @@ body {
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000392}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003127}}
   .hipster {
     background: url("../images/hipster2x.png") no-repeat center top;
     background-size: contain;
   }
 }
 /* make sure browsers use the pointer cursor for anchors, even with no href */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\0000399}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003134}}
 a:hover {
   cursor: pointer;
 }
 
 /* start Password strength bar style */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003105}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003140}}
 ul#strength {
   display: inline;
   list-style: none;
@@ -8653,12 +8689,12 @@ ul#strength {
   vertical-align: 2px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003114}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003149}}
 .point:last {
   margin: 0 !important;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003117}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003152}}
 .point {
   background: #DDD;
   border-radius: 2px;

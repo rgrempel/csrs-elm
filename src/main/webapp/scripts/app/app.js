@@ -1,8 +1,18 @@
 'use strict';
 
-angular.module('csrsApp', ['LocalStorageModule', 'tmh.dynamicLocale',
-    'ngResource', 'ui.router', 'ngCookies', 'pascalprecht.translate', 'ngCacheBuster', 'infinite-scroll', 'mp.autoFocus', 'angularLodash'])
-
+angular.module('csrsApp', [
+    'LocalStorageModule',
+    'tmh.dynamicLocale',
+    'ngResource', 
+    'ui.router', 
+    'ngCookies', 
+    'pascalprecht.translate', 
+    'ngCacheBuster', 
+    'infinite-scroll', 
+    'mp.autoFocus', 
+    'angularLodash',
+    'ngAnimate'
+])
     .run(function ($rootScope, $location, $window, $http, $state, $translate, Auth, Principal, Language, ENV, VERSION, _) {
         $rootScope._ = _;
         $rootScope.ENV = ENV;
