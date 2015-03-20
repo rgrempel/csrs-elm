@@ -1,45 +1,49 @@
 'use strict';
 
 angular.module('csrsApp').controller('ProcessFormsDetailController', function (
-        $scope, $stateParams, Contact, Annual, _, $http, $window) {
-        
-    $scope.contact = {};
+    $scope, 
+    $stateParams, 
+    Contact, 
+    Annual, 
+    _, 
+    $http, 
+    $window
+) { 
+    this.contact = {};
 
-    $scope.load = function (id) {
+    this.load = function (id) {
+        var self = this;
         Contact.get({
             id: id,
             withAnnuals: true
         }, function(result) {
-            $scope.contact = result;
+            self.contact = result;
             $('#saveContactModal').modal('hide');
         }, function(error) {
             
         });
     };
 
-    $scope.load($stateParams.id);
+    this.load($stateParams.id);
 
-    $scope.startEditing = function () {
+    this.startEditing = function () {
         $('#saveContactModal').modal('show');
     };
 
-    $scope.save = function () {
-        Contact.update({}, $scope.contact, function () {
-            $scope.load($scope.contact.id);
+    this.save = function () {
+        var self = this;
+        Contact.update({}, self.contact, function () {
+            self.load(self.contact.id);
         }, function (error) {
             
         });
     };
 
-    $scope.cancel = function () {
-        $scope.load($stateParams.id);
+    this.cancel = function () {
+        this.load($stateParams.id);
     };
 
-    $scope.checkDelete = function () {
-        $('#deleteContactConfirmation').modal('show');
-    };
-
-    $scope.doDelete = function (id) {
+    this.doDelete = function (id) {
         $window.alert("bob " + id);
 //        Contact.delete({id: contact.id}, function () {
             // Change state ...
@@ -58,7 +62,8 @@ angular.module('csrsApp').config(function ($stateProvider) {
         views: {
             'content@': {
                 templateUrl: 'scripts/app/tasks/processForms/detail.html',
-                controller: 'ProcessFormsDetailController'
+                controller: 'ProcessFormsDetailController',
+                controllerAs: 'detail'
             }
         },
         resolve: {

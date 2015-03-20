@@ -1,8 +1,8 @@
-<div csrs-contact-label="contact" style="display: inline-block" class="well" />
+<div csrs-contact-label="detail.contact" style="display: inline-block" class="well" />
    
 <div style="display: inline-block; vertical-align: top; padding-left: 18px; padding-top: 6px;">
     <div>
-        <button class="btn btn-primary" ng-click="startEditing()">
+        <button class="btn btn-primary" ng-click="detail.startEditing()">
             <span class="glyphicon glyphicon-pencil"></span>
         </button>
     </div>
@@ -11,23 +11,25 @@
         <button class="btn btn-danger" ng-click="doConfirm()">
             <span class="glyphicon glyphicon-trash"></span>
         </button>
-        <div csrs-modal="doDelete(contact.id)" action-title="entity.action.delete" modal-title="entity.delete.title">
-            <p translate="csrsApp.contact.delete.question" translate-values="{name: '{{contact.firstName}} {{contact.lastName}}'}">Are you sure you want to delete this Contact?</p>
+        <div csrs-modal="detail.doDelete(detail.contact.id)" action-title="entity.action.delete" modal-title="entity.delete.title">
+            <p translate="csrsApp.contact.delete.question" translate-values="{name: '{{detail.contact.firstName}} {{detail.contact.lastName}}'}">Are you sure you want to delete this Contact?</p>
         </div>
     </div>
 </div>
 
-<div csrs-contact-annuals="contact" class="well" />
+<div csrs-contact-annuals="detail.contact" class="well" />
 
 <div class="modal fade" id="saveContactModal" tabindex="-1" role="dialog" aria-labelledby="myContactLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form name="editForm" role="form" novalidate
+            <form name="editForm" 
+                  role="form"
+                  novalidate
                   class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
-                  ng-submit="save()">
+                  ng-submit="detail.save()">
 
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</button>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="detail.cancel()">&times;</button>
                     <h4 class="modal-title" id="myContactLabel" translate="csrsApp.contact.home.createOrEditLabel">Create or edit a Contact</h4>
                 </div>
 
@@ -36,70 +38,70 @@
                         <div class="row">
                             <div class="form-group col-xs-2">
                                 <label translate="csrsApp.contact.salutation">Salutation</label>
-                                <input type="text" class="form-control" name="salutation" ng-model="contact.salutation" />
+                                <input type="text" class="form-control" name="salutation" ng-model="detail.contact.salutation" />
                             </div>
                             <div class="form-group col-xs-5">
                                 <label translate="csrsApp.contact.firstName">First Name</label>
-                                <input type="text" class="form-control" name="firstName" ng-model="contact.firstName" />
+                                <input type="text" class="form-control" name="firstName" ng-model="detail.contact.firstName" />
                             </div>
                             <div class="form-group col-xs-5">
                                 <label translate="csrsApp.contact.lastName">Last Name</label>
-                                <input type="text" class="form-control" name="lastName" ng-model="contact.lastName" />
+                                <input type="text" class="form-control" name="lastName" ng-model="detail.contact.lastName" />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-xs-12">
                                 <label translate="csrsApp.contact.street">Street</label>
-                                <textarea class="form-control" name="street" rows="3" ng-model="contact.street" />
+                                <textarea class="form-control" name="street" rows="3" ng-model="detail.contact.street" />
                             </div>
                         </div>
                             
                         <div class="row">
                             <div class="form-group col-xs-4">
                                 <label translate="csrsApp.contact.city">City</label>
-                                <input type="text" class="form-control" name="city" ng-model="contact.city" />
+                                <input type="text" class="form-control" name="city" ng-model="detail.contact.city" />
                             </div>
                             
                             <div class="form-group col-xs-4">
                                 <label translate="csrsApp.contact.region">Region</label>
-                                <input type="text" class="form-control" name="region" ng-model="contact.region" />
+                                <input type="text" class="form-control" name="region" ng-model="detail.contact.region" />
                             </div>
                             
                             <div class="form-group col-xs-4">
                                 <label translate="csrsApp.contact.country">Country</label>
-                                <input type="text" class="form-control" name="country" ng-model="contact.country" />
+                                <input type="text" class="form-control" name="country" ng-model="detail.contact.country" />
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-xs-6">
                                 <label translate="csrsApp.contact.postalCode">Postal Code</label>
-                                <input type="text" class="form-control" name="postalCode" ng-model="contact.postalCode" />
+                                <input type="text" class="form-control" name="postalCode" ng-model="detail.contact.postalCode" />
                             </div>
 
                             <div class="form-group col-xs-6">
                                 <label translate="csrsApp.contact.email">Email</label>
-                                <input type="email" class="form-control" name="email" ng-model="contact.email" />
+                                <input type="email" class="form-control" name="email" ng-model="detail.contact.email" />
                             </div>
                         </div>
                         
                         <div class="row">
                             <div class="form-group col-xs-6">
                                 <label translate="csrsApp.contact.department">Department</label>
-                                <input type="text" class="form-control" name="department" ng-model="contact.department" />
+                                <input type="text" class="form-control" name="department" ng-model="detail.contact.department" />
                             </div>
 
                             <div class="form-group col-xs-6">
                                 <label translate="csrsApp.contact.affiliation">Affiliation</label>
-                                <input type="text" class="form-control" name="affiliation" ng-model="contact.affiliation" />
+                                <input type="text" class="form-control" name="affiliation" ng-model="detail.contact.affiliation" />
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancel()">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="detail.cancel()">
                         <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
                     </button>
 
