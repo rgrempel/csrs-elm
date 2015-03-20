@@ -45,43 +45,6 @@ angular.module('csrsApp').controller('ProcessFormsDetailController', function (
             // Change state ...
   //      });
     };
-
-    $scope.deleteAnnual = function (annual) {
-        Annual.delete({id: annual.id}, function () {
-            _.pull($scope.contact.annuals, annual);
-        }, function () {
-            // Error
-        })
-    };
-
-    $scope.createAnnual = function () {
-        // Default to the current year, or the next year if there
-        // is already an entry for the current year
-        var thisYear = new Date().getFullYear();
-        while (_.find($scope.contact.annuals, {year: thisYear})) {
-            thisYear += 1;
-        }
-
-        var newAnnual = {
-            year: thisYear,
-            membership: 2, // default to regular member
-            iter: false,
-            rr: 0,
-            contact: {
-                id: $scope.contact.id
-            }
-        };
-
-        Annual.save({}, newAnnual, function (value, headers) {
-            $http.get(headers('location')).success(function (data) {
-                $scope.contact.annuals.push(data);
-            }).error(function () {
-                // Shouldn't happen ...
-            });
-        }, function (httpResponse) {
-            // error
-        });
-    };
 });
 
 angular.module('csrsApp').config(function ($stateProvider) {

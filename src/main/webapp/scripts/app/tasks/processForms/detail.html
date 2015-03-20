@@ -17,37 +17,7 @@
     </div>
 </div>
 
-<div class="well">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th class="col-xs-1 col-md-1 col-lg-1" translate="csrsApp.annual.year">Year</th>
-                <th class="col-xs-3 col-md-2 col-lg-1 text-center" translate="csrsApp.annual.membership">Membership Status</th>
-                <th class="col-xs-1 col-md-1 col-lg-1" translate="csrsApp.annual.iter">ITER</th>
-                <th class="col-xs-3 col-md-2 col-lg-1 text-center" translate="csrsApp.annual.rr">Renaissance and Reformation</th>
-                <th class="col-xs-4 col-md-1 col-lg-1 text-center"><button ng-click="createAnnual()" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-plus"></span></button></th>
-            </tr>
-        </thead>
-        
-        <tbody>
-            <tr ng-repeat="annual in contact.annuals | orderBy: '-year' track by annual.id">
-                <td ng-bind="annual.year" style="vertical-align: middle;"></td>
-                <td style="vertical-align: middle;" translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</td>
-                <td style="vertical-align: middle;"><span ng-show="annual.iter" class="glyphicon glyphicon-ok"></span></td>
-                <td style="vertical-align: middle;" translate="csrsApp.annual.data.rr.{{annual.rr}}">Renaissance and Reformation</td>
-                <td style="vertical-align: middle;" class="text-center">
-                    <button class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></button>
-                    <span csrs-confirm class="text-left">
-                        <button class="btn btn-danger btn-sm" ng-click="doConfirm()"><span class="glyphicon glyphicon-trash"></span></button>
-                        <span csrs-modal="deleteAnnual(annual)" action-title="entity.action.delete" modal-title="entity.delete.title">
-                            <p translate="csrsApp.annual.delete.question" translate-values="{name: '{{contact.firstName}} {{contact.lastName}}', year: '{{annual.year}}'}">Are you sure you want to delete the 1995 entry for Paul Dyck?</p>
-                        </span>
-                    </span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<div csrs-contact-annuals="contact" class="well" />
 
 <div class="modal fade" id="saveContactModal" tabindex="-1" role="dialog" aria-labelledby="myContactLabel" aria-hidden="true">
     <div class="modal-dialog">
