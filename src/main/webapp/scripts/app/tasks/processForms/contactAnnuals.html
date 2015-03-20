@@ -16,16 +16,27 @@
     <tbody>
         <tr ng-repeat="annual in annualsCtrl.contact.annuals | orderBy: '-year' track by annual.id" class="move">
             <td ng-bind="annual.year" style="vertical-align: middle;"></td>
-            <td style="vertical-align: middle;" translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</td>
+            <td style="vertical-align: middle;">
+                <span ng-hide="annual.editMode" translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</span>
+                <span ng-show="annual.editMode">
+                    <select ng-model="annual.membership" ng-options="'csrsApp.annual.data.membership.' + item | translate for item in [0, 1, 2, 3, 4, 5]" />
+                </span>
+            </td>
             <td style="vertical-align: middle;"><span ng-show="annual.iter" class="glyphicon glyphicon-ok"></span></td>
             <td style="vertical-align: middle;" translate="csrsApp.annual.data.rr.{{annual.rr}}">Renaissance and Reformation</td>
             <td style="vertical-align: middle;" class="text-center">
-                <button class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></button>
-                <span csrs-confirm class="text-left">
-                    <button class="btn btn-danger btn-sm" ng-click="doConfirm()"><span class="glyphicon glyphicon-trash"></span></button>
-                    <span csrs-modal="annualsCtrl.deleteAnnual(annual)" action-title="entity.action.delete" modal-title="entity.delete.title">
-                        <p translate="csrsApp.annual.delete.question" translate-values="{name: '{{annualsCtrl.contact.firstName}} {{annualsCtrl.contact.lastName}}', year: '{{annual.year}}'}">Are you sure you want to delete the 1995 entry for Paul Dyck?</p>
+                <span ng-hide="annual.editMode">
+                    <button ng-click="annualsCtrl.edit(annual)" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></button>
+                    <span csrs-confirm class="text-left">
+                        <button class="btn btn-danger btn-sm" ng-click="doConfirm()"><span class="glyphicon glyphicon-trash"></span></button>
+                        <span csrs-modal="annualsCtrl.deleteAnnual(annual)" action-title="entity.action.delete" modal-title="entity.delete.title">
+                            <p translate="csrsApp.annual.delete.question" translate-values="{name: '{{annualsCtrl.contact.firstName}} {{annualsCtrl.contact.lastName}}', year: '{{annual.year}}'}">Are you sure you want to delete the 1995 entry for Paul Dyck?</p>
+                        </span>
                     </span>
+                </span>
+                <span ng-show="annual.editMode">
+                    <button ng-click="annualsCtrl.commit(annual)" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span></button>
+                    <button ng-click="annualsCtrl.cancel(annual)" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
                 </span>
             </td>
         </tr>
