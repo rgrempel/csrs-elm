@@ -7,7 +7,7 @@
                 "createOrEditLabel": "Créer ou éditer un Annual"
             },
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Annual {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer les informations pour {{year}} concernant {{name}}?"
             },
             "detail": {
                 "title": "Annual"

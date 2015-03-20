@@ -47,8 +47,8 @@
         <button class="btn btn-danger" ng-click="doConfirm()">
             <span class="glyphicon glyphicon-trash"></span>
         </button>
-        <div csrs-modal="doDelete(contact.id)" action-title="entity.action.delete" modal-title="entity.action.delete">
-            <p translate="csrsApp.contact.delete.question" translate-values="{id: '{{contact.id}}'}">Are you sure you want to delete this Contact?</p>
+        <div csrs-modal="doDelete(contact.id)" action-title="entity.action.delete" modal-title="entity.delete.title">
+            <p translate="csrsApp.contact.delete.question" translate-values="{name: '{{contact.firstName}} {{contact.lastName}}'}">Are you sure you want to delete this Contact?</p>
         </div>
     </div>
 </div>
@@ -66,14 +66,19 @@
         </thead>
         
         <tbody>
-            <tr ng-repeat="annual in contact.annuals | orderBy: '-year'">
+            <tr ng-repeat="annual in contact.annuals track by annual.id | orderBy: '-year'">
                 <td ng-bind="annual.year" style="vertical-align: middle;"></td>
                 <td style="vertical-align: middle;" translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</td>
                 <td style="vertical-align: middle;"><span ng-show="annual.iter" class="glyphicon glyphicon-ok"></span></td>
                 <td style="vertical-align: middle;" translate="csrsApp.annual.data.rr.{{annual.rr}}">Renaissance and Reformation</td>
                 <td style="vertical-align: middle;" class="text-center">
                     <button class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></button>
-                    <button class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
+                    <span csrs-confirm class="text-left">
+                        <button class="btn btn-danger btn-sm" ng-click="doConfirm()"><span class="glyphicon glyphicon-trash"></span></button>
+                        <span csrs-modal="deleteAnnual(annual.id)" action-title="entity.action.delete" modal-title="entity.delete.title">
+                            <p translate="csrsApp.annual.delete.question" translate-values="{name: '{{contact.firstName}} {{contact.lastName}}', year: '{{annual.year}}'}">Are you sure you want to delete the 1995 entry for Paul Dyck?</p>
+                        </span>
+                    </span>
                 </td>
             </tr>
         </tbody>

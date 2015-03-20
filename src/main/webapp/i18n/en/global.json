@@ -89,7 +89,7 @@
             "value": "Value"
         },
         "delete": {
-            "title": "Confirm delete operation"
+            "title": "Confirm deletion"
         }
     },
     "footer": "This is your footer"

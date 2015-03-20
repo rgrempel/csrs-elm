@@ -7,7 +7,7 @@
                 "createOrEditLabel": "Créer ou éditer un Contact"
             },
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Contact {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer toutes les informations concernant {{ name }} ?"
             },
             "detail": {
                 "title": "Contact"
