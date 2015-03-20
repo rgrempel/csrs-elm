@@ -75,7 +75,7 @@ angular.module('csrsApp').directive("csrsContactAnnuals", function () {
     };
 
     this.cancel = function (annual) {
-        var self = contact;
+        var self = this;
         Annual.get({
             id: annual.id
         }, function (result) {

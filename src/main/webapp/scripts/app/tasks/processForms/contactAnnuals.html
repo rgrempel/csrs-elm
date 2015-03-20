@@ -2,10 +2,10 @@
     <thead>
         <tr>
             <th class="col-xs-1 col-md-1 col-lg-1" translate="csrsApp.annual.year">Year</th>
-            <th class="col-xs-3 col-md-2 col-lg-1 text-center" translate="csrsApp.annual.membership">Membership Status</th>
+            <th class="col-xs-3 col-md-3 col-lg-2 text-center" translate="csrsApp.annual.membership">Membership Status</th>
             <th class="col-xs-1 col-md-1 col-lg-1" translate="csrsApp.annual.iter">ITER</th>
-            <th class="col-xs-3 col-md-2 col-lg-1 text-center" translate="csrsApp.annual.rr">Renaissance and Reformation</th>
-            <th class="col-xs-4 col-md-1 col-lg-1 text-center">
+            <th class="col-xs-3 col-md-3 col-lg-2 text-center" translate="csrsApp.annual.rr">Renaissance and Reformation</th>
+            <th class="col-xs-4 col-md-2 col-lg-1 text-center">
                 <button ng-click="annualsCtrl.createAnnual()" class="btn btn-info btn-sm">
                     <span class="glyphicon glyphicon-plus"></span>
                 </button>
@@ -15,15 +15,26 @@
     
     <tbody>
         <tr ng-repeat="annual in annualsCtrl.contact.annuals | orderBy: '-year' track by annual.id" class="move">
-            <td ng-bind="annual.year" style="vertical-align: middle;"></td>
+            <td style="vertical-align: middle;">
+                <span ng-hide="annual.editMode" ng-bind="annual.year" />
+                <input ng-show="annual.editMode" ng-model="annual.year" type="number" style="width: 4em;" />
+            </td>
+            
             <td style="vertical-align: middle;">
                 <span ng-hide="annual.editMode" translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</span>
-                <span ng-show="annual.editMode">
-                    <select ng-model="annual.membership" ng-options="'csrsApp.annual.data.membership.' + item | translate for item in [0, 1, 2, 3, 4, 5]" />
-                </span>
+                <select ng-show="annual.editMode" ng-model="annual.membership" ng-options="'csrsApp.annual.data.membership.' + item | translate for item in [0, 1, 2, 3, 4, 5]" />
             </td>
-            <td style="vertical-align: middle;"><span ng-show="annual.iter" class="glyphicon glyphicon-ok"></span></td>
-            <td style="vertical-align: middle;" translate="csrsApp.annual.data.rr.{{annual.rr}}">Renaissance and Reformation</td>
+
+            <td style="vertical-align: middle;">
+                <span ng-show="annual.iter && !annual.editMode" class="glyphicon glyphicon-ok"></span>
+                <input ng-show="annual.editMode" ng-model="annual.iter" type="checkbox" />
+            </td>
+
+            <td style="vertical-align: middle;">
+                <span ng-hide="annual.editMode" translate="csrsApp.annual.data.rr.{{annual.rr}}">Renaissance and Reformation</span>
+                <select ng-show="annual.editMode" ng-model="annual.rr" ng-options="'csrsApp.annual.data.rr.' + item | translate for item in [0, 1, 2]" />
+            </td>
+
             <td style="vertical-align: middle;" class="text-center">
                 <span ng-hide="annual.editMode">
                     <button ng-click="annualsCtrl.edit(annual)" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></button>
