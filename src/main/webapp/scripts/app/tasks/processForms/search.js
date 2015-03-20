@@ -1,27 +1,31 @@
 'use strict';
 
-angular.module('csrsApp').controller('ProcessFormsController', function ($scope, $stateParams, Contact, $location) {
-    $scope.search = $stateParams.search;
+angular.module('csrsApp').controller('ProcessFormsController', function ($stateParams, Contact, $location) {
+    this.search = $stateParams.search;
 
-    $scope.performSearch = function () {
-        if ($location.search('search') != $scope.search) {
-            $location.search('search', $scope.search);
+    this.performSearch = function () {
+        var self = this;
+
+        if ($location.search('search') != this.search) {
+            $location.search('search', this.search);
             $location.replace();
         }
 
-        if ($scope.search) {
+        if (this.search) {
             Contact.query({
-                fullNameSearch: $scope.search
+                fullNameSearch: self.search
             }, function (result, headers) {
-                $scope.results = result;
+                self.results = result;
+            }, function (error) {
+
             });
         } else {
-            $scope.results = [];
+            self.results = [];
         }
     };
 
     // Initial search if we had params
-    $scope.performSearch();
+    this.performSearch();
 });
 
 angular.module('csrsApp').config(function ($stateProvider) {
@@ -36,12 +40,14 @@ angular.module('csrsApp').config(function ($stateProvider) {
         views: {
             'content@': {
                 templateUrl: 'scripts/app/tasks/processForms/search.html',
-                controller: 'ProcessFormsController'
+                controller: 'ProcessFormsController',
+                controllerAs: 'search'
             }
         },
         resolve: {
             translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                 $translatePartialLoader.addPart('processForms');
+                $translatePartialLoader.addPart('contact');
                 return $translate.refresh();
             }]
         }

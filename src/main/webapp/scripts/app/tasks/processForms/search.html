@@ -1,22 +1,35 @@
-<div class="container">
-    <div class="row">
+<div class="row">
+    <div class="input-group col-xs-12" style="padding-left: 12px; padding-right: 12px;">
+        <span class="input-group-btn">
+            <button class="btn btn-default" ng-click="search.performSearch()">
+                <span class="glyphicon glyphicon-search"></span>
+                <span translate="csrsApp.processForms.search">Search</span>
+            </button>
+        </span>
         <input type="text" 
-            class="input-sm form-control"
-            auto-focus
-            ng-model="search"
-            ng-model-options="{debounce: 500}"
-            ng-change="performSearch()"
-            placeholder="{{'csrsApp.processForms.search.placeholder' | translate}}" />
+               class="form-control"
+               auto-focus
+               ng-model="search.search"
+               ng-model-options="{debounce: 500}"
+               ng-change="search.performSearch()"
+               placeholder="{{'csrsApp.processForms.search.placeholder' | translate}}">
+        </input>
+        <span class="input-group-btn">
+            <button class="btn btn-primary" ng-click="search.createContact()">
+                <span class="glyphicon glyphicon-plus"></span>
+                <span translate="csrsApp.contact.home.createLabel">Create Contact</span>
+            </button>
+        </span>
     </div>
+</div>
 
-    <div class="row">
-        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 contact-list yoyo" ng-repeat="contact in results track by contact.id">
-            <div><a ui-sref="processFormsDetail({id: contact.id})">{{contact.firstName}} {{contact.lastName}}</a></div>
-            <div ng-show="contact.department">{{contact.department}}</div>
-            <div ng-show="contact.affiliation">{{contact.affiliation}}</div>
-            <div ng-repeat="latest in contact.annuals | orderBy: '-year' | limitTo: 1">
-                <span translate="csrsApp.processForms.lastMember">Member:</span> {{latest.year}}</span>
-            </div>
+<div class="row">
+    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 contact-list yoyo" ng-repeat="contact in search.results track by contact.id">
+        <div><a ui-sref="processFormsDetail({id: contact.id})">{{contact.firstName}} {{contact.lastName}}</a></div>
+        <div ng-show="contact.department">{{contact.department}}</div>
+        <div ng-show="contact.affiliation">{{contact.affiliation}}</div>
+        <div ng-repeat="latest in contact.annuals | orderBy: '-year' | limitTo: 1">
+            <span translate="csrsApp.processForms.lastMember">Member:</span> {{latest.year}}</span>
         </div>
     </div>
 </div>
