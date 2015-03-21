@@ -33,72 +33,7 @@
                     <h4 class="modal-title" id="myContactLabel" translate="csrsApp.contact.home.createOrEditLabel">Create or edit a Contact</h4>
                 </div>
 
-                <div class="modal-body">
-                    <div class="container col-xs-12">
-                        <div class="row">
-                            <div class="form-group col-xs-2">
-                                <label translate="csrsApp.contact.salutation">Salutation</label>
-                                <input type="text" class="form-control" name="salutation" ng-model="detail.contact.salutation" />
-                            </div>
-                            <div class="form-group col-xs-5">
-                                <label translate="csrsApp.contact.firstName">First Name</label>
-                                <input type="text" class="form-control" name="firstName" ng-model="detail.contact.firstName" />
-                            </div>
-                            <div class="form-group col-xs-5">
-                                <label translate="csrsApp.contact.lastName">Last Name</label>
-                                <input type="text" class="form-control" name="lastName" ng-model="detail.contact.lastName" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-xs-12">
-                                <label translate="csrsApp.contact.street">Street</label>
-                                <textarea class="form-control" name="street" rows="3" ng-model="detail.contact.street" />
-                            </div>
-                        </div>
-                            
-                        <div class="row">
-                            <div class="form-group col-xs-4">
-                                <label translate="csrsApp.contact.city">City</label>
-                                <input type="text" class="form-control" name="city" ng-model="detail.contact.city" />
-                            </div>
-                            
-                            <div class="form-group col-xs-4">
-                                <label translate="csrsApp.contact.region">Region</label>
-                                <input type="text" class="form-control" name="region" ng-model="detail.contact.region" />
-                            </div>
-                            
-                            <div class="form-group col-xs-4">
-                                <label translate="csrsApp.contact.country">Country</label>
-                                <input type="text" class="form-control" name="country" ng-model="detail.contact.country" />
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="form-group col-xs-6">
-                                <label translate="csrsApp.contact.postalCode">Postal Code</label>
-                                <input type="text" class="form-control" name="postalCode" ng-model="detail.contact.postalCode" />
-                            </div>
-
-                            <div class="form-group col-xs-6">
-                                <label translate="csrsApp.contact.email">Email</label>
-                                <input type="email" class="form-control" name="email" ng-model="detail.contact.email" />
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="form-group col-xs-6">
-                                <label translate="csrsApp.contact.department">Department</label>
-                                <input type="text" class="form-control" name="department" ng-model="detail.contact.department" />
-                            </div>
-
-                            <div class="form-group col-xs-6">
-                                <label translate="csrsApp.contact.affiliation">Affiliation</label>
-                                <input type="text" class="form-control" name="affiliation" ng-model="detail.contact.affiliation" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="modal-body" csrs-contact-form-guts="detail.contact"></div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="detail.cancel()">
