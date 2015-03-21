@@ -10,7 +10,9 @@ angular.module('csrsApp').directive("csrsContactAnnuals", function () {
         bindToController: true,
         controller: 'ContactAnnualsCtrl'
     };
-}).controller('ContactAnnualsCtrl', function (Annual, _, $http) {
+});
+
+angular.module('csrsApp').controller('ContactAnnualsCtrl', function (Annual, _, $http) {
     this.createAnnual = function () {
         var self = this;
         

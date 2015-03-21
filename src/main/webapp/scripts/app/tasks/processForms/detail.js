@@ -1,15 +1,6 @@
 'use strict';
 
-angular.module('csrsApp').controller('ProcessFormsDetailController', function (
-    $scope,
-    $state,
-    $stateParams, 
-    Contact, 
-    Annual, 
-    _, 
-    $http, 
-    $window
-) { 
+angular.module('csrsApp').controller('ProcessFormsDetailController', function ($scope, $state, $stateParams, Contact, Annual, _, $http, $window) { 
     this.contact = {};
 
     this.load = function (id) {

@@ -10,7 +10,9 @@ angular.module('csrsApp').directive("csrsContactInterests", function () {
         bindToController: true,
         controller: 'ContactInterestsCtrl'
     };
-}).controller('ContactInterestsCtrl', function (Interest, _, $http) {
+});
+
+angular.module('csrsApp').controller('ContactInterestsCtrl', function (Interest, _, $http) {
     this.create = function () {
         var newInterest = {
             editMode: true,
