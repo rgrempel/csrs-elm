@@ -21,6 +21,14 @@
     <div ng-bind="contactLabel.contact.email">Email</div>
 </div>
 
+<div ng-show="contactLabel.contact.omitNameFromDirectory">
+    <strong translate="csrsApp.contact.omitNameFromDirectory">Omit name from directory</strong>
+</div>
+
+<div ng-show="contactLabel.contact.omitEmailFromDirectory">
+    <strong translate="csrsApp.contact.omitEmailFromDirectory">Omit email from directory</strong>
+</div>
+
 <div ng-show="contactLabel.contact.department || contactLabel.contact.affiliation">
     <div>&nbsp;</div>
     <div>

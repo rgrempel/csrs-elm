@@ -74,6 +74,12 @@ public class Contact implements Serializable {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "omit_name_from_directory")
+    private Boolean omitNameFromDirectory;
+
+    @Column(name = "omit_email_from_directory")
+    private Boolean omitEmailFromDirectory;
+
     @OneToMany(mappedBy="contact")
     private List<Annual> annuals;
 
@@ -179,6 +185,22 @@ public class Contact implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Boolean getOmitNameFromDirectory () {
+        return omitNameFromDirectory;
+    }
+
+    public void setOmitNameFromDirectory (Boolean omitNameFromDirectory) {
+        this.omitNameFromDirectory = omitNameFromDirectory;
+    }
+
+    public Boolean getOmitEmailFromDirectory () {
+        return omitEmailFromDirectory;
+    }
+
+    public void setOmitEmailFromDirectory (Boolean omitEmailFromDirectory) {
+        this.omitEmailFromDirectory = omitEmailFromDirectory;
     }
 
     public List<Annual> getAnnuals () {

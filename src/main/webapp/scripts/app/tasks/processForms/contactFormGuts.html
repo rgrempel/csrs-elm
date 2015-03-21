@@ -49,6 +49,44 @@
             <input type="email" class="form-control" name="email" ng-model="guts.contact.email" />
         </div>
     </div>
+
+    <div class="row">
+        <div class="form-group col-xs-6">
+            <div>
+                <strong translate="csrsApp.contact.omitNameFromDirectory">Omit name from directory</strong>
+            </div>
+            
+            <div class="btn-group">
+                <button type="button"
+                        ng-click="guts.contact.omitNameFromDirectory = true"
+                        ng-class="{'btn': true, 'btn-default': true, 'active': guts.contact.omitNameFromDirectory}"
+                        translate="csrsApp.contact.data.omit">Omit</button>
+                
+                <button type="button" 
+                        ng-click="guts.contact.omitNameFromDirectory = false"
+                        ng-class="{'btn': true, 'btn-default': true, 'active': !guts.contact.omitNameFromDirectory}"
+                        translate="csrsApp.contact.data.include">Include</button>
+            </div>
+        </div>
+        
+        <div class="form-group form-inline col-xs-6">
+            <div>
+                <strong translate="csrsApp.contact.omitEmailFromDirectory">Omit email from directory</strong>
+            </div>
+            
+            <div class="btn-group">
+                <button type="button"
+                        ng-click="guts.contact.omitEmailFromDirectory = true"
+                        ng-class="{'btn': true, 'btn-default': true, 'active': guts.contact.omitEmailFromDirectory}"
+                        translate="csrsApp.contact.data.omit">Omit</button>
+                
+                <button type="button" 
+                        ng-click="guts.contact.omitEmailFromDirectory = false"
+                        ng-class="{'btn': true, 'btn-default': true, 'active': !guts.contact.omitEmailFromDirectory}"
+                        translate="csrsApp.contact.data.include">Include</button>
+            </div> 
+        </div>
+    </div>
     
     <div class="row">
         <div class="form-group col-xs-6">

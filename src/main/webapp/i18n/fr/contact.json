@@ -23,7 +23,14 @@
             "postalCode": "Code postal",
             "email": "Email",
             "department": "Département",
-            "affiliation": "Université / Affiliation"
+            "affiliation": "Université / Affiliation",
+            "omitNameFromDirectory": "Omettre votre nom à partir du répertoire",
+            "omitEmailFromDirectory": "Omettre votre email à partir du répertoire",
+
+            "data": {
+                "omit": "Omettre",
+                "include": "Inclure"
+            }
         }
     }
 }

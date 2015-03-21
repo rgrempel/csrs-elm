@@ -8,8 +8,16 @@ angular.module('csrsApp').directive("csrsContactFormGuts", function () {
         },
         controllerAs: 'guts',
         bindToController: true,
-        controller: function () {
-            // Empty for now
-        }
+        controller: 'ContactFormController'
+    };
+});
+
+angular.module('csrsApp').controller("ContactFormController", function () {
+    this.setOmitNaneFromDirectory = function (value) {
+        this.contact.omitNameFromDirectory = value;
+    };
+
+    this.setOmitEmailFromDirectory = function (value) {
+        this.contact.omitEmailFromDirectory = value;
     };
 });

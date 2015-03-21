@@ -23,7 +23,14 @@
             "postalCode": "Postal Code",
             "email": "Email",
             "department": "Department",
-            "affiliation": "University / Affiliation"
+            "affiliation": "University / Affiliation",
+            "omitNameFromDirectory": "Omit name from directory",
+            "omitEmailFromDirectory": "Omit email from directory",
+
+            "data": {
+                "omit": "Omit",
+                "include": "Include" 
+            }
         }
     }
 }
