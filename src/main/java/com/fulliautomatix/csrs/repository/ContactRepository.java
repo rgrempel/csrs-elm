@@ -24,8 +24,8 @@ public interface ContactRepository extends JpaRepository<Contact,Long> {
 
     @Query("SELECT DISTINCT c FROM Contact c WHERE c.id = ?1")
     @EntityGraph(
-        value = "Contact.WithAnnuals",
+        value = "Contact.WithAnnualsAndInterests",
         type = EntityGraph.EntityGraphType.LOAD
     )
-    Contact findOneWithAnnuals (Long id);
+    Contact findOneWithAnnualsAndInterests (Long id);
 }

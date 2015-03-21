@@ -105,13 +105,13 @@ public class ContactResource {
      * GET  /contacts/:id -> get the "id" contact with annuals
      */
     @RequestMapping(value = "/contacts/{id}",
-            params = "withAnnuals",
+            params = "withAnnualsAndInterests",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Contact> getWithAnnuals(@PathVariable Long id) {
         log.debug("REST request to get Contact : {}", id);
-        return Optional.ofNullable(contactRepository.findOneWithAnnuals(id))
+        return Optional.ofNullable(contactRepository.findOneWithAnnualsAndInterests(id))
             .map(contact -> new ResponseEntity<>(
                 contact,
                 HttpStatus.OK))

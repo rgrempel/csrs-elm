@@ -26,6 +26,7 @@
             "affiliation": "University / Affiliation",
             "omitNameFromDirectory": "Omit name from directory",
             "omitEmailFromDirectory": "Omit email from directory",
+            "interests": "Scholarly Interests",
 
             "data": {
                 "omit": "Omit",

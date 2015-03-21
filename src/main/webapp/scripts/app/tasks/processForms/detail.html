@@ -1,21 +1,23 @@
-<div csrs-contact-label="detail.contact" style="display: inline-block" class="well" />
+<div class="well" style="display: inline-block; vertical-align: top;">
+    <div csrs-contact-label="detail.contact" />
    
-<div style="display: inline-block; vertical-align: top; padding-left: 18px; padding-top: 6px;">
-    <div>
+    <div style="margin-top: 12px;" class="text-center">
         <button class="btn btn-primary" ng-click="detail.startEditing()">
             <span class="glyphicon glyphicon-pencil"></span>
         </button>
-    </div>
 
-    <div csrs-confirm style="margin-top: 6px;">
-        <button class="btn btn-danger" ng-click="doConfirm()">
-            <span class="glyphicon glyphicon-trash"></span>
-        </button>
-        <div csrs-modal="detail.doDelete(detail.contact.id)" action-title="entity.action.delete" modal-title="entity.delete.title">
-            <p translate="csrsApp.contact.delete.question" translate-values="{name: '{{detail.contact.firstName}} {{detail.contact.lastName}}'}">Are you sure you want to delete this Contact?</p>
-        </div>
+        <span csrs-confirm style="margin-left: 6px;">
+            <button class="btn btn-danger" ng-click="doConfirm()">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
+            <div csrs-modal="detail.doDelete(detail.contact.id)" action-title="entity.action.delete" modal-title="entity.delete.title">
+                <p translate="csrsApp.contact.delete.question" translate-values="{name: '{{detail.contact.firstName}} {{detail.contact.lastName}}'}">Are you sure you want to delete this Contact?</p>
+            </div>
+        </span>
     </div>
 </div>
+
+<div csrs-contact-interests="detail.contact" class="well" style="display: inline-block; margin-left: 18px; vertical-align: top;" />
 
 <div csrs-contact-annuals="detail.contact" class="well" />
 

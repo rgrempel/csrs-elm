@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 /**
  * A Contact.
@@ -26,12 +26,21 @@ import java.util.List;
     property="id",
     scope = Contact.class
 )
-@NamedEntityGraph(
-    name = "Contact.WithAnnuals",
-    attributeNodes = {
-        @NamedAttributeNode("annuals")
-    }
-)
+@NamedEntityGraphs({
+    @NamedEntityGraph(
+        name = "Contact.WithAnnuals",
+        attributeNodes = {
+            @NamedAttributeNode("annuals")
+        }
+    ),
+    @NamedEntityGraph(
+        name = "Contact.WithAnnualsAndInterests",
+        attributeNodes = {
+            @NamedAttributeNode("annuals"),
+            @NamedAttributeNode("interests")
+        }
+    )
+})
 public class Contact implements Serializable {
 
     @Id
@@ -81,8 +90,11 @@ public class Contact implements Serializable {
     private Boolean omitEmailFromDirectory;
 
     @OneToMany(mappedBy="contact")
-    private List<Annual> annuals;
+    private Set<Annual> annuals;
 
+    @OneToMany(mappedBy="contact")
+    private Set<Interest> interests;
+    
     public Long getId() {
         return id;
     }
@@ -203,12 +215,20 @@ public class Contact implements Serializable {
         this.omitEmailFromDirectory = omitEmailFromDirectory;
     }
 
-    public List<Annual> getAnnuals () {
+    public Set<Annual> getAnnuals () {
         return this.annuals;
     }
 
-    public void setAnnuals (List<Annual> annuals) {
+    public void setAnnuals (Set<Annual> annuals) {
         this.annuals = annuals;
+    }
+
+    public Set<Interest> getInterests () {
+        return this.interests;
+    }
+
+    public void setInterests (Set<Interest> interests) {
+        this.interests = interests;
     }
 
     @Override

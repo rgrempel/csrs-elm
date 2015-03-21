@@ -16,7 +16,7 @@ angular.module('csrsApp').controller('ProcessFormsDetailController', function (
         var self = this;
         Contact.get({
             id: id,
-            withAnnuals: true
+            withAnnualsAndInterests: true
         }, function(result) {
             self.contact = result;
         }, function(error) {

@@ -13,4 +13,29 @@
             <column name="omit_email_from_directory" type="bit" defaultValueBoolean="false" />
         </addColumn>
     </changeSet>
+
+    <changeSet id="addAreasOfInterest" author="ryan">
+        <createTable tableName="T_INTEREST">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="interest" type="varchar" />
+            <column name="contact_id" type="bigint" />
+        </createTable>
+        
+        <addForeignKeyConstraint baseColumnNames="contact_id"
+                                 baseTableName="T_INTEREST"
+                                 constraintName="fk_interest_contact_id"
+                                 referencedColumnNames="id"
+                                 onDelete="CASCADE"
+                                 referencedTableName="T_CONTACT"/>
+
+        <createIndex tableName="T_INTEREST" indexName="idx_interest_interest">
+            <column name="interest" />
+        </createIndex>
+
+        <createIndex tableName="T_INTEREST" indexName="idx_interest_contact_id">
+            <column name="contact_id" />
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>

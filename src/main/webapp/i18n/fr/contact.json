@@ -26,6 +26,7 @@
             "affiliation": "Université / Affiliation",
             "omitNameFromDirectory": "Omettre votre nom à partir du répertoire",
             "omitEmailFromDirectory": "Omettre votre email à partir du répertoire",
+            "interests": "Domaines de recherche",
 
             "data": {
                 "omit": "Omettre",
