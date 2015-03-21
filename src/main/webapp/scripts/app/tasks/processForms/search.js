@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('csrsApp').controller('ProcessFormsController', function ($stateParams, Contact, $location) {
+angular.module('csrsApp').controller('ProcessFormsController', function ($scope, $state, $stateParams, Contact, $http, $location) {
     this.search = $stateParams.search;
+    this.contact = {};
 
     this.performSearch = function () {
         var self = this;
@@ -22,6 +23,26 @@ angular.module('csrsApp').controller('ProcessFormsController', function ($stateP
         } else {
             self.results = [];
         }
+    };
+
+    this.startEditing = function () {
+        $scope.$broadcast('startEditing');
+    };
+    
+    this.save = function () {
+        Contact.save({}, this.contact, function (value, headers) {
+            $http.get(headers('location')).success(function (data) {
+                $state.go('processFormsDetail', {
+                    id: data.id
+                });
+            });
+        }, function (error) {
+            
+        });
+    };
+
+    this.cancel = function () {
+        this.contact = {};
     };
 
     // Initial search if we had params

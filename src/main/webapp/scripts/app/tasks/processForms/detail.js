@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('csrsApp').controller('ProcessFormsDetailController', function (
-    $scope, 
+    $scope,
+    $state,
     $stateParams, 
     Contact, 
     Annual, 
@@ -43,10 +44,9 @@ angular.module('csrsApp').controller('ProcessFormsDetailController', function (
     };
 
     this.doDelete = function (id) {
-        $window.alert("bob " + id);
-//        Contact.delete({id: contact.id}, function () {
-            // Change state ...
-  //      });
+        Contact.delete({id: this.contact.id}, function () {
+            $state.go('processForms');
+        });
     };
 });
 
