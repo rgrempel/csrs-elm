@@ -18,7 +18,6 @@ angular.module('csrsApp').controller('ProcessFormsDetailController', function (
             withAnnuals: true
         }, function(result) {
             self.contact = result;
-            $('#saveContactModal').modal('hide');
         }, function(error) {
             
         });
@@ -27,7 +26,7 @@ angular.module('csrsApp').controller('ProcessFormsDetailController', function (
     this.load($stateParams.id);
 
     this.startEditing = function () {
-        $('#saveContactModal').modal('show');
+        $scope.$broadcast('startEditing');
     };
 
     this.save = function () {

@@ -1,0 +1,30 @@
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myContactLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="editForm" 
+                  role="form"
+                  novalidate
+                  class="ng-scope ng-invalid ng-invalid-required ng-dirty ng-valid-minlength"
+                  ng-submit="contactForm.save()">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="contactForm.cancel()">&times;</button>
+                    <h4 class="modal-title" id="myContactLabel" translate="csrsApp.contact.home.createOrEditLabel">Create or edit a Contact</h4>
+                </div>
+
+                <div class="modal-body" csrs-contact-form-guts="contactForm.contact"></div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="contactForm.cancel()">
+                        <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                    </button>
+
+                    <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
