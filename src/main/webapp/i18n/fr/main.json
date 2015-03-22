@@ -1,18 +1,10 @@
 {
     "main": {
-        "title": "Bienvenue, Java Hipster !",
-        "subtitle": "Ceci est votre page d'accueil",
+        "title": "Bienvenue, érudit de la Renaissance!",
+        "subtitle": "Ce est le site d'adhésion de la Société canadienne d'études de la Renaissance.",
         "logged": {
             "message": "Vous êtes connecté en tant que \"{{username}}\"."
         },
-        "question": "Si vous avez des questions à propos de JHipster:",
-        "link": {
-            "homepage": "Page d'accueil de JHipster",
-            "stackoverflow": "JHipster sur Stack Overflow",
-            "bugtracker": "JHipster bug tracker",
-            "contact": "Contactez-nous sur Twitter @java_hipster"
-        },
-        "like": "Si vous aimez JHipster, donnez nous une étoile sur",
-        "github": "Github"
+        "question": "Pour plus d'informations sur le Société canadienne d'études de la Renaissance, consultez notre site Web principal, au:"
     }
 }

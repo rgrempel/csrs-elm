@@ -8692,22 +8692,31 @@ body {
   background-size: contain;
 }
 
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003148}}
+.csrs-logo {
+  display: inline-block;
+  width: 347px;
+  height: 497px;
+  background: url("../images/csrs-logo-colour.jpg") no-repeat center top;
+  background-size: contain;
+}
+
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003156}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003164}}
   .hipster {
     background: url("../images/hipster2x.png") no-repeat center top;
     background-size: contain;
   }
 }
 /* make sure browsers use the pointer cursor for anchors, even with no href */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003163}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003171}}
 a:hover {
   cursor: pointer;
 }
 
 /* start Password strength bar style */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003169}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003177}}
 ul#strength {
   display: inline;
   list-style: none;
@@ -8717,12 +8726,12 @@ ul#strength {
   vertical-align: 2px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003178}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003186}}
 .point:last {
   margin: 0 !important;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003181}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/rgrempel\/projects\/csrs\/src\/main\/scss\/main\.scss}line{font-family:\00003189}}
 .point {
   background: #DDD;
   border-radius: 2px;
