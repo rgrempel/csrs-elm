@@ -1,45 +1,30 @@
+@import "compass/css3";
+
 .yoyo.ng-enter, 
-.yoyo.ng-leave { 
-    -webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -moz-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -ms-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    -o-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
-    transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
+.yoyo.ng-leave {
+    @include single-transition(all, 400ms, cubic-bezier(0.250, 0.250, 0.750, 0.750));
     position: relative;
     display: block;
 } 
 
 .yoyo-ng-leave.ng-leave-active,
 .yoyo.ng-enter {
-    -webkit-transform: rotateX(90deg) rotateZ(90deg);
-    -moz-transform: rotateX(90deg) rotateZ(90deg);
-    -ms-transform: rotateX(90deg) rotateZ(90deg);
-    -o-transform: rotateX(90deg) rotateZ(90deg);
-    transform: rotateX(90deg) rotateZ(90deg);
+    @include transform(rotateX(90deg) rotateZ(90deg));
     opacity: 0;
     height: 0px;
 }        
 
 .yoyo.ng-enter.ng-enter-active,
 .yoyo.ng-leave {
-    -webkit-transform: rotateX(0deg) rotateZ(0deg);
-    -moz-transform: rotateX(0deg) rotateZ(0deg);
-    -ms-transform: rotateX(0deg) rotateZ(0deg);
-    -o-transform: rotateX(0deg) rotateZ(0deg);
-    transform: rotateX(0deg) rotateZ(0deg);
+    @include transform(rotateX(0deg) rotateZ(0deg));
     opacity: 1;
     height: 30px;
 }
 
 
 .move.ng-enter, 
-.move.ng-leave
-{ 
-    -webkit-transition: 600ms cubic-bezier(0.445, 0.050, 0.550, 0.950) all;
-    -moz-transition: 600ms cubic-bezier(0.445, 0.050, 0.550, 0.950) all;
-    -ms-transition: 600ms cubic-bezier(0.445, 0.050, 0.550, 0.950) all;
-    -o-transition: 600ms cubic-bezier(0.445, 0.050, 0.550, 0.950) all;
-    transition: 600ms cubic-bezier(0.445, 0.050, 0.550, 0.950) all;
+.move.ng-leave {
+    @include single-transition(all, 600ms, cubic-bezier(0.445, 0.050, 0.550, 0.950));
     position: relative;
     display: block;
 } 
