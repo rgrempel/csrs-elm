@@ -1,0 +1,23 @@
+/* line 1, ../../../scss/custom.scss */
+.multi-line {
+  white-space: pre-line;
+}
+
+/* line 5, ../../../scss/custom.scss */
+.contact-list {
+  padding: 8px;
+}
+
+/* line 9, ../../../scss/custom.scss */
+.well {
+  padding: 12px;
+}
+
+/* line 13, ../../../scss/custom.scss */
+.csrs-logo {
+  display: inline-block;
+  width: 347px;
+  height: 497px;
+  background: url("../images/csrs-logo-colour.jpg") no-repeat center top;
+  background-size: contain;
+}
