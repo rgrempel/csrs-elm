@@ -18,8 +18,8 @@ angular.module('csrsApp').factory('Contact', function ($resource, _) {
         'update': {
             method: 'PUT',
             transformRequest: function (data) {
-                // By default, don't send the annuals ...
-                return  angular.toJson(_.omit(data, 'annuals'));
+                // By default, don't send the annuals or interests ...
+                return angular.toJson(_.omit(data, ['annuals', 'interests']));
             }
         },
     
@@ -27,7 +27,7 @@ angular.module('csrsApp').factory('Contact', function ($resource, _) {
             method: 'POST',
             transformRequest: function (data) {
                 // By default, don't send the annuals ...
-                return  angular.toJson(_.omit(data, 'annuals'));
+                return angular.toJson(_.omit(data, ['annuals', 'interests']));
             }
         }
     });

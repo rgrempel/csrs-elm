@@ -71,12 +71,16 @@ angular.module('csrsApp', [
             urlTemplate: 'i18n/{lang}/{part}.json'
         });
 
-        var navigator = window.navigator;
-        var language = (navigator.languages && navigator.languages[0]) ||
-                        navigator.language ||
-                        navigator.browserLanguage ||
-                        navigator.systemLanguage ||
-                        navigator.userLanguage;
+        var language;
+
+        if (window) {
+            var navigator = window.navigator;
+            language = (navigator.languages && navigator.languages[0]) ||
+                            navigator.language ||
+                            navigator.browserLanguage ||
+                            navigator.systemLanguage ||
+                            navigator.userLanguage;
+        }
 
         if (language && (language.substr(0, 2).toLowerCase() === 'fr')) {
             $translateProvider.preferredLanguage('fr');
