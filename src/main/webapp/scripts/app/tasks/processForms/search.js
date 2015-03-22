@@ -7,7 +7,7 @@ angular.module('csrsApp').controller('ProcessFormsController', function ($scope,
     this.performSearch = function () {
         var self = this;
 
-        if ($location.search('search') != this.search) {
+        if ($location.search('search') !== this.search) {
             $location.search('search', this.search);
             $location.replace();
         }
@@ -15,9 +15,9 @@ angular.module('csrsApp').controller('ProcessFormsController', function ($scope,
         if (this.search) {
             Contact.query({
                 fullNameSearch: self.search
-            }, function (result, headers) {
+            }, function (result) {
                 self.results = result;
-            }, function (error) {
+            }, function () {
 
             });
         } else {
@@ -36,7 +36,7 @@ angular.module('csrsApp').controller('ProcessFormsController', function ($scope,
                     id: data.id
                 });
             });
-        }, function (error) {
+        }, function () {
             
         });
     };

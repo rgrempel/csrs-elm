@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('csrsApp').directive("csrsContactFormGuts", function () {
+angular.module('csrsApp').directive('csrsContactFormGuts', function () {
     return {
         templateUrl: 'scripts/app/tasks/processForms/contactFormGuts.html',
         scope: {
@@ -12,7 +12,7 @@ angular.module('csrsApp').directive("csrsContactFormGuts", function () {
     };
 });
 
-angular.module('csrsApp').controller("ContactFormController", function () {
+angular.module('csrsApp').controller('ContactFormController', function () {
     this.setOmitNaneFromDirectory = function (value) {
         this.contact.omitNameFromDirectory = value;
     };

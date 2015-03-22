@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('csrsApp').directive("csrsContactAnnuals", function () {
+angular.module('csrsApp').directive('csrsContactAnnuals', function () {
     return {
         templateUrl: 'scripts/app/tasks/processForms/contactAnnuals.html',
         scope: {
@@ -40,7 +40,7 @@ angular.module('csrsApp').controller('ContactAnnualsCtrl', function (Annual, _, 
             }).error(function () {
                 // Shouldn't happen ...
             });
-        }, function (httpResponse) {
+        }, function () {
             // error
         });
     };
@@ -51,7 +51,7 @@ angular.module('csrsApp').controller('ContactAnnualsCtrl', function (Annual, _, 
             _.pull(self.contact.annuals, annual);
         }, function () {
             // Error
-        })
+        });
     };
 
     this.edit = function (annual) {
@@ -83,7 +83,7 @@ angular.module('csrsApp').controller('ContactAnnualsCtrl', function (Annual, _, 
         }, function (result) {
             _.pull(self.contact.annuals, annual);
             self.contact.annuals.push(result);
-        }, function (error) {
+        }, function () {
 
         });
     };

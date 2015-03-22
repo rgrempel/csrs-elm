@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('csrsApp').directive("csrsContactFormModal", function () {
+angular.module('csrsApp').directive('csrsContactFormModal', function () {
     return {
         templateUrl: 'scripts/app/tasks/processForms/contactFormModal.html',
         scope: {
@@ -11,7 +11,7 @@ angular.module('csrsApp').directive("csrsContactFormModal", function () {
         controllerAs: 'contactForm',
         bindToController: true,
         controller: 'ContactModalController',
-        link: function (scope, element, attr) {
+        link: function (scope, element) {
             // put a reference to the modal element on the scope.
             // Not sure if this is the best idea, but we'll see.
             scope.modal = $(element).find('.modal');

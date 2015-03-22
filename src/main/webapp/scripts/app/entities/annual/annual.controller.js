@@ -6,7 +6,7 @@ angular.module('csrsApp')
         $scope.contacts = Contact.query();
         $scope.page = 1;
         $scope.loadAll = function() {
-            Annual.query({page: $scope.page, per_page: 20}, function(result, headers) {
+            Annual.query({page: $scope.page, 'per_page': 20}, function(result, headers) {
                 $scope.links = ParseLinks.parse(headers('link'));
                 for (var i = 0; i < result.length; i++) {
                     $scope.annuals.push(result[i]);

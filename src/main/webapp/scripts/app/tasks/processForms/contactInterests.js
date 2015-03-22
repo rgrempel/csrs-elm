@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('csrsApp').directive("csrsContactInterests", function () {
+angular.module('csrsApp').directive('csrsContactInterests', function () {
     return {
         templateUrl: 'scripts/app/tasks/processForms/contactInterests.html',
         scope: {
@@ -16,7 +16,7 @@ angular.module('csrsApp').controller('ContactInterestsCtrl', function (Interest,
     this.create = function () {
         var newInterest = {
             editMode: true,
-            interest: "",
+            interest: '',
             contact: {
                 id: this.contact.id
             }
@@ -31,7 +31,7 @@ angular.module('csrsApp').controller('ContactInterestsCtrl', function (Interest,
             _.pull(self.contact.interests, interest);
         }, function () {
             // Error
-        })
+        });
     };
 
     this.commit = function (interest) {
@@ -60,7 +60,7 @@ angular.module('csrsApp').controller('ContactInterestsCtrl', function (Interest,
                 }).error(function () {
                     // Shouldn't happen ...
                 });
-            }, function (httpResponse) {
+            }, function () {
                 // error
             });
         }

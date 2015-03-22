@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('csrsApp').controller('ProcessFormsDetailController', function ($scope, $state, $stateParams, Contact, Annual, _, $http, $window) { 
+angular.module('csrsApp').controller('ProcessFormsDetailController', function ($scope, $state, $stateParams, Contact) { 
     this.contact = {};
 
     this.load = function (id) {
@@ -10,7 +10,7 @@ angular.module('csrsApp').controller('ProcessFormsDetailController', function ($
             withAnnualsAndInterests: true
         }, function(result) {
             self.contact = result;
-        }, function(error) {
+        }, function() {
             
         });
     };
@@ -25,7 +25,7 @@ angular.module('csrsApp').controller('ProcessFormsDetailController', function ($
         var self = this;
         Contact.update({}, self.contact, function () {
             self.load(self.contact.id);
-        }, function (error) {
+        }, function () {
             
         });
     };
@@ -34,7 +34,7 @@ angular.module('csrsApp').controller('ProcessFormsDetailController', function ($
         this.load($stateParams.id);
     };
 
-    this.doDelete = function (id) {
+    this.doDelete = function () {
         Contact.delete({id: this.contact.id}, function () {
             $state.go('processForms');
         });

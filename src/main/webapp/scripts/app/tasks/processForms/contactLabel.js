@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('csrsApp').directive("csrsContactLabel", function () {
+angular.module('csrsApp').directive('csrsContactLabel', function () {
     return {
         templateUrl: 'scripts/app/tasks/processForms/contactLabel.html',
         scope: {
