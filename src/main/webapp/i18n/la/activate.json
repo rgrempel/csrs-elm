@@ -1,0 +1,9 @@
+{
+    "activate": {
+        "title": "Activation",
+        "messages": {
+            "success": "<strong>Usoris est aguntur.</strong> Placere <a href=\"#/login\">cosigno</a>.",
+            "error": "<strong>Usoris non aguntur.</strong> Commodo subcribo sursum adnotatione formam."
+        }
+    }
+}

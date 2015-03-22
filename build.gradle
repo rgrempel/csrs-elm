@@ -51,7 +51,7 @@ if (profile == 'prod') {
 }
 
 group = 'com.fulliautomatix.csrs'
-version = '0.1b3'
+version = '0.1b4'
 
 description = ''
 
@@ -61,7 +61,7 @@ configurations {
 
 war {
     baseName = 'csrs'
-    version =  '0.1b3'
+    version =  '0.1b4'
 }
 
 repositories {

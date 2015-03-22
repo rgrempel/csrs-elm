@@ -1,0 +1,20 @@
+{
+    "health": {
+        "title": "Salutem compescit",
+        "refresh.button": "Recreo",
+        "stacktrace": "Narratus",
+        "indicator": {
+            "diskSpace": "Disk space",
+            "mail": "Cursorium",
+            "db": "Database"
+        },
+        "table": {
+            "service": "Nomen servitii",
+            "status": "Status"
+        },
+        "status": {
+            "UP": "SURSUM",
+            "DOWN": "PESSUM"
+        }
+    }
+}

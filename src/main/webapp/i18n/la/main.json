@@ -1,0 +1,10 @@
+{
+    "main": {
+        "title": "Scolaris de renaissance, exspectata!",
+        "subtitle": "Hic situs sociari de Societate Canadian Studiorum Renascerentur.",
+        "logged": {
+            "message": "Te \"{{username}}\" videntur esse."
+        },
+        "question": "Pro magis notitia de Societate Canadian Studiorum Renascerentur, ite situm principale ad:"
+    }
+}

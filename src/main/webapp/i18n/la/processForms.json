@@ -1,0 +1,16 @@
+{
+    "csrsApp": {
+        "processForms" : {
+            "home": {
+                "title": "Formae processum",
+                "createLabel": "Creare socium novum",
+                "createOrEditLabel": "Creare socium novum aut emendum"
+            },
+            
+            "search": "Quaerere",
+            "search.placeholder": "Scribe praenome aut cognomen incipiens ad quarerem",
+            
+            "lastMember": "Sodalis:"    
+        }
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "csrsApp": {
+        "annual" : {
+            "home": {
+                "title": "Annum",
+                "createLabel": "Creare anno novo",
+                "createOrEditLabel": "Creare anno novo aut emendo"
+            },
+            "delete": {
+                "question": "Visne {{name}} notitia {{year}} sunt delere?"
+            },
+            "detail": {
+                "title": "Annum"
+            },
+            "year": "Annum",
+            "membership": "Status Sodalitas",
+            "iter": "ITER",
+            "rr": "Renaissance et Reformationem",
+            "contact": "contactum",
+
+            "data": {
+                "membership": {
+                    "0": "Nullum",
+                    "1": "Patronum",
+                    "2": "Membrum Ordinarius",
+                    "3": "Cessatura",
+                    "4": "Reductus",
+                    "5": "Pupula"
+                },
+                "rr": {
+                    "0": "",
+                    "1": "Vestigium",
+                    "2": "Transcursorium"
+                }
+            }
+        }
+    }
+}

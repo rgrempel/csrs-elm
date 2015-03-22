@@ -1,0 +1,96 @@
+{
+    "global": {
+        "title": "Sodalitas SCSR",
+        "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+        "menu": {
+            "home": "Domus",
+            "entities": {
+                "main": "Entities",
+                "contact": "Socium",
+                "annual": "Annum",
+                "additionalEntity": "JHipster will add addtional entities"
+            },
+            "account": {
+                "main": "Tessera",
+                "settings": "Optiones",
+                "password": "Signum",
+                "sessions": "Sessiones",
+                "login": "Cosigno",
+                "logout": "Conventum concludere",
+                "register": "Subsigno"
+            },
+            "tasks": {
+                "main": "Negotium",
+                "processForms": "Formae processum"
+            },
+            "admin": {
+                "main": "Administrationis",
+                "tracker": "User tracker",
+                "metrics": "Mensuras",
+                "health": "Salutem",
+                "configuration": "Configuration",
+                "logs": "Acta",
+                "audits": "Compoto",
+                "apidocs": "API",
+                "database": "Database"
+            },
+            "language": "Lingua"
+        },
+        "form": {
+            "username": "Nomen usoris",
+            "username.placeholder": "Nomen usoris tuum",
+            "newpassword": "Signum novum",
+            "newpassword.placeholder": "Signum novum",
+            "confirmpassword": "Signum novum confirmatio",
+            "confirmpassword.placeholder": "Signum novum confirmatio",
+            "email": "Cursorium",
+            "email.placeholder": "Cursorium tuum"
+        },
+        "messages": {
+            "info": {
+                "authenticated": "Numquid hie fuerunt prius? <a href=\"#/login\">Cosigno in tesseram vestram.</a>",
+                "register": "Sed non tamen tesseram? <a href=\"#/register\">Subsigno tesseram novam.</a>"
+            },
+            "error": {
+                "dontmatch" : "Signum confirmationemque imparem!"
+            },
+            "validate": {
+                "newpassword": {
+                    "required": "Signum tuum requiritur.",
+                    "minlength": "Signum characterum requiritur saltem V",
+                    "maxlength": "Your password cannot be longer than 50 characters",
+                    "strength": "Fortitudo signum:"
+                },
+                "confirmpassword": {
+                    "required": "Tuun signum confirmationis requiritur.",
+                    "minlength": "Your confirmation password is required to be at least 5 characters",
+                    "maxlength": "Your confirmation password cannot be longer than 50 characters"
+                },
+                "email": {
+                    "required": "Tuum cursorium requiritur.",
+                    "invalid": "Tuum cursorium invalidum.",
+                    "minlength": "Your e-mail is required to be at least 5 characters",
+                    "maxlength": "Your e-mail cannot be longer than 50 characters"
+                }
+            }
+        }
+    },
+    "entity": {
+        "action": {
+            "back": "Recedo",
+            "cancel": "Rescindo",
+            "delete": "Erado",
+            "edit": "Recensere",
+            "save": "Servo",
+            "view": "Prospecto"
+        },
+        "detail": {
+            "field": "Adjunctum",
+            "value": "Indicium"
+        },
+        "delete": {
+            "title": "Eradim velim confirmes"
+        }
+    },
+    "footer": "This is your footer"
+}
