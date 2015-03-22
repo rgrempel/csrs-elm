@@ -57,7 +57,7 @@ angular.module('csrsApp', [
         };
     })
     
-    .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider, $translateProvider, tmhDynamicLocaleProvider, httpRequestInterceptorCacheBusterProvider, $window) {
+    .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider, $translateProvider, tmhDynamicLocaleProvider, httpRequestInterceptorCacheBusterProvider) {
 
         //enable CSRF
         $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
@@ -71,7 +71,7 @@ angular.module('csrsApp', [
             urlTemplate: 'i18n/{lang}/{part}.json'
         });
 
-        var navigator = $window.navigator;
+        var navigator = window.navigator;
         var language = (navigator.languages && navigator.languages[0]) ||
                         navigator.language ||
                         navigator.browserLanguage ||
