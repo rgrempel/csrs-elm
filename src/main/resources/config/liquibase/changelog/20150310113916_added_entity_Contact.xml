@@ -29,6 +29,10 @@
         
     </changeSet>
 
+    <changeSet id="requireContactToHaveLastName" author="ryan">
+        <addNotNullConstraint tableName="T_CONTACT" columnName="last_name" />
+    </changeSet>
+
     <changeSet id="addIndexToContact" author="ryan">
         <createIndex indexName="idx_contact_code" tableName="T_CONTACT" unique="true">
             <column name="code" />

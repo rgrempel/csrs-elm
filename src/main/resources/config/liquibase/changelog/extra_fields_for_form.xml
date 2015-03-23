@@ -38,4 +38,12 @@
             <column name="contact_id" />
         </createIndex>
     </changeSet>
+
+    <changeSet id="addConstraintsToOptOutAndInterests" author="ryan">
+        <addNotNullConstraint tableName="T_CONTACT" columnName="omit_name_from_directory" />
+        <addNotNullConstraint tableName="T_CONTACT" columnName="omit_email_from_directory" />
+
+        <addNotNullConstraint tableName="T_INTEREST" columnName="interest" />
+        <addNotNullConstraint tableName="T_INTEREST" columnName="contact_id" />
+    </changeSet>
 </databaseChangeLog>

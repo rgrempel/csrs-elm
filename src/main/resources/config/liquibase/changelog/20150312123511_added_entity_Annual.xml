@@ -29,6 +29,28 @@
                                  referencedTableName="T_CONTACT"/>
     </changeSet>
 
+    <changeSet id="addConstraintsToAnnual" author="ryan">
+        <addNotNullConstraint tableName="T_ANNUAL" columnName="year" />
+        <addNotNullConstraint tableName="T_ANNUAL" columnName="membership" />
+        <addNotNullConstraint tableName="T_ANNUAL" columnName="iter" />
+        <addNotNullConstraint tableName="T_ANNUAL" columnName="rr" />
+        <addNotNullConstraint tableName="T_ANNUAL" columnName="contact_id" />
+
+        <addDefaultValue tableName="T_ANNUAL" columnName="membership" defaultValueNumeric="0" />
+        <addDefaultValue tableName="T_ANNUAL" columnName="iter" defaultValueBoolean="false" />
+        <addDefaultValue tableName="T_ANNUAL" columnName="rr" defaultValueNumeric="0" />
+
+        <dropForeignKeyConstraint baseTableName="T_ANNUAL" constraintName="fk_annual_contact_id" />
+        
+        <addForeignKeyConstraint baseColumnNames="contact_id"
+                                 baseTableName="T_ANNUAL"
+                                 constraintName="fk_annual_contact_id"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_CONTACT"/>
+    </changeSet>
+
     <changeSet id="addIndexestoAnnual" author="ryan">
         <addColumn tableName="T_ANNUAL">
             <column name="code" type="varchar" />
