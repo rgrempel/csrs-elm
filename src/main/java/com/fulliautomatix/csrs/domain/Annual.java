@@ -26,7 +26,8 @@ import java.util.Set;
 public class Annual implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="t_annual_id_seq", sequenceName="t_annual_id_seq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_annual_id_seq")
     private Long id;
 
     @Column(name = "year")

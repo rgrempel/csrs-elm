@@ -22,7 +22,8 @@ import java.util.Set;
 public class User extends AbstractAuditingEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="t_user_id_seq", sequenceName="t_user_id_seq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_user_id_seq")
     private Long id;
 
     @NotNull

@@ -26,7 +26,8 @@ import java.util.Set;
 public class Interest implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="t_interest_id_seq", sequenceName="t_interest_id_seq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_interest_id_seq")
     private Long id;
 
     @Column(name = "interest")

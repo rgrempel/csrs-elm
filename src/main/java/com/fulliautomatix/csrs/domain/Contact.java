@@ -2,6 +2,8 @@ package com.fulliautomatix.csrs.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,7 +46,8 @@ import java.util.Set;
 public class Contact implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="t_contact_id_seq", sequenceName="t_contact_id_seq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_contact_id_seq")
     private Long id;
 
     @Column(name = "code")
@@ -90,9 +93,11 @@ public class Contact implements Serializable {
     private Boolean omitEmailFromDirectory;
 
     @OneToMany(mappedBy="contact")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Annual> annuals;
 
     @OneToMany(mappedBy="contact")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Interest> interests;
     
     public Long getId() {

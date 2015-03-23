@@ -16,7 +16,8 @@ import java.util.Map;
 public class PersistentAuditEvent  {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="t_persistent_audit_event_event_id_seq", sequenceName="t_persistent_audit_event_event_id_seq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_persistent_audit_event_event_id_seq")
     @Column(name = "event_id")
     private Long id;
 
