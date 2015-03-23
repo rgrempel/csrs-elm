@@ -43,8 +43,8 @@ angular.module('csrsApp').controller('ProcessFormsDetailController', function ($
 
 angular.module('csrsApp').config(function ($stateProvider) {
     $stateProvider.state('processFormsDetail', {
-        parent: 'processForms',
-        url: '/processForms/contact/:id',
+        parent: 'tasks',
+        url: '/process-forms/contact/:id',
         data: {
             roles: ['ROLE_ADMIN'],
             pageTitle: 'csrsApp.processForms.detail.title'
