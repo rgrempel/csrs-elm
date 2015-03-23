@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,20 +31,28 @@ public class Annual implements Serializable {
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_annual_id_seq")
     private Long id;
 
-    @Column(name = "year")
+    @Column(name = "year", nullable=false)
+    @NotNull
     private Integer year;
 
-    @Column(name = "membership")
+    @Column(name = "membership", nullable=false)
     private Integer membership;
 
-    @Column(name = "iter")
+    @Column(name = "iter", nullable=false)
     private Boolean iter;
 
-    @Column(name = "rr")
+    @Column(name = "rr", nullable=false)
     private Integer rr;
 
     @ManyToOne
     private Contact contact;
+
+    @PrePersist 
+    public void setDefaults () {
+        if (membership == null) membership = 0;
+        if (iter == null) iter = false;
+        if (rr == null) rr = 0;
+    }
 
     public Long getId() {
         return id;

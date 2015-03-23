@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -59,7 +60,8 @@ public class Contact implements Serializable {
     @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable=false)
+    @NotNull
     private String lastName;
 
     @Column(name = "department")
@@ -86,10 +88,10 @@ public class Contact implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "omit_name_from_directory")
+    @Column(name = "omit_name_from_directory", nullable=false)
     private Boolean omitNameFromDirectory;
 
-    @Column(name = "omit_email_from_directory")
+    @Column(name = "omit_email_from_directory", nullable=false)
     private Boolean omitEmailFromDirectory;
 
     @OneToMany(mappedBy="contact")
@@ -100,6 +102,12 @@ public class Contact implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Interest> interests;
     
+    @PrePersist 
+    public void setDefaults () {
+        if (omitNameFromDirectory == null) omitNameFromDirectory = false;
+        if (omitEmailFromDirectory == null) omitEmailFromDirectory = false;
+    }    
+        
     public Long getId() {
         return id;
     }

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,7 +31,8 @@ public class Interest implements Serializable {
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_interest_id_seq")
     private Long id;
 
-    @Column(name = "interest")
+    @Column(name = "interest", nullable=false)
+    @NotNull
     private String interest;
 
     @ManyToOne
