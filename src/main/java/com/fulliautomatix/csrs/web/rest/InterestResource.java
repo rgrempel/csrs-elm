@@ -3,6 +3,7 @@ package com.fulliautomatix.csrs.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.fulliautomatix.csrs.domain.Interest;
 import com.fulliautomatix.csrs.repository.InterestRepository;
+import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -24,6 +26,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
+@RolesAllowed(AuthoritiesConstants.ADMIN)
 public class InterestResource {
 
     private final Logger log = LoggerFactory.getLogger(InterestResource.class);

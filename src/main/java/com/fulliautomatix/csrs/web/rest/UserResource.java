@@ -37,6 +37,7 @@ public class UserResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @RolesAllowed(AuthoritiesConstants.ADMIN)
     public List<User> getAll() {
         log.debug("REST request to get all Users");
         return userRepository.findAll();

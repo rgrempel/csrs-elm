@@ -4,11 +4,13 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import com.codahale.metrics.annotation.Timed;
 import com.fulliautomatix.csrs.web.rest.dto.LoggerDTO;
+import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api")
+@RolesAllowed(AuthoritiesConstants.ADMIN)
 public class LogsResource {
 
     @RequestMapping(value = "/logs",

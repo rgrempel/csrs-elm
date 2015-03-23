@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.fulliautomatix.csrs.domain.Annual;
 import com.fulliautomatix.csrs.repository.AnnualRepository;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
+import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.annotation.security.RolesAllowed;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -24,6 +26,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
+@RolesAllowed(AuthoritiesConstants.ADMIN)
 public class AnnualResource {
 
     private final Logger log = LoggerFactory.getLogger(AnnualResource.class);
