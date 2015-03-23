@@ -2,3 +2,8 @@ task upload(type: Exec) {
     commandLine('/usr/bin/rsync', '-av', '--delete', '.git', 'admin@frodo.fulliautomatix.com:csrs.git')
 }
 
+task deploy(type: Exec) {
+    dependsOn bootRepackage
+    commandLine('/usr/bin/rsync', '-v', '--ignore-existing', "build/libs/${war.baseName}-${version}.war", 'csrs@frodo.fulliautomatix.com:')
+}
+
