@@ -3,7 +3,11 @@
 angular.module('csrsApp')
     .controller('LanguageController', function ($scope, $translate, Language) {
         $scope.changeLanguage = function (languageKey) {
-            $translate.use(languageKey);
+            if ($translate.use() !== languageKey) {
+                $translate.use(languageKey);
+                $translate.refresh();
+                $translate.use(languageKey);
+            }
         };
 
         Language.getAll().then(function (languages) {

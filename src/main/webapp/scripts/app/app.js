@@ -27,7 +27,11 @@ angular.module('csrsApp', [
 
             // Update the language
             Language.getCurrent().then(function (language) {
-                $translate.use(language);
+                if ($translate.use() !== language) {
+                    $translate.use(language);
+                    $translate.refresh();
+                    $translate.use(language);
+                }
             });
         });
 
