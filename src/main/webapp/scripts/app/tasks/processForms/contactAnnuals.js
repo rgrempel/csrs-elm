@@ -12,7 +12,7 @@ angular.module('csrsApp').directive('csrsContactAnnuals', function () {
     };
 });
 
-angular.module('csrsApp').controller('ContactAnnualsCtrl', function (Annual, _, $http) {
+angular.module('csrsApp').controller('ContactAnnualsCtrl', function (Annual, _, $http, $state) {
     this.createAnnual = function () {
         var self = this;
         
@@ -45,12 +45,10 @@ angular.module('csrsApp').controller('ContactAnnualsCtrl', function (Annual, _, 
         });
     };
 
-    this.deleteAnnual = function (annual) {
-        var self = this;
-        Annual.delete({id: annual.id}, function () {
-            _.pull(self.contact.annuals, annual);
-        }, function () {
-            // Error
+    this.confirmDelete = function (annual) {
+        $state.go('deleteAnnual', {
+            annual: annual,
+            contact: this.contact
         });
     };
 

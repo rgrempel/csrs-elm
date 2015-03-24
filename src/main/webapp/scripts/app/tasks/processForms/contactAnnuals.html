@@ -38,13 +38,9 @@
             <td style="vertical-align: middle;" class="text-center">
                 <span ng-hide="annual.editMode">
                     <button ng-click="annualsCtrl.edit(annual)" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></button>
-                    <span csrs-confirm class="text-left">
-                        <button class="btn btn-danger btn-sm" ng-click="doConfirm()"><span class="glyphicon glyphicon-trash"></span></button>
-                        <span csrs-modal="annualsCtrl.deleteAnnual(annual)" action-title="entity.action.delete" modal-title="entity.delete.title">
-                            <p translate="csrsApp.annual.delete.question" translate-values="{name: '{{annualsCtrl.contact.firstName}} {{annualsCtrl.contact.lastName}}', year: '{{annual.year}}'}">Are you sure you want to delete the 1995 entry for Paul Dyck?</p>
-                        </span>
-                    </span>
+                    <button ng-click="annualsCtrl.confirmDelete(annual)" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button>
                 </span>
+
                 <span ng-show="annual.editMode">
                     <button ng-click="annualsCtrl.commit(annual)" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span></button>
                     <button ng-click="annualsCtrl.cancel(annual)" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-remove"></span></button>

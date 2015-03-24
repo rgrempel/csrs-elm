@@ -58,6 +58,7 @@ angular.module('csrsApp', [
     })
     
     .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider, $translateProvider, tmhDynamicLocaleProvider, httpRequestInterceptorCacheBusterProvider) {
+        $locationProvider.hashPrefix('!');
 
         //enable CSRF
         $httpProvider.defaults.xsrfCookieName = 'CSRF-TOKEN';
@@ -97,6 +98,9 @@ angular.module('csrsApp', [
                 'navbar@': {
                     templateUrl: 'scripts/components/navbar/navbar.html',
                     controller: 'NavbarController'
+                },
+                'modal@': {
+                    template: '<div></div>'
                 }
             },
             resolve: {

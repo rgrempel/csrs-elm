@@ -13,11 +13,5 @@ angular.module('csrsApp').directive('csrsContactFormGuts', function () {
 });
 
 angular.module('csrsApp').controller('ContactFormController', function () {
-    this.setOmitNaneFromDirectory = function (value) {
-        this.contact.omitNameFromDirectory = value;
-    };
 
-    this.setOmitEmailFromDirectory = function (value) {
-        this.contact.omitEmailFromDirectory = value;
-    };
 });

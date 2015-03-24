@@ -6,6 +6,7 @@
                 <span translate="csrsApp.processForms.search">Search</span>
             </button>
         </span>
+        
         <input type="text" 
                class="form-control"
                auto-focus
@@ -14,6 +15,7 @@
                ng-change="search.performSearch()"
                placeholder="{{'csrsApp.processForms.search.placeholder' | translate}}">
         </input>
+
         <span class="input-group-btn">
             <button class="btn btn-primary" ng-click="search.startEditing()">
                 <span class="glyphicon glyphicon-plus"></span>
@@ -33,5 +35,3 @@
         </div>
     </div>
 </div>
-
-<div csrs-contact-form-modal="search.contact" submit-action="search.save()" cancel-action="search.cancel()" />

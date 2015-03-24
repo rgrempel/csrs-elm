@@ -3,42 +3,28 @@ buildscript {
         mavenLocal()
         jcenter()
     }
+
     dependencies {
         classpath('org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE')
-        classpath('com.moowork.gradle:gradle-node-plugin:0.8')
-        
+        classpath('com.moowork.gradle:gradle-node-plugin:0.8')    
         classpath('com.moowork.gradle:gradle-grunt-plugin:0.6')
-        
     }
 }
 
-apply plugin: 'java'
-sourceCompatibility=1.8
-targetCompatibility=1.8
-apply plugin: 'maven'
-apply plugin: 'spring-boot'
-apply plugin: 'war'
-
-bootRepackage {
-   mainClass = 'com.fulliautomatix.csrs.Application'
-}
-
-springBoot {
-    mainClass = 'com.fulliautomatix.csrs.Application'
-}
-
-apply from: 'yeoman.gradle'
-
-
-apply from: 'liquibase.gradle'
-
-apply from: 'gatling.gradle'
+group = 'com.fulliautomatix.csrs'
+version = '0.1b6'
+description = ''
 
 if (project.hasProperty('prod')) {
     profile = 'prod'
 } else if (project.hasProperty('fast')) {
     profile = 'fast'
 }
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
 
 if (profile == 'prod') {
     apply from: 'profile_prod.gradle'
@@ -48,18 +34,28 @@ if (profile == 'prod') {
     apply from: 'profile_dev.gradle'
 }
 
-group = 'com.fulliautomatix.csrs'
-version = '0.1b5'
+apply from: 'yeoman.gradle'
+apply from: 'liquibase.gradle'
+apply from: 'gatling.gradle'
 
-description = ''
-
-configurations {
-    providedRuntime
-}
+sourceCompatibility=1.8
+targetCompatibility=1.8
 
 war {
     baseName = 'csrs'
     version =  '0.1b5'
+}
+
+bootRepackage {
+   mainClass = 'com.fulliautomatix.csrs.Application'
+}
+
+springBoot {
+    mainClass = 'com.fulliautomatix.csrs.Application'
+}
+
+configurations {
+    providedRuntime
 }
 
 apply from: 'local.gradle'

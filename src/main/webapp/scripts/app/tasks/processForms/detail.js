@@ -18,25 +18,14 @@ angular.module('csrsApp').controller('ProcessFormsDetailController', function ($
     this.load($stateParams.id);
 
     this.startEditing = function () {
-        $scope.$broadcast('startEditing');
-    };
-
-    this.save = function () {
-        var self = this;
-        Contact.update({}, self.contact, function () {
-            self.load(self.contact.id);
-        }, function () {
-            
+        $state.go('editContact', {
+            contact: this.contact
         });
     };
 
-    this.cancel = function () {
-        this.load($stateParams.id);
-    };
-
-    this.doDelete = function () {
-        Contact.delete({id: this.contact.id}, function () {
-            $state.go('processForms');
+    this.confirmDelete = function () {
+        $state.go('deleteContact', {
+            contact: this.contact
         });
     };
 });

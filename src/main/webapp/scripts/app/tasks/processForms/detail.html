@@ -6,14 +6,9 @@
             <span class="glyphicon glyphicon-pencil"></span>
         </button>
 
-        <span csrs-confirm style="margin-left: 6px;">
-            <button class="btn btn-danger" ng-click="doConfirm()">
-                <span class="glyphicon glyphicon-trash"></span>
-            </button>
-            <div csrs-modal="detail.doDelete(detail.contact.id)" action-title="entity.action.delete" modal-title="entity.delete.title">
-                <p translate="csrsApp.contact.delete.question" translate-values="{name: '{{detail.contact.firstName}} {{detail.contact.lastName}}'}">Are you sure you want to delete this Contact?</p>
-            </div>
-        </span>
+        <button style="margin-left: 6px;" class="btn btn-danger" ng-click="detail.confirmDelete()">
+            <span class="glyphicon glyphicon-trash"></span>
+        </button>
     </div>
 </div>
 
@@ -21,4 +16,3 @@
 
 <div csrs-contact-annuals="detail.contact" class="well" />
 
-<div csrs-contact-form-modal="detail.contact" submit-action="detail.save()" cancel-action="detail.cancel()" />

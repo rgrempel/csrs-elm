@@ -26,25 +26,9 @@ angular.module('csrsApp').controller('ProcessFormsController', function ($scope,
     };
 
     this.startEditing = function () {
-        $scope.$broadcast('startEditing');
+        $state.go('createContact');
     };
     
-    this.save = function () {
-        Contact.save({}, this.contact, function (value, headers) {
-            $http.get(headers('location')).success(function (data) {
-                $state.go('processFormsDetail', {
-                    id: data.id
-                });
-            });
-        }, function () {
-            
-        });
-    };
-
-    this.cancel = function () {
-        this.contact = {};
-    };
-
     // Initial search if we had params
     this.performSearch();
 });
