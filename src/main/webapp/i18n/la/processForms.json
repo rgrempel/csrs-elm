@@ -9,6 +9,10 @@
             
             "search": "Quaerere",
             "search.placeholder": "Scribe praenome aut cognomen incipiens ad quarerem",
+            "searchStatus": {
+                "searching": "Quaero ...",
+                "notFound": "Non inveni."
+            },
             
             "lastMember": "Sodalis:"    
         }

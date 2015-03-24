@@ -24,7 +24,14 @@
     </div>
 </div>
 
-<div class="row">
+<div class="bg-info voffset6" ng-show="search.searchStatus" translate="{{search.searchStatus}}"></div>
+
+<div class="bg-danger voffset6" ng-show="search.errorMessage">
+    <strong translate="global.messages.error.occurred">An error has occurred</strong>
+    <div ng-bind="search.errorMessage"></div> 
+</div>
+
+<div class="row voffset6">
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 contact-list yoyo" ng-repeat="contact in search.results track by contact.id">
         <div><a ui-sref="processFormsDetail({id: contact.id})">{{contact.firstName}} {{contact.lastName}}</a></div>
         <div ng-show="contact.department">{{contact.department}}</div>

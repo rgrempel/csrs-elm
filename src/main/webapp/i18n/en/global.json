@@ -52,6 +52,7 @@
                 "register": "Don't have an account yet? <a href=\"#!/register\">Register a new account.</a>"
             },
             "error": {
+                "occurred": "An error has occurred",
                 "dontmatch" : "The password and its confirmation do not match!"
             },
             "validate": {

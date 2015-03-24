@@ -10,6 +10,11 @@
             "search": "Rechercher",
             "search.placeholder": "Tapez début du nom ou le prénom de recherche",
             
+            "searchStatus": {
+                "searching": "Recherche ...",
+                "notFound": "Pas trouvé."
+            },
+            
             "lastMember": "Adhérent:" 
         }
     }

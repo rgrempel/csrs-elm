@@ -52,6 +52,7 @@
                 "register": "Sed non tamen tesseram? <a href=\"#!/register\">Subsigno tesseram novam.</a>"
             },
             "error": {
+                "occurred": "Errorem inciderunt",
                 "dontmatch" : "Signum confirmationemque imparem!"
             },
             "validate": {

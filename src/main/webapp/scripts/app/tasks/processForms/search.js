@@ -4,6 +4,9 @@ angular.module('csrsApp').controller('ProcessFormsController', function ($scope,
     this.search = $stateParams.search;
     this.contact = {};
 
+    this.errorMessage = '';
+    this.searchStatus = '';
+
     this.performSearch = function () {
         var self = this;
 
@@ -13,14 +16,24 @@ angular.module('csrsApp').controller('ProcessFormsController', function ($scope,
         }
 
         if (this.search) {
+            this.searchStatus = 'csrsApp.processForms.searchStatus.searching';
             Contact.query({
                 fullNameSearch: self.search
             }, function (result) {
+                if (result.length === 0) {
+                    self.searchStatus = 'csrsApp.processForms.searchStatus.notFound';
+                } else {
+                    self.searchStatus = '';
+                }
+                self.errorMessage = '';
                 self.results = result;
-            }, function () {
-
+            }, function (error) {
+                self.searchStatus = '';
+                self.results = [];
+                self.errorMessage = error.statusText;
             });
         } else {
+            self.searchStatus = '';
             self.results = [];
         }
     };

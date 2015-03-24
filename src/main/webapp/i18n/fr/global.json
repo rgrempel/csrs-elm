@@ -52,6 +52,7 @@
                 "register": "Vous n'avez pas encore de compte? <a href=\"#!/register\">Créer un compte.</a>"
             },
             "error": {
+                "occurred": "Une erreur est survenue",
                 "dontmatch": "Le nouveau mot de passe et sa confirmation ne sont pas égaux!"
             },
             "validate": {

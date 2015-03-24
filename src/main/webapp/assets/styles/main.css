@@ -8623,6 +8623,41 @@ button.close {
   background-size: contain;
 }
 
+/* line 21, ../../../scss/_custom.scss */
+.voffset4 {
+  margin-top: 4px;
+}
+
+/* line 22, ../../../scss/_custom.scss */
+.voffset6 {
+  margin-top: 6px;
+}
+
+/* line 23, ../../../scss/_custom.scss */
+.voffset8 {
+  margin-top: 8px;
+}
+
+/* line 24, ../../../scss/_custom.scss */
+.voffset12 {
+  margin-top: 12px;
+}
+
+/* line 25, ../../../scss/_custom.scss */
+.voffset16 {
+  margin-top: 16px;
+}
+
+/* line 26, ../../../scss/_custom.scss */
+.voffset18 {
+  margin-top: 18px;
+}
+
+/* line 27, ../../../scss/_custom.scss */
+.voffset24 {
+  margin-top: 24px;
+}
+
 /* line 10, ../../../scss/main.scss */
 body {
   background: #fafafa;

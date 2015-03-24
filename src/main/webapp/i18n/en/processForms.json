@@ -10,6 +10,11 @@
             "search": "Search",
             "search.placeholder": "Type beginning of first or last name to search",
             
+            "searchStatus": {
+                "searching": "Searching ...",
+                "notFound": "Not found."
+            },
+            
             "lastMember": "Member:"    
         }
     }
