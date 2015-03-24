@@ -48,8 +48,8 @@
         },
         "messages": {
             "info": {
-                "authenticated": "Numquid hie fuerunt prius? <a href=\"#/login\">Cosigno in tesseram vestram.</a>",
-                "register": "Sed non tamen tesseram? <a href=\"#/register\">Subsigno tesseram novam.</a>"
+                "authenticated": "Numquid hie fuerunt prius? <a href=\"#!/login\">Cosigno in tesseram vestram.</a>",
+                "register": "Sed non tamen tesseram? <a href=\"#!/register\">Subsigno tesseram novam.</a>"
             },
             "error": {
                 "dontmatch" : "Signum confirmationemque imparem!"

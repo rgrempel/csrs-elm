@@ -11,20 +11,29 @@ buildscript {
     }
 }
 
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+
+apply from: 'yeoman.gradle'
+apply from: 'liquibase.gradle'
+apply from: 'gatling.gradle'
+
 group = 'com.fulliautomatix.csrs'
 version = '0.1b6'
 description = ''
+
+war {
+    baseName = 'csrs'
+    version =  '0.1b6'
+}
 
 if (project.hasProperty('prod')) {
     profile = 'prod'
 } else if (project.hasProperty('fast')) {
     profile = 'fast'
 }
-
-apply plugin: 'java'
-apply plugin: 'maven'
-apply plugin: 'spring-boot'
-apply plugin: 'war'
 
 if (profile == 'prod') {
     apply from: 'profile_prod.gradle'
@@ -34,17 +43,8 @@ if (profile == 'prod') {
     apply from: 'profile_dev.gradle'
 }
 
-apply from: 'yeoman.gradle'
-apply from: 'liquibase.gradle'
-apply from: 'gatling.gradle'
-
 sourceCompatibility=1.8
 targetCompatibility=1.8
-
-war {
-    baseName = 'csrs'
-    version =  '0.1b5'
-}
 
 bootRepackage {
    mainClass = 'com.fulliautomatix.csrs.Application'

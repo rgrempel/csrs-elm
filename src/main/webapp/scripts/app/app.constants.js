@@ -4,6 +4,6 @@ angular.module('csrsApp')
 
 .constant('ENV', 'dev')
 
-.constant('VERSION', '0.1b4')
+.constant('VERSION', '0.1b6')
 
 ;

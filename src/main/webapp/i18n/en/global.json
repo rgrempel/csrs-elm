@@ -48,8 +48,8 @@
         },
         "messages": {
             "info": {
-                "authenticated": "Been here before? <a href=\"#/login\">Login with your account.</a>",
-                "register": "Don't have an account yet? <a href=\"#/register\">Register a new account.</a>"
+                "authenticated": "Been here before? <a href=\"#!/login\">Login with your account.</a>",
+                "register": "Don't have an account yet? <a href=\"#!/register\">Register a new account.</a>"
             },
             "error": {
                 "dontmatch" : "The password and its confirmation do not match!"

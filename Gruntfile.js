@@ -25,6 +25,30 @@ module.exports = function (grunt) {
             app: require('./bower.json').appPath || 'app',
             dist: 'src/main/webapp/dist'
         },
+        htmllint: {
+            all: {
+                src: ["src/main/webapp/scripts/**/*.html", "src/main/webapp/index.html"],
+                options: {
+                    ignore: [
+                        /Attribute “ng-[a-z-]+” not allowed/,
+                        /Bad value “[a-zA-Z.]+” for attribute “translate”/,
+                        /Attribute “ui-sref” not allowed/,
+                        /Attribute “ui-sref-active” not allowed/,
+                        /Attribute “ui-view” not allowed/,
+                        /Start tag seen without seeing a doctype first./,
+                        /Element “head” is missing a required instance/,
+                        /Attribute “translate-values” not allowed on element/,
+                        /Attribute “auto-focus” not allowed on element/,
+                        /Attribute “active-menu” not allowed on element/,
+                        /Attribute “csrs-contact-annuals” not allowed on element/,
+                        /Attribute “csrs-contact-interests” not allowed on element/,
+                        /Attribute “csrs-contact-label” not allowed on element/,
+                        /Attribute “csrs-contact-form-guts” not allowed on element/,
+                        /Attribute “csrs-modal” not allowed on element/
+                    ]
+                }
+            }
+        },
         watch: {
             bower: {
                 files: ['bower.json'],

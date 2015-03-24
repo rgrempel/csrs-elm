@@ -13,8 +13,7 @@
                ng-model="search.search"
                ng-model-options="{debounce: 500}"
                ng-change="search.performSearch()"
-               placeholder="{{'csrsApp.processForms.search.placeholder' | translate}}">
-        </input>
+               placeholder="{{'csrsApp.processForms.search.placeholder' | translate}}" />
 
         <span class="input-group-btn">
             <button class="btn btn-primary" ng-click="search.startEditing()">
@@ -31,7 +30,7 @@
         <div ng-show="contact.department">{{contact.department}}</div>
         <div ng-show="contact.affiliation">{{contact.affiliation}}</div>
         <div ng-repeat="latest in contact.annuals | orderBy: '-year' | limitTo: 1">
-            <span translate="csrsApp.processForms.lastMember">Member:</span> {{latest.year}}</span>
+            <span translate="csrsApp.processForms.lastMember">Member:</span> <span>{{latest.year}}</span>
         </div>
     </div>
 </div>
