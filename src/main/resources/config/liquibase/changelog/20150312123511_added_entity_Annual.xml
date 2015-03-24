@@ -51,6 +51,13 @@
                                  referencedTableName="T_CONTACT"/>
     </changeSet>
 
+    <changeSet id="makeAnnualsUnique" author="ryan">
+        <createIndex indexName="idx_annual_year_contact_id" tableName="T_ANNUAL" unique="true">
+            <column name="contact_id" />
+            <column name="year" />
+        </createIndex>
+    </changeSet>
+
     <changeSet id="addIndexestoAnnual" author="ryan">
         <addColumn tableName="T_ANNUAL">
             <column name="code" type="varchar" />
