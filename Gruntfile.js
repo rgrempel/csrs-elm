@@ -31,7 +31,7 @@ module.exports = function (grunt) {
                 options: {
                     ignore: [
                         /Attribute “ng-[a-z-]+” not allowed/,
-                        /Bad value “[a-zA-Z.]+” for attribute “translate”/,
+                        /Bad value “[{}a-zA-Z0-9.]+” for attribute “translate”/,
                         /Attribute “ui-sref” not allowed/,
                         /Attribute “ui-sref-active” not allowed/,
                         /Attribute “ui-view” not allowed/,
