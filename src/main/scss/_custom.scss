@@ -2,12 +2,26 @@
     white-space: pre-line;
 }
 
-.contact-list {
-    padding: 8px;
+.navbar-xs { 
+    min-height: 40px;
+    height: 40px;
+    margin-bottom: 12px;
 }
 
-.well {
-    padding: 12px;
+.navbar-xs .navbar-brand {
+    padding: 6px 12px;
+    font-size: 16px;
+    line-height: 28px;
+}
+
+.navbar-xs .navbar-nav > li > a {
+    padding-top: 6px; 
+    padding-bottom: 6px; 
+    line-height: 28px;
+}
+
+.contact-list {
+    padding: 8px;
 }
 
 .csrs-logo {
@@ -16,6 +30,14 @@
     height: 390px;
     background: url("../images/csrs-logo-colour.jpg") no-repeat center top;
     background-size: contain;
+}
+
+.well .panel-default > .panel-heading {
+    background-color: #e8e8e8;
+}
+
+.well .panel-default > .panel-footer {
+    background-color: #e8e8e8;
 }
 
 .voffset4  { margin-top:  4px; }

@@ -10,16 +10,20 @@ angular.module('csrsApp').directive('csrsContactFormModal', function () {
 
 angular.module('csrsApp').controller('ContactModalController', function ($scope, Contact, $http, $state) {
     this.contact = $state.params.contact || {};
+    this.serverError = null;
 
     this.save = function () {
+        var self = this;
+        self.serverError = null;
+
         if (this.contact.id) {
             Contact.update({}, this.contact, function () {
                 // Reload to see what the database actually did ...
                 $scope.modalController.go('^', {}, {
                     reload: true
                 });
-            }, function () {
-                
+            }, function (httpResponse) {
+                self.serverError = angular.toJson(httpResponse); 
             });
         } else {
             Contact.save({}, this.contact, function (value, headers) {
@@ -27,9 +31,14 @@ angular.module('csrsApp').controller('ContactModalController', function ($scope,
                     $scope.modalController.go('processFormsDetail', {
                         id: data.id
                     });
+                }).error(function (data, status, headers, config) {
+                    self.serverError = angular.toJSON({
+                        status: status,
+                        data: data
+                    });
                 });
-            }, function () {
-                
+            }, function (httpResponse) {
+                self.serverError = angular.toJson(httpResponse);
             });
         }
     };

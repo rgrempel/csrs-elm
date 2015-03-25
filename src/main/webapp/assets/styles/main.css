@@ -8575,27 +8575,37 @@ button.close {
 /* line 25, ../../../scss/_animation.scss */
 .animate-fade.ng-enter,
 .animate-fade.ng-leave {
-  -moz-transition: opacity 800ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
-  -o-transition: opacity 800ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
-  -webkit-transition: opacity 800ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
-  transition: opacity 800ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  -moz-transition: all 1s;
+  -o-transition: all 1s;
+  -webkit-transition: all 1s;
+  transition: all 1s;
 }
 
 /* line 30, ../../../scss/_animation.scss */
-.animate-fade.ng-enter.ng-enter-active,
+.animate-fade.ng-enter {
+  opacity: 0.2;
+  background-color: #AAAAAA;
+}
+
+/* line 35, ../../../scss/_animation.scss */
+.animate-fade.ng-enter.ng-enter-active {
+  opacity: 1;
+  background-color: #FFFFDD;
+}
+
+/* line 40, ../../../scss/_animation.scss */
 .animate-fade.ng-leave {
   opacity: 1;
   background-color: #FFFFDD;
 }
 
-/* line 36, ../../../scss/_animation.scss */
-.animate-fade.ng-leave.ng-leave-active,
-.animate-fade.ng-enter {
-  opacity: 0;
-  background-color: #FFFFDD;
+/* line 45, ../../../scss/_animation.scss */
+.animate-fade.ng-leave.ng-leave-active {
+  opacity: 0.2;
+  background-color: #AAAAAA;
 }
 
-/* line 43, ../../../scss/_animation.scss */
+/* line 51, ../../../scss/_animation.scss */
 .move.ng-enter,
 .move.ng-leave {
   -moz-transition: all 600ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
@@ -8606,7 +8616,7 @@ button.close {
   display: block;
 }
 
-/* line 50, ../../../scss/_animation.scss */
+/* line 58, ../../../scss/_animation.scss */
 .move.ng-enter.ng-enter-active,
 .move.ng-leave {
   opacity: 1;
@@ -8614,7 +8624,7 @@ button.close {
   height: 30px;
 }
 
-/* line 57, ../../../scss/_animation.scss */
+/* line 65, ../../../scss/_animation.scss */
 .move.ng-leave.ng-leave-active,
 .move.ng-enter {
   opacity: 0;
@@ -8628,16 +8638,32 @@ button.close {
 }
 
 /* line 5, ../../../scss/_custom.scss */
+.navbar-xs {
+  min-height: 40px;
+  height: 40px;
+  margin-bottom: 12px;
+}
+
+/* line 11, ../../../scss/_custom.scss */
+.navbar-xs .navbar-brand {
+  padding: 6px 12px;
+  font-size: 16px;
+  line-height: 28px;
+}
+
+/* line 17, ../../../scss/_custom.scss */
+.navbar-xs .navbar-nav > li > a {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  line-height: 28px;
+}
+
+/* line 23, ../../../scss/_custom.scss */
 .contact-list {
   padding: 8px;
 }
 
-/* line 9, ../../../scss/_custom.scss */
-.well {
-  padding: 12px;
-}
-
-/* line 13, ../../../scss/_custom.scss */
+/* line 27, ../../../scss/_custom.scss */
 .csrs-logo {
   display: inline-block;
   width: 347px;
@@ -8646,37 +8672,47 @@ button.close {
   background-size: contain;
 }
 
-/* line 21, ../../../scss/_custom.scss */
+/* line 35, ../../../scss/_custom.scss */
+.well .panel-default > .panel-heading {
+  background-color: #e8e8e8;
+}
+
+/* line 39, ../../../scss/_custom.scss */
+.well .panel-default > .panel-footer {
+  background-color: #e8e8e8;
+}
+
+/* line 43, ../../../scss/_custom.scss */
 .voffset4 {
   margin-top: 4px;
 }
 
-/* line 22, ../../../scss/_custom.scss */
+/* line 44, ../../../scss/_custom.scss */
 .voffset6 {
   margin-top: 6px;
 }
 
-/* line 23, ../../../scss/_custom.scss */
+/* line 45, ../../../scss/_custom.scss */
 .voffset8 {
   margin-top: 8px;
 }
 
-/* line 24, ../../../scss/_custom.scss */
+/* line 46, ../../../scss/_custom.scss */
 .voffset12 {
   margin-top: 12px;
 }
 
-/* line 25, ../../../scss/_custom.scss */
+/* line 47, ../../../scss/_custom.scss */
 .voffset16 {
   margin-top: 16px;
 }
 
-/* line 26, ../../../scss/_custom.scss */
+/* line 48, ../../../scss/_custom.scss */
 .voffset18 {
   margin-top: 18px;
 }
 
-/* line 27, ../../../scss/_custom.scss */
+/* line 49, ../../../scss/_custom.scss */
 .voffset24 {
   margin-top: 24px;
 }

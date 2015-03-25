@@ -24,19 +24,27 @@
 
 .animate-fade.ng-enter,
 .animate-fade.ng-leave {
-    @include single-transition(opacity, 800ms, cubic-bezier(0.445, 0.050, 0.550, 0.950));
+    @include single-transition(all, 1s);
 }
 
-.animate-fade.ng-enter.ng-enter-active, 
+.animate-fade.ng-enter {
+    opacity: 0.2;
+    background-color: #AAAAAA;
+}
+
+.animate-fade.ng-enter.ng-enter-active {
+    opacity: 1;
+    background-color: #FFFFDD;
+}
+
 .animate-fade.ng-leave {
     opacity: 1;
     background-color: #FFFFDD;
 }
 
-.animate-fade.ng-leave.ng-leave-active,
-.animate-fade.ng-enter {
-    opacity: 0;
-    background-color: #FFFFDD;
+.animate-fade.ng-leave.ng-leave-active {
+    opacity: 0.2;
+    background-color: #AAAAAA;
 }
 
 

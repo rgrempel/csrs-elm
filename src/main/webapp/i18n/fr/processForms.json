@@ -7,6 +7,9 @@
                 "createOrEditLabel": "Créer ou éditer un Contact"
             },
             
+            "contactInformation": "Coordonnées",
+            
+            "annualData": "Données annuelles",
             "search": "Rechercher",
             "search.placeholder": "Tapez début du nom ou le prénom de recherche",
             

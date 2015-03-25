@@ -6,10 +6,13 @@
                 "createLabel": "Create a new Contact",
                 "createOrEditLabel": "Create or edit a Contact"
             },
-            
+           
+            "annualData": "Annual Data",
+            "contactInformation": "Contact Information",
+
             "search": "Search",
             "search.placeholder": "Type beginning of first or last name to search",
-            
+
             "searchStatus": {
                 "searching": "Searching ...",
                 "notFound": "Not found."

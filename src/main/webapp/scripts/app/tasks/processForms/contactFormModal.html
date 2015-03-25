@@ -5,9 +5,16 @@
             <h4 class="modal-title" id="modal-label" translate="csrsApp.contact.home.createOrEditLabel">Create or edit a Contact</h4>
         </div>
 
-        <div class="modal-body" csrs-contact-form-guts="contactForm.contact"></div>
+        <div class="modal-body">
+            <div csrs-contact-form-guts="contactForm.contact"></div>
+        </div>
 
         <div class="modal-footer">
+            <div class="alert alert-danger text-left" ng-show="contactForm.serverError">
+                <h4 translate="global.messages.error.occurred">An Error Occurred</h4>
+                <div ng-bind="contactForm.serverError">Error details</div>
+            </div>
+            
             <button type="button" class="btn btn-default" ng-click="contactForm.cancel()">
                 <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
             </button>

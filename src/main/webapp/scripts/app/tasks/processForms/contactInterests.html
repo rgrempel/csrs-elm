@@ -1,30 +1,32 @@
-<table class="table table-striped">
-    <thead>
-        <th style="vertical-align: middle;">
-            <strong translate="csrsApp.contact.interests">Interests</strong>
-        </th>
-        <th style="vertical-align: middle;">
-            <button class="btn btn-info btn-sm" ng-click="interestsCtrl.create()">
-                <span class="glyphicon glyphicon-plus"></span>
-            </button>
-        </th>
-    </thead>
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h3 class="panel-title" translate="csrsApp.contact.interests">Scholarly Interests</h3>
+    </div>
+    
+    <table class="table table-striped">
+        <tbody>
+            <tr class="animate-fade" ng-repeat="interest in interestsCtrl.contact.interests">
+                <td style="vertical-align: middle;">
+                    <span ng-hide="interest.editMode" ng-bind="interest.interest">Interest</span>
+                    <input ng-show="interest.editMode" type="text" ng-model="interest.interest" /> 
+                </td>
 
-    <tbody>
-        <tr ng-repeat="interest in interestsCtrl.contact.interests">
-            <td style="vertical-align: middle;">
-                <span ng-hide="interest.editMode" ng-bind="interest.interest">Interest</span>
-                <input ng-show="interest.editMode" type="text" ng-model="interest.interest" /> 
-            </td>
-            <td style="vertical-align: middle;">
-                <button ng-hide="interest.editMode" class="btn btn-danger btn-sm" ng-click="interestsCtrl.remove(interest)">
-                    <span class="glyphicon glyphicon-trash"></span>
-                </button>
-                <span ng-show="interest.editMode">
-                    <button ng-click="interestsCtrl.commit(interest)" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span></button>
-                    <button ng-click="interestsCtrl.cancel(interest)" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-remove"></span></button>
-                </span>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                <td class="text-right" style="vertical-align: middle;">
+                    <button ng-hide="interest.editMode" class="btn btn-danger btn-xs" ng-click="interestsCtrl.remove(interest)">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <div class="btn-group" ng-show="interest.editMode">
+                        <button ng-click="interestsCtrl.commit(interest)" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok"></span></button>
+                        <button style="margin-left: 4px;" ng-click="interestsCtrl.cancel(interest)" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="panel-footer text-left">
+        <button class="btn btn-info btn-sm" ng-click="interestsCtrl.create()">
+            <span class="glyphicon glyphicon-plus"></span>
+        </button>
+    </div>
+</div>

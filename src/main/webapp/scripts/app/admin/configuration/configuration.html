@@ -12,7 +12,7 @@
         </thead>
 
         <tr ng-repeat="entry in configuration | filter:filter | orderBy:predicate:reverse">
-            <td>{{entry.prefix}}</span></td>
+            <td>{{entry.prefix}}</td>
             <td>
                 <div class="row" ng-repeat="(key, value) in entry.properties">
                     <div class="col-md-6">{{key}}</div>

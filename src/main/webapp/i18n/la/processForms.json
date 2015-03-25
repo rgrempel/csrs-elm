@@ -7,6 +7,9 @@
                 "createOrEditLabel": "Creare socium novum aut emendum"
             },
             
+            "annualData": "Notitia annua",
+            "contactInformation": "Notitia contactus",
+            
             "search": "Quaerere",
             "search.placeholder": "Scribe praenome aut cognomen incipiens ad quarerem",
             "searchStatus": {
