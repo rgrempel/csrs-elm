@@ -14,7 +14,7 @@
     </thead>
     
     <tbody>
-        <tr ng-repeat="annual in annualsCtrl.contact.annuals | orderBy: '-year' track by annual.id" class="move">
+        <tr ng-repeat="annual in annualsCtrl.contact.annuals | orderBy: '-year' track by annual.id" class="animate-fade">
             <td style="vertical-align: middle;">
                 <span ng-hide="annual.editMode" ng-bind="annual.year"></span>
                 <input ng-show="annual.editMode" ng-model="annual.year" type="number" style="width: 4em;" />

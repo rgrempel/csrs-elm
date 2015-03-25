@@ -8573,6 +8573,29 @@ button.close {
 }
 
 /* line 25, ../../../scss/_animation.scss */
+.animate-fade.ng-enter,
+.animate-fade.ng-leave {
+  -moz-transition: opacity 800ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  -o-transition: opacity 800ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  -webkit-transition: opacity 800ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+  transition: opacity 800ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+/* line 30, ../../../scss/_animation.scss */
+.animate-fade.ng-enter.ng-enter-active,
+.animate-fade.ng-leave {
+  opacity: 1;
+  background-color: #FFFFDD;
+}
+
+/* line 36, ../../../scss/_animation.scss */
+.animate-fade.ng-leave.ng-leave-active,
+.animate-fade.ng-enter {
+  opacity: 0;
+  background-color: #FFFFDD;
+}
+
+/* line 43, ../../../scss/_animation.scss */
 .move.ng-enter,
 .move.ng-leave {
   -moz-transition: all 600ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
@@ -8583,7 +8606,7 @@ button.close {
   display: block;
 }
 
-/* line 32, ../../../scss/_animation.scss */
+/* line 50, ../../../scss/_animation.scss */
 .move.ng-enter.ng-enter-active,
 .move.ng-leave {
   opacity: 1;
@@ -8591,7 +8614,7 @@ button.close {
   height: 30px;
 }
 
-/* line 39, ../../../scss/_animation.scss */
+/* line 57, ../../../scss/_animation.scss */
 .move.ng-leave.ng-leave-active,
 .move.ng-enter {
   opacity: 0;
