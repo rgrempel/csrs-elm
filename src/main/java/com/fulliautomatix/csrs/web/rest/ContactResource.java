@@ -5,6 +5,7 @@ import com.fulliautomatix.csrs.domain.Contact;
 import com.fulliautomatix.csrs.repository.ContactRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
+import com.fulliautomatix.csrs.web.rest.util.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -13,7 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.Errors;
 
+import javax.validation.Valid;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import java.net.URI;
@@ -37,16 +40,25 @@ public class ContactResource {
     /**
      * POST  /contacts -> Create a new contact.
      */
-    @RequestMapping(value = "/contacts",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/contacts",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<Void> create(@RequestBody Contact contact) throws URISyntaxException {
+    public ResponseEntity<Void> create (@RequestBody @Valid Contact contact, Errors errors) throws URISyntaxException {
         log.debug("REST request to save Contact : {}", contact);
+
         if (contact.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new contact cannot already have an ID").build();
         }
+
+        if (errors.hasErrors()) {
+            throw new ValidationException("Contact failed validation", errors);
+        }
+
         contactRepository.save(contact);
+        
         return ResponseEntity.created(new URI("/api/contacts/" + contact.getId())).build();
     }
 
@@ -60,7 +72,7 @@ public class ContactResource {
     public ResponseEntity<Void> update(@RequestBody Contact contact) throws URISyntaxException {
         log.debug("REST request to update Contact : {}", contact);
         if (contact.getId() == null) {
-            return create(contact);
+            return ResponseEntity.badRequest().header("Failure", "An existing must already have an ID").build();
         }
         contactRepository.save(contact);
         return ResponseEntity.ok().build();

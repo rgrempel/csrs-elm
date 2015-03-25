@@ -70,6 +70,8 @@ repositories {
 }
 
 dependencies {
+    providedCompile group: 'org.projectlombok', name: 'lombok', version: '1.16.2'
+
     compile group: 'com.codahale.metrics', name: 'metrics-core', version: codahale_metrics_version
     compile group: 'com.codahale.metrics', name: 'metrics-ehcache', version: codahale_metrics_version
     compile group: 'com.codahale.metrics', name: 'metrics-graphite', version: codahale_metrics_version

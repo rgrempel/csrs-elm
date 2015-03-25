@@ -12,10 +12,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Set;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * A Contact.
@@ -44,60 +50,78 @@ import java.util.Set;
         }
     )
 })
+@ToString(of={"id", "salutation", "firstName", "lastName", "department", "affiliation"})
 public class Contact implements Serializable {
 
     @Id
     @SequenceGenerator(name="t_contact_id_seq", sequenceName="t_contact_id_seq", allocationSize=1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_contact_id_seq")
+    @Getter @Setter
     private Long id;
 
+    @Getter @Setter
     @Column(name = "code")
     private String code;
 
+    @Getter @Setter
     @Column(name = "salutation")
     private String salutation;
 
+    @Getter @Setter
     @Column(name = "first_name")
     private String firstName;
 
+    @Getter @Setter
     @Column(name = "last_name", nullable=false)
-    @NotNull
+    @NotBlank
     private String lastName;
 
+    @Getter @Setter
     @Column(name = "department")
     private String department;
 
+    @Getter @Setter
     @Column(name = "affiliation")
     private String affiliation;
 
+    @Getter @Setter
     @Column(name = "street")
     private String street;
 
+    @Getter @Setter
     @Column(name = "city")
     private String city;
 
+    @Getter @Setter
     @Column(name = "region")
     private String region;
 
+    @Getter @Setter
     @Column(name = "country")
     private String country;
 
+    @Getter @Setter
     @Column(name = "postal_code")
     private String postalCode;
 
+    @Getter @Setter
     @Column(name = "email")
     private String email;
 
+    @Getter @Setter
     @Column(name = "omit_name_from_directory", nullable=false)
     private Boolean omitNameFromDirectory;
 
+    @Getter @Setter
     @Column(name = "omit_email_from_directory", nullable=false)
     private Boolean omitEmailFromDirectory;
 
+    @Getter @Setter
     @OneToMany(mappedBy="contact")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Annual> annuals;
 
+    @Getter @Setter
     @OneToMany(mappedBy="contact")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Interest> interests;
@@ -106,179 +130,5 @@ public class Contact implements Serializable {
     public void setDefaults () {
         if (omitNameFromDirectory == null) omitNameFromDirectory = false;
         if (omitEmailFromDirectory == null) omitEmailFromDirectory = false;
-    }    
-        
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getDepartment () {
-        return department;
-    }
-
-    public void setDepartment (String department) {
-        this.department = department;
-    }
-
-    public String getAffiliation () {
-        return affiliation;
-    }
-
-    public void setAffiliation (String affiliation) {
-        this.affiliation = affiliation;
-    }
-
-    public String getSalutation() {
-        return salutation;
-    }
-
-    public void setSalutation(String salutation) {
-        this.salutation = salutation;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Boolean getOmitNameFromDirectory () {
-        return omitNameFromDirectory;
-    }
-
-    public void setOmitNameFromDirectory (Boolean omitNameFromDirectory) {
-        this.omitNameFromDirectory = omitNameFromDirectory;
-    }
-
-    public Boolean getOmitEmailFromDirectory () {
-        return omitEmailFromDirectory;
-    }
-
-    public void setOmitEmailFromDirectory (Boolean omitEmailFromDirectory) {
-        this.omitEmailFromDirectory = omitEmailFromDirectory;
-    }
-
-    public Set<Annual> getAnnuals () {
-        return this.annuals;
-    }
-
-    public void setAnnuals (Set<Annual> annuals) {
-        this.annuals = annuals;
-    }
-
-    public Set<Interest> getInterests () {
-        return this.interests;
-    }
-
-    public void setInterests (Set<Interest> interests) {
-        this.interests = interests;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Contact contact = (Contact) o;
-
-        if (id != null ? !id.equals(contact.id) : contact.id != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
-    }
-
-    @Override
-    public String toString() {
-        return "Contact{" +
-                "id=" + id +
-                ", code='" + code + "'" +
-                ", firstName='" + firstName + "'" +
-                ", lastName='" + lastName + "'" +
-                ", salutation='" + salutation + "'" +
-                ", street='" + street + "'" +
-                ", city='" + city + "'" +
-                ", region='" + region + "'" +
-                ", country='" + country + "'" +
-                ", postalCode='" + postalCode + "'" +
-                ", email='" + email + "'" +
-                '}';
     }
 }
