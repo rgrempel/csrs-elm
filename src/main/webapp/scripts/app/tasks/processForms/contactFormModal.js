@@ -16,6 +16,8 @@ angular.module('csrsApp').controller('ContactModalController', function ($scope,
         var self = this;
         self.serverError = null;
 
+        if ($scope.editForm.$invalid) return;
+
         if (this.contact.id) {
             Contact.update({}, this.contact, function () {
                 // Reload to see what the database actually did ...
