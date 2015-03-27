@@ -8,5 +8,6 @@
     <include file="classpath:config/liquibase/changelog/20150310113916_added_entity_Contact.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20150312123511_added_entity_Annual.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/extra_fields_for_form.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/registration.xml" relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>

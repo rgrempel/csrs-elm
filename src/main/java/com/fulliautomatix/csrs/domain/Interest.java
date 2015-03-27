@@ -24,70 +24,22 @@ import java.util.Set;
     property="id",
     scope = Interest.class
 )
+@lombok.ToString(of={"id", "interest"})
 public class Interest implements Serializable {
 
     @Id
     @SequenceGenerator(name="t_interest_id_seq", sequenceName="t_interest_id_seq", allocationSize=1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_interest_id_seq")
+    @lombok.Getter @lombok.Setter
     private Long id;
 
     @Column(name = "interest", nullable=false)
     @NotNull
+    @lombok.Getter @lombok.Setter
     private String interest;
 
     @ManyToOne
+    @lombok.Getter @lombok.Setter
     private Contact contact;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getInterest () {
-        return this.interest;
-    }
-
-    public void setInterest (String interest) {
-        this.interest = interest;
-    }
-
-    public Contact getContact() {
-        return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Interest other = (Interest) o;
-
-        if (id != null ? !id.equals(other.id) : other.id != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
-    }
-
-    @Override
-    public String toString() {
-        return "Interest{" +
-                "id=" + id +
-                ", interest='" + interest + "'" +
-                '}';
-    }
 }

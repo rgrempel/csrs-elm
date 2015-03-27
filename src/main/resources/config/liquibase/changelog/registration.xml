@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <changeSet id="addSeparateTableForEmail" author="ryan">
+        <createTable tableName="T_EMAIL">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="email_address" type="varchar" />
+        </createTable>
+
+        <createIndex indexName="idx_email_email_address" tableName="T_EMAIL" unique="true">
+            <column name="email_address" />
+        </createIndex>
+
+        <createTable tableName="T_USER_EMAIL">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+
+            <!-- Null if we're using this to confirm an email address for
+                 which we don't have a user yet ... that is, if we
+                 may be *creating* the user in the future. -->
+            <column name="user_id" type="bigint" />
+
+            <column name="email_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            
+            <column name="activated" type="timestamp with time zone" />
+        </createTable>
+                
+        <createIndex indexName="idx_user_email_user_id" tableName="T_USER_EMAIL">
+            <column name="user_id" />
+        </createIndex>
+
+        <createIndex indexName="idx_user_email_activated" tableName="T_USER_EMAIL">
+            <column name="activated" />
+        </createIndex>
+
+        <createIndex indexName="idx_user_email_email_id" tableName="T_USER_EMAIL">
+            <column name="email_id" />
+        </createIndex>
+
+        <createIndex indexName="idx_user_email_combined" tableName="T_USER_EMAIL" unique="true">
+            <column name="user_id" />
+            <column name="email_id" />
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="T_USER_EMAIL"
+                                 constraintName="fk_user_email_user"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_USER"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+
+        <addForeignKeyConstraint baseColumnNames="email_id"
+                                 baseTableName="T_USER_EMAIL"
+                                 constraintName="fk_user_email_email"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_EMAIL"
+                                 onDelete="RESTRICT"
+                                 onUpdate="CASCADE" />
+
+        <createTable tableName="T_USER_EMAIL_ACTIVATION">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+ 
+            <column name="activation_key" type="varchar(20)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="user_email_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="date_sent" type="timestamp with time zone" defaultValueDate="${now}">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="date_used" type="timestamp with time zone" />
+        </createTable>
+
+        <createIndex tableName="T_USER_EMAIL_ACTIVATION" indexName="idx_user_email_activation">
+            <column name="user_email_id" />
+        </createIndex>
+
+        <createIndex tableName="T_USER_EMAIL_ACTIVATION" indexName="idx_user_email_date_sent">
+            <column name="date_sent" />
+        </createIndex>
+
+        <createIndex tableName="T_USER_EMAIL_ACTIVATION" indexName="idx_user_email_date_used">
+            <column name="date_used" />
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="user_email_id"
+                                 baseTableName="T_USER_EMAIL_ACTIVATION"
+                                 constraintName="fk_user_email_activation_user_email"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_USER_EMAIL"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+                             
+        <createTable tableName="T_CONTACT_EMAIL">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+
+            <column name="contact_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="email_id" type="bigint">
+                <constraints nullable="false" />
+            </column> 
+        </createTable>
+                
+        <createIndex indexName="idx_contact_email_contact_id" tableName="T_CONTACT_EMAIL">
+            <column name="contact_id" />
+        </createIndex>
+
+        <createIndex indexName="idx_contact_email_email_id" tableName="T_CONTACT_EMAIL">
+            <column name="email_id" />
+        </createIndex>
+
+        <createIndex indexName="idx_contact_email_combined" tableName="T_CONTACT_EMAIL" unique="true">
+            <column name="contact_id" />
+            <column name="email_id" />
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="contact_id"
+                                 baseTableName="T_CONTACT_EMAIL"
+                                 constraintName="fk_contact_email_contact"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_CONTACT"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+
+        <addForeignKeyConstraint baseColumnNames="email_id"
+                                 baseTableName="T_CONTACT_EMAIL"
+                                 constraintName="fk_contact_email_email"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_EMAIL"
+                                 onDelete="RESTRICT"
+                                 onUpdate="CASCADE" />
+
+        <addColumn tableName="T_CONTACT">
+            <column name="preferred_email_id" type="bigint" />
+        </addColumn>
+
+        <createIndex tableName="T_CONTACT" indexName="idx_contact_preferred_email">
+            <column name="preferred_email_id" />
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="preferred_email_id, id"
+                                 baseTableName="T_CONTACT"
+                                 constraintName="fk_contact_preferred_email"
+                                 referencedColumnNames="email_id, contact_id"
+                                 referencedTableName="T_CONTACT_EMAIL"
+                                 onDelete="RESTRICT"
+                                 onUpdate="CASCADE" />
+
+    </changeSet>
+</databaseChangeLog>

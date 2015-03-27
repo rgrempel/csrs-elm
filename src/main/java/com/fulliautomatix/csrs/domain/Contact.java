@@ -18,11 +18,6 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Set;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-
 /**
  * A Contact.
  */
@@ -50,84 +45,93 @@ import lombok.ToString;
         }
     )
 })
-@ToString(of={"id", "salutation", "firstName", "lastName", "department", "affiliation"})
+@lombok.ToString(of={"id", "salutation", "firstName", "lastName", "department", "affiliation"})
 public class Contact implements Serializable {
 
     @Id
     @SequenceGenerator(name="t_contact_id_seq", sequenceName="t_contact_id_seq", allocationSize=1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_contact_id_seq")
-    @Getter @Setter
+    @lombok.Getter @lombok.Setter
     private Long id;
 
-    @Getter @Setter
     @Column(name = "code")
+    @lombok.Getter @lombok.Setter
     private String code;
 
-    @Getter @Setter
     @Column(name = "salutation")
+    @lombok.Getter @lombok.Setter
     private String salutation;
 
-    @Getter @Setter
     @Column(name = "first_name")
+    @lombok.Getter @lombok.Setter
     private String firstName;
 
-    @Getter @Setter
     @Column(name = "last_name", nullable=false)
     @NotBlank
+    @lombok.Getter @lombok.Setter
     private String lastName;
 
-    @Getter @Setter
     @Column(name = "department")
+    @lombok.Getter @lombok.Setter
     private String department;
 
-    @Getter @Setter
     @Column(name = "affiliation")
+    @lombok.Getter @lombok.Setter
     private String affiliation;
 
-    @Getter @Setter
     @Column(name = "street")
+    @lombok.Getter @lombok.Setter
     private String street;
 
-    @Getter @Setter
     @Column(name = "city")
+    @lombok.Getter @lombok.Setter
     private String city;
 
-    @Getter @Setter
     @Column(name = "region")
+    @lombok.Getter @lombok.Setter
     private String region;
 
-    @Getter @Setter
     @Column(name = "country")
+    @lombok.Getter @lombok.Setter
     private String country;
 
-    @Getter @Setter
     @Column(name = "postal_code")
+    @lombok.Getter @lombok.Setter
     private String postalCode;
 
-    @Getter @Setter
     @Column(name = "email")
+    @lombok.Getter @lombok.Setter
     private String email;
 
-    @Getter @Setter
+    @OneToMany(mappedBy = "contact")
+    @lombok.Getter @lombok.Setter
+    private Set<ContactEmail> contactEmails;
+
+    @ManyToOne
+    @JoinColumn(name = "preferred_email_id")
+    @lombok.Getter @lombok.Setter
+    private Email preferredEmail;
+
     @Column(name = "omit_name_from_directory", nullable=false)
+    @lombok.Getter @lombok.Setter
     private Boolean omitNameFromDirectory;
 
-    @Getter @Setter
     @Column(name = "omit_email_from_directory", nullable=false)
+    @lombok.Getter @lombok.Setter
     private Boolean omitEmailFromDirectory;
 
-    @Getter @Setter
     @OneToMany(mappedBy="contact")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @lombok.Getter @lombok.Setter
     private Set<Annual> annuals;
 
-    @Getter @Setter
     @OneToMany(mappedBy="contact")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @lombok.Getter @lombok.Setter
     private Set<Interest> interests;
     
     @PrePersist 
-    public void setDefaults () {
+    public void checkDefaults () {
         if (omitNameFromDirectory == null) omitNameFromDirectory = false;
         if (omitEmailFromDirectory == null) omitEmailFromDirectory = false;
     }
