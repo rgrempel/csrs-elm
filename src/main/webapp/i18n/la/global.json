@@ -72,7 +72,9 @@
                     "invalid": "Tuum cursorium invalidum.",
                     "minlength": "Your e-mail is required to be at least 5 characters",
                     "maxlength": "Your e-mail cannot be longer than 50 characters"
-                }
+                },
+                "required": "Requiritur",
+                "invalid": "Invalidum"
             }
         }
     },

@@ -13,6 +13,8 @@ angular.module('csrsApp').directive('csrsContactAnnuals', function () {
 });
 
 angular.module('csrsApp').controller('ContactAnnualsCtrl', function (Annual, _, $http, $state) {
+    this.error = null;
+
     this.createAnnual = function () {
         var self = this;
         
@@ -33,15 +35,16 @@ angular.module('csrsApp').controller('ContactAnnualsCtrl', function (Annual, _, 
             }
         };
 
+        this.error = null;
         Annual.save({}, newAnnual, function (value, headers) {
             $http.get(headers('location')).success(function (data) {
                 data.editMode = true;
                 self.contact.annuals.push(data);
-            }).error(function () {
-                // Shouldn't happen ...
+            }).error(function (error) {
+                self.error = angular.toJson(error);
             });
-        }, function () {
-            // error
+        }, function (error) {
+            self.error = angular.toJson(error.data);
         });
     };
 
@@ -67,22 +70,25 @@ angular.module('csrsApp').controller('ContactAnnualsCtrl', function (Annual, _, 
             id: this.contact.id
         };
 
+        this.error = null;
+        var self = this;
         Annual.update({}, annual, function () {
             annual.editMode = false;
-        }, function () {
-            // error
+        }, function (error) {
+            self.error = angular.toJson(error.data);
         });
     };
 
     this.cancel = function (annual) {
         var self = this;
+        this.error = null;
         Annual.get({
             id: annual.id
         }, function (result) {
             _.pull(self.contact.annuals, annual);
             self.contact.annuals.push(result);
-        }, function () {
-
+        }, function (error) {
+            self.error = angular.toJson(error.data);
         });
     };
 });

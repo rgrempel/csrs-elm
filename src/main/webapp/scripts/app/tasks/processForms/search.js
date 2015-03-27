@@ -30,7 +30,7 @@ angular.module('csrsApp').controller('ProcessFormsController', function ($scope,
             }, function (error) {
                 self.searchStatus = '';
                 self.results = [];
-                self.errorMessage = error.statusText;
+                self.errorMessage = angular.toJson(error.data);
             });
         } else {
             self.searchStatus = '';

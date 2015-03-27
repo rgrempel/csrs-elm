@@ -25,7 +25,7 @@ angular.module('csrsApp').controller('ContactModalController', function ($scope,
                     reload: true
                 });
             }, function (httpResponse) {
-                self.serverError = angular.toJson(httpResponse); 
+                self.serverError = angular.toJson(httpResponse.data);
             });
         } else {
             Contact.save({}, this.contact, function (value, headers) {
@@ -34,13 +34,10 @@ angular.module('csrsApp').controller('ContactModalController', function ($scope,
                         id: data.id
                     });
                 }).error(function (data, status, headers, config) {
-                    self.serverError = angular.toJSON({
-                        status: status,
-                        data: data
-                    });
+                    self.serverError = angular.toJson(data);
                 });
             }, function (httpResponse) {
-                self.serverError = angular.toJson(httpResponse);
+                self.serverError = angular.toJson(httpResponse.data);
             });
         }
     };

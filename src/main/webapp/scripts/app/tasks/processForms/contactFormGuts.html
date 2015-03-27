@@ -2,57 +2,58 @@
     <div class="row">
         <div csrs-form-group class="col-xs-2">
             <label translate="csrsApp.contact.salutation">Salutation</label>
-            <input csrs-form-control required type="text" name="salutation" ng-model="guts.contact.salutation" />
-            <span csrs-help-block="required">Required</span>
+            <input csrs-form-control type="text" name="salutation" ng-model="guts.contact.salutation" />
         </div>
-        <div class="form-group col-xs-5">
+        <div csrs-form-group class="col-xs-5">
             <label translate="csrsApp.contact.firstName">First Name</label>
-            <input type="text" class="form-control" name="firstName" ng-model="guts.contact.firstName" />
+            <input csrs-form-control type="text" name="firstName" ng-model="guts.contact.firstName" />
         </div>
-        <div class="form-group col-xs-5">
+        <div csrs-form-group class="col-xs-5">
             <label translate="csrsApp.contact.lastName">Last Name</label>
-            <input type="text" class="form-control" name="lastName" ng-model="guts.contact.lastName" />
+            <input csrs-form-control required type="text" name="lastName" ng-model="guts.contact.lastName" />
+            <span csrs-help-block="required" translate="global.messages.validate.required">Required</span>
         </div>
     </div>
 
     <div class="row">
-        <div class="form-group col-xs-12">
+        <div csrs-form-group class="col-xs-12">
             <label translate="csrsApp.contact.street">Street</label>
-            <textarea class="form-control" name="street" rows="3" ng-model="guts.contact.street"></textarea>
+            <textarea csrs-form-control name="street" rows="3" ng-model="guts.contact.street"></textarea>
         </div>
     </div>
         
     <div class="row">
-        <div class="form-group col-xs-4">
+        <div csrs-form-group class="col-xs-4">
             <label translate="csrsApp.contact.city">City</label>
-            <input type="text" class="form-control" name="city" ng-model="guts.contact.city" />
+            <input type="text" csrs-form-control name="city" ng-model="guts.contact.city" />
         </div>
         
-        <div class="form-group col-xs-4">
+        <div csrs-form-group class="col-xs-4">
             <label translate="csrsApp.contact.region">Region</label>
-            <input type="text" class="form-control" name="region" ng-model="guts.contact.region" />
+            <input type="text" csrs-form-control name="region" ng-model="guts.contact.region" />
         </div>
         
-        <div class="form-group col-xs-4">
+        <div csrs-form-group class="col-xs-4">
             <label translate="csrsApp.contact.country">Country</label>
-            <input type="text" class="form-control" name="country" ng-model="guts.contact.country" />
+            <input type="text" csrs-form-control name="country" ng-model="guts.contact.country" />
         </div>
     </div>
 
     <div class="row">
-        <div class="form-group col-xs-6">
+        <div csrs-form-group class="col-xs-6">
             <label translate="csrsApp.contact.postalCode">Postal Code</label>
-            <input type="text" class="form-control" name="postalCode" ng-model="guts.contact.postalCode" />
+            <input type="text" csrs-form-control name="postalCode" ng-model="guts.contact.postalCode" />
         </div>
 
-        <div class="form-group col-xs-6">
+        <div csrs-form-group class="col-xs-6">
             <label translate="csrsApp.contact.email">Email</label>
-            <input type="email" class="form-control" name="email" ng-model="guts.contact.email" />
+            <input csrs-form-control type="email" name="email" ng-model="guts.contact.email" />
+            <p csrs-help-block="email" translate="global.messages.validate.invalid">Invalid</p>
         </div>
     </div>
 
     <div class="row">
-        <div class="form-group col-xs-6">
+        <div csrs-form-group class="col-xs-6">
             <div>
                 <strong translate="csrsApp.contact.omitNameFromDirectory">Omit name from directory</strong>
             </div>
@@ -70,7 +71,7 @@
             </div>
         </div>
         
-        <div class="form-group form-inline col-xs-6">
+        <div csrs-form-group class="form-inline col-xs-6">
             <div>
                 <strong translate="csrsApp.contact.omitEmailFromDirectory">Omit email from directory</strong>
             </div>
@@ -90,14 +91,14 @@
     </div>
     
     <div class="row">
-        <div class="form-group col-xs-6">
+        <div csrs-form-group class="col-xs-6">
             <label translate="csrsApp.contact.department">Department</label>
-            <input type="text" class="form-control" name="department" ng-model="guts.contact.department" />
+            <input type="text" csrs-form-control name="department" ng-model="guts.contact.department" />
         </div>
 
-        <div class="form-group col-xs-6">
+        <div csrs-form-group class="col-xs-6">
             <label translate="csrsApp.contact.affiliation">Affiliation</label>
-            <input type="text" class="form-control" name="affiliation" ng-model="guts.contact.affiliation" />
+            <input type="text" csrs-form-control name="affiliation" ng-model="guts.contact.affiliation" />
         </div>
     </div>
 </div>

@@ -53,6 +53,11 @@
     </table>
 
     <div class="panel-footer">
+        <div class="alert alert-danger text-left" ng-show="annualsCtrl.error">
+            <h4 translate="global.messages.error.occurred">An Error Occurred</h4>
+            <div ng-bind="annualsCtrl.error">Error details</div>
+        </div>
+        
         <button ng-click="annualsCtrl.createAnnual()" class="btn btn-info btn-sm">
             <span class="glyphicon glyphicon-plus"></span>
         </button>
