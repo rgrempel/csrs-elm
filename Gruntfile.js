@@ -27,7 +27,7 @@ module.exports = function (grunt) {
         },
         htmllint: {
             all: {
-                src: ['src/main/webapp/scripts/**/*.html', 'src/main/webapp/index.html'],
+                src: ['src/main/webapp/scripts/**/*.html', 'src/main/webapp/index.html', 'src/main/resources/mails/*.html'],
                 options: {
                     ignore: [
                         /Attribute “ng-[a-z-]+” not allowed/,

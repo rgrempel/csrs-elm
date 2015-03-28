@@ -4,15 +4,36 @@
         <title th:text="#{email.accountCreation.title}">CSRS Account Invitation</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     </head>
+
     <body>
         <p th:text="#{email.accountCreation.text1}">
-            This is the invitation which someone (hopefully you) requested for an
-            account at the membership web-site for the Canadian Society for Renaissance Studies.
+            This is the invitation which someone (hopefully you) requested for
+            an account at the membership web-site for the Canadian Society for
+            Renaissance Studies.
         </p>
-        
+      
+        <th:block th:each="userEmail : ${email.userEmails.?[user == null]}"> 
+            <p> 
+                <span th:utext="#{email.accountCreation.toCreateAccountFollowLink(@{|${baseUrl}/#!/invitation/${userEmail.userEmailActivations[0].activationKey}|})}">
+                    To create a new account, follow <a href="/invitation/2348272">this link</a>.
+                </span>
+            </p>
+            
+            <p>
+                <span th:text="#{email.accountCreation.hateLinks}">
+                    If you don't like clicking on links in emails, then go back to the page where you
+                    requested the invitation, and use the following code:
+                </span>
+
+                <span th:text="${userEmail.userEmailActivations[0].activationKey}">2348272</span>
+            </p>
+        </th:block>
+
         <p>
             <span th:text="#{email.accountCreation.text2}">Sincerely yours, </span>
-            <br/>
+        </p>
+
+        <p>
             <em th:text="#{email.signature}">Canadian Society for Renaissance Studies</em>
         </p>
     </body>
