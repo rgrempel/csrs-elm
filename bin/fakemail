@@ -1,0 +1,4 @@
+#! /bin/sh
+
+mkdir -p build/mail
+bin/fakemail.py --host localhost --port 25 --path build/mail 
