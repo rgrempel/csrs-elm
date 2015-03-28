@@ -26,10 +26,7 @@
 
 <div class="bg-info voffset6" ng-show="search.searchStatus" translate="{{search.searchStatus}}"></div>
 
-<div class="bg-danger voffset6" ng-show="search.errorMessage">
-    <strong translate="global.messages.error.occurred">An error has occurred</strong>
-    <div ng-bind="search.errorMessage"></div> 
-</div>
+<div csrs-error-occurred="search.errorMessage"></div>
 
 <div class="row voffset6">
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 contact-list yoyo" ng-repeat="contact in search.results track by contact.id">

@@ -17,6 +17,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Set;
+import java.util.HashSet;
 
 /**
  * A Contact.
@@ -105,7 +106,7 @@ public class Contact implements Serializable {
 
     @OneToMany(mappedBy = "contact")
     @lombok.Getter @lombok.Setter
-    private Set<ContactEmail> contactEmails;
+    private Set<ContactEmail> contactEmails = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "preferred_email_id")
@@ -123,12 +124,12 @@ public class Contact implements Serializable {
     @OneToMany(mappedBy="contact")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @lombok.Getter @lombok.Setter
-    private Set<Annual> annuals;
+    private Set<Annual> annuals = new HashSet<>();
 
     @OneToMany(mappedBy="contact")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @lombok.Getter @lombok.Setter
-    private Set<Interest> interests;
+    private Set<Interest> interests = new HashSet<>();
     
     @PrePersist 
     public void checkDefaults () {

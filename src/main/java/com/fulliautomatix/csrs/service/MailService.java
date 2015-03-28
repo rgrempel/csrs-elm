@@ -1,6 +1,7 @@
 package com.fulliautomatix.csrs.service;
 
 import com.fulliautomatix.csrs.domain.User;
+import com.fulliautomatix.csrs.domain.Email;
 import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,5 +83,19 @@ public class MailService {
         String content = templateEngine.process("activationEmail", context);
         String subject = messageSource.getMessage("email.activation.title", null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
+    }
+
+    @Async
+    public void sendAccountCreationEmail (Email email, String langKey, String baseUrl) {
+        log.debug("Sending account creation email to '{}'", email.getEmailAddress());
+
+        Locale locale = Locale.forLanguageTag(langKey);
+        Context context = new Context(locale);
+        context.setVariable("email", email);
+        context.setVariable("baseUrl", baseUrl);
+
+        String content = templateEngine.process("accountCreationEmail", context);
+        String subject = messageSource.getMessage("email.accountCreation.title", null, locale);
+        sendEmail(email.getEmailAddress(), subject, content, false, true);
     }
 }

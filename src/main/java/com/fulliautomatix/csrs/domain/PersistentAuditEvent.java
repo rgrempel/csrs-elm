@@ -28,6 +28,7 @@ public class PersistentAuditEvent  {
     @Column(name = "event_date")
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     private LocalDateTime auditEventDate;
+
     @Column(name = "event_type")
     private String auditEventType;
 

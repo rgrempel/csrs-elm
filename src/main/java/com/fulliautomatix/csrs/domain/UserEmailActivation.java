@@ -43,6 +43,7 @@ public class UserEmailActivation implements Serializable {
     @lombok.Getter @lombok.Setter
     @ManyToOne
     @NotNull
+    @JoinColumn(name = "user_email_id")
     private UserEmail userEmail;
 
     @lombok.Getter @lombok.Setter

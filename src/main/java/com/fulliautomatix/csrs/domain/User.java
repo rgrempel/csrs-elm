@@ -49,7 +49,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @OneToMany(mappedBy="user")
     @lombok.Getter @lombok.Setter
-    private Set<UserEmail> userEmails; 
+    private Set<UserEmail> userEmails = new HashSet<>();
     
     @Column(nullable = false)
     @lombok.Getter @lombok.Setter

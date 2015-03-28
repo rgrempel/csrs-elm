@@ -9,10 +9,7 @@
     </div>
 
     <div class="modal-footer">
-        <div class="alert alert-danger text-left" ng-show="deleteContactController.error">
-            <h4 translate="global.messages.error.occurred">An Error Occurred</h4>
-            <div ng-bind="deleteContactController.error">Error details</div>
-        </div>
+        <div csrs-error-occurred="deleteContactController.error"></div>
         
         <button type="button" class="btn btn-default" ng-click="deleteContactController.cancel()">
             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>

@@ -18,6 +18,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Set;
+import java.util.HashSet;
 
 /**
  * An email address for a user.
@@ -54,4 +55,8 @@ public class UserEmail implements Serializable {
     @Column(name = "activated")
     @lombok.Getter @lombok.Setter
     private DateTime activated;
+
+    @OneToMany(mappedBy = "userEmail")
+    @lombok.Getter @lombok.Setter
+    private Set<UserEmailActivation> userEmailActivations = new HashSet<>();
 }

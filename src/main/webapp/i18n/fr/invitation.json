@@ -1,0 +1,19 @@
+{
+    "invitation": {
+        "createAccount": {
+            "title": "Création de compte utilisateur",
+
+            "blurb": "Pour créer un compte, indiquez votre adresse email ci-dessous. Nous vous enverrons une invitation par courriel - il devrait arriver en quelques minutes. Se il ne arrive pas, vérifier se il a été marqués comme courrier indésirable. Vous pouvez également envoyer une autre invitation à partir d'ici si nécessaire.",
+
+            "email": "Email",
+
+            "sendInvitation": "Envoyer une invitation",
+
+            "invitationSent": "Invitation a été envoyée",
+
+            "invitationMessage": "Votre invitation a été envoyée, et devrait arriver bientôt.",
+
+            "passwordReset": "Si vous avez déjà un compte, mais vous avez oublié le nom d'utilisateur ou mot de passe, puis essayez le mot de <a href=\"#!/password-reset\">passe réinitialiser</a>."
+        }
+    }
+}

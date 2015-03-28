@@ -16,6 +16,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Set;
+import java.util.HashSet;
 
 /**
  * An email address.
@@ -30,6 +31,7 @@ import java.util.Set;
 )
 @lombok.ToString(of={"id", "emailAddress"})
 @lombok.EqualsAndHashCode(of={"emailAddress"})
+@lombok.NoArgsConstructor
 public class Email implements Serializable {
 
     @Id
@@ -45,17 +47,17 @@ public class Email implements Serializable {
     @OneToMany(mappedBy="email")
     @JsonIgnore
     @lombok.Getter @lombok.Setter
-    private Set<UserEmail> userEmails; 
+    private Set<UserEmail> userEmails = new HashSet<>(); 
     
     @OneToMany(mappedBy="email")
     @JsonIgnore
     @lombok.Getter @lombok.Setter
-    private Set<ContactEmail> contactEmails;
+    private Set<ContactEmail> contactEmails = new HashSet<>();
 
     @OneToMany(mappedBy="preferredEmail")
     @JsonIgnore
     @lombok.Getter @lombok.Setter
-    private Set<Contact> preferredByContacts;
+    private Set<Contact> preferredByContacts = new HashSet<>();
 
     public String getEmailAddress () {
         if (emailAddress == null) {
