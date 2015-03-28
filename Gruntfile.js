@@ -27,7 +27,7 @@ module.exports = function (grunt) {
         },
         htmllint: {
             all: {
-                src: ["src/main/webapp/scripts/**/*.html", "src/main/webapp/index.html"],
+                src: ['src/main/webapp/scripts/**/*.html', 'src/main/webapp/index.html'],
                 options: {
                     ignore: [
                         /Attribute “ng-[a-z-]+” not allowed/,
@@ -42,6 +42,9 @@ module.exports = function (grunt) {
                         /Attribute “active-menu” not allowed on element/,
                         /Attribute “csrs-contact-annuals” not allowed on element/,
                         /Attribute “csrs-contact-interests” not allowed on element/,
+                        /Attribute “csrs-form-group” not allowed on element/,
+                        /Attribute “csrs-form-control” not allowed on element/,
+                        /Attribute “csrs-help-block” not allowed on element/,
                         /Attribute “csrs-contact-label” not allowed on element/,
                         /Attribute “csrs-contact-form-guts” not allowed on element/,
                         /Attribute “csrs-modal” not allowed on element/
