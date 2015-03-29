@@ -8669,6 +8669,11 @@ button.close {
 }
 
 /* line 31, ../../../scss/_custom.scss */
+.translation-message {
+  font-size: 80%;
+}
+
+/* line 35, ../../../scss/_custom.scss */
 .csrs-logo {
   display: inline-block;
   width: 347px;
@@ -8677,47 +8682,47 @@ button.close {
   background-size: contain;
 }
 
-/* line 39, ../../../scss/_custom.scss */
+/* line 43, ../../../scss/_custom.scss */
 .well .panel-default > .panel-heading {
   background-color: #e8e8e8;
 }
 
-/* line 43, ../../../scss/_custom.scss */
+/* line 47, ../../../scss/_custom.scss */
 .well .panel-default > .panel-footer {
   background-color: #e8e8e8;
 }
 
-/* line 47, ../../../scss/_custom.scss */
+/* line 51, ../../../scss/_custom.scss */
 .voffset4 {
   margin-top: 4px;
 }
 
-/* line 48, ../../../scss/_custom.scss */
+/* line 52, ../../../scss/_custom.scss */
 .voffset6 {
   margin-top: 6px;
 }
 
-/* line 49, ../../../scss/_custom.scss */
+/* line 53, ../../../scss/_custom.scss */
 .voffset8 {
   margin-top: 8px;
 }
 
-/* line 50, ../../../scss/_custom.scss */
+/* line 54, ../../../scss/_custom.scss */
 .voffset12 {
   margin-top: 12px;
 }
 
-/* line 51, ../../../scss/_custom.scss */
+/* line 55, ../../../scss/_custom.scss */
 .voffset16 {
   margin-top: 16px;
 }
 
-/* line 52, ../../../scss/_custom.scss */
+/* line 56, ../../../scss/_custom.scss */
 .voffset18 {
   margin-top: 18px;
 }
 
-/* line 53, ../../../scss/_custom.scss */
+/* line 57, ../../../scss/_custom.scss */
 .voffset24 {
   margin-top: 24px;
 }

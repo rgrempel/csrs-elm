@@ -75,7 +75,8 @@
                 },
                 "required": "Requiritur",
                 "invalid": "Invalidum"
-            }
+            },
+            "translation": "Idcirco Latina est opus in progressionem. Suadentur gratum foret."
         }
     },
     "entity": {

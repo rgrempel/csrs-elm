@@ -25,9 +25,9 @@
         <div class="container">
             <div class="well well-sm" ui-view="content"></div>
 
-            <!-- <div class="footer">
-                <p translate="footer">This is your footer</p>
-            </div> -->
+            <div class="footer translation-message">
+                <em translate="global.messages.translation" translate-compile ng-controller="LanguageController">The French translation is a work-in-progress -- suggestions for improvements would be welcome.</em>
+            </div>
         </div>
 
         <div ui-view="modal"></div>

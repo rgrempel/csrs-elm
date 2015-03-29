@@ -75,7 +75,8 @@
                 },
                 "required": "Requis",
                 "invalid": "Non valide"
-            }
+            },
+            "translation": "La traduction française est un travail en cours. Corrections seraient les bienvenus."
         }
     },
     "entity": {

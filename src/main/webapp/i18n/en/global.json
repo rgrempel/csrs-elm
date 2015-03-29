@@ -75,7 +75,8 @@
                 },
                 "required": "Required",
                 "invalid": "Invalid"
-            }
+            },
+            "translation": "Use the language menu to switch to <a href=\"\" ng-click=\"changeLanguage('fr')\">French</a> or <a href=\"\" ng-click=\"changeLanguage('la')\">Latin</a>."
         }
     },
     "entity": {
