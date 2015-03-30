@@ -1,0 +1,459 @@
+{
+    "activate": {
+        "title": "Activation",
+        "messages": {
+            "success": "<strong>Usoris est aguntur.</strong>  Placere <a href=\"#!/login\">cosigno</a>.",
+            "error": "<strong>Usoris non aguntur.</strong>  Commodo subcribo sursum adnotatione formam."
+        }
+    },
+    "csrsApp": {
+        "annual": {
+            "home": {
+                "title": "Annum",
+                "createLabel": "Creare anno novo",
+                "createOrEditLabel": "Creare anno novo aut emendo"
+            },
+            "delete": {
+                "question": "Visne {{name}} notitia {{year}} sunt delere?"
+            },
+            "detail": {
+                "title": "Annum"
+            },
+            "year": "Annum",
+            "membership": "Status Sodalitas",
+            "iter": "ITER",
+            "rr": "Renaissance et Reformationem",
+            "contact": "contactum",
+            "data": {
+                "membership": {
+                    "0": "Nullum",
+                    "1": "Patronum",
+                    "2": "Membrum Ordinarius",
+                    "3": "Cessatura",
+                    "4": "Reductus",
+                    "5": "Pupula"
+                },
+                "rr": {
+                    "0": "",
+                    "1": "Vestigium",
+                    "2": "Transcursorium"
+                }
+            }
+        },
+        "contact": {
+            "home": {
+                "title": "Socium",
+                "createLabel": "Socium novum creare",
+                "createOrEditLabel": "Socium novum creare aut emendum"
+            },
+            "delete": {
+                "question": "Visne {{name}} notitia sunt delere?"
+            },
+            "detail": {
+                "title": "Socium"
+            },
+            "code": "Code",
+            "firstName": "Praenomen",
+            "lastName": "Cognomen",
+            "salutation": "Salutatio",
+            "street": "Via",
+            "city": "Urbs",
+            "region": "Regio",
+            "country": "Patriae",
+            "postalCode": "Codicem Postal",
+            "email": "Cursorium",
+            "department": "Department",
+            "affiliation": "Universitatis / Consociatione",
+            "omitNameFromDirectory": "Omitto nomen ex directorium",
+            "omitEmailFromDirectory": "Omitto cursorium ex directorium",
+            "interests": "Interesse Academicistica",
+            "data": {
+                "omit": "Omitto",
+                "include": "Habeo"
+            }
+        },
+        "processForms": {
+            "home": {
+                "title": "Formae processum",
+                "createLabel": "Creare socium novum",
+                "createOrEditLabel": "Creare socium novum aut emendum"
+            },
+            "annualData": "Notitia annua",
+            "contactInformation": "Notitia contactus",
+            "search": "Quaerere",
+            "search.placeholder": "Scribe praenome aut cognomen incipiens ad quarerem",
+            "searchStatus": {
+                "searching": "Quaero ...",
+                "notFound": "Non inveni."
+            },
+            "lastMember": "Sodalis:"
+        }
+    },
+    "audits": {
+        "title": "Audits",
+        "filter": {
+            "title": "Filter per date",
+            "from": "from",
+            "to": "to",
+            "button": {
+                "weeks": "Weeks",
+                "today": "today",
+                "clear": "clear",
+                "close": "close"
+            }
+        },
+        "table": {
+            "header": {
+                "principal": "User",
+                "date": "Date",
+                "status": "State",
+                "data": "Extra data"
+            },
+            "data": {
+                "remoteAddress": "Remote Address:"
+            }
+        }
+    },
+    "configuration": {
+        "title": "Configuration",
+        "filter": "Filter (by prefix)",
+        "table": {
+            "prefix": "Prefix",
+            "properties": "Properties"
+        }
+    },
+    "errors": {
+        "403": "Qui nequeant pervenire paginam.",
+        "title": "Paginam erratam!"
+    },
+    "global": {
+        "title": "Sodalitas SCSR",
+        "browsehappy": "You are using an <strong>outdated</strong> browser. Please  <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+        "menu": {
+            "home": "Domus",
+            "entities": {
+                "main": "Entities",
+                "contact": "Socium",
+                "annual": "Annum",
+                "additionalEntity": "JHipster will add addtional entities"
+            },
+            "account": {
+                "main": "Tessera",
+                "settings": "Optiones",
+                "password": "Signum",
+                "sessions": "Sessiones",
+                "login": "Cosigno",
+                "logout": "Conventum concludere",
+                "register": "Subsigno"
+            },
+            "tasks": {
+                "main": "Negotium",
+                "processForms": "Formae processum"
+            },
+            "admin": {
+                "main": "Administrationis",
+                "tracker": "User tracker",
+                "metrics": "Mensuras",
+                "health": "Salutem",
+                "configuration": "Configuration",
+                "logs": "Acta",
+                "audits": "Compoto",
+                "apidocs": "API",
+                "database": "Database"
+            },
+            "language": "Lingua"
+        },
+        "form": {
+            "username": "Nomen usoris",
+            "username.placeholder": "Nomen usoris tuum",
+            "newpassword": "Signum novum",
+            "newpassword.placeholder": "Signum novum",
+            "confirmpassword": "Signum novum confirmatio",
+            "confirmpassword.placeholder": "Signum novum confirmatio",
+            "email": "Cursorium",
+            "email.placeholder": "Cursorium tuum"
+        },
+        "messages": {
+            "info": {
+                "authenticated": "Numquid hie fuerunt prius? <a href=\"#!/login\">Cosigno in tesseram vestram.</a>",
+                "register": "Sed non tamen tesseram? <a href=\"#!/register\">Subsigno tesseram novam.</a>"
+            },
+            "error": {
+                "occurred": "Errorem inciderunt",
+                "dontmatch\"": "Signum confirmationemque imparem!"
+            },
+            "validate": {
+                "newpassword": {
+                    "required": "Signum tuum requiritur.",
+                    "minlength": "Signum characterum requiritur saltem V",
+                    "maxlength": "Your password cannot be longer than 50 characters",
+                    "strength": "Fortitudo signum:"
+                },
+                "confirmpassword": {
+                    "required": "Tuun signum confirmationis requiritur.",
+                    "minlength": "Your confirmation password is required to be at least 5 characters",
+                    "maxlength": "Your confirmation password cannot be longer than 50 characters"
+                },
+                "email": {
+                    "required": "Tuum cursorium requiritur.",
+                    "invalid": "Tuum cursorium invalidum.",
+                    "minlength": "Your e-mail is required to be at least 5 characters",
+                    "maxlength": "Your e-mail cannot be longer than 50 characters"
+                },
+                "required": "Requiritur",
+                "invalid": "Invalidum"
+            },
+            "translation": "Idcirco Latina est opus in progressionem. Suadentur gratum foret."
+        }
+    },
+    "entity": {
+        "action": {
+            "back": "Recedo",
+            "cancel": "Rescindo",
+            "delete": "Erado",
+            "edit": "Recensere",
+            "save": "Servo",
+            "view": "Prospecto"
+        },
+        "detail": {
+            "field": "Adjunctum",
+            "value": "Indicium"
+        },
+        "delete": {
+            "title": "Eradim velim confirmes"
+        }
+    },
+    "footer": "This is your footer",
+    "health": {
+        "title": "Salutem compescit",
+        "refresh.button": "Recreo",
+        "stacktrace": "Narratus",
+        "indicator": {
+            "diskSpace": "Disk space",
+            "mail": "Cursorium",
+            "db": "Database"
+        },
+        "table": {
+            "service": "Nomen servitii",
+            "status": "Status"
+        },
+        "status": {
+            "UP": "SURSUM",
+            "DOWN": "PESSUM"
+        }
+    },
+    "invitation": {
+        "createAccount": {
+            "title": "Tesseram creare",
+            "blurb": "Tesseram creare praestate inscriptio electronica sequitur. Mittemus vobis inuitavit -- intra minuta pervenerit. Si non venit, si hæc ita se ut spamma. Etiam si opus mittere hinc invitationem alius.",
+            "email": "Inscriptio electronica",
+            "sendInvitation": "Mittentes vocabant",
+            "invitationSent": "Invitatio missum",
+            "invitationMessage": "Invitatio missus est, et mox advenient.",
+            "passwordReset": "Iam si tesseram, sed obliti usoris aut signo, tum istoc  <a href=\"#!/password-reset\">signum retexere</a>."
+        }
+    },
+    "language": {
+        "en": "Anglicus",
+        "fr": "Gallicus",
+        "la": "Latina"
+    },
+    "login": {
+        "title": "Authenticas",
+        "form": {
+            "password": "Signum",
+            "password.placeholder": "Signum tuum",
+            "rememberme": "Cosignum automatic",
+            "button": "Cosignum"
+        },
+        "messages": {
+            "error": {
+                "authentication": "<strong>Defecit authenticitate!</strong> Probā signum atque iterum cosignio."
+            }
+        }
+    },
+    "logs": {
+        "title": "Logs",
+        "nbloggers": "There are {{ total }} loggers.",
+        "filter": "Filter",
+        "table": {
+            "name": "Name",
+            "level": "Level"
+        }
+    },
+    "main": {
+        "title": "Scolaris de renaissance, exspectata!",
+        "subtitle": "Hic situs sociari de Societate Canadian Studiorum Renascerentur.",
+        "logged": {
+            "message": "Te \"{{username}}\" videntur esse."
+        },
+        "question": "Pro magis notitia de Societate Canadian Studiorum Renascerentur, ite situm principale ad:"
+    },
+    "metrics": {
+        "title": "Application Metrics",
+        "refresh.button": "Refresh",
+        "updating": "Updating...",
+        "jvm": {
+            "title": "JVM Metrics",
+            "memory": {
+                "title": "Memory",
+                "total": "Total Memory",
+                "heap": "Heap Memory",
+                "nonheap": "Non-Heap Memory"
+            },
+            "threads": {
+                "title": "Threads",
+                "all": "All",
+                "runnable": "Runnable",
+                "timedwaiting": "Timed waiting",
+                "waiting": "Waiting",
+                "blocked": "Blocked",
+                "dump": {
+                    "title": "Threads dump",
+                    "id": "Id: ",
+                    "blockedtime": "Blocked Time",
+                    "blockedcount": "Blocked Count",
+                    "waitedtime": "Waited Time",
+                    "waitedcount": "Waited Count",
+                    "lockname": "Lock name",
+                    "stacktrace": "Stacktrace",
+                    "show": "Show",
+                    "hide": "Hide"
+                }
+            },
+            "gc": {
+                "title": "Garbage collections",
+                "marksweepcount": "Mark Sweep count",
+                "marksweeptime": "Mark Sweep time",
+                "scavengecount": "Scavenge count",
+                "scavengetime": "Scavenge time"
+            },
+            "http": {
+                "title": "HTTP requests (events per second)",
+                "active": "Active requests:",
+                "total": "Total requests:",
+                "table": {
+                    "code": "Code",
+                    "count": "Count",
+                    "mean": "Mean",
+                    "average": "Average"
+                },
+                "code": {
+                    "ok": "Ok",
+                    "notfound": "Not found",
+                    "servererror": "Server Error"
+                }
+            }
+        },
+        "servicesstats": {
+            "title": "Services statistics (time in millisecond)",
+            "table": {
+                "name": "Service name",
+                "count": "Count",
+                "mean": "Mean",
+                "min": "Min",
+                "max": "Max",
+                "p50": "p50",
+                "p75": "p75",
+                "p95": "p95",
+                "p99": "p99"
+            }
+        },
+        "ehcache": {
+            "title": "Ehcache statistics",
+            "cachename": "Cache name",
+            "objects": "Objects",
+            "hits": "Hits",
+            "misses": "Misses",
+            "evictioncount": "Eviction count",
+            "mean": "Mean get time (ms)"
+        },
+        "datasource": {
+            "usage": "Usage",
+            "title": "DataSource statistics (time in millisecond)",
+            "name": "Pool usage",
+            "count": "Count",
+            "mean": "Mean",
+            "min": "Min",
+            "max": "Max",
+            "p50": "p50",
+            "p75": "p75",
+            "p95": "p95",
+            "p99": "p99"
+        }
+    },
+    "password": {
+        "title": "Signum pro [<b>{{username}}</b>]",
+        "form": {
+            "button": "Servo"
+        },
+        "messages": {
+            "error": "<strong>Quasi per errorem inciderunt!</strong> Signum non potuit mutari.",
+            "success": "<strong>Signum mutatum!</strong>"
+        }
+    },
+    "register": {
+        "title": "Registration",
+        "form": {
+            "button": "Register"
+        },
+        "messages": {
+            "validate": {
+                "login": {
+                    "required": "Your login is required.",
+                    "minlength": "Your login is required to be at least 1 character",
+                    "maxlength": "Your login cannot be longer than 50 characters",
+                    "pattern": "Your login can only contain lower-case letters and digits"
+                }
+            },
+            "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
+            "error": {
+                "fail": "<strong>Registration failed!</strong> Please try again later.",
+                "userexists": "<strong>Login name already registered!</strong> Please choose another one.",
+                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
+            }
+        }
+    },
+    "sessions": {
+        "title": "Active sessions for [<b>{{username}}</b>]",
+        "table": {
+            "ipaddress": "IP address",
+            "useragent": "User Agent",
+            "date": "Date",
+            "button": "Invalidate"
+        },
+        "messages": {
+            "success": "<strong>Session invalidated!</strong>",
+            "error": "<strong>An error has occurred!</strong> The session could not be invalidated."
+        }
+    },
+    "settings": {
+        "title": "User settings for [<b>{{username}}</b>]",
+        "form": {
+            "firstname": "Praenomen",
+            "firstname.placeholder": "Praenome tuum",
+            "lastname": "Cognomen",
+            "lastname.placeholder": "Cognomen tuum",
+            "button": "Servo"
+        },
+        "messages": {
+            "error": {
+                "fail": "<strong>An error has occurred!</strong> Settings could not be saved.",
+                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
+            },
+            "success": "<strong>Settings saved!</strong>",
+            "validate": {
+                "firstname": {
+                    "required": "Your first name is required.",
+                    "minlength": "Your first name is required to be at least 1 character",
+                    "maxlength": "Your first name cannot be longer than 50 characters"
+                },
+                "lastname": {
+                    "required": "Your last name is required.",
+                    "minlength": "Your last name is required to be at least 1 character",
+                    "maxlength": "Your last name cannot be longer than 50 characters"
+                }
+            }
+        }
+    }
+}

@@ -15,12 +15,6 @@ angular.module('csrsApp')
                         templateUrl: 'scripts/app/entities/annual/annuals.html',
                         controller: 'AnnualController'
                     }
-                },
-                resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('annual');
-                        return $translate.refresh();
-                    }]
                 }
             })
             .state('annualDetail', {
@@ -35,12 +29,6 @@ angular.module('csrsApp')
                         templateUrl: 'scripts/app/entities/annual/annual-detail.html',
                         controller: 'AnnualDetailController'
                     }
-                },
-                resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('annual');
-                        return $translate.refresh();
-                    }]
                 }
             });
     });

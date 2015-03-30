@@ -72,8 +72,9 @@ angular.module('csrsApp', [
         httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*api.*/, /.*protected.*/], true);
 
         // Initialize angular-translate
-        $translateProvider.useLoader('$translatePartialLoader', {
-            urlTemplate: 'i18n/{lang}/{part}.json'
+        $translateProvider.useStaticFilesLoader({
+            prefix: 'i18n/',
+            suffix: '.json'
         });
 
         var language;
@@ -112,12 +113,7 @@ angular.module('csrsApp', [
                     function (Auth) {
                         return Auth.authorize();
                     }
-                ],
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('global');
-                    $translatePartialLoader.addPart('language');
-                    return $translate.refresh();
-                }]
+                ]
             }
         });
         

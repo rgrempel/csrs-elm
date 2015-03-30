@@ -44,15 +44,6 @@ angular.module('csrsApp').config(function ($stateProvider) {
                 controller: 'ProcessFormsDetailController',
                 controllerAs: 'detail'
             }
-        },
-        resolve: {
-            translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                $translatePartialLoader.addPart('processForms');
-                $translatePartialLoader.addPart('contact');
-                $translatePartialLoader.addPart('annual');
-                $translatePartialLoader.addPart('global');
-                return $translate.refresh();
-            }]
         }
     });
 });

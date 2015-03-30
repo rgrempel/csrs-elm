@@ -1,0 +1,1510 @@
+activate: 
+    title:
+        en: "Activation"
+        fr: "Activation"
+        la: "Activation"
+
+    messages: 
+        success:
+            en: >-
+                <strong>Your user has been activated.</strong> 
+                Please <a href="#!/login">authenticate</a>.
+            fr: >-
+                <strong>Votre compte utilisateur a été activé.</strong> 
+                Merci de vous <a href="#!/login">authentifier</a>.
+            la: >-
+                <strong>Usoris est aguntur.</strong> 
+                Placere <a href="#!/login">cosigno</a>.
+
+        error:
+            en: >-
+                <strong>Your user could not be activated.</strong> 
+                Please use the registration form to sign up.
+            fr: >-
+                <strong>Votre compte utilisateur n'a pas pu être activé.</strong> 
+                Utilisez le formulaire d'enregistrement pour en créer un nouveau.
+            la: >-
+                <strong>Usoris non aguntur.</strong> 
+                Commodo subcribo sursum adnotatione formam.
+
+csrsApp: 
+    annual: 
+        home: 
+            title:
+                en: "Annuals"
+                fr: "Annuals"
+                la: "Annum"
+
+            createLabel:
+                en: "Create a new Annual"
+                fr: "Créer un nouveau Annual"
+                la: "Creare anno novo"
+
+            createOrEditLabel:
+                en: "Create or edit a Annual"
+                fr: "Créer ou éditer un Annual"
+                la: "Creare anno novo aut emendo"
+        
+        delete: 
+            question:
+                en: "Are you sure you want to delete the {{ year }} information for {{name}}?"
+                fr: "Etes-vous certain de vouloir supprimer les informations pour {{year}} concernant {{name}}?"
+                la: "Visne {{name}} notitia {{year}} sunt delere?"
+        
+        detail: 
+            title:
+                en: "Annual"
+                fr: "Annual"
+                la: "Annum"
+        
+        year:
+            en: "Year"
+            fr: "Année"
+            la: "Annum"
+
+        membership:
+            en: "Membership Status"
+            fr: "Statut d'adhésion"
+            la: "Status Sodalitas"
+
+        iter:
+            en: "ITER"
+            fr: "ITER"
+            la: "ITER"
+
+        rr:
+            en: "Renaissance and Reformation"
+            fr: "Renaissance et Réforme"
+            la: "Renaissance et Reformationem"
+
+        contact:
+            en: "contact"
+            fr: "contact"
+            la: "contactum"
+
+        data: 
+            membership: 
+                "0":
+                    en: "None"
+                    fr: "Aucun"
+                    la: "Nullum"
+
+                "1":
+                    en: "Patron"
+                    fr: "Membre bienfaiteur"
+                    la: "Patronum"
+
+                "2":
+                    en: "Regular Member"
+                    fr: "Membre régulier"
+                    la: "Membrum Ordinarius"
+
+                "3":
+                    en: "Ph.D. without full-time employment"
+                    fr: "Ph.D. sans emploi à temps plein"
+                    la: "Cessatura"
+
+                "4":
+                    en: "Retired"
+                    fr: "Professeur à la retraite"
+                    la: "Reductus"
+
+                "5":
+                    en: "Student"
+                    fr: "Étudiant(e)"
+                    la: "Pupula"
+            
+            rr: 
+                "0":
+                    en: ""
+                    fr: ""
+                    la: ""
+
+                "1":
+                    en: "Print"
+                    fr: "Imprimée"
+                    la: "Vestigium"
+
+                "2":
+                    en: "Electronic"
+                    fr: "Electronique"
+                    la: "Transcursorium"
+
+    contact: 
+        home: 
+            title:
+                en: "Contacts"
+                fr: "Contacts"
+                la: "Socium"
+
+            createLabel:
+                en: "Create a new Contact"
+                fr: "Créer un nouveau Contact"
+                la: "Socium novum creare"
+
+            createOrEditLabel:
+                en: "Create or edit a Contact"
+                fr: "Créer ou éditer un Contact"
+                la: "Socium novum creare aut emendum"
+        
+        delete: 
+            question:
+                en: "Are you sure you want to delete all the information for {{ name }}?"
+                fr: "Etes-vous certain de vouloir supprimer toutes les informations concernant {{ name }} ?"
+                la: "Visne {{name}} notitia sunt delere?"
+        
+        detail: 
+            title:
+                en: "Contact"
+                fr: "Contact"
+                la: "Socium"
+        
+        code:
+            en: "Code"
+            fr: "Code"
+            la: "Code"
+
+        firstName:
+            en: "First Name"
+            fr: "Prénom"
+            la: "Praenomen"
+
+        lastName:
+            en: "Last Name"
+            fr: "Nom de famille"
+            la: "Cognomen"
+
+        salutation:
+            en: "Salutation"
+            fr: "Salutation"
+            la: "Salutatio"
+
+        street:
+            en: "Street"
+            fr: "Rue"
+            la: "Via"
+
+        city:
+            en: "City"
+            fr: "Ville"
+            la: "Urbs"
+
+        region:
+            en: "Region"
+            fr: "Région"
+            la: "Regio"
+
+        country:
+            en: "Country"
+            fr: "État"
+            la: "Patriae"
+
+        postalCode:
+            en: "Postal Code"
+            fr: "Code postal"
+            la: "Codicem Postal"
+
+        email:
+            en: "Email"
+            fr: "Email"
+            la: "Cursorium"
+
+        department:
+            en: "Department"
+            fr: "Département"
+            la: "Department"
+
+        affiliation:
+            en: "University / Affiliation"
+            fr: "Université / Affiliation"
+            la: "Universitatis / Consociatione"
+
+        omitNameFromDirectory:
+            en: "Omit name from directory"
+            fr: "Omettre votre nom à partir du répertoire"
+            la: "Omitto nomen ex directorium"
+
+        omitEmailFromDirectory:
+            en: "Omit email from directory"
+            fr: "Omettre votre email à partir du répertoire"
+            la: "Omitto cursorium ex directorium"
+
+        interests:
+            en: "Scholarly Interests"
+            fr: "Domaines de recherche"
+            la: "Interesse Academicistica"
+
+        data: 
+            omit:
+                en: "Omit"
+                fr: "Omettre"
+                la: "Omitto"
+
+            include:
+                en: "Include" 
+                fr: "Inclure"
+                la: "Habeo" 
+    
+    processForms: 
+        home: 
+            title:
+                en: "Process Forms"
+                fr: "Traiter les formulaires"
+                la: "Formae processum"
+
+            createLabel:
+                en: "Create a new Contact"
+                fr: "Créer un nouveau Contact"
+                la: "Creare socium novum"
+
+            createOrEditLabel:
+                en: "Create or edit a Contact"
+                fr: "Créer ou éditer un Contact"
+                la: "Creare socium novum aut emendum"
+        
+        annualData:
+            en: "Annual Data"
+            fr: "Données annuelles"
+            la: "Notitia annua"
+
+        contactInformation:
+            en: "Contact Information"
+            fr: "Coordonnées"
+            la: "Notitia contactus"
+
+        search:
+            en: "Search"
+            fr: "Rechercher"
+            la: "Quaerere"
+
+        search.placeholder:
+            en: "Type beginning of first or last name to search"
+            fr: "Tapez début du nom ou le prénom de recherche"
+            la: "Scribe praenome aut cognomen incipiens ad quarerem"
+
+        searchStatus: 
+            searching:
+                en: "Searching ..."
+                fr: "Recherche ..."
+                la: "Quaero ..."
+
+            notFound:
+                en: "Not found."
+                fr: "Pas trouvé."
+                la: "Non inveni."
+        
+        lastMember:
+            en: "Member:"    
+            fr: "Adhérent:" 
+            la: "Sodalis:"    
+    
+audits: 
+    title:
+        en: "Audits"
+        fr: "Audits"
+        la: "Audits"
+
+    filter: 
+        title:
+            en: "Filter per date"
+            fr: "Filtrer par date"
+            la: "Filter per date"
+
+        from:
+            en: "from"
+            fr: "De"
+            la: "from"
+
+        to:
+            en: "to"
+            fr: "à"
+            la: "to"
+
+        button: 
+            weeks:
+                en: "Weeks"
+                fr: "Semaines"
+                la: "Weeks"
+
+            today:
+                en: "today"
+                fr: "Aujourd'hui"
+                la: "today"
+
+            clear:
+                en: "clear"
+                fr: "Effacer"
+                la: "clear"
+
+            close:
+                en: "close"
+                fr: "Fermer"
+                la: "close"
+    
+    table: 
+        header: 
+            principal:
+                en: "User"
+                fr: "Utilisateur"
+                la: "User"
+
+            date:
+                en: "Date"
+                fr: "Date"
+                la: "Date"
+
+            status:
+                en: "State"
+                fr: "Status"
+                la: "State"
+
+            data:
+                en: "Extra data"
+                fr: "Autres données"
+                la: "Extra data"
+        
+        data: 
+            remoteAddress:
+                en: "Remote Address:"
+                fr: "Adresse Distante:"
+                la: "Remote Address:"
+
+configuration: 
+    title:
+        en: "Configuration"
+        fr: "Configuration"
+        la: "Configuration"
+
+    filter:
+        en: "Filter (by prefix)"
+        fr: "Filtrer (par préfixe)"
+        la: "Filter (by prefix)"
+
+    table: 
+        prefix:
+            en: "Prefix"
+            fr: "Préfixe"
+            la: "Prefix"
+
+        properties:
+            en: "Properties"
+            fr: "Propriétés"
+            la: "Properties"
+    
+errors: 
+    title:
+        en: "Error page!"
+        fr: "Page d'erreur!"
+        la: "Paginam erratam!"
+
+    403:
+        en: "You are not authorized to access the page."
+        fr: "Vous n'avez pas les droits pour accéder à cette page."
+        la: "Qui nequeant pervenire paginam."
+
+global: 
+    title:
+        en: "CSRS Membership"
+        fr: "SCÉR adhésion"
+        la: "Sodalitas SCSR"
+
+    browsehappy:
+        en: >-
+            You are using an <strong>outdated</strong> browser. Please 
+            <a href="http://browsehappy.com/?locale=en">upgrade your browser</a> 
+            to improve your experience.
+        fr: >-
+            Vous utilisez un <strong>ancien</strong> navigateur. Veuillez 
+            <a href="http://browsehappy.com/?locale=fr">mettre à jour votre navigateur</a> 
+            pour une meilleure expérience.
+        la: >-
+            You are using an <strong>outdated</strong> browser. Please 
+            <a href="http://browsehappy.com/?locale=en">upgrade your browser</a>
+            to improve your experience.
+
+    menu: 
+        home:
+            en: "Home"
+            fr: "Accueil"
+            la: "Domus"
+
+        entities: 
+            main:
+                en: "Entities"
+                fr: "Entités"
+                la: "Entities"
+
+            contact:
+                en: "Contact"
+                fr: "Contact"
+                la: "Socium"
+
+            annual:
+                en: "Annual"
+                fr: "Annual"
+                la: "Annum"
+
+            additionalEntity:
+                en: "JHipster will add addtional entities"
+                fr: "JHipster will add addtional entities"
+                la: "JHipster will add addtional entities"
+        
+        account: 
+            main:
+                en: "Account"
+                fr: "Compte"
+                la: "Tessera"
+
+            settings:
+                en: "Settings"
+                fr: "Profil"
+                la: "Optiones"
+
+            password:
+                en: "Password"
+                fr: "Mot de passe"
+                la: "Signum"
+
+            sessions:
+                en: "Sessions"
+                fr: "Sessions"
+                la: "Sessiones"
+
+            login:
+                en: "Authenticate"
+                fr: "S'authentifier"
+                la: "Cosigno"
+
+            logout:
+                en: "Log out"
+                fr: "Déconnexion"
+                la: "Conventum concludere"
+
+            register:
+                en: "Register"
+                fr: "Créer un compte"
+                la: "Subsigno"
+        
+        tasks: 
+            main:
+                en: "Tasks"
+                fr: "Tâches"
+                la: "Negotium"
+
+            processForms:
+                en: "Process Forms"
+                fr: "Traiter les formulaires"
+                la: "Formae processum"
+        
+        admin: 
+            main:
+                en: "Administration"
+                fr: "Administration"
+                la: "Administrationis"
+
+            tracker:
+                en: "User tracker"
+                fr: "Suivi des utilisateurs"
+                la: "User tracker"
+
+            metrics:
+                en: "Metrics"
+                fr: "Métriques"
+                la: "Mensuras"
+
+            health:
+                en: "Health"
+                fr: "Diagnostics"
+                la: "Salutem"
+
+            configuration:
+                en: "Configuration"
+                fr: "Configuration"
+                la: "Configuration"
+
+            logs:
+                en: "Logs"
+                fr: "Logs"
+                la: "Acta"
+
+            audits:
+                en: "Audits"
+                fr: "Audits"
+                la: "Compoto"
+
+            apidocs:
+                en: "API"
+                fr: "API"
+                la: "API"
+
+            database:
+                en: "Database"
+                fr: "Base de données"
+                la: "Database"
+        
+        language:
+            en: "Language"
+            fr: "Langue"
+            la: "Lingua"
+    
+    form: 
+        username:
+            en: "Login"
+            fr: "Nom d'utilisateur"
+            la: "Nomen usoris"
+
+        username.placeholder:
+            en: "Your login"
+            fr: "Votre nom d'utilisateur"
+            la: "Nomen usoris tuum"
+
+        newpassword:
+            en: "New password"
+            fr: "Nouveau mot de passe"
+            la: "Signum novum"
+
+        newpassword.placeholder:
+            en: "New password"
+            fr: "Nouveau mot de passe"
+            la: "Signum novum"
+
+        confirmpassword:
+            en: "New password confirmation"
+            fr: "Confirmation du nouveau mot de passe"
+            la: "Signum novum confirmatio"
+
+        confirmpassword.placeholder:
+            en: "Confirm the new password"
+            fr: "Confirmation du nouveau mot de passe"
+            la: "Signum novum confirmatio"
+
+        email:
+            en: "E-mail"
+            fr: "Email"
+            la: "Cursorium"
+
+        email.placeholder:
+            en: "Your e-mail"
+            fr: "Votre email"
+            la: "Cursorium tuum"
+    
+    messages: 
+        info: 
+            authenticated:
+                en: "Been here before? <a href=\"#!/login\">Login with your account.</a>"
+                fr: "Vous connaissez cet endroit? <a href=\"#!/login\">Connecter</a> avec votre compte."
+                la: "Numquid hie fuerunt prius? <a href=\"#!/login\">Cosigno in tesseram vestram.</a>"
+
+            register:
+                en: "Don't have an account yet? <a href=\"#!/register\">Register a new account.</a>"
+                fr: "Vous n'avez pas encore de compte? <a href=\"#!/register\">Créer un compte.</a>"
+                la: "Sed non tamen tesseram? <a href=\"#!/register\">Subsigno tesseram novam.</a>"
+        
+        error: 
+            occurred:
+                en: "An error has occurred"
+                fr: "Une erreur est survenue"
+                la: "Errorem inciderunt"
+
+            dontmatch" :
+                en: "The password and its confirmation do not match!"
+                fr: "Le nouveau mot de passe et sa confirmation ne sont pas égaux!"
+                la: "Signum confirmationemque imparem!"
+        
+        validate: 
+            newpassword: 
+                required:
+                    en: "Your password is required."
+                    fr: "Votre mot de passe est requis."
+                    la: "Signum tuum requiritur."
+
+                minlength:
+                    en: "Your password is required to be at least 5 characters"
+                    fr: "Votre mot de passe doit comporter au moins 5 caractères"
+                    la: "Signum characterum requiritur saltem V"
+
+                maxlength:
+                    en: "Your password cannot be longer than 50 characters"
+                    fr: "Votre mot de passe ne doit pas comporter plus de 50 caractères"
+                    la: "Your password cannot be longer than 50 characters"
+
+                strength:
+                    en: "Password strength:"
+                    fr: "Robustesse du mot de passe:"
+                    la: "Fortitudo signum:"
+            
+            confirmpassword: 
+                required:
+                    en: "Your confirmation password is required."
+                    fr: "Votre confirmation du mot de passe est requis."
+                    la: "Tuun signum confirmationis requiritur."
+
+                minlength:
+                    en: "Your confirmation password is required to be at least 5 characters"
+                    fr: "Votre confirmation du mot de passe doit comporter au moins 5 caractères"
+                    la: "Your confirmation password is required to be at least 5 characters"
+
+                maxlength:
+                    en: "Your confirmation password cannot be longer than 50 characters"
+                    fr: "Votre confirmation du mot de passe ne doit pas comporter plus de 50 caractères"
+                    la: "Your confirmation password cannot be longer than 50 characters"
+            
+            email: 
+                required:
+                    en: "Your e-mail is required."
+                    fr: "Votre email est requis."
+                    la: "Tuum cursorium requiritur."
+
+                invalid:
+                    en: "Your e-mail is invalid."
+                    fr: "Votre email doit comporter au moins 5 caractères"
+                    la: "Tuum cursorium invalidum."
+
+                minlength:
+                    en: "Your e-mail is required to be at least 5 characters"
+                    fr: "Votre email ne doit pas comporter plus de 50 caractères"
+                    la: "Your e-mail is required to be at least 5 characters"
+
+                maxlength:
+                    en: "Your e-mail cannot be longer than 50 characters"
+                    fr: "Votre email n'est pas valide."
+                    la: "Your e-mail cannot be longer than 50 characters"
+            
+            required:
+                en: "Required"
+                fr: "Requis"
+                la: "Requiritur"
+
+            invalid:
+                en: "Invalid"
+                fr: "Non valide"
+                la: "Invalidum"
+        
+        translation:
+            en: >-
+                Use the language menu to switch to
+                <a href="" ng-click="changeLanguage('fr')">French</a> or
+                <a href="" ng-click="changeLanguage('la')">Latin</a>.
+            fr: "La traduction française est un travail en cours. Corrections seraient les bienvenus."
+            la: "Idcirco Latina est opus in progressionem. Suadentur gratum foret."
+
+entity: 
+    action: 
+        back:
+            en: "Back"
+            fr: "Retour"
+            la: "Recedo"
+
+        cancel:
+            en: "Cancel"
+            fr: "Annuler"
+            la: "Rescindo"
+
+        delete:
+            en: "Delete"
+            fr: "Editer"
+            la: "Erado"
+
+        edit:
+            en: "Edit"
+            fr: "Supprimer"
+            la: "Recensere"
+
+        save:
+            en: "Save"
+            fr: "Sauvegarder"
+            la: "Servo"
+
+        view:
+            en: "View"
+            fr: "Voir"
+            la: "Prospecto"
+    
+    detail: 
+        field:
+            en: "Field"
+            fr: "Champ"
+            la: "Adjunctum"
+
+        value:
+            en: "Value"
+            fr: "Valeur"
+            la: "Indicium"
+    
+    delete: 
+        title:
+            en: "Confirm deletion"
+            fr: "Confirmation de suppression"
+            la: "Eradim velim confirmes"
+    
+
+footer:
+    en: "This is your footer"
+    fr: "Ceci est votre pied de page"
+    la: "This is your footer"
+
+
+health: 
+    title:
+        en: "Health checks"
+        fr: "Diagnostics"
+        la: "Salutem compescit"
+
+    refresh.button:
+        en: "Refresh"
+        fr: "Rafraichir"
+        la: "Recreo"
+
+    stacktrace:
+        en: "Stacktrace"
+        fr: "Stacktrace"
+        la: "Narratus"
+
+    indicator: 
+        diskSpace:
+            en: "Disk space"
+            fr: "Espace disque"
+            la: "Disk space"
+
+        mail:
+            en: "Email"
+            fr: "Email"
+            la: "Cursorium"
+
+        db:
+            en: "Database"
+            fr: "Base de données"
+            la: "Database"
+    
+    table: 
+        service:
+            en: "Service name"
+            fr: "Nom du service"
+            la: "Nomen servitii"
+
+        status:
+            en: "Status"
+            fr: "Etat"
+            la: "Status"
+    
+    status: 
+        UP:
+            en: "UP"
+            fr: "DISPONIBLE"
+            la: "SURSUM"
+        DOWN:
+            en: "DOWN"
+            fr: "HORS SERVICE"
+            la: "PESSUM"
+    
+invitation: 
+    createAccount: 
+        title:
+            en: "Create Account"
+            fr: "Création de compte utilisateur"
+            la: "Tesseram creare"
+
+        blurb:
+            en: >-
+                To create an account, provide your email address below. We will
+                send you an email invitation -- it should arrive within
+                minutes. If it does not arrive, check whether it was marked as
+                spam. You can also send another invitation from here if
+                needed.
+            fr: >-
+                Pour créer un compte, indiquez votre adresse email ci-dessous.
+                Nous vous enverrons une invitation par courriel - il devrait
+                arriver en quelques minutes. Se il ne arrive pas, vérifier se
+                il a été marqués comme courrier indésirable. Vous pouvez
+                également envoyer une autre invitation à partir d'ici si
+                nécessaire.
+            la: >-
+                Tesseram creare praestate inscriptio electronica sequitur.
+                Mittemus vobis inuitavit -- intra minuta pervenerit. Si non
+                venit, si hæc ita se ut spamma. Etiam si opus mittere hinc
+                invitationem alius.
+
+        email:
+            en: "Email Address"
+            fr: "Email"
+            la: "Inscriptio electronica"
+
+        sendInvitation:
+            en: "Send Invitation"
+            fr: "Envoyer une invitation"
+            la: "Mittentes vocabant"
+
+        invitationSent:
+            en: "Invitation Sent"
+            fr: "Invitation a été envoyée"
+            la: "Invitatio missum"
+
+        invitationMessage:
+            en: "Your invitation has been sent, and should arrive soon."
+            fr: "Votre invitation a été envoyée, et devrait arriver bientôt."
+            la: "Invitatio missus est, et mox advenient."
+
+        passwordReset:
+            en: >-
+                If you already have an account, but have forgotten the username or password, 
+                then try the <a href="#!/password-reset">password reset</a> page.
+            fr: >-
+                Si vous avez déjà un compte, mais vous avez oublié le nom
+                d'utilisateur ou mot de passe, puis essayez le mot de
+                <a href="#!/password-reset">passe réinitialiser</a>.
+            la: >-
+                Iam si tesseram, sed obliti usoris aut signo, tum istoc 
+                <a href="#!/password-reset">signum retexere</a>.
+
+language: 
+    en:
+        en: "English"
+        fr: "Anglais"
+        la: "Anglicus"
+    fr:
+        en: "French"
+        fr: "Français"
+        la: "Gallicus"
+    la:
+        en: "Latin"
+        fr: "Latin"
+        la: "Latina"
+
+login: 
+    title:
+        en: "Authentication"
+        fr: "Authentification"
+        la: "Authenticas"
+
+    form: 
+        password:
+            en: "Password"
+            fr: "Mot de passe"
+            la: "Signum"
+
+        password.placeholder:
+            en: "Your password"
+            fr: "Votre mot de passe"
+            la: "Signum tuum"
+
+        rememberme:
+            en: "Automatic Login"
+            fr: "Garder la session ouverte"
+            la: "Cosignum automatic"
+
+        button:
+            en: "Authenticate"
+            fr: "Connexion"
+            la: "Cosignum"
+    
+    messages: 
+        error: 
+            authentication:
+                en: "<strong>Authentication failed!</strong> Please check your credentials and try again."
+                fr: "<strong>Erreur d'authentification!</strong> Veuillez vérifier vos identifiants de connexion."
+                la: "<strong>Defecit authenticitate!</strong> Probā signum atque iterum cosignio."
+
+logs: 
+    title:
+        en: "Logs"
+        fr: "Logs"
+        la: "Logs"
+
+    nbloggers:
+        en: "There are {{ total }} loggers."
+        fr: "Total de {{ total }} \"loggers\"."
+        la: "There are {{ total }} loggers."
+
+    filter:
+        en: "Filter"
+        fr: "Filtrer"
+        la: "Filter"
+
+    table: 
+        name:
+            en: "Name"
+            fr: "Nom"
+            la: "Name"
+
+        level:
+            en: "Level"
+            fr: "Niveau"
+            la: "Level"
+
+main: 
+    title:
+        en: "Welcome, Renaissance Scholar!"
+        fr: "Bienvenue, érudit de la Renaissance!"
+        la: "Scolaris de renaissance, exspectata!"
+
+    subtitle:
+        en: "This is the Canadian Society for Renaissance Studies membership site."
+        fr: "Ce est le site d'adhésion de la Société canadienne d'études de la Renaissance."
+        la: "Hic situs sociari de Societate Canadian Studiorum Renascerentur."
+
+    logged: 
+        message:
+            en: "You are logged in as user \"{{username}}\"."
+            fr: "Vous êtes connecté en tant que \"{{username}}\"."
+            la: "Te \"{{username}}\" videntur esse."
+    
+    question:
+        en: >-
+            For more information about the Canadian Society for Renaissance
+            Studies, see our main website, at:
+        fr: >-
+            Pour plus d'informations sur le Société canadienne d'études de la
+            Renaissance, consultez notre site Web principal, au:
+        la: >-
+            Pro magis notitia de Societate Canadian Studiorum Renascerentur,
+            ite situm principale ad:
+
+
+
+metrics: 
+    title:
+        en: "Application Metrics"
+        fr: "Métriques de l'application"
+        la: "Application Metrics"
+
+    refresh.button:
+        en: "Refresh"
+        fr: "Rafraichir"
+        la: "Refresh"
+
+    updating:
+        en: "Updating..."
+        fr: "Mise à jour..."
+        la: "Updating..."
+
+    jvm: 
+        title:
+            en: "JVM Metrics"
+            fr: "Métriques de la JVM"
+            la: "JVM Metrics"
+
+        memory: 
+            title:
+                en: "Memory"
+                fr: "Mémoire"
+                la: "Memory"
+
+            total:
+                en: "Total Memory"
+                fr: "Mémoire totale"
+                la: "Total Memory"
+
+            heap:
+                en: "Heap Memory"
+                fr: "Mémoire \"Heap\""
+                la: "Heap Memory"
+
+            nonheap:
+                en: "Non-Heap Memory"
+                fr: "Mémoire \"Non-Heap\""
+                la: "Non-Heap Memory"
+        
+        threads: 
+            title:
+                en: "Threads"
+                fr: "Threads"
+                la: "Threads"
+
+            all:
+                en: "All"
+                fr: "Tous"
+                la: "All"
+
+            runnable:
+                en: "Runnable"
+                fr: "Executable"
+                la: "Runnable"
+
+            timedwaiting:
+                en: "Timed waiting"
+                fr: "Temps d'attente"
+                la: "Timed waiting"
+
+            waiting:
+                en: "Waiting"
+                fr: "En attente"
+                la: "Waiting"
+
+            blocked:
+                en: "Blocked"
+                fr: "Bloqué"
+                la: "Blocked"
+
+            dump: 
+                title:
+                    en: "Threads dump"
+                    fr: "Threads dump"
+                    la: "Threads dump"
+
+                id:
+                    en: "Id: "
+                    fr: "Id: "
+                    la: "Id: "
+
+                blockedtime:
+                    en: "Blocked Time"
+                    fr: "Temps bloqué"
+                    la: "Blocked Time"
+
+                blockedcount:
+                    en: "Blocked Count"
+                    fr: "Nb fois bloqué"
+                    la: "Blocked Count"
+
+                waitedtime:
+                    en: "Waited Time"
+                    fr: "Temps d'attente"
+                    la: "Waited Time"
+
+                waitedcount:
+                    en: "Waited Count"
+                    fr: "Nb fois en attente"
+                    la: "Waited Count"
+
+                lockname:
+                    en: "Lock name"
+                    fr: "Nom du process bloquant"
+                    la: "Lock name"
+
+                stacktrace:
+                    en: "Stacktrace"
+                    fr: "Stacktrace"
+                    la: "Stacktrace"
+
+                show:
+                    en: "Show"
+                    fr: "Afficher"
+                    la: "Show"
+
+                hide:
+                    en: "Hide"
+                    fr: "Cacher"
+                    la: "Hide"
+            
+        gc: 
+            title:
+                en: "Garbage collections"
+                fr: "Garbage collections"
+                la: "Garbage collections"
+
+            marksweepcount:
+                en: "Mark Sweep count"
+                fr: "Total de \"Mark Sweep\""
+                la: "Mark Sweep count"
+
+            marksweeptime:
+                en: "Mark Sweep time"
+                fr: "Temps \"Mark Sweep\""
+                la: "Mark Sweep time"
+
+            scavengecount:
+                en: "Scavenge count"
+                fr: "Total \"Scavenge\""
+                la: "Scavenge count"
+
+            scavengetime:
+                en: "Scavenge time"
+                fr: "Temps \"Scavenge\""
+                la: "Scavenge time"
+        
+        http: 
+            title:
+                en: "HTTP requests (events per second)"
+                fr: "Requêtes HTTP requests (évènements par seconde)"
+                la: "HTTP requests (events per second)"
+
+            active:
+                en: "Active requests:"
+                fr: "Requêtes actives :"
+                la: "Active requests:"
+
+            total:
+                en: "Total requests:"
+                fr: "Requêtes totales :"
+                la: "Total requests:"
+
+            table: 
+                code:
+                    en: "Code"
+                    fr: "Code"
+                    la: "Code"
+
+                count:
+                    en: "Count"
+                    fr: "Total"
+                    la: "Count"
+
+                mean:
+                    en: "Mean"
+                    fr: "Médian"
+                    la: "Mean"
+
+                average:
+                    en: "Average"
+                    fr: "Moyenne"
+                    la: "Average"
+            
+            code: 
+                ok:
+                    en: "Ok"
+                    fr: "Ok"
+                    la: "Ok"
+
+                notfound:
+                    en: "Not found"
+                    fr: "Not found"
+                    la: "Not found"
+
+                servererror:
+                    en: "Server Error"
+                    fr: "Server Error"
+                    la: "Server Error"
+            
+    servicesstats: 
+        title:
+            en: "Services statistics (time in millisecond)"
+            fr: "Statistiques des services (Temps en milliseconde)"
+            la: "Services statistics (time in millisecond)"
+
+        table: 
+            name:
+                en: "Service name"
+                fr: "Nom du server"
+                la: "Service name"
+
+            count:
+                en: "Count"
+                fr: "Total"
+                la: "Count"
+
+            mean:
+                en: "Mean"
+                fr: "Médian"
+                la: "Mean"
+
+            min:
+                en: "Min"
+                fr: "Min"
+                la: "Min"
+
+            max:
+                en: "Max"
+                fr: "Max"
+                la: "Max"
+
+            p50:
+                en: "p50"
+                fr: "p50"
+                la: "p50"
+
+            p75:
+                en: "p75"
+                fr: "p75"
+                la: "p75"
+
+            p95:
+                en: "p95"
+                fr: "p95"
+                la: "p95"
+
+            p99:
+                en: "p99"
+                fr: "p99"
+                la: "p99"
+    
+    ehcache: 
+        title:
+            en: "Ehcache statistics"
+            fr: "Statistiques Ehcache"
+            la: "Ehcache statistics"
+
+        cachename:
+            en: "Cache name"
+            fr: "Nom du cache"
+            la: "Cache name"
+
+        objects:
+            en: "Objects"
+            fr: "Objets"
+            la: "Objects"
+
+        hits:
+            en: "Hits"
+            fr: "Données existantes"
+            la: "Hits"
+
+        misses:
+            en: "Misses"
+            fr: "Données non existantes"
+            la: "Misses"
+
+        evictioncount:
+            en: "Eviction count"
+            fr: "Nombre de suppressions"
+            la: "Eviction count"
+
+        mean:
+            en: "Mean get time (ms)"
+            fr: "Temps de réponse (ms)"
+            la: "Mean get time (ms)"
+    
+    datasource: 
+        usage:
+            en: "Usage"
+            fr: "Usage"
+            la: "Usage"
+
+        title:
+            en: "DataSource statistics (time in millisecond)"
+            fr: "Statistiques du pool de connexions (Temps en milliseconde)"
+            la: "DataSource statistics (time in millisecond)"
+
+        name:
+            en: "Pool usage"
+            fr: "Utilisation du pool"
+            la: "Pool usage"
+
+        count:
+            en: "Count"
+            fr: "Total"
+            la: "Count"
+
+        mean:
+            en: "Mean"
+            fr: "Médian"
+            la: "Mean"
+
+        min:
+            en: "Min"
+            fr: "Min"
+            la: "Min"
+
+        max:
+            en: "Max"
+            fr: "Max"
+            la: "Max"
+
+        p50:
+            en: "p50"
+            fr: "p50"
+            la: "p50"
+
+        p75:
+            en: "p75"
+            fr: "p75"
+            la: "p75"
+
+        p95:
+            en: "p95"
+            fr: "p95"
+            la: "p95"
+
+        p99:
+            en: "p99"
+            fr: "p99"
+            la: "p99"
+
+password: 
+    title:
+        en: "Password for [<b>{{username}}</b>]"
+        fr: "Changer le mot de passe pour [<b>{{username}}</b>]"
+        la: "Signum pro [<b>{{username}}</b>]"
+
+    form: 
+        button:
+            en: "Save"
+            fr: "Sauvegarder"
+            la: "Servo"
+    
+    messages: 
+        error:
+            en: "<strong>An error has occurred!</strong> The password could not be changed."
+            fr: "<strong>Une erreur est survenue!</strong> Le mot de passe n'a pas pu être modifié."
+            la: "<strong>Quasi per errorem inciderunt!</strong> Signum non potuit mutari."
+
+        success:
+            en: "<strong>Password changed!</strong>"
+            fr: "<strong>La mot de passe a été modifié!</strong>"
+            la: "<strong>Signum mutatum!</strong>"
+    
+register: 
+    title:
+        en: "Registration"
+        fr: "Création de compte utilisateur"
+        la: "Registration"
+
+    form: 
+        button:
+            en: "Register"
+            fr: "Enregistrement"
+            la: "Register"
+    
+    messages: 
+        validate: 
+            login: 
+                required:
+                    en: "Your login is required."
+                    fr: "Votre nom d'utilisateur est obligatoire."
+                    la: "Your login is required."
+
+                minlength:
+                    en: "Your login is required to be at least 1 character"
+                    fr: "Votre nom d'utilisateur doit contenir plus d'un caractère"
+                    la: "Your login is required to be at least 1 character"
+
+                maxlength:
+                    en: "Your login cannot be longer than 50 characters"
+                    fr: "Votre nom d'utilisateur ne peut pas contenir plus de 50 caractères"
+                    la: "Your login cannot be longer than 50 characters"
+
+                pattern:
+                    en: "Your login can only contain lower-case letters and digits"
+                    fr: "Votre nom d'utilisateur ne peut contenir que des lettres minuscules ou des nombres"
+                    la: "Your login can only contain lower-case letters and digits"
+            
+        success:
+            en: "<strong>Registration saved!</strong> Please check your email for confirmation."
+            fr: "<strong>Compte enregistré !</strong> Merci de vérifier votre e-mail de confirmation."
+            la: "<strong>Registration saved!</strong> Please check your email for confirmation."
+
+        error: 
+            fail:
+                en: "<strong>Registration failed!</strong> Please try again later."
+                fr: "<strong>Compte non créé!</strong> Merci d'essayer à nouveau plus tard."
+                la: "<strong>Registration failed!</strong> Please try again later."
+
+            userexists:
+                en: "<strong>Login name already registered!</strong> Please choose another one."
+                fr: "<strong>Ce compte utilisateur existe déjà !</strong> Veuillez en choisir un autre."
+                la: "<strong>Login name already registered!</strong> Please choose another one."
+
+            emailexists:
+                en: "<strong>E-mail is already in use!</strong> Please choose another one."
+                fr: "<strong>Cet E-mail est déjà utilisé!</strong> Veuillez en choisir un autre."
+                la: "<strong>E-mail is already in use!</strong> Please choose another one."
+
+sessions: 
+    title:
+        en: "Active sessions for [<b>{{username}}</b>]"
+        fr: "Sessions actives de [<b>{{username}}</b>]"
+        la: "Active sessions for [<b>{{username}}</b>]"
+
+    table: 
+        ipaddress:
+            en: "IP address"
+            fr: "Adresse IP"
+            la: "IP address"
+
+        useragent:
+            en: "User Agent"
+            fr: "User Agent"
+            la: "User Agent"
+
+        date:
+            en: "Date"
+            fr: "Date"
+            la: "Date"
+
+        button:
+            en: "Invalidate"
+            fr: "Invalider"
+            la: "Invalidate"
+    
+    messages: 
+        success:
+            en: "<strong>Session invalidated!</strong>"
+            fr: "<strong>Session a été invalidée!</strong>"
+            la: "<strong>Session invalidated!</strong>"
+
+        error:
+            en: "<strong>An error has occurred!</strong> The session could not be invalidated."
+            fr: "<strong>Une erreur est survenue!</strong> La session ne peut pas être invalidée."
+            la: "<strong>An error has occurred!</strong> The session could not be invalidated."
+
+settings: 
+    title:
+        en: "User settings for [<b>{{username}}</b>]"
+        fr: "Profil de l'utilisateur [{{username}}]"
+        la: "User settings for [<b>{{username}}</b>]"
+
+    form: 
+        firstname:
+            en: "First Name"
+            fr: "Prénom"
+            la: "Praenomen"
+
+        firstname.placeholder:
+            en: "Your first name"
+            fr: "Votre prénom"
+            la: "Praenome tuum"
+
+        lastname:
+            en: "Last Name"
+            fr: "Nom"
+            la: "Cognomen"
+
+        lastname.placeholder:
+            en: "Your last name"
+            fr: "Votre nom"
+            la: "Cognomen tuum"
+
+        button:
+            en: "Save"
+            fr: "Sauvegarder"
+            la: "Servo"
+    
+    messages: 
+        error: 
+            fail:
+                en: "<strong>An error has occurred!</strong> Settings could not be saved."
+                fr: "<strong>Une erreur est survenue!</strong> Votre profil n'a pas été sauvegardé."
+                la: "<strong>An error has occurred!</strong> Settings could not be saved."
+
+            emailexists:
+                en: "<strong>E-mail is already in use!</strong> Please choose another one."
+                fr: "<strong>Cet E-mail est déjà utilisé!</strong> Veuillez en choisir un autre."
+                la: "<strong>E-mail is already in use!</strong> Please choose another one."
+        
+        success:
+            en: "<strong>Settings saved!</strong>"
+            fr: "<strong>Votre profil a été sauvegardé!</strong>"
+            la: "<strong>Settings saved!</strong>"
+
+        validate: 
+            firstname: 
+                required:
+                    en: "Your first name is required."
+                    fr: "Votre prénom est requis."
+                    la: "Your first name is required."
+
+                minlength:
+                    en: "Your first name is required to be at least 1 character"
+                    fr: "Votre prénom doit comporter au moins un caractère"
+                    la: "Your first name is required to be at least 1 character"
+
+                maxlength:
+                    en: "Your first name cannot be longer than 50 characters"
+                    fr: "Votre prénom ne doit pas comporter plus de 50 caractères"
+                    la: "Your first name cannot be longer than 50 characters"
+            
+            lastname: 
+                required:
+                    en: "Your last name is required."
+                    fr: "Votre nom est requis."
+                    la: "Your last name is required."
+
+                minlength:
+                    en: "Your last name is required to be at least 1 character"
+                    fr: "Votre nom doit comporter au moins un caractère"
+                    la: "Your last name is required to be at least 1 character"
+
+                maxlength:
+                    en: "Your last name cannot be longer than 50 characters"
+                    fr: "Votre nom ne doit pas comporter plus de 50 caractères"
+                    la: "Your last name cannot be longer than 50 characters"
+

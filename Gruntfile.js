@@ -444,6 +444,84 @@ module.exports = function (grunt) {
         }
     });
 
+    grunt.registerTask('messages', function () {
+        var yaml = require('js-yaml');
+        var _ = require('lodash');
+
+        var doc = yaml.safeLoad(
+            fs.readFileSync('src/main/i18n/messages.yml', {
+                encoding: 'utf8'
+            })
+        );
+
+        var result = {};
+        var keys = [];
+
+        var iterate = function (level) {
+            _.forOwn(level, function (value, key) {
+                if (_.isObject(value)) {
+                    keys.push(key);
+                    iterate(value);
+                    keys.pop(key);
+                } else {
+                    if (!_.has(result, key)) result[key] = [];
+                    var line = keys.join('.') + '=' + value;
+                    result[key].push(line);
+                }
+            });
+        };
+        
+        iterate(doc);
+        
+        _.forOwn(result, function (value, key) {
+            var filename = 'src/main/resources/i18n/messages_' + key + '.properties';
+            var data = value.join("\n") + "\n";
+            fs.writeFileSync(filename, data);
+        });
+    });
+
+    grunt.registerTask('translations', function () {
+        var yaml = require('js-yaml');
+        var json = require('jsonfile');
+        var _ = require('lodash');
+
+        json.spaces = 4;
+
+        var doc = yaml.safeLoad(
+            fs.readFileSync('src/main/i18n/translations.yml', {
+                encoding: 'utf8'
+            })
+        );
+
+        var result = {};
+        var keys = [];
+
+        var iterate = function (level) {
+            _.forOwn(level, function (value, key) {
+                if (_.isObject(value)) {
+                    keys.push(key);
+                    iterate(value);
+                    keys.pop();
+                } else {
+                    if (!_.has(result, key)) result[key] = {};
+                    var base = result[key];
+                    _.forEach(_.initial(keys), function (eachKey) {
+                        if (!_.has(base, eachKey)) base[eachKey] = {};
+                        base = base[eachKey];
+                    });
+                    base[_.last(keys)] = value;
+                }
+            });
+        };
+
+        iterate(doc);
+
+        _.forOwn(result, function (value, key) {
+            var filename = 'src/main/webapp/i18n/' + key + '.json';
+            json.writeFileSync(filename, value);
+        });
+    });
+
     grunt.registerTask('serve', [
         'clean:server',
         'wiredep',

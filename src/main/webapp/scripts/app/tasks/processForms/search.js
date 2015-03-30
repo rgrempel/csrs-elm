@@ -61,13 +61,6 @@ angular.module('csrsApp').config(function ($stateProvider) {
                 controller: 'ProcessFormsController',
                 controllerAs: 'search'
             }
-        },
-        resolve: {
-            translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                $translatePartialLoader.addPart('processForms');
-                $translatePartialLoader.addPart('contact');
-                return $translate.refresh();
-            }]
         }
     });
 });

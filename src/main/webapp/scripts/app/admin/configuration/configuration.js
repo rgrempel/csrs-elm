@@ -15,12 +15,6 @@ angular.module('csrsApp')
                         templateUrl: 'scripts/app/admin/configuration/configuration.html',
                         controller: 'ConfigurationController'
                     }
-                },
-                resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('configuration');
-                        return $translate.refresh();
-                    }]
                 }
             });
     });

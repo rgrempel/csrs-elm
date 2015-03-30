@@ -1,0 +1,87 @@
+error:
+    title:
+        en: "Your request cannot be processed"
+        fr: "Votre demande ne peut être traitée"
+        la: "Non est processus tua fiat"
+
+    subtitle:
+        en: "Sorry, an error has occurred."
+        fr: "Désolé, une erreur s'est produite."
+        la: "Nos paenitet, sed error intervenerit."
+            
+    status:
+        en: "Status:"
+        fr: "Status:"
+        la: "Status:"
+
+    message:
+        en: "Message:"
+        fr: "Message:"
+        la: "Nuntius:"
+
+email:
+    signature:
+        en: "Canadian Society for Renaissance Studies"
+        fr: "Société canadienne d'études de la Renaissance"
+        la: "Societate Canadian Studiorum Renascerentur"
+
+    activation:
+        title:
+            en: "CSRS account activation"
+            fr: "Activation de votre compte SCÉR"
+            la: "CSRS account activation"
+
+        greeting:
+            en: "Dear {0}"
+            fr: "Cher {0}"
+            la: "Dear {0}"
+
+        text1: 
+            en: "Your CSRS account has been created, please click on the URL below to activate it:"
+            fr: "Votre compte csrs a été créé, pour l'activer merci de cliquer sur le lien ci-dessous:"
+            la: "Your CSRS account has been created, please click on the URL below to activate it:"
+
+        text2:
+            en: "Regards,"
+            fr: "Cordialement,"
+            la: "Regards,"
+
+    accountCreation:
+        title:
+            en: "CSRS Account Invitation"
+            fr: "Invitation pour un compte au SCÉR"
+            la: "Invitamentum ad tesseram SCSR"
+                
+        text1: 
+            en: >-
+                This is the invitation which someone (hopefully you) requested for an account at
+                the membership web-site for the Canadian Society for Renaissance Studies.
+            fr: >-
+                Ce est l'invitation que quelqu'un (probablement vous) a demandé un compte sur le
+                site Web des membres de la Société canadienne d'études de la Renaissance.
+            la: >-
+                Hic est invitationem dirigit aliquis (vos utinam) requiritur ad tesseram ad situs
+                sociari de Societate Canadian Studiorum Renascerentur.
+
+        text2:
+            en: "Sincerely yours,"
+            fr: "Cordialement,"
+            la: "Cura ut valeas,"
+
+        toCreateAccountFollowLink: 
+            en: "To create a new account, follow <a href=\"{0}\">this link</a>."
+            fr: "Pour créer un nouveau compte, suivez <a href=\"{0}\">ce lien</a>."
+            la: "Ad novum tesseram, propter hoc sequitur <a href=\"{0}\">hunc nexum</a>."
+                
+        hateLinks:
+            en: >-
+                If you don't like clicking on links in emails, then go back to the page where
+                you requested the invitation, and use the following code:
+            fr: >-
+                Si vous ne aimez pas cliquer sur des liens dans des e-mails, puis revenir à la
+                page où vous avez demandé l'invitation, et utiliser le code suivant:
+            la: >-
+                Si non placet instare nexus epistola transcursorium, quo vadant ad paginam
+                rogavit invitantis codice et utuntur:
+
+

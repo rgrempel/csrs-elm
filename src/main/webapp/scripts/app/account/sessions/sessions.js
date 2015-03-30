@@ -15,12 +15,6 @@ angular.module('csrsApp')
                         templateUrl: 'scripts/app/account/sessions/sessions.html',
                         controller: 'SessionsController'
                     }
-                },
-                resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('sessions');
-                        return $translate.refresh();
-                    }]
                 }
             });
     });

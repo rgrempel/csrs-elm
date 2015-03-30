@@ -15,12 +15,6 @@ angular.module('csrsApp')
                         templateUrl: 'scripts/app/account/activate/activate.html',
                         controller: 'ActivationController'
                     }
-                },
-                resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('activate');
-                        return $translate.refresh();
-                    }]
                 }
             });
     });

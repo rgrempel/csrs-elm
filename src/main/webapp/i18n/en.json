@@ -1,0 +1,459 @@
+{
+    "activate": {
+        "title": "Activation",
+        "messages": {
+            "success": "<strong>Your user has been activated.</strong>  Please <a href=\"#!/login\">authenticate</a>.",
+            "error": "<strong>Your user could not be activated.</strong>  Please use the registration form to sign up."
+        }
+    },
+    "csrsApp": {
+        "annual": {
+            "home": {
+                "title": "Annuals",
+                "createLabel": "Create a new Annual",
+                "createOrEditLabel": "Create or edit a Annual"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete the {{ year }} information for {{name}}?"
+            },
+            "detail": {
+                "title": "Annual"
+            },
+            "year": "Year",
+            "membership": "Membership Status",
+            "iter": "ITER",
+            "rr": "Renaissance and Reformation",
+            "contact": "contact",
+            "data": {
+                "membership": {
+                    "0": "None",
+                    "1": "Patron",
+                    "2": "Regular Member",
+                    "3": "Ph.D. without full-time employment",
+                    "4": "Retired",
+                    "5": "Student"
+                },
+                "rr": {
+                    "0": "",
+                    "1": "Print",
+                    "2": "Electronic"
+                }
+            }
+        },
+        "contact": {
+            "home": {
+                "title": "Contacts",
+                "createLabel": "Create a new Contact",
+                "createOrEditLabel": "Create or edit a Contact"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete all the information for {{ name }}?"
+            },
+            "detail": {
+                "title": "Contact"
+            },
+            "code": "Code",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "salutation": "Salutation",
+            "street": "Street",
+            "city": "City",
+            "region": "Region",
+            "country": "Country",
+            "postalCode": "Postal Code",
+            "email": "Email",
+            "department": "Department",
+            "affiliation": "University / Affiliation",
+            "omitNameFromDirectory": "Omit name from directory",
+            "omitEmailFromDirectory": "Omit email from directory",
+            "interests": "Scholarly Interests",
+            "data": {
+                "omit": "Omit",
+                "include": "Include"
+            }
+        },
+        "processForms": {
+            "home": {
+                "title": "Process Forms",
+                "createLabel": "Create a new Contact",
+                "createOrEditLabel": "Create or edit a Contact"
+            },
+            "annualData": "Annual Data",
+            "contactInformation": "Contact Information",
+            "search": "Search",
+            "search.placeholder": "Type beginning of first or last name to search",
+            "searchStatus": {
+                "searching": "Searching ...",
+                "notFound": "Not found."
+            },
+            "lastMember": "Member:"
+        }
+    },
+    "audits": {
+        "title": "Audits",
+        "filter": {
+            "title": "Filter per date",
+            "from": "from",
+            "to": "to",
+            "button": {
+                "weeks": "Weeks",
+                "today": "today",
+                "clear": "clear",
+                "close": "close"
+            }
+        },
+        "table": {
+            "header": {
+                "principal": "User",
+                "date": "Date",
+                "status": "State",
+                "data": "Extra data"
+            },
+            "data": {
+                "remoteAddress": "Remote Address:"
+            }
+        }
+    },
+    "configuration": {
+        "title": "Configuration",
+        "filter": "Filter (by prefix)",
+        "table": {
+            "prefix": "Prefix",
+            "properties": "Properties"
+        }
+    },
+    "errors": {
+        "403": "You are not authorized to access the page.",
+        "title": "Error page!"
+    },
+    "global": {
+        "title": "CSRS Membership",
+        "browsehappy": "You are using an <strong>outdated</strong> browser. Please  <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a>  to improve your experience.",
+        "menu": {
+            "home": "Home",
+            "entities": {
+                "main": "Entities",
+                "contact": "Contact",
+                "annual": "Annual",
+                "additionalEntity": "JHipster will add addtional entities"
+            },
+            "account": {
+                "main": "Account",
+                "settings": "Settings",
+                "password": "Password",
+                "sessions": "Sessions",
+                "login": "Authenticate",
+                "logout": "Log out",
+                "register": "Register"
+            },
+            "tasks": {
+                "main": "Tasks",
+                "processForms": "Process Forms"
+            },
+            "admin": {
+                "main": "Administration",
+                "tracker": "User tracker",
+                "metrics": "Metrics",
+                "health": "Health",
+                "configuration": "Configuration",
+                "logs": "Logs",
+                "audits": "Audits",
+                "apidocs": "API",
+                "database": "Database"
+            },
+            "language": "Language"
+        },
+        "form": {
+            "username": "Login",
+            "username.placeholder": "Your login",
+            "newpassword": "New password",
+            "newpassword.placeholder": "New password",
+            "confirmpassword": "New password confirmation",
+            "confirmpassword.placeholder": "Confirm the new password",
+            "email": "E-mail",
+            "email.placeholder": "Your e-mail"
+        },
+        "messages": {
+            "info": {
+                "authenticated": "Been here before? <a href=\"#!/login\">Login with your account.</a>",
+                "register": "Don't have an account yet? <a href=\"#!/register\">Register a new account.</a>"
+            },
+            "error": {
+                "occurred": "An error has occurred",
+                "dontmatch\"": "The password and its confirmation do not match!"
+            },
+            "validate": {
+                "newpassword": {
+                    "required": "Your password is required.",
+                    "minlength": "Your password is required to be at least 5 characters",
+                    "maxlength": "Your password cannot be longer than 50 characters",
+                    "strength": "Password strength:"
+                },
+                "confirmpassword": {
+                    "required": "Your confirmation password is required.",
+                    "minlength": "Your confirmation password is required to be at least 5 characters",
+                    "maxlength": "Your confirmation password cannot be longer than 50 characters"
+                },
+                "email": {
+                    "required": "Your e-mail is required.",
+                    "invalid": "Your e-mail is invalid.",
+                    "minlength": "Your e-mail is required to be at least 5 characters",
+                    "maxlength": "Your e-mail cannot be longer than 50 characters"
+                },
+                "required": "Required",
+                "invalid": "Invalid"
+            },
+            "translation": "Use the language menu to switch to <a href=\"\" ng-click=\"changeLanguage('fr')\">French</a> or <a href=\"\" ng-click=\"changeLanguage('la')\">Latin</a>."
+        }
+    },
+    "entity": {
+        "action": {
+            "back": "Back",
+            "cancel": "Cancel",
+            "delete": "Delete",
+            "edit": "Edit",
+            "save": "Save",
+            "view": "View"
+        },
+        "detail": {
+            "field": "Field",
+            "value": "Value"
+        },
+        "delete": {
+            "title": "Confirm deletion"
+        }
+    },
+    "footer": "This is your footer",
+    "health": {
+        "title": "Health checks",
+        "refresh.button": "Refresh",
+        "stacktrace": "Stacktrace",
+        "indicator": {
+            "diskSpace": "Disk space",
+            "mail": "Email",
+            "db": "Database"
+        },
+        "table": {
+            "service": "Service name",
+            "status": "Status"
+        },
+        "status": {
+            "UP": "UP",
+            "DOWN": "DOWN"
+        }
+    },
+    "invitation": {
+        "createAccount": {
+            "title": "Create Account",
+            "blurb": "To create an account, provide your email address below. We will send you an email invitation -- it should arrive within minutes. If it does not arrive, check whether it was marked as spam. You can also send another invitation from here if needed.",
+            "email": "Email Address",
+            "sendInvitation": "Send Invitation",
+            "invitationSent": "Invitation Sent",
+            "invitationMessage": "Your invitation has been sent, and should arrive soon.",
+            "passwordReset": "If you already have an account, but have forgotten the username or password,  then try the <a href=\"#!/password-reset\">password reset</a> page."
+        }
+    },
+    "language": {
+        "en": "English",
+        "fr": "French",
+        "la": "Latin"
+    },
+    "login": {
+        "title": "Authentication",
+        "form": {
+            "password": "Password",
+            "password.placeholder": "Your password",
+            "rememberme": "Automatic Login",
+            "button": "Authenticate"
+        },
+        "messages": {
+            "error": {
+                "authentication": "<strong>Authentication failed!</strong> Please check your credentials and try again."
+            }
+        }
+    },
+    "logs": {
+        "title": "Logs",
+        "nbloggers": "There are {{ total }} loggers.",
+        "filter": "Filter",
+        "table": {
+            "name": "Name",
+            "level": "Level"
+        }
+    },
+    "main": {
+        "title": "Welcome, Renaissance Scholar!",
+        "subtitle": "This is the Canadian Society for Renaissance Studies membership site.",
+        "logged": {
+            "message": "You are logged in as user \"{{username}}\"."
+        },
+        "question": "For more information about the Canadian Society for Renaissance Studies, see our main website, at:"
+    },
+    "metrics": {
+        "title": "Application Metrics",
+        "refresh.button": "Refresh",
+        "updating": "Updating...",
+        "jvm": {
+            "title": "JVM Metrics",
+            "memory": {
+                "title": "Memory",
+                "total": "Total Memory",
+                "heap": "Heap Memory",
+                "nonheap": "Non-Heap Memory"
+            },
+            "threads": {
+                "title": "Threads",
+                "all": "All",
+                "runnable": "Runnable",
+                "timedwaiting": "Timed waiting",
+                "waiting": "Waiting",
+                "blocked": "Blocked",
+                "dump": {
+                    "title": "Threads dump",
+                    "id": "Id: ",
+                    "blockedtime": "Blocked Time",
+                    "blockedcount": "Blocked Count",
+                    "waitedtime": "Waited Time",
+                    "waitedcount": "Waited Count",
+                    "lockname": "Lock name",
+                    "stacktrace": "Stacktrace",
+                    "show": "Show",
+                    "hide": "Hide"
+                }
+            },
+            "gc": {
+                "title": "Garbage collections",
+                "marksweepcount": "Mark Sweep count",
+                "marksweeptime": "Mark Sweep time",
+                "scavengecount": "Scavenge count",
+                "scavengetime": "Scavenge time"
+            },
+            "http": {
+                "title": "HTTP requests (events per second)",
+                "active": "Active requests:",
+                "total": "Total requests:",
+                "table": {
+                    "code": "Code",
+                    "count": "Count",
+                    "mean": "Mean",
+                    "average": "Average"
+                },
+                "code": {
+                    "ok": "Ok",
+                    "notfound": "Not found",
+                    "servererror": "Server Error"
+                }
+            }
+        },
+        "servicesstats": {
+            "title": "Services statistics (time in millisecond)",
+            "table": {
+                "name": "Service name",
+                "count": "Count",
+                "mean": "Mean",
+                "min": "Min",
+                "max": "Max",
+                "p50": "p50",
+                "p75": "p75",
+                "p95": "p95",
+                "p99": "p99"
+            }
+        },
+        "ehcache": {
+            "title": "Ehcache statistics",
+            "cachename": "Cache name",
+            "objects": "Objects",
+            "hits": "Hits",
+            "misses": "Misses",
+            "evictioncount": "Eviction count",
+            "mean": "Mean get time (ms)"
+        },
+        "datasource": {
+            "usage": "Usage",
+            "title": "DataSource statistics (time in millisecond)",
+            "name": "Pool usage",
+            "count": "Count",
+            "mean": "Mean",
+            "min": "Min",
+            "max": "Max",
+            "p50": "p50",
+            "p75": "p75",
+            "p95": "p95",
+            "p99": "p99"
+        }
+    },
+    "password": {
+        "title": "Password for [<b>{{username}}</b>]",
+        "form": {
+            "button": "Save"
+        },
+        "messages": {
+            "error": "<strong>An error has occurred!</strong> The password could not be changed.",
+            "success": "<strong>Password changed!</strong>"
+        }
+    },
+    "register": {
+        "title": "Registration",
+        "form": {
+            "button": "Register"
+        },
+        "messages": {
+            "validate": {
+                "login": {
+                    "required": "Your login is required.",
+                    "minlength": "Your login is required to be at least 1 character",
+                    "maxlength": "Your login cannot be longer than 50 characters",
+                    "pattern": "Your login can only contain lower-case letters and digits"
+                }
+            },
+            "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
+            "error": {
+                "fail": "<strong>Registration failed!</strong> Please try again later.",
+                "userexists": "<strong>Login name already registered!</strong> Please choose another one.",
+                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
+            }
+        }
+    },
+    "sessions": {
+        "title": "Active sessions for [<b>{{username}}</b>]",
+        "table": {
+            "ipaddress": "IP address",
+            "useragent": "User Agent",
+            "date": "Date",
+            "button": "Invalidate"
+        },
+        "messages": {
+            "success": "<strong>Session invalidated!</strong>",
+            "error": "<strong>An error has occurred!</strong> The session could not be invalidated."
+        }
+    },
+    "settings": {
+        "title": "User settings for [<b>{{username}}</b>]",
+        "form": {
+            "firstname": "First Name",
+            "firstname.placeholder": "Your first name",
+            "lastname": "Last Name",
+            "lastname.placeholder": "Your last name",
+            "button": "Save"
+        },
+        "messages": {
+            "error": {
+                "fail": "<strong>An error has occurred!</strong> Settings could not be saved.",
+                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
+            },
+            "success": "<strong>Settings saved!</strong>",
+            "validate": {
+                "firstname": {
+                    "required": "Your first name is required.",
+                    "minlength": "Your first name is required to be at least 1 character",
+                    "maxlength": "Your first name cannot be longer than 50 characters"
+                },
+                "lastname": {
+                    "required": "Your last name is required.",
+                    "minlength": "Your last name is required to be at least 1 character",
+                    "maxlength": "Your last name cannot be longer than 50 characters"
+                }
+            }
+        }
+    }
+}

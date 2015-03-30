@@ -38,12 +38,6 @@ angular.module('csrsApp').config(function ($stateProvider) {
                 controller: 'CreateAccountController',
                 controllerAs: 'createAccountController'
             }
-        },
-        resolve: {
-            translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                $translatePartialLoader.addPart('invitation');
-                return $translate.refresh();
-            }]
         }
     });
 });

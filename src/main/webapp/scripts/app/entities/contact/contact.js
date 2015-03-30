@@ -15,12 +15,6 @@ angular.module('csrsApp')
                         templateUrl: 'scripts/app/entities/contact/contacts.html',
                         controller: 'ContactController'
                     }
-                },
-                resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('contact');
-                        return $translate.refresh();
-                    }]
                 }
             })
             .state('contactDetail', {
@@ -35,12 +29,6 @@ angular.module('csrsApp')
                         templateUrl: 'scripts/app/entities/contact/contact-detail.html',
                         controller: 'ContactDetailController'
                     }
-                },
-                resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('contact');
-                        return $translate.refresh();
-                    }]
                 }
             });
     });
