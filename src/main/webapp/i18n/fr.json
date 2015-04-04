@@ -249,7 +249,7 @@
             "useThisInvitation": "Utiliser invitation",
             "key": "Clé d'invitation",
             "notFound": "Invitation introuvable",
-            "tryAgain": "Cette clé d'invitation n'a pas été trouvé. Se il vous plaît vérifier la clé et essayez à nouveau.",
+            "tryAgain": "Cette clé d'invitation n'a pas été trouvé, ou a déjà été utilisé. Se il vous plaît vérifier la clé et essayez à nouveau.",
             "blurb": "Si vous avez une invitation à créer un compte, collez la clé ci-dessous. La clé doit être un long numéro."
         },
         "request": {

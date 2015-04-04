@@ -249,7 +249,7 @@
             "useThisInvitation": "Invitatio utuntur",
             "key": "Clavem invitatio",
             "notFound": "Invitatio non inveni",
-            "tryAgain": "Quae clavem invitatio non est inventus. Probā clavem ac aliquam.",
+            "tryAgain": "Quae clavem invitatio non est inventus, aut iam redemptis. Probā clavem ac aliquam.",
             "blurb": "Si invitationem tesserae creant, crustulum clavem infra. Clavem debet esse numerus longum."
         },
         "request": {

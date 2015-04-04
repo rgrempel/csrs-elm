@@ -86,6 +86,9 @@ public class AccountResource {
                     userEmail.setUser(user);
                     userEmailRepository.save(userEmail);
 
+                    // And delete the activation key, since it's now been used
+                    userEmailActivationRepository.delete(activation);
+
                     return new ResponseEntity<>(HttpStatus.CREATED);
                 });
             }
