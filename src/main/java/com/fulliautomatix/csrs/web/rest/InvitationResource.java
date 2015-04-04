@@ -59,6 +59,23 @@ public class InvitationResource {
     private UserEmailActivationRepository userEmailActivationRepository;
 
     /**
+     * GET   /invitation/key -> Verify an invitation that exists
+     */
+    @RequestMapping(
+        value = "/invitation/{key}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Timed
+    public ResponseEntity<UserEmailActivation> getInvitation (@PathVariable String key) throws URISyntaxException {
+        return userEmailActivationRepository.findByActivationKey(key).map((activation) -> {
+            return new ResponseEntity<UserEmailActivation>(activation, HttpStatus.OK);
+        }).orElse(
+            new ResponseEntity<UserEmailActivation>(HttpStatus.NOT_FOUND)
+        );    
+    }
+
+    /**
      * POST  /invitation/account -> Send an invitation to create an account 
      */
     @RequestMapping(

@@ -4,7 +4,11 @@ import com.codahale.metrics.annotation.Timed;
 import com.fulliautomatix.csrs.domain.Authority;
 import com.fulliautomatix.csrs.domain.PersistentToken;
 import com.fulliautomatix.csrs.domain.User;
+import com.fulliautomatix.csrs.domain.UserEmail;
+import com.fulliautomatix.csrs.domain.UserEmailActivation;
 import com.fulliautomatix.csrs.repository.PersistentTokenRepository;
+import com.fulliautomatix.csrs.repository.UserEmailRepository;
+import com.fulliautomatix.csrs.repository.UserEmailActivationRepository;
 import com.fulliautomatix.csrs.repository.UserRepository;
 import com.fulliautomatix.csrs.security.SecurityUtils;
 import com.fulliautomatix.csrs.service.MailService;
@@ -17,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -47,44 +52,48 @@ public class AccountResource {
     @Inject
     private MailService mailService;
 
+    @Inject 
+    private UserEmailActivationRepository userEmailActivationRepository;
+
+    @Inject
+    private UserEmailRepository userEmailRepository;
+
     /**
      * POST  /register -> register the user.
      */
-    @RequestMapping(value = "/register",
-            method = RequestMethod.POST,
-            produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(
+        value = "/register",
+        params = {"key"},
+        method = RequestMethod.POST,
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     @Timed
-    public ResponseEntity<?> registerAccount(@Valid @RequestBody UserDTO userDTO, HttpServletRequest request) {
-        return userRepository.findOneByLogin(userDTO.getLogin())
-            .map(user -> new ResponseEntity<>("login already in use", HttpStatus.BAD_REQUEST))
-            .orElseGet(() -> userRepository.findOneByEmail(userDTO.getEmail())
-                .map(user -> new ResponseEntity<>("e-mail address already in use", HttpStatus.BAD_REQUEST))
-                .orElseGet(() -> {
-                    User user = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(),
-                    userDTO.getEmail().toLowerCase(),
-                    userDTO.getLangKey());
-                    String baseUrl = request.getScheme() + // "http"
-                    "://" +                                // "://"
-                    request.getServerName() +              // "myhost"
-                    ":" +                                  // ":"
-                    request.getServerPort();               // "80"
+    @Transactional
+    public ResponseEntity<?> registerAccount(@Valid @RequestBody UserDTO userDTO, @RequestParam("key") String key, HttpServletRequest request) {
+        log.debug("REST request to register account");
+        // First retrieve the key ...
+        return userEmailActivationRepository.findByActivationKey(key).map((activation) -> {
+            // Check if it's already been used ...
+            UserEmail userEmail = activation.getUserEmail();
+            if (userEmail.getUser() != null) {
+                log.debug("Activation key already used");
+                return new ResponseEntity<>("Activation key already used", HttpStatus.BAD_REQUEST);
+            } else {
+                return userRepository.findOneByLogin(userDTO.getLogin()).map(
+                    log.debug("Login already used");
+                    user -> new ResponseEntity<>("login already in use", HttpStatus.BAD_REQUEST)
+                ).orElseGet(() -> {
+                    User user = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(), userDTO.getLangKey());
+                    userEmail.setUser(user);
+                    userEmailRepository.save(userEmail);
 
-                    mailService.sendActivationEmail(user, baseUrl);
                     return new ResponseEntity<>(HttpStatus.CREATED);
-                })
-        );
-    }
-    /**
-     * GET  /activate -> activate the registered user.
-     */
-    @RequestMapping(value = "/activate",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key) {
-        return Optional.ofNullable(userService.activateRegistration(key))
-            .map(user -> new ResponseEntity<String>(HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+                });
+            }
+        }).orElseGet(() -> { 
+            log.debug("Activation key not found");
+            return new ResponseEntity<>("Activation key not found", HttpStatus.BAD_REQUEST));
+        };
     }
 
     /**
@@ -112,7 +121,6 @@ public class AccountResource {
                 new UserDTO(
                     user.getLogin(),
                     null,
-                    user.getEmail(),
                     user.getLangKey(),
                     user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toList())),
                 HttpStatus.OK))
@@ -122,6 +130,7 @@ public class AccountResource {
     /**
      * POST  /account -> update the current user information.
      */
+    /*
     @RequestMapping(value = "/account",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -136,6 +145,7 @@ public class AccountResource {
             })
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
+    */
 
     /**
      * POST  /change_password -> changes the current user's password

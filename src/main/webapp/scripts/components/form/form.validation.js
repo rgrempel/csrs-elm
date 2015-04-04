@@ -36,7 +36,7 @@ angular.module('csrsApp').directive('csrsFormControl', function () {
 
             scope.$watch(
                 function (scope) {
-                    return ngModel.$invalid && (ngModel.$touched || form.$submitted);
+                    return ngModel.$invalid && form.$submitted;
                 },
                 function (newValue, oldValue) {
                     formGroup.setHasError(newValue);
@@ -64,7 +64,7 @@ angular.module('csrsApp').directive('csrsHelpBlock', function () {
                     if (model === null) {
                         return true;
                     } else {
-                        return !(model.$error[attr.csrsHelpBlock] && (model.$touched || form.$submitted));
+                        return !(model.$error[attr.csrsHelpBlock] && form.$submitted);
                     }
                 },
                 function (newValue, oldValue) {

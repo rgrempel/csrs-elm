@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-xs-12">
+        <h2 translate="invitation.use.pageTitle">Use an Invitation</h2>
+
+        <div style="padding-bottom: 12px" translate="invitation.use.blurb">
+            If you have an invitation to create an account or reset your password, paste the key below.
+            The key should be a long number.
+        </div>      
+
+        <form name="useInvitationForm" role="form" novalidate ng-submit="invitationController.checkInvitation()" >
+            <div csrs-form-group>
+                <label translate="invitation.use.key">Invitation Key</label>
+                <div class="input-group">
+                    <input csrs-form-control required type="text" auto-focus ng-model="invitationController.key" />
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-tag">&nbsp;</span><span translate="invitation.use.useThisInvitation">Use Invitation</span>
+                        </button>
+                    </span>
+                </div>
+
+                <p csrs-help-block="required" translate="global.messages.validate.required">Required</p>
+            </div>
+        </form>
+
+        <div class="alert alert-danger text-left" ng-show="invitationController.noSuchInvitation">
+            <h4 translate="invitation.use.notFound">Invitation not found</h4>
+            <p translate="invitation.use.tryAgain">This invitation key was not found. Please check the key and try again.</p>
+        </div>
+        
+    </div>
+</div>

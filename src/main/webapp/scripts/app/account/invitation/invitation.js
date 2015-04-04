@@ -1,42 +1,45 @@
 'use strict';
 
-angular.module('csrsApp').controller('CreateAccountController', function (AccountCreationInvitation, $translate, $scope) {
-    this.email = null;
-    this.showSuccess = false;
+angular.module('csrsApp').controller('InvitationController', function ($state, $scope, Invitation) {
+    this.key = $state.params.key;
+    this.invitation = null;
 
-    this.sendInvitation = function () {
-        if (!$scope.createAccountForm.$valid) return;
-
-        this.success = false;
-        this.serverError = null;
-
+    this.checkInvitation = function () {
         var self = this;
-        AccountCreationInvitation.save({}, {
-            email: this.email,
-            langKey: $translate.use()
-        }, function () {
-            // Once we've built the UI for confirmation, could
-            // transition state to there.
-            self.success = true;
-        }, function (error) {
-            self.serverError = angular.toJson(error.data);
-        });
+        if (this.key) {
+            Invitation.get({
+                key: this.key
+            }, function (result) {
+                self.noSuchInvitation = false;
+                self.invitation = result;
+
+                $state.go('reallyCreateAccount', {
+                    invitation: result
+                });
+            }, function (error) {
+                self.noSuchInvitation = true;
+            });
+        }
     };
+    
+    this.checkInvitation();
 });
 
 angular.module('csrsApp').config(function ($stateProvider) {
-    $stateProvider.state('createAccount', {
+    $stateProvider.state('invitation', {
         parent: 'account',
-        url: '/account/create',
+        url: '/invitation/{key}',
+        params: {
+            key: null
+        },
         data: {
-            roles: [],
-            pageTitle: 'invitation.createAccount.title'
+            pageTitle: 'invitation.use.pageTitle'
         },
         views: {
             'content@': {
-                templateUrl: 'scripts/app/account/invitation/createAccount.html',
-                controller: 'CreateAccountController',
-                controllerAs: 'createAccountController'
+                templateUrl: 'scripts/app/account/invitation/invitation.html',
+                controller: 'InvitationController',
+                controllerAs: 'invitationController'
             }
         }
     });

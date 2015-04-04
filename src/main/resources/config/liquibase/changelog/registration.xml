@@ -170,4 +170,10 @@
                                  onUpdate="CASCADE" />
 
     </changeSet>
+
+    <changeSet id="removeUnusedFieldsFromUser" author="ryan">
+        <dropColumn tableName="T_USER" columnName="email" />
+        <dropColumn tableName="T_USER" columnName="activated" />
+        <dropColumn tableName="T_USER" columnName="activation_key" />
+    </changeSet>
 </databaseChangeLog>

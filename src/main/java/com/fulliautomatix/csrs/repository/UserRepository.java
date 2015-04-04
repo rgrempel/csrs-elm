@@ -15,11 +15,11 @@ import java.util.Optional;
  */
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findOneByActivationKey(String activationKey);
+//    Optional<User> findOneByActivationKey(String activationKey);
 
-    List<User> findAllByActivatedIsFalseAndCreatedDateBefore(DateTime dateTime);
+//    List<User> findAllByActivatedIsFalseAndCreatedDateBefore(DateTime dateTime);
 
-    Optional<User> findOneByEmail(String email);
+//    Optional<User> findOneByEmail(String email);
 
     Optional<User> findOneByLogin(String login);
 

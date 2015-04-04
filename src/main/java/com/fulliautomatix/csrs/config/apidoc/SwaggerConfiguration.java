@@ -25,7 +25,7 @@ import org.springframework.util.StopWatch;
  */
 @Configuration
 @EnableSwagger
-@Profile("!" + Constants.SPRING_PROFILE_FAST)
+@Profile(Constants.SPRING_PROFILE_DEVELOPMENT)
 public class SwaggerConfiguration implements EnvironmentAware {
 
     private final Logger log = LoggerFactory.getLogger(SwaggerConfiguration.class);

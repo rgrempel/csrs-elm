@@ -176,7 +176,7 @@
         "messages": {
             "info": {
                 "authenticated": "Numquid hie fuerunt prius? <a href=\"#!/login\">Cosigno in tesseram vestram.</a>",
-                "register": "Sed non tamen tesseram? <a href=\"#!/register\">Subsigno tesseram novam.</a>"
+                "register": "Sed non tamen tesseram? <a href=\"#!/account/create\">Subsigno tesseram novam.</a>"
             },
             "error": {
                 "occurred": "Errorem inciderunt",
@@ -243,6 +243,17 @@
         }
     },
     "invitation": {
+        "use": {
+            "pageTitle": "Invitatio utuntur",
+            "useThisInvitation": "Invitatio utuntur",
+            "key": "Clavem invitatio",
+            "notFound": "Invitatio non inveni",
+            "tryAgain": "Quae clavem invitatio non est inventus. Probā clavem ac aliquam.",
+            "blurb": "Si invitationem tesserae creant, crustulum clavem infra. Clavem debet esse numerus longum."
+        },
+        "request": {
+            "title": "Obtinere invitatio"
+        },
         "createAccount": {
             "title": "Tesseram creare",
             "blurb": "Tesseram creare praestate inscriptio electronica sequitur. Mittemus vobis inuitavit -- intra minuta pervenerit. Si non venit, si hæc ita se ut spamma. Etiam si opus mittere hinc invitationem alius.",

@@ -549,12 +549,12 @@ global:
     
     form: 
         username:
-            en: "Login"
+            en: "Username"
             fr: "Nom d'utilisateur"
             la: "Nomen usoris"
 
         username.placeholder:
-            en: "Your login"
+            en: "Your user name"
             fr: "Votre nom d'utilisateur"
             la: "Nomen usoris tuum"
 
@@ -596,9 +596,9 @@ global:
                 la: "Numquid hie fuerunt prius? <a href=\"#!/login\">Cosigno in tesseram vestram.</a>"
 
             register:
-                en: "Don't have an account yet? <a href=\"#!/register\">Register a new account.</a>"
-                fr: "Vous n'avez pas encore de compte? <a href=\"#!/register\">Créer un compte.</a>"
-                la: "Sed non tamen tesseram? <a href=\"#!/register\">Subsigno tesseram novam.</a>"
+                en: "Don't have an account yet? <a href=\"#!/account/create\">Register a new account.</a>"
+                fr: "Vous n'avez pas encore de compte? <a href=\"#!/account/create\">Créer un compte.</a>"
+                la: "Sed non tamen tesseram? <a href=\"#!/account/create\">Subsigno tesseram novam.</a>"
         
         error: 
             occurred:
@@ -797,7 +797,50 @@ health:
             fr: "HORS SERVICE"
             la: "PESSUM"
     
-invitation: 
+invitation:
+    use:
+        pageTitle:
+            en: "Use an Invitation"
+            fr: "Utiliser une invitation"
+            la: "Invitatio utuntur"
+
+        useThisInvitation:
+            en: "Use Invitation"
+            fr: "Utiliser invitation"
+            la: "Invitatio utuntur"
+
+        key:
+            en: "Invitation key"
+            fr: "Clé d'invitation"
+            la: "Clavem invitatio"
+
+        notFound:
+            en: "Invitation not found"
+            fr: "Invitation introuvable"
+            la: "Invitatio non inveni"
+
+        tryAgain:
+            en: "This invitation key was not found. Please check the key and try again."
+            fr: "Cette clé d'invitation n'a pas été trouvé. Se il vous plaît vérifier la clé et essayez à nouveau."
+            la: "Quae clavem invitatio non est inventus. Probā clavem ac aliquam." 
+
+        blurb:
+            en: >-
+                If you have an invitation to create an account, paste the key
+                below. The key should be a long number.
+            fr: >-
+                Si vous avez une invitation à créer un compte, collez la clé
+                ci-dessous. La clé doit être un long numéro.
+            la: >-
+                Si invitationem tesserae creant, crustulum clavem infra. Clavem
+                debet esse numerus longum.
+
+    request:
+        title:
+            en: "Get an Invitation"
+            fr: "Obtenir une invitation"
+            la: "Obtinere invitatio"
+
     createAccount: 
         title:
             en: "Create Account"

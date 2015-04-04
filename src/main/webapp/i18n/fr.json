@@ -176,7 +176,7 @@
         "messages": {
             "info": {
                 "authenticated": "Vous connaissez cet endroit? <a href=\"#!/login\">Connecter</a> avec votre compte.",
-                "register": "Vous n'avez pas encore de compte? <a href=\"#!/register\">Créer un compte.</a>"
+                "register": "Vous n'avez pas encore de compte? <a href=\"#!/account/create\">Créer un compte.</a>"
             },
             "error": {
                 "occurred": "Une erreur est survenue",
@@ -243,6 +243,17 @@
         }
     },
     "invitation": {
+        "use": {
+            "pageTitle": "Utiliser une invitation",
+            "useThisInvitation": "Utiliser invitation",
+            "key": "Clé d'invitation",
+            "notFound": "Invitation introuvable",
+            "tryAgain": "Cette clé d'invitation n'a pas été trouvé. Se il vous plaît vérifier la clé et essayez à nouveau.",
+            "blurb": "Si vous avez une invitation à créer un compte, collez la clé ci-dessous. La clé doit être un long numéro."
+        },
+        "request": {
+            "title": "Obtenir une invitation"
+        },
         "createAccount": {
             "title": "Création de compte utilisateur",
             "blurb": "Pour créer un compte, indiquez votre adresse email ci-dessous. Nous vous enverrons une invitation par courriel - il devrait arriver en quelques minutes. Se il ne arrive pas, vérifier se il a été marqués comme courrier indésirable. Vous pouvez également envoyer une autre invitation à partir d'ici si nécessaire.",

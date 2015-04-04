@@ -164,8 +164,8 @@
             "language": "Language"
         },
         "form": {
-            "username": "Login",
-            "username.placeholder": "Your login",
+            "username": "Username",
+            "username.placeholder": "Your user name",
             "newpassword": "New password",
             "newpassword.placeholder": "New password",
             "confirmpassword": "New password confirmation",
@@ -176,7 +176,7 @@
         "messages": {
             "info": {
                 "authenticated": "Been here before? <a href=\"#!/login\">Login with your account.</a>",
-                "register": "Don't have an account yet? <a href=\"#!/register\">Register a new account.</a>"
+                "register": "Don't have an account yet? <a href=\"#!/account/create\">Register a new account.</a>"
             },
             "error": {
                 "occurred": "An error has occurred",
@@ -243,6 +243,17 @@
         }
     },
     "invitation": {
+        "use": {
+            "pageTitle": "Use an Invitation",
+            "useThisInvitation": "Use Invitation",
+            "key": "Invitation key",
+            "notFound": "Invitation not found",
+            "tryAgain": "This invitation key was not found. Please check the key and try again.",
+            "blurb": "If you have an invitation to create an account, paste the key below. The key should be a long number."
+        },
+        "request": {
+            "title": "Get an Invitation"
+        },
         "createAccount": {
             "title": "Create Account",
             "blurb": "To create an account, provide your email address below. We will send you an email invitation -- it should arrive within minutes. If it does not arrive, check whether it was marked as spam. You can also send another invitation from here if needed.",

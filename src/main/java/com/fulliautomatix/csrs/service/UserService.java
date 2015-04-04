@@ -44,6 +44,7 @@ public class UserService {
     @Inject
     private AuthorityRepository authorityRepository;
 
+    /*
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
         userRepository.findOneByActivationKey(key)
@@ -57,28 +58,29 @@ public class UserService {
             });
         return Optional.empty();
     }
+    */
 
-    public User createUserInformation(String login, String password, String email, String langKey) {
+    public User createUserInformation (String login, String password, String langKey) {
         User newUser = new User();
+        
         Authority authority = authorityRepository.findOne("ROLE_USER");
         Set<Authority> authorities = new HashSet<>();
-        String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(login);
-        // new user gets initially a generated password
-        newUser.setPassword(encryptedPassword);
-        newUser.setEmail(email);
-        newUser.setLangKey(langKey);
-        // new user is not active
-        newUser.setActivated(false);
-        // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
         authorities.add(authority);
         newUser.setAuthorities(authorities);
+        
+        String encryptedPassword = passwordEncoder.encode(password);
+        newUser.setPassword(encryptedPassword);
+        
+        newUser.setLogin(login);
+        newUser.setLangKey(langKey);
+        
         userRepository.save(newUser);
+        
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
 
+    /*
     public void updateUserInformation(String email) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentLogin()).ifPresent(u -> {
             u.setEmail(email);
@@ -86,6 +88,7 @@ public class UserService {
             log.debug("Changed Information for User: {}", u);
         });
     }
+*/
 
     public void changePassword(String password) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentLogin()).ifPresent(u-> {
@@ -122,6 +125,8 @@ public class UserService {
         });
     }
 
+    // Deal with unused activations ...
+
     /**
      * Not activated users should be automatically deleted after 3 days.
      * <p/>
@@ -129,6 +134,7 @@ public class UserService {
      * This is scheduled to get fired everyday, at 01:00 (am).
      * </p>
      */
+    /*
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeNotActivatedUsers() {
         DateTime now = new DateTime();
@@ -138,4 +144,5 @@ public class UserService {
             userRepository.delete(user);
         }
     }
+    */
 }

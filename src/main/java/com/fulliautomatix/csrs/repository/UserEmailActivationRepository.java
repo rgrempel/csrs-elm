@@ -14,5 +14,7 @@ import java.util.Optional;
  * Spring Data JPA repository for the UserEmailActivation entity.
  */
 public interface UserEmailActivationRepository extends JpaRepository<UserEmailActivation, Long> {
+    
+    Optional<UserEmailActivation> findByActivationKey (String key);
 
 }

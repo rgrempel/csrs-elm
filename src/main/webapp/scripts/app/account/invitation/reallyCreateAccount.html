@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+        <h2 translate="invitation.createAccount.title">Create New Account</h2>
+
+        <form name="createAccountForm" role="form" novalidate ng-submit="reallyCreateAccountController.createAccount()">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div csrs-form-group>
+                        <label translate="global.form.username">Login</label>
+                        <input csrs-form-control auto-focus required name="username" type="text" 
+                               placeholder="{{'global.form.username.placeholder' | translate}}"
+                               ng-model="reallyCreateAccountController.account.login" />
+                        <p csrs-help-block="required" translate="global.messages.validate.required">Required</p>
+                    </div>
+                </div>
+
+                <div class="col-xs-6">
+                    <div csrs-form-group>
+                        <label translate="global.form.email">E-mail</label>
+                        <p class="form-control-static" ng-bind="reallyCreateAccountController.email"></p> 
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-6">
+                    <div csrs-form-group>
+                        <label translate="global.form.newpassword">New password</label>
+                        <input csrs-form-control type="password" name="password" 
+                               placeholder="{{'global.form.newpassword.placeholder' | translate}}"
+                               ng-model="reallyCreateAccountController.account.password" ng-minlength=5 ng-maxlength=50 required />
+                        
+                        <p csrs-help-block="required" translate="global.messages.validate.required">Your password is required.</p>
+                        <p csrs-help-block="minlength" translate="global.messages.validate.newpassword.minlength">Must be at least 5 characters</p>
+
+                        <password-strength-bar style="margin-left: 6px;" password-to-check="reallyCreateAccountController.account.password"></password-strength-bar>
+                    </div>
+                </div>
+
+                <div class="col-xs-6">
+                    <div csrs-form-group>
+                        <label translate="global.form.confirmpassword">New password confirmation</label>
+                        <input csrs-form-control type="password" name="confirm_password" placeholder="{{'global.form.confirmpassword.placeholder' | translate}}"
+                            ng-model="reallyCreateAccountController.confirmPassword">    
+                    </div>
+                </div>
+            </div>
+
+            <div class="row text-center">
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-send">&nbsp;</span><span translate="invitation.createAccount.title">Create Account</span>
+                </button>
+            </div>
+        </form>    
+
+        <div csrs-error-occurred="reallyCreateAccountController.serverError"></div>
+    </div>
+</div>

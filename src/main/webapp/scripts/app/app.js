@@ -9,7 +9,8 @@ angular.module('csrsApp', [
     'pascalprecht.translate', 
     'ngCacheBuster', 
     'infinite-scroll', 
-    'mp.autoFocus', 
+    'mp.autoFocus',
+    'focusOn',
     'angularLodash',
     'ngAnimate'
 ])

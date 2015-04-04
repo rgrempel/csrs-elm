@@ -73,6 +73,7 @@ public class MailService {
         }
     }
 
+    /*
     @Async
     public void sendActivationEmail(User user, String baseUrl) {
         log.debug("Sending activation e-mail to '{}'", user.getEmail());
@@ -84,7 +85,7 @@ public class MailService {
         String subject = messageSource.getMessage("email.activation.title", null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
     }
-
+*/
     @Async
     public void sendAccountCreationEmail (Email email, String langKey, String baseUrl) {
         log.debug("Sending account creation email to '{}'", email.getEmailAddress());
