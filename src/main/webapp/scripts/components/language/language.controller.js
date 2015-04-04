@@ -1,12 +1,18 @@
 'use strict';
 
 angular.module('csrsApp')
-    .controller('LanguageController', function ($scope, $translate, Language) {
+    .controller('LanguageController', function ($scope, $translate, Language, Auth, Principal) {
         $scope.changeLanguage = function (languageKey) {
             if ($translate.use() !== languageKey) {
                 $translate.use(languageKey);
                 $translate.refresh();
                 $translate.use(languageKey);
+
+                // And let the server know about the preference ...
+                Principal.identity().then(function (account) {
+                    account.langKey = languageKey;
+                    Auth.updateAccount(account);
+                });
             }
         };
 

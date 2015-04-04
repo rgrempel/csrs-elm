@@ -80,15 +80,13 @@ public class UserService {
         return newUser;
     }
 
-    /*
-    public void updateUserInformation(String email) {
+    public void updateUserInformation (String languageKey) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentLogin()).ifPresent(u -> {
-            u.setEmail(email);
+            u.setLangKey(languageKey);
             userRepository.save(u);
             log.debug("Changed Information for User: {}", u);
         });
     }
-*/
 
     public void changePassword(String password) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentLogin()).ifPresent(u-> {
