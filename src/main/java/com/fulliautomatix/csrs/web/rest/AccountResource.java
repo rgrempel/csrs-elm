@@ -80,7 +80,6 @@ public class AccountResource {
                 return new ResponseEntity<>("Activation key already used", HttpStatus.BAD_REQUEST);
             } else {
                 return userRepository.findOneByLogin(userDTO.getLogin()).map(
-                    log.debug("Login already used");
                     user -> new ResponseEntity<>("login already in use", HttpStatus.BAD_REQUEST)
                 ).orElseGet(() -> {
                     User user = userService.createUserInformation(userDTO.getLogin(), userDTO.getPassword(), userDTO.getLangKey());
@@ -92,8 +91,8 @@ public class AccountResource {
             }
         }).orElseGet(() -> { 
             log.debug("Activation key not found");
-            return new ResponseEntity<>("Activation key not found", HttpStatus.BAD_REQUEST));
-        };
+            return new ResponseEntity<>("Activation key not found", HttpStatus.BAD_REQUEST);
+        });
     }
 
     /**

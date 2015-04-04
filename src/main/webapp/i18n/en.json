@@ -180,7 +180,7 @@
             },
             "error": {
                 "occurred": "An error has occurred",
-                "dontmatch\"": "The password and its confirmation do not match!"
+                "dontmatch": "The password and its confirmation do not match!"
             },
             "validate": {
                 "newpassword": {
@@ -201,7 +201,8 @@
                     "maxlength": "Your e-mail cannot be longer than 50 characters"
                 },
                 "required": "Required",
-                "invalid": "Invalid"
+                "invalid": "Invalid",
+                "alreadyTaken": "Already taken"
             },
             "translation": "Use the language menu to switch to <a href=\"\" ng-click=\"changeLanguage('fr')\">French</a> or <a href=\"\" ng-click=\"changeLanguage('la')\">Latin</a>."
         }

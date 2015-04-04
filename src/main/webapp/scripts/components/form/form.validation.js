@@ -54,6 +54,8 @@ angular.module('csrsApp').directive('csrsHelpBlock', function () {
 
             var formGroup = controllers[0];
             var form = controllers[1];
+            var validateAfterSubmission = (attr.csrsValidate !== 'always');
+            var pending = (attr.csrsValidate === 'pending');
 
             // Initially hide
             element.toggleClass('hidden', true);
@@ -64,13 +66,39 @@ angular.module('csrsApp').directive('csrsHelpBlock', function () {
                     if (model === null) {
                         return true;
                     } else {
-                        return !(model.$error[attr.csrsHelpBlock] && form.$submitted);
+                        if (pending) {
+                            return !(model.$pending && model.$pending[attr.csrsHelpBlock]);
+                        } else if (validateAfterSubmission && !form.$submitted) {
+                            return true;
+                        } else {
+                            return !(model.$error[attr.csrsHelpBlock]);
+                        }
                     }
                 },
                 function (newValue, oldValue) {
                     element.toggleClass('hidden', newValue);
                 }
             );
+        }
+    };
+});
+
+angular.module('csrsApp').directive('csrsValidateMatches', function () {
+    return {
+        require: 'ngModel',
+
+        scope: {
+            csrsValidateMatches: '='
+        },
+
+        link: function (scope, element, attr, ngModel) {
+            ngModel.$validators.csrsValidateMatches = function (modelValue, viewValue) {
+                return modelValue === scope.csrsValidateMatches;
+            };
+            
+            scope.$watch("csrsValidateMatches", function() {
+                ngModel.$validate();
+            });
         }
     };
 });

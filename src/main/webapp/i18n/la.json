@@ -180,7 +180,7 @@
             },
             "error": {
                 "occurred": "Errorem inciderunt",
-                "dontmatch\"": "Signum confirmationemque imparem!"
+                "dontmatch": "Signum confirmationemque imparem!"
             },
             "validate": {
                 "newpassword": {
@@ -201,7 +201,8 @@
                     "maxlength": "Your e-mail cannot be longer than 50 characters"
                 },
                 "required": "Requiritur",
-                "invalid": "Invalidum"
+                "invalid": "Invalidum",
+                "alreadyTaken": "Iam petita"
             },
             "translation": "Idcirco Latina est opus in progressionem. Suadentur gratum foret."
         }

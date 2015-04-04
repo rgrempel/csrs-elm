@@ -51,10 +51,24 @@ public class UserResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @RolesAllowed(AuthoritiesConstants.ADMIN)
-    ResponseEntity<User> getUser(@PathVariable String login) {
+    public ResponseEntity<User> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
         return userRepository.findOneByLogin(login)
                 .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * HEAD /users/:login -> check if "login" user exists ...
+     */
+    @RequestMapping(value = "/users/{login}",
+            method = RequestMethod.HEAD,
+            produces = MediaType.TEXT_PLAIN_VALUE)
+    @Timed
+    public ResponseEntity checkUser (@PathVariable String login) {
+        log.debug("REST request to check user login : {}", login);
+        return userRepository.findOneByLogin(login)
+            .map(user -> new ResponseEntity<>(HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

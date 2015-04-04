@@ -9,8 +9,10 @@
                         <label translate="global.form.username">Login</label>
                         <input csrs-form-control auto-focus required name="username" type="text" 
                                placeholder="{{'global.form.username.placeholder' | translate}}"
-                               ng-model="reallyCreateAccountController.account.login" />
+                               ng-model="reallyCreateAccountController.account.login"
+                               csrs-unique-login />
                         <p csrs-help-block="required" translate="global.messages.validate.required">Required</p>
+                        <p csrs-help-block="uniqueLogin" csrs-validate="always" translate="global.messages.validate.alreadyTaken">Already taken</p>
                     </div>
                 </div>
 
@@ -40,8 +42,12 @@
                 <div class="col-xs-6">
                     <div csrs-form-group>
                         <label translate="global.form.confirmpassword">New password confirmation</label>
-                        <input csrs-form-control type="password" name="confirm_password" placeholder="{{'global.form.confirmpassword.placeholder' | translate}}"
-                            ng-model="reallyCreateAccountController.confirmPassword">    
+                        <input csrs-form-control type="password" name="confirm_password" 
+                               placeholder="{{'global.form.confirmpassword.placeholder' | translate}}"
+                               csrs-validate-matches="reallyCreateAccountController.account.password"
+                               ng-model="reallyCreateAccountController.confirmPassword">
+
+                        <p csrs-help-block="csrsValidateMatches" translate="global.messages.error.dontmatch">Password confirmation does not match</p>
                     </div>
                 </div>
             </div>

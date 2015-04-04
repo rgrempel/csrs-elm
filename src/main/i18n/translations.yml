@@ -606,7 +606,7 @@ global:
                 fr: "Une erreur est survenue"
                 la: "Errorem inciderunt"
 
-            dontmatch" :
+            dontmatch:
                 en: "The password and its confirmation do not match!"
                 fr: "Le nouveau mot de passe et sa confirmation ne sont pas égaux!"
                 la: "Signum confirmationemque imparem!"
@@ -679,6 +679,11 @@ global:
                 en: "Invalid"
                 fr: "Non valide"
                 la: "Invalidum"
+
+            alreadyTaken:
+                en: "Already taken"
+                fr: "Déjà utilisé"
+                la: "Iam petita"
         
         translation:
             en: >-

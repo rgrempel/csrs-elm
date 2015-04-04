@@ -180,7 +180,7 @@
             },
             "error": {
                 "occurred": "Une erreur est survenue",
-                "dontmatch\"": "Le nouveau mot de passe et sa confirmation ne sont pas égaux!"
+                "dontmatch": "Le nouveau mot de passe et sa confirmation ne sont pas égaux!"
             },
             "validate": {
                 "newpassword": {
@@ -201,7 +201,8 @@
                     "maxlength": "Votre email n'est pas valide."
                 },
                 "required": "Requis",
-                "invalid": "Non valide"
+                "invalid": "Non valide",
+                "alreadyTaken": "Déjà utilisé"
             },
             "translation": "La traduction française est un travail en cours. Corrections seraient les bienvenus."
         }
