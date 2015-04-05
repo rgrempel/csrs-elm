@@ -118,12 +118,48 @@ public class ContactResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Void> update(@RequestBody Contact contact) throws URISyntaxException {
+    public ResponseEntity<Void> update(@Valid @RequestBody Contact contact, Errors errors) throws URISyntaxException {
         log.debug("REST request to update Contact : {}", contact);
+        
+        if (errors.hasErrors()) {
+            throw new ValidationException("Contact failed validation", errors);
+        }
+        
         if (contact.getId() == null) {
             return ResponseEntity.badRequest().header("Failure", "An existing must already have an ID").build();
         }
+        
         contactRepository.save(contact);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * PUT  /contacts -> Updates an existing contact for the user
+     */
+    @RequestMapping(value = "/account/contacts",
+        method = RequestMethod.PUT,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @RolesAllowed(AuthoritiesConstants.USER)
+    public ResponseEntity<Void> updateForUser (@Valid @RequestBody Contact contact, Errors errors) throws URISyntaxException {
+        log.debug("REST request to update Contact : {}", contact);
+        
+        if (errors.hasErrors()) {
+            throw new ValidationException("Contact failed validation", errors);
+        }
+
+        if (contact.getId() == null) {
+            return ResponseEntity.badRequest().header("Failure", "An existing must already have an ID").build();
+        }
+        
+        String login = SecurityUtils.getCurrentLogin();
+        Contact existing = contactRepository.findOneForLogin(login, contact.getId());
+        if (existing == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        contactRepository.save(contact);
+
         return ResponseEntity.ok().build();
     }
 

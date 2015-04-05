@@ -44,7 +44,9 @@
             "home": {
                 "title": "Socium",
                 "createLabel": "Socium novum creare",
-                "createOrEditLabel": "Socium novum creare aut emendum"
+                "createOrEditLabel": "Socium novum creare aut emendum",
+                "pleaseProvide": "Notitia contactus praestate vestri.",
+                "pleaseEdit": "Emendo placere, si opus fuerit."
             },
             "delete": {
                 "question": "Visne {{name}} notitia sunt delere?"

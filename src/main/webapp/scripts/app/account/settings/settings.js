@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('csrsApp').controller('SettingsController', function ($scope, Principal, Auth, UserContact) {
+angular.module('csrsApp').controller('SettingsController', function ($scope, Principal, Auth, UserContact, $state) {
     this.account = null;
     this.contacts = [];
     this.contactsError = null;
@@ -36,6 +36,12 @@ angular.module('csrsApp').controller('SettingsController', function ($scope, Pri
             self.loadContacts();
         }, function (error) {
             self.newContactError = angular.toJson(error.data);
+        });
+    };
+
+    this.startEditing = function (contact) {
+        $state.go('editUserContact', {
+            contact: contact
         });
     };
 });

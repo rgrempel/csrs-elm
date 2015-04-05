@@ -146,6 +146,16 @@ csrsApp:
                 en: "Create or edit a Contact"
                 fr: "Créer ou éditer un Contact"
                 la: "Socium novum creare aut emendum"
+
+            pleaseProvide:
+                en: "Please provide your contact information."
+                fr: "Fournir vos informations de contact, se il vous plaît."
+                la: "Notitia contactus praestate vestri."
+
+            pleaseEdit:
+                en: "Please edit if needed."
+                fr: "Modifier si nécessaire, se il vous plaît."
+                la: "Emendo placere, si opus fuerit."
         
         delete: 
             question:

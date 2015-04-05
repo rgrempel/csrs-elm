@@ -19,6 +19,9 @@ public interface ContactRepository extends JpaRepository<Contact,Long> {
     @Query("SELECT DISTINCT c FROM Contact c JOIN c.contactEmails ce JOIN ce.email e JOIN e.userEmails ue JOIN ue.user u WHERE u.login = ?1")
     Set<Contact> findAllForLogin (String login);
 
+    @Query("SELECT DISTINCT c FROM Contact c JOIN c.contactEmails ce JOIN ce.email e JOIN e.userEmails ue JOIN ue.user u WHERE u.login = ?1 AND c.id = ?2")
+    Contact findOneForLogin (String login, Long contactID);
+    
     @Query("SELECT DISTINCT c FROM Contact c WHERE LOWER(c.firstName) LIKE ?1 OR LOWER(c.lastName) LIKE ?1")
     @EntityGraph(
         value = "Contact.WithAnnuals",

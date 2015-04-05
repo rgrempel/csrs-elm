@@ -44,7 +44,9 @@
             "home": {
                 "title": "Contacts",
                 "createLabel": "Create a new Contact",
-                "createOrEditLabel": "Create or edit a Contact"
+                "createOrEditLabel": "Create or edit a Contact",
+                "pleaseProvide": "Please provide your contact information.",
+                "pleaseEdit": "Please edit if needed."
             },
             "delete": {
                 "question": "Are you sure you want to delete all the information for {{ name }}?"
