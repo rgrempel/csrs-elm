@@ -440,6 +440,7 @@
         }
     },
     "settings": {
+        "contactInformation": "Vos informations de contact",
         "title": "Profil de l'utilisateur [{{username}}]",
         "form": {
             "firstname": "Prénom",

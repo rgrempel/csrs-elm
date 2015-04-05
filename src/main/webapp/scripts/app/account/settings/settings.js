@@ -1,22 +1,41 @@
 'use strict';
 
-angular.module('csrsApp').controller('SettingsController', function ($scope, Principal, Auth) {
-    $scope.success = null;
-    $scope.error = null;
-    Principal.identity().then(function(account) {
-        $scope.settingsAccount = account;
-    });
+angular.module('csrsApp').controller('SettingsController', function ($scope, Principal, Auth, UserContact) {
+    this.account = null;
+    this.contacts = [];
+    this.contactsError = null;
+    this.gotContacts = false;
+    this.newContact = {};
+    this.newContactError = null;
 
-    $scope.save = function () {
-        Auth.updateAccount($scope.settingsAccount).then(function() {
-            $scope.error = null;
-            $scope.success = 'OK';
-            Principal.identity().then(function(account) {
-                $scope.settingsAccount = account;
+    this.loadContacts = function () {
+        var self = this;
+        Principal.identity().then(function(account) {
+            self.account = account;
+
+            UserContact.query({}, function (result) {
+                self.contacts = result;
+                self.contactsError = null;
+                self.gotContacts = true;
+            }, function (error) {
+                self.contacts = [];
+                self.contactsError = angular.toJson(error.data);
+                self.gotContacts = false;
             });
-        }).catch(function() {
-            $scope.success = null;
-            $scope.error = 'ERROR';
+        });
+    };
+
+    this.loadContacts();
+
+    this.saveNewContact = function () {
+        if (!$scope.newContactForm.$valid) return;
+
+        var self = this;
+        UserContact.save({}, this.newContact, function () {
+            self.newContactError = null;
+            self.loadContacts();
+        }, function (error) {
+            self.newContactError = angular.toJson(error.data);
         });
     };
 });
@@ -32,7 +51,8 @@ angular.module('csrsApp').config(function ($stateProvider) {
         views: {
             'content@': {
                 templateUrl: 'scripts/app/account/settings/settings.html',
-                controller: 'SettingsController'
+                controller: 'SettingsController',
+                controllerAs: 'settingsController'
             }
         }
     });

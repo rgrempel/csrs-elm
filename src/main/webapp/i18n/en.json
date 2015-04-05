@@ -440,6 +440,7 @@
         }
     },
     "settings": {
+        "contactInformation": "Your Contact Information",
         "title": "User settings for [<b>{{username}}</b>]",
         "form": {
             "firstname": "First Name",

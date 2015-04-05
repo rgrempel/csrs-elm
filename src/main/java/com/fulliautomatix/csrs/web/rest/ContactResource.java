@@ -2,12 +2,18 @@ package com.fulliautomatix.csrs.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.fulliautomatix.csrs.domain.Contact;
+import com.fulliautomatix.csrs.domain.ContactEmail;
+import com.fulliautomatix.csrs.domain.Email;
 import com.fulliautomatix.csrs.repository.ContactRepository;
+import com.fulliautomatix.csrs.repository.EmailRepository;
+import com.fulliautomatix.csrs.repository.ContactEmailRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
 import com.fulliautomatix.csrs.web.rest.util.ValidationException;
+import com.fulliautomatix.csrs.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,6 +29,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * REST controller for managing Contact.
@@ -36,6 +43,12 @@ public class ContactResource {
 
     @Inject
     private ContactRepository contactRepository;
+
+    @Inject 
+    private EmailRepository emailRepository;
+
+    @Inject 
+    private ContactEmailRepository contactEmailRepository;
 
     /**
      * POST  /contacts -> Create a new contact.
@@ -58,6 +71,42 @@ public class ContactResource {
         }
 
         contactRepository.save(contact);
+        
+        return ResponseEntity.created(new URI("/api/contacts/" + contact.getId())).build();
+    }
+
+    /**
+     * POST  /account/contacts -> Create a new contact for tne current user
+     */
+    @RequestMapping(
+        value = "/account/contacts",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Timed
+    @RolesAllowed(AuthoritiesConstants.USER)
+    @Transactional
+    public ResponseEntity<Void> createForUser (@RequestBody @Valid Contact contact, Errors errors) throws URISyntaxException {
+        log.debug("REST request to save Contact for account : {}", contact);
+
+        if (contact.getId() != null) {
+            return ResponseEntity.badRequest().header("Failure", "A new contact cannot already have an ID").build();
+        }
+
+        if (errors.hasErrors()) {
+            throw new ValidationException("Contact failed validation", errors);
+        }
+
+        contactRepository.save(contact);
+        
+        // Hook up all the emails ...
+        Set<Email> emails = emailRepository.findAllForLogin(SecurityUtils.getCurrentLogin());
+        for (Email e : emails) {
+            ContactEmail ce = new ContactEmail();
+            ce.setEmail(e);
+            ce.setContact(contact);
+            contactEmailRepository.save(ce);
+        }
         
         return ResponseEntity.created(new URI("/api/contacts/" + contact.getId())).build();
     }
@@ -91,6 +140,22 @@ public class ContactResource {
         Page<Contact> page = contactRepository.findAll(PaginationUtil.generatePageRequest(offset, limit));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/contacts", offset, limit);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /account/contacts (all the contacts which this account is entitled to edit)
+     */
+    @RequestMapping(
+        value = "/account/contacts",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Timed
+    @RolesAllowed(AuthoritiesConstants.USER)
+    public ResponseEntity<Set<Contact>> getAllForAccount () throws URISyntaxException {
+        String login = SecurityUtils.getCurrentLogin();
+        Set<Contact> contacts = contactRepository.findAllForLogin(login);
+        return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
     /**

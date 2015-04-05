@@ -1474,7 +1474,12 @@ sessions:
             fr: "<strong>Une erreur est survenue!</strong> La session ne peut pas être invalidée."
             la: "<strong>An error has occurred!</strong> The session could not be invalidated."
 
-settings: 
+settings:
+    contactInformation:
+        en: "Your Contact Information"
+        fr: "Vos informations de contact"
+        la: "Notitia contactus tuum"
+
     title:
         en: "User settings for [<b>{{username}}</b>]"
         fr: "Profil de l'utilisateur [{{username}}]"
