@@ -13,6 +13,8 @@ angular.module('csrsApp').directive('csrsContactInterests', function () {
 });
 
 angular.module('csrsApp').controller('ContactInterestsCtrl', function (Interest, _, $http) {
+    this.error = null;
+    
     this.create = function () {
         var newInterest = {
             editMode: true,
@@ -29,8 +31,9 @@ angular.module('csrsApp').controller('ContactInterestsCtrl', function (Interest,
         var self = this;
         Interest.delete({id: interest.id}, function () {
             _.pull(self.contact.interests, interest);
-        }, function () {
-            // Error
+            self.error = null;
+        }, function (error) {
+            self.error = angular.toJson(error.data);
         });
     };
 
@@ -45,28 +48,31 @@ angular.module('csrsApp').controller('ContactInterestsCtrl', function (Interest,
             id: this.contact.id
         };
 
+        var self = this;
         if (interest.id) {
             Interest.update({}, interest, function () {
                 interest.editMode = false;
-            }, function () {
-                // error
+                self.error = null;
+            }, function (error) {
+                self.error = angular.toJson(error.data);
             });
         } else {
-            var self = this;
             Interest.save({}, interest, function (value, headers) {
                 $http.get(headers('location')).success(function (data) {
                     self.contact.interests.push(data);
                     _.pull(self.contact.interests, interest);
-                }).error(function () {
-                    // Shouldn't happen ...
+                    self.error = null;
+                }).error(function (error) {
+                    self.error = angular.toJson(error.data);
                 });
-            }, function () {
-                // error
+            }, function (error) {
+                self.error = angular.toJson(error.data);
             });
         }
     };
 
     this.cancel = function (interest) {
         _.pull(this.contact.interests, interest);
+        this.error = null;
     };
 });

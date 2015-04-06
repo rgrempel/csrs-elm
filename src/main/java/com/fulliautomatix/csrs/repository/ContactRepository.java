@@ -17,6 +17,10 @@ public interface ContactRepository extends JpaRepository<Contact,Long> {
     Page<Contact> searchByFullNameLikeLower (String fullName, Pageable page);
 
     @Query("SELECT DISTINCT c FROM Contact c JOIN c.contactEmails ce JOIN ce.email e JOIN e.userEmails ue JOIN ue.user u WHERE u.login = ?1")
+    @EntityGraph(
+        value = "Contact.WithAnnualsAndInterests",
+        type = EntityGraph.EntityGraphType.LOAD
+    )
     Set<Contact> findAllForLogin (String login);
 
     @Query("SELECT DISTINCT c FROM Contact c JOIN c.contactEmails ce JOIN ce.email e JOIN e.userEmails ue JOIN ue.user u WHERE u.login = ?1 AND c.id = ?2")
