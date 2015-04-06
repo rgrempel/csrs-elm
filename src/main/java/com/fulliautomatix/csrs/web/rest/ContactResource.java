@@ -209,10 +209,6 @@ public class ContactResource {
         @RequestParam(value = "per_page", required = false) Integer limit,
         @RequestParam(value = "fullNameSearch") String search
     ) throws URISyntaxException {
-//      Page<Contact> page = contactRepository.searchByFullName(search.toLowerCase(), PaginationUtil.generatePageRequest(offset, limit));
-//      HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/contacts", offset, limit);
-//      return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-
         List<Contact> contacts = contactRepository.searchByFullNameLikeLower((search + "%").toLowerCase());
         return new ResponseEntity<List<Contact>>(contacts, HttpStatus.OK);
     }

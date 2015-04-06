@@ -26,6 +26,22 @@
                 </div>
 
                 <div csrs-contact-interests="contact" class="col-xs-6 col-sm-6 col-md-5 col-lg-4"></div>
+
+                <div class="col-xs-6 col-sm-6 col-md-5 col-lg-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title" translate="csrsApp.contact.emailAddresses">Email Addresses</h3>
+                        </div>
+                            
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr class="animate-fade" ng-repeat="contactEmail in contact.contactEmails">
+                                    <td style="vertical-align: middle;" ng-bind="contactEmail.email.emailAddress">rgrempel@gmail.com</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
