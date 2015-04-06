@@ -28,7 +28,7 @@ public class UserEmailActivation implements Serializable {
     // For JsonView
     public interface Scalar {};
 
-    public interface WithUserEmail extends Scalar, UserEmail.Scalar {};
+    public interface WithUserEmail extends Scalar, UserEmail.WithEmail {};
 
     @Id
     @SequenceGenerator(name="t_user_email_activation_id_seq", sequenceName="t_user_email_activation_id_seq", allocationSize=1)

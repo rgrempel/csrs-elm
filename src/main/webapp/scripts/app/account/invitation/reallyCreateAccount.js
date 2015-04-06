@@ -20,14 +20,13 @@ angular.module('csrsApp').controller('ReallyCreateAccountController', function (
                 password: self.account.password,
                 rememberMe: false
             }).then(function () {
-                $state.go('home');
+                $state.go('settings');
             }, function (error) {
                 self.serverError = angular.toJson(error);
             });
         }, function (error) {
             self.serverError = angular.toJson(error);
         });
-
     };
 });
 

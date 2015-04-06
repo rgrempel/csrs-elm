@@ -26,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
+import org.hibernate.Hibernate;
 
 import org.joda.time.DateTime;
 import javax.validation.Valid;
@@ -69,8 +70,12 @@ public class InvitationResource {
     )
     @Timed
     @JsonView(UserEmailActivation.WithUserEmail.class)
+    @Transactional(readOnly = true)
     public ResponseEntity<UserEmailActivation> getInvitation (@PathVariable String key) throws URISyntaxException {
         return userEmailActivationRepository.findByActivationKey(key).map((activation) -> {
+            // Make sure it loaded ...
+            Hibernate.initialize(activation.getUserEmail().getEmail());
+
             return new ResponseEntity<UserEmailActivation>(activation, HttpStatus.OK);
         }).orElse(
             new ResponseEntity<UserEmailActivation>(HttpStatus.NOT_FOUND)
