@@ -1,0 +1,159 @@
+package com.fulliautomatix.csrs.web.rest;
+
+import com.codahale.metrics.annotation.Timed;
+import com.fulliautomatix.csrs.domain.ContactEmail;
+import com.fulliautomatix.csrs.domain.Contact;
+import com.fulliautomatix.csrs.domain.Email;
+import com.fulliautomatix.csrs.repository.ContactEmailRepository;
+import com.fulliautomatix.csrs.repository.EmailRepository;
+import com.fulliautomatix.csrs.repository.ContactRepository;
+import com.fulliautomatix.csrs.security.AuthoritiesConstants;
+import com.fulliautomatix.csrs.security.SecurityUtils;
+import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Set;
+import java.util.Optional;
+
+/**
+ * REST controller for managing ContactEmail.
+ */
+@RestController
+@RequestMapping("/api")
+@RolesAllowed(AuthoritiesConstants.USER)
+public class ContactEmailResource {
+
+    private final Logger log = LoggerFactory.getLogger(ContactEmailResource.class);
+
+    @Inject
+    private ContactEmailRepository contactEmailRepository;
+
+    @Inject
+    private ContactRepository contactRepository;
+
+    @Inject
+    private EmailRepository emailRepository;
+
+    public void checkAccess (ContactEmail contactEmail) {
+        Long contactId = contactEmail.getContact().getId();
+
+        Contact authorized = contactRepository.findOneForLogin(SecurityUtils.getCurrentLogin(), contactId);
+
+        if (authorized == null) {
+            throw new AccessDeniedException("Not permitted for this user.");
+        }
+    }
+
+    public Email findOrSaveEmail (Email email) {
+        // We only need to check if it doesn't have one already
+        if (email.getId() != null) return email;
+
+        return emailRepository.findOneByEmailAddress(email.getEmailAddress()).orElseGet(() -> {
+            // We just have to save it ... 
+            emailRepository.save(email);
+            return email;
+        });
+    }
+
+    /**
+     * POST  /contactEmails -> Create a new contactEmail.
+     */
+    @RequestMapping(
+        value = "/contactEmails",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Timed
+    public ResponseEntity<Void> create (@Valid @RequestBody ContactEmail contactEmail) throws URISyntaxException {
+        log.debug("REST request to save ContactEmail : {}", contactEmail);
+
+        if (contactEmail.getId() != null) {
+            return ResponseEntity.badRequest().header("Failure", "A new contactEmail cannot already have an ID").build();
+        }
+
+        if (!SecurityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) {
+            checkAccess(contactEmail);
+        }
+
+        // Make sure that the email is de-duped
+        contactEmail.setEmail(findOrSaveEmail(contactEmail.getEmail()));
+        contactEmailRepository.save(contactEmail);
+
+        return ResponseEntity.created(new URI("/api/contactEmails/" + contactEmail.getId())).build();
+    }
+
+    /**
+     * GET  /contactEmails -> get all the contactEmails.
+     */
+    @RequestMapping(
+        value = "/contactEmails",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @RolesAllowed(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<List<ContactEmail>> getAll () throws URISyntaxException {
+        List<ContactEmail> contactEmails = contactEmailRepository.findAll();
+        return new ResponseEntity<>(contactEmails, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /contactEmails/:id -> get the "id" contactEmail.
+     */
+    @RequestMapping(
+        value = "/contactEmails/{id}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Timed
+    public ResponseEntity<ContactEmail> get (@PathVariable Long id) {
+        log.debug("REST request to get ContactEmail : {}", id);
+        
+        return Optional.ofNullable(
+            contactEmailRepository.findOne(id)
+        ).map((contactEmail) -> {
+            if (!SecurityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) {
+                checkAccess(contactEmail);
+            }
+
+            return new ResponseEntity<>(contactEmail, HttpStatus.OK);
+        }).orElse(
+            new ResponseEntity<>(HttpStatus.NOT_FOUND)
+        );
+    }
+
+    /**
+     * DELETE  /contactEmails/:id -> delete the "id" contactEmail.
+     */
+    @RequestMapping(
+        value = "/contactEmails/{id}",
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Timed
+    public void delete (@PathVariable Long id) {
+        log.debug("REST request to delete ContactEmail : {}", id);
+
+        if (!SecurityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) {
+            ContactEmail contactEmail = contactEmailRepository.findOneForLogin(SecurityUtils.getCurrentLogin(), id);
+            if (contactEmail == null) {
+                throw new AccessDeniedException("Not allowed for this user.");
+            }
+        }
+
+        contactEmailRepository.delete(id);
+    }
+}

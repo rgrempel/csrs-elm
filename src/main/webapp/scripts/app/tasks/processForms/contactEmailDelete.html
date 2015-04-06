@@ -1,0 +1,24 @@
+<div csrs-modal>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="deleteContactEmailController.cancel()" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" translate="entity.delete.title">Confirm Delete Operation</h4>
+    </div>
+
+    <div class="modal-body">
+        <p translate="csrsApp.contact.delete.emailQuestion" 
+           translate-values="{
+               name: '{{deleteContactEmailController.contact.firstName}} {{deleteContactEmailController.contact.lastName}}',
+               address: '{{deleteContactEmailController.contactEmail.email.emailAddress}}'
+           }">Are you sure you want to delete the email address 'pdyck@cmu.ca' for Paul Dyck?</p>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" ng-click="deleteContactEmailController.cancel()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button type="submit" class="btn btn-danger" ng-click="deleteContactEmailController.doDelete()">
+            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
+        </button>
+    </div>
+</div>

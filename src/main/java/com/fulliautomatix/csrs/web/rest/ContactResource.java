@@ -225,9 +225,9 @@ public class ContactResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Contact> getWithAnnuals(@PathVariable Long id) {
+    public ResponseEntity<Contact> getWithAnnualsAndInterestsAndEmail (@PathVariable Long id) {
         log.debug("REST request to get Contact : {}", id);
-        return Optional.ofNullable(contactRepository.findOneWithAnnualsAndInterests(id))
+        return Optional.ofNullable(contactRepository.findOneWithAnnualsAndInterestsAndEmail(id))
             .map(contact -> new ResponseEntity<>(
                 contact,
                 HttpStatus.OK))

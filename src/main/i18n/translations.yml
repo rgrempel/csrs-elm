@@ -162,7 +162,12 @@ csrsApp:
                 en: "Are you sure you want to delete all the information for {{ name }}?"
                 fr: "Etes-vous certain de vouloir supprimer toutes les informations concernant {{ name }} ?"
                 la: "Visne {{name}} notitia sunt delere?"
-        
+       
+            emailQuestion:
+                en: "Are you sure you want to delete the email address '{{address}}' for {{name}}?"
+                fr: "Êtes-vous sûr de vouloir supprimer l'adresse email '{{address}}' pour {{name}}?"
+                la: "Visne inscriptio electronica ut delete sunt '{{address}}' pro {{nomen}}?"
+
         detail: 
             title:
                 en: "Contact"
@@ -217,7 +222,12 @@ csrsApp:
         email:
             en: "Email"
             fr: "Email"
-            la: "Cursorium"
+            la: "Inscriptio electronica"
+
+        emailAddresses:
+            en: "Email Addresses"
+            fr: "Adresses électroniques"
+            la: "Inscriptiones electronica"
 
         department:
             en: "Department"
@@ -237,7 +247,7 @@ csrsApp:
         omitEmailFromDirectory:
             en: "Omit email from directory"
             fr: "Omettre votre email à partir du répertoire"
-            la: "Omitto cursorium ex directorium"
+            la: "Omitto inscriptio electronica ex directorium"
 
         interests:
             en: "Scholarly Interests"
@@ -591,12 +601,12 @@ global:
         email:
             en: "E-mail"
             fr: "Email"
-            la: "Cursorium"
+            la: "Inscriptio electronica"
 
         email.placeholder:
             en: "Your e-mail"
             fr: "Votre email"
-            la: "Cursorium tuum"
+            la: "Inscriptio electronica tuum"
     
     messages: 
         info: 
@@ -663,12 +673,12 @@ global:
                 required:
                     en: "Your e-mail is required."
                     fr: "Votre email est requis."
-                    la: "Tuum cursorium requiritur."
+                    la: "Inscriptio electronica tuum requiritur."
 
                 invalid:
                     en: "Your e-mail is invalid."
                     fr: "Votre email doit comporter au moins 5 caractères"
-                    la: "Tuum cursorium invalidum."
+                    la: "Inscriptio electronica invalidum."
 
                 minlength:
                     en: "Your e-mail is required to be at least 5 characters"

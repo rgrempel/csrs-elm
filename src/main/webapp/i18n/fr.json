@@ -49,7 +49,8 @@
                 "pleaseEdit": "Modifier si nécessaire, se il vous plaît."
             },
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer toutes les informations concernant {{ name }} ?"
+                "question": "Etes-vous certain de vouloir supprimer toutes les informations concernant {{ name }} ?",
+                "emailQuestion": "Êtes-vous sûr de vouloir supprimer l'adresse email '{{address}}' pour {{name}}?"
             },
             "detail": {
                 "title": "Contact"
@@ -64,6 +65,7 @@
             "country": "État",
             "postalCode": "Code postal",
             "email": "Email",
+            "emailAddresses": "Adresses électroniques",
             "department": "Département",
             "affiliation": "Université / Affiliation",
             "omitNameFromDirectory": "Omettre votre nom à partir du répertoire",

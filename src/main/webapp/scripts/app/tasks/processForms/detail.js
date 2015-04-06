@@ -2,6 +2,7 @@
 
 angular.module('csrsApp').controller('ProcessFormsDetailController', function ($scope, $state, $stateParams, Contact) { 
     this.contact = {};
+    this.error = null;
 
     this.load = function (id) {
         var self = this;
@@ -9,9 +10,10 @@ angular.module('csrsApp').controller('ProcessFormsDetailController', function ($
             id: id,
             withAnnualsAndInterests: true
         }, function(result) {
+            self.error = null;
             self.contact = result;
-        }, function() {
-            
+        }, function(error) {
+            self.error = angular.toJson(error.data);
         });
     };
 

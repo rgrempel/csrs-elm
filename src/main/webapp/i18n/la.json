@@ -49,7 +49,8 @@
                 "pleaseEdit": "Emendo placere, si opus fuerit."
             },
             "delete": {
-                "question": "Visne {{name}} notitia sunt delere?"
+                "question": "Visne {{name}} notitia sunt delere?",
+                "emailQuestion": "Visne inscriptio electronica ut delete sunt '{{address}}' pro {{nomen}}?"
             },
             "detail": {
                 "title": "Socium"
@@ -63,11 +64,12 @@
             "region": "Regio",
             "country": "Patriae",
             "postalCode": "Codicem Postal",
-            "email": "Cursorium",
+            "email": "Inscriptio electronica",
+            "emailAddresses": "Inscriptiones electronica",
             "department": "Department",
             "affiliation": "Universitatis / Consociatione",
             "omitNameFromDirectory": "Omitto nomen ex directorium",
-            "omitEmailFromDirectory": "Omitto cursorium ex directorium",
+            "omitEmailFromDirectory": "Omitto inscriptio electronica ex directorium",
             "interests": "Interesse Academicistica",
             "data": {
                 "omit": "Omitto",
@@ -172,8 +174,8 @@
             "newpassword.placeholder": "Signum novum",
             "confirmpassword": "Signum novum confirmatio",
             "confirmpassword.placeholder": "Signum novum confirmatio",
-            "email": "Cursorium",
-            "email.placeholder": "Cursorium tuum"
+            "email": "Inscriptio electronica",
+            "email.placeholder": "Inscriptio electronica tuum"
         },
         "messages": {
             "info": {
@@ -197,8 +199,8 @@
                     "maxlength": "Your confirmation password cannot be longer than 50 characters"
                 },
                 "email": {
-                    "required": "Tuum cursorium requiritur.",
-                    "invalid": "Tuum cursorium invalidum.",
+                    "required": "Inscriptio electronica tuum requiritur.",
+                    "invalid": "Inscriptio electronica invalidum.",
                     "minlength": "Your e-mail is required to be at least 5 characters",
                     "maxlength": "Your e-mail cannot be longer than 50 characters"
                 },

@@ -44,6 +44,14 @@ import java.util.HashSet;
             @NamedAttributeNode("annuals"),
             @NamedAttributeNode("interests")
         }
+    ),
+    @NamedEntityGraph(
+        name = "Contact.WithAnnualsAndInterestsAndEmail",
+        attributeNodes = {
+            @NamedAttributeNode("annuals"),
+            @NamedAttributeNode("interests"),
+            @NamedAttributeNode("contactEmails")
+        }
     )
 })
 @lombok.ToString(of={"id", "salutation", "firstName", "lastName", "department", "affiliation"})

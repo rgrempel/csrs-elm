@@ -49,7 +49,8 @@
                 "pleaseEdit": "Please edit if needed."
             },
             "delete": {
-                "question": "Are you sure you want to delete all the information for {{ name }}?"
+                "question": "Are you sure you want to delete all the information for {{ name }}?",
+                "emailQuestion": "Are you sure you want to delete the email address '{{address}}' for {{name}}?"
             },
             "detail": {
                 "title": "Contact"
@@ -64,6 +65,7 @@
             "country": "Country",
             "postalCode": "Postal Code",
             "email": "Email",
+            "emailAddresses": "Email Addresses",
             "department": "Department",
             "affiliation": "University / Affiliation",
             "omitNameFromDirectory": "Omit name from directory",
