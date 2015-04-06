@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
@@ -26,11 +27,7 @@ import java.util.HashSet;
 @Table(name = "T_CONTACT")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class, 
-    property="id",
-    scope = Contact.class
-)
+@JsonIdentityInfo(generator=JSOGGenerator.class)
 @NamedEntityGraphs({
     @NamedEntityGraph(
         name = "Contact.WithAnnuals",

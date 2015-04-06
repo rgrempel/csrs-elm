@@ -4,13 +4,17 @@ angular.module('csrsApp').factory('ContactEmail', function ($resource) {
     return $resource('api/contactEmails/:id', {}, {
         'query': {
             method: 'GET',
-            isArray: true
+            isArray: true,
+            transformResponse: function (data) {
+                data = JSOG.decode(angular.fromJson(data));
+                return data;
+            }
         },
 
         'get': {
             method: 'GET',
             transformResponse: function (data) {
-                data = angular.fromJson(data);
+                data = JSOG.decode(angular.fromJson(data));
                 return data;
             }
         },

@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -19,11 +20,7 @@ import java.util.Set;
 @Entity
 @Table(name = "T_INTEREST")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class, 
-    property="id",
-    scope = Interest.class
-)
+@JsonIdentityInfo(generator=JSOGGenerator.class)
 @lombok.ToString(of={"id", "interest"})
 public class Interest implements Serializable {
 

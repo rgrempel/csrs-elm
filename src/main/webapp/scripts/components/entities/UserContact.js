@@ -4,13 +4,17 @@ angular.module('csrsApp').factory('UserContact', function ($resource) {
     return $resource('api/account/contacts/:id', {}, {
         'query': {
             method: 'GET',
-            isArray: true
+            isArray: true,
+            transformResponse: function (data) {
+                data = JSOG.decode(angular.fromJson(data));
+                return data;
+            }
         },
 
         'get': {
             method: 'GET',
             transformResponse: function (data) {
-                data = angular.fromJson(data);
+                data = JSOG.decode(angular.fromJson(data));
                 return data;
             }
         },
@@ -19,7 +23,7 @@ angular.module('csrsApp').factory('UserContact', function ($resource) {
             method: 'PUT',
             transformRequest: function (data) {
                 // By default, don't send the annuals or interests ...
-                return angular.toJson(_.omit(data, ['annuals', 'interests']));
+                return angular.toJson(_.omit(data, ['annuals', 'interests', 'contactEmails']));
             }
         },
     
@@ -27,7 +31,7 @@ angular.module('csrsApp').factory('UserContact', function ($resource) {
             method: 'POST',
             transformRequest: function (data) {
                 // By default, don't send the annuals ...
-                return angular.toJson(_.omit(data, ['annuals', 'interests']));
+                return angular.toJson(_.omit(data, ['annuals', 'interests', 'contactEmails']));
             }
         }
     });

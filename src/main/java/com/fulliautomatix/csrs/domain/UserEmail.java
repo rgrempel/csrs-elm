@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import org.joda.time.DateTime;
 import org.hibernate.validator.constraints.NotBlank;
@@ -26,11 +27,7 @@ import java.util.HashSet;
 @Entity
 @Table(name = "T_USER_EMAIL")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class, 
-    property="id",
-    scope = UserEmail.class
-)
+@JsonIdentityInfo(generator=JSOGGenerator.class)
 @lombok.ToString(of={"id", "activated"})
 public class UserEmail implements Serializable {
 

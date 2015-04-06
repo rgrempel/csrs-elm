@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
@@ -24,11 +25,7 @@ import java.util.HashSet;
 @Entity
 @Table(name = "T_EMAIL")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class, 
-    property="id",
-    scope = Email.class
-)
+@JsonIdentityInfo(generator=JSOGGenerator.class)
 @lombok.ToString(of={"id", "emailAddress"})
 @lombok.EqualsAndHashCode(of={"emailAddress"})
 @lombok.NoArgsConstructor

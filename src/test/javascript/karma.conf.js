@@ -35,6 +35,7 @@ module.exports = function (config) {
             'main/webapp/bower_components/angular-animate/angular-animate.js',
             'main/webapp/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
             'main/webapp/bower_components/ng-focus-on/ng-focus-on.js',
+            'main/webapp/bower_components/jsog/lib/JSOG.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

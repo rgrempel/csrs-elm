@@ -5,7 +5,7 @@ angular.module('csrsApp').factory('Invitation', function ($resource) {
         'get': {
             method: 'GET',
             transformResponse: function (data) {
-                data = angular.fromJson(data);
+                data = JSOG.decode(angular.fromJson(data));
                 return data;
             }
         }
