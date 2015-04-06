@@ -74,7 +74,7 @@ public class UserService {
         newUser.setLogin(login);
         newUser.setLangKey(langKey);
         
-        userRepository.save(newUser);
+        newUser = userRepository.save(newUser);
         
         log.debug("Created Information for User: {}", newUser);
         return newUser;
@@ -83,7 +83,7 @@ public class UserService {
     public void updateUserInformation (String languageKey) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentLogin()).ifPresent(u -> {
             u.setLangKey(languageKey);
-            userRepository.save(u);
+            u = userRepository.save(u);
             log.debug("Changed Information for User: {}", u);
         });
     }
@@ -92,7 +92,7 @@ public class UserService {
         userRepository.findOneByLogin(SecurityUtils.getCurrentLogin()).ifPresent(u-> {
             String encryptedPassword = passwordEncoder.encode(password);
             u.setPassword(encryptedPassword);
-            userRepository.save(u);
+            u = userRepository.save(u);
             log.debug("Changed password for User: {}", u);
         });
     }

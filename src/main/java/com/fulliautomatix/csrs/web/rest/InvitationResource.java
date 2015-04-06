@@ -95,7 +95,7 @@ public class InvitationResource {
         // Get the existing email address, or create a new one
         Email email = emailRepository.findOneByEmailAddress(request.getEmail()).orElseGet(() -> {
             Email created = request.createEmail();
-            emailRepository.save(created);
+            created = emailRepository.save(created);
             return created;
         });
 
@@ -106,7 +106,7 @@ public class InvitationResource {
         userEmails.stream().filter((userEmail) -> userEmail.getUser() == null).findFirst().orElseGet(() -> {
             UserEmail created = new UserEmail();
             created.setEmail(email);
-            userEmailRepository.save(created);
+            created = userEmailRepository.save(created);
             userEmails.add(created);
             return created;
         });
@@ -125,7 +125,7 @@ public class InvitationResource {
             // This updates whether we've just created it or not
             activation.setDateSent(new DateTime());
             
-            userEmailActivationRepository.save(activation);
+            activation = userEmailActivationRepository.save(activation);
         };
 
         String baseUrl = servletRequest.getScheme() + // "http"

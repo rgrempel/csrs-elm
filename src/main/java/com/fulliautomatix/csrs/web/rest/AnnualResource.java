@@ -46,7 +46,7 @@ public class AnnualResource {
         if (annual.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new annual cannot already have an ID").build();
         }
-        annualRepository.save(annual);
+        annual = annualRepository.save(annual);
         return ResponseEntity.created(new URI("/api/annuals/" + annual.getId())).build();
     }
 
@@ -62,7 +62,7 @@ public class AnnualResource {
         if (annual.getId() == null) {
             return create(annual);
         }
-        annualRepository.save(annual);
+        annual = annualRepository.save(annual);
         return ResponseEntity.ok().build();
     }
 

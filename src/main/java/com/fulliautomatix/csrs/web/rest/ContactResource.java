@@ -70,7 +70,7 @@ public class ContactResource {
             throw new ValidationException("Contact failed validation", errors);
         }
 
-        contactRepository.save(contact);
+        contact = contactRepository.save(contact);
         
         return ResponseEntity.created(new URI("/api/contacts/" + contact.getId())).build();
     }
@@ -97,7 +97,7 @@ public class ContactResource {
             throw new ValidationException("Contact failed validation", errors);
         }
 
-        contactRepository.save(contact);
+        contact = contactRepository.save(contact);
         
         // Hook up all the emails ...
         Set<Email> emails = emailRepository.findAllForLogin(SecurityUtils.getCurrentLogin());
@@ -105,7 +105,7 @@ public class ContactResource {
             ContactEmail ce = new ContactEmail();
             ce.setEmail(e);
             ce.setContact(contact);
-            contactEmailRepository.save(ce);
+            ce = contactEmailRepository.save(ce);
         }
         
         return ResponseEntity.created(new URI("/api/contacts/" + contact.getId())).build();
@@ -129,7 +129,7 @@ public class ContactResource {
             return ResponseEntity.badRequest().header("Failure", "An existing must already have an ID").build();
         }
         
-        contactRepository.save(contact);
+        contact = contactRepository.save(contact);
         return ResponseEntity.ok().build();
     }
 
@@ -158,7 +158,7 @@ public class ContactResource {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        contactRepository.save(contact);
+        contact = contactRepository.save(contact);
 
         return ResponseEntity.ok().build();
     }

@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,8 +65,8 @@ public class ContactEmailResource {
 
         return emailRepository.findOneByEmailAddress(email.getEmailAddress()).orElseGet(() -> {
             // We just have to save it ... 
-            emailRepository.save(email);
-            return email;
+            Email saved = emailRepository.save(email);
+            return saved;
         });
     }
 
@@ -78,6 +79,7 @@ public class ContactEmailResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
+    @Transactional
     public ResponseEntity<Void> create (@Valid @RequestBody ContactEmail contactEmail) throws URISyntaxException {
         log.debug("REST request to save ContactEmail : {}", contactEmail);
 
@@ -91,7 +93,13 @@ public class ContactEmailResource {
 
         // Make sure that the email is de-duped
         contactEmail.setEmail(findOrSaveEmail(contactEmail.getEmail()));
-        contactEmailRepository.save(contactEmail);
+        contactEmail = contactEmailRepository.save(contactEmail);
+
+        // Now, let's assume that the new email is also the preferred one ...
+        // need to actually manage this yet.
+        Contact contact = contactRepository.findOne(contactEmail.getContact().getId());
+        contact.setPreferredEmail(contactEmail.getEmail());
+        contact = contactRepository.save(contact);
 
         return ResponseEntity.created(new URI("/api/contactEmails/" + contactEmail.getId())).build();
     }
@@ -144,6 +152,7 @@ public class ContactEmailResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
+    @Transactional
     public void delete (@PathVariable Long id) {
         log.debug("REST request to delete ContactEmail : {}", id);
 
@@ -153,6 +162,8 @@ public class ContactEmailResource {
                 throw new AccessDeniedException("Not allowed for this user.");
             }
         }
+
+        // Need to deal with preferred email id issue when deleting ...
 
         contactEmailRepository.delete(id);
     }

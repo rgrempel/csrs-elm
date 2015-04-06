@@ -73,7 +73,7 @@ public class InterestResource {
             checkAccess(interest);
         }
 
-        interestRepository.save(interest);
+        interest = interestRepository.save(interest);
         return ResponseEntity.created(new URI("/api/interests/" + interest.getId())).build();
     }
 
@@ -97,7 +97,7 @@ public class InterestResource {
             checkAccess(interest);
         }
 
-        interestRepository.save(interest);
+        interest = interestRepository.save(interest);
         return ResponseEntity.ok().build();
     }
 
