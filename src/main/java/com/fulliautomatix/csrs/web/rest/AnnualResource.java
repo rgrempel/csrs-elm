@@ -1,6 +1,7 @@
 package com.fulliautomatix.csrs.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.annotation.*;
 import com.fulliautomatix.csrs.domain.Annual;
 import com.fulliautomatix.csrs.repository.AnnualRepository;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
@@ -73,6 +74,7 @@ public class AnnualResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @JsonView(Annual.WithContact.class)
     public ResponseEntity<List<Annual>> getAll(@RequestParam(value = "page" , required = false) Integer offset,
                                   @RequestParam(value = "per_page", required = false) Integer limit)
         throws URISyntaxException {
@@ -88,6 +90,7 @@ public class AnnualResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @JsonView(Annual.WithContact.class)
     public ResponseEntity<Annual> get(@PathVariable Long id) {
         log.debug("REST request to get Annual : {}", id);
         return Optional.ofNullable(annualRepository.findOne(id))

@@ -1,6 +1,7 @@
 package com.fulliautomatix.csrs.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.annotation.*;
 import com.fulliautomatix.csrs.domain.User;
 import com.fulliautomatix.csrs.repository.UserRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
@@ -38,6 +39,7 @@ public class UserResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @RolesAllowed(AuthoritiesConstants.ADMIN)
+    @JsonView(User.Scalar.class)
     public List<User> getAll() {
         log.debug("REST request to get all Users");
         return userRepository.findAll();
@@ -51,6 +53,7 @@ public class UserResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @RolesAllowed(AuthoritiesConstants.ADMIN)
+    @JsonView(User.Scalar.class)
     public ResponseEntity<User> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
         return userRepository.findOneByLogin(login)

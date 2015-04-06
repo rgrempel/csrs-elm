@@ -1,6 +1,7 @@
 package com.fulliautomatix.csrs.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.annotation.*;
 import com.fulliautomatix.csrs.domain.ContactEmail;
 import com.fulliautomatix.csrs.domain.Contact;
 import com.fulliautomatix.csrs.domain.Email;
@@ -113,6 +114,7 @@ public class ContactEmailResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @RolesAllowed(AuthoritiesConstants.ADMIN)
+    @JsonView(ContactEmail.WithEverything.class)
     public ResponseEntity<List<ContactEmail>> getAll () throws URISyntaxException {
         List<ContactEmail> contactEmails = contactEmailRepository.findAll();
         return new ResponseEntity<>(contactEmails, HttpStatus.OK);
@@ -127,6 +129,7 @@ public class ContactEmailResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
+    @JsonView(ContactEmail.WithEverything.class)
     public ResponseEntity<ContactEmail> get (@PathVariable Long id) {
         log.debug("REST request to get ContactEmail : {}", id);
         

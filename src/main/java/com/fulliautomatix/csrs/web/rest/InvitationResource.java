@@ -1,6 +1,7 @@
 package com.fulliautomatix.csrs.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.annotation.*;
 import com.fulliautomatix.csrs.domain.Contact;
 import com.fulliautomatix.csrs.domain.Email;
 import com.fulliautomatix.csrs.domain.UserEmail;
@@ -67,6 +68,7 @@ public class InvitationResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
+    @JsonView(UserEmailActivation.WithUserEmail.class)
     public ResponseEntity<UserEmailActivation> getInvitation (@PathVariable String key) throws URISyntaxException {
         return userEmailActivationRepository.findByActivationKey(key).map((activation) -> {
             return new ResponseEntity<UserEmailActivation>(activation, HttpStatus.OK);

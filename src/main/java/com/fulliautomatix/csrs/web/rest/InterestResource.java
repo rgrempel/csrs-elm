@@ -1,6 +1,7 @@
 package com.fulliautomatix.csrs.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.annotation.*;
 import com.fulliautomatix.csrs.domain.Interest;
 import com.fulliautomatix.csrs.domain.Contact;
 import com.fulliautomatix.csrs.repository.InterestRepository;
@@ -110,6 +111,7 @@ public class InterestResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @RolesAllowed(AuthoritiesConstants.ADMIN)
+    @JsonView(Interest.WithContact.class)
     public ResponseEntity<List<Interest>> getAll () throws URISyntaxException {
         List<Interest> interests = interestRepository.findAll();
         return new ResponseEntity<>(interests, HttpStatus.OK);
@@ -124,6 +126,7 @@ public class InterestResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
+    @JsonView(Interest.WithContact.class)
     public ResponseEntity<Interest> get (@PathVariable Long id) {
         log.debug("REST request to get Interest : {}", id);
         

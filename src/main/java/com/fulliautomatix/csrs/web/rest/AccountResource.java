@@ -1,6 +1,7 @@
 package com.fulliautomatix.csrs.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.annotation.*;
 import com.fulliautomatix.csrs.domain.Authority;
 import com.fulliautomatix.csrs.domain.PersistentToken;
 import com.fulliautomatix.csrs.domain.User;

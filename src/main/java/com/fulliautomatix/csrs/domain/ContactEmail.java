@@ -4,12 +4,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import org.joda.time.DateTime;
@@ -28,20 +23,30 @@ import java.util.Set;
 @JsonIdentityInfo(generator=JSOGGenerator.class)
 @lombok.ToString(of={"id"})
 public class ContactEmail implements Serializable {
+    // For JsonView
+    public interface Scalar {};
+
+    public interface WithEmail extends Scalar, Email.Scalar {};
+    public interface WithContact extends Scalar, Contact.Scalar {};
+
+    public interface WithEverything extends WithEmail, WithContact {};
 
     @Id
     @SequenceGenerator(name="t_contact_email_id_seq", sequenceName="t_contact_email_id_seq", allocationSize=1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_contact_email_id_seq")
     @lombok.Getter @lombok.Setter
+    @JsonView(Scalar.class)
     private Long id;
 
     @lombok.Getter @lombok.Setter
     @ManyToOne
     @NotNull
+    @JsonView(WithEmail.class)
     private Email email;
 
     @lombok.Getter @lombok.Setter
     @ManyToOne
     @NotNull
+    @JsonView(WithContact.class)
     private Contact contact;
 }

@@ -1,11 +1,8 @@
 package com.fulliautomatix.csrs.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
 
 import javax.persistence.*;
@@ -23,32 +20,41 @@ import java.util.Set;
 @JsonIdentityInfo(generator=JSOGGenerator.class)
 @lombok.ToString(of={"id", "year", "membership", "iter", "rr"})
 public class Annual implements Serializable {
+    // For JsonView
+    public interface Scalar {};
+    public interface WithContact extends Scalar, Contact.Scalar {};
 
     @Id
     @SequenceGenerator(name="t_annual_id_seq", sequenceName="t_annual_id_seq", allocationSize=1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_annual_id_seq")
     @lombok.Getter @lombok.Setter
+    @JsonView(Scalar.class)
     private Long id;
 
     @Column(name = "year", nullable=false)
     @NotNull
     @lombok.Getter @lombok.Setter
+    @JsonView(Scalar.class)
     private Integer year;
 
     @Column(name = "membership", nullable=false)
     @lombok.Getter @lombok.Setter
+    @JsonView(Scalar.class)
     private Integer membership;
 
     @Column(name = "iter", nullable=false)
     @lombok.Getter @lombok.Setter
+    @JsonView(Scalar.class)
     private Boolean iter;
 
     @Column(name = "rr", nullable=false)
     @lombok.Getter @lombok.Setter
+    @JsonView(Scalar.class)
     private Integer rr;
 
     @ManyToOne
     @lombok.Getter @lombok.Setter
+    @JsonView({WithContact.class})
     private Contact contact;
 
     @PrePersist 

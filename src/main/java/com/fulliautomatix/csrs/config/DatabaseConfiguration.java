@@ -95,6 +95,9 @@ public class DatabaseConfiguration implements EnvironmentAware {
 
     @Bean
     public Hibernate4Module hibernate4Module() {
-        return new Hibernate4Module();
+        Hibernate4Module module = new Hibernate4Module();
+        module.enable(Hibernate4Module.Feature.FORCE_LAZY_LOADING);
+
+        return module;
     }
 }

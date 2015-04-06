@@ -1,6 +1,10 @@
 package com.fulliautomatix.csrs.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.fulliautomatix.csrs.domain.Contact;
 import com.fulliautomatix.csrs.domain.ContactEmail;
 import com.fulliautomatix.csrs.domain.Email;
@@ -11,8 +15,10 @@ import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
 import com.fulliautomatix.csrs.web.rest.util.ValidationException;
 import com.fulliautomatix.csrs.security.SecurityUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +27,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.Errors;
+import org.hibernate.Hibernate;
 
 import javax.validation.Valid;
 import javax.annotation.security.RolesAllowed;
@@ -170,6 +177,7 @@ public class ContactResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @JsonView(Contact.Scalar.class)
     public ResponseEntity<List<Contact>> getAll(@RequestParam(value = "page" , required = false) Integer offset,
                                   @RequestParam(value = "per_page", required = false) Integer limit)
         throws URISyntaxException {
@@ -188,9 +196,21 @@ public class ContactResource {
     )
     @Timed
     @RolesAllowed(AuthoritiesConstants.USER)
+    @JsonView(Contact.WithEverything.class)
+    @Transactional(readOnly = true)
     public ResponseEntity<Set<Contact>> getAllForAccount () throws URISyntaxException {
         String login = SecurityUtils.getCurrentLogin();
         Set<Contact> contacts = contactRepository.findAllForLogin(login);
+
+        for (Contact contact : contacts) {
+            Hibernate.initialize(contact.getAnnuals());
+            Hibernate.initialize(contact.getInterests());
+
+            for (ContactEmail ce : contact.getContactEmails()) {
+                Hibernate.initialize(ce.getEmail());
+            }
+        }
+
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
@@ -204,12 +224,16 @@ public class ContactResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
-    public ResponseEntity<List<Contact>> getAll (
-        @RequestParam(value = "page" , required = false) Integer offset,
-        @RequestParam(value = "per_page", required = false) Integer limit,
-        @RequestParam(value = "fullNameSearch") String search
-    ) throws URISyntaxException {
+    @JsonView(Contact.WithAnnuals.class)
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<Contact>> getAll (@RequestParam(value = "fullNameSearch") String search) throws URISyntaxException {
         List<Contact> contacts = contactRepository.searchByFullNameLikeLower((search + "%").toLowerCase());
+        
+        // Need to fetch annuals before closing session ... ideally, doing it later would also work, but it doesn't  
+        for (Contact c : contacts) {
+            Hibernate.initialize(c.getAnnuals());
+        }
+
         return new ResponseEntity<List<Contact>>(contacts, HttpStatus.OK);
     }
     
@@ -221,13 +245,22 @@ public class ContactResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @JsonView(Contact.WithEverything.class)
+    @Transactional(readOnly = true)
     public ResponseEntity<Contact> getWithAnnualsAndInterestsAndEmail (@PathVariable Long id) {
         log.debug("REST request to get Contact : {}", id);
-        return Optional.ofNullable(contactRepository.findOneWithAnnualsAndInterestsAndEmail(id))
-            .map(contact -> new ResponseEntity<>(
-                contact,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return Optional.ofNullable(
+            contactRepository.findOneWithAnnualsAndInterestsAndEmail(id)
+        ).map((contact) -> {
+            Hibernate.initialize(contact.getAnnuals());
+            Hibernate.initialize(contact.getInterests());
+
+            for (ContactEmail ce : contact.getContactEmails()) {
+                Hibernate.initialize(ce.getEmail());
+            }
+
+            return new ResponseEntity<>(contact, HttpStatus.OK);
+        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     /**
      * GET  /contacts/:id -> get the "id" contact.
@@ -236,6 +269,7 @@ public class ContactResource {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @JsonView(Contact.WithEverything.class)
     public ResponseEntity<Contact> get(@PathVariable Long id) {
         log.debug("REST request to get Contact : {}", id);
         return Optional.ofNullable(contactRepository.findOne(id))

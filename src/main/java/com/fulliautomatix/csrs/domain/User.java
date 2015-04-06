@@ -1,6 +1,6 @@
 package com.fulliautomatix.csrs.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
@@ -20,17 +20,23 @@ import java.util.Set;
 @Table(name = "T_USER")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class User extends AbstractAuditingEntity implements Serializable {
+    // For JsonView
+    public interface Scalar {};
+
+    public interface WithUserEmails extends Scalar, UserEmail.Scalar {};
 
     @Id
     @SequenceGenerator(name="t_user_id_seq", sequenceName="t_user_id_seq", allocationSize=1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_user_id_seq")
     @lombok.Getter @lombok.Setter
+    @JsonView(Scalar.class)
     private Long id;
 
     @NotNull
     @Size(min = 1, max = 50)
     @Column(length = 50, unique = true, nullable = false)
     @lombok.Getter @lombok.Setter
+    @JsonView(Scalar.class)
     private String login;
 
     @JsonIgnore
@@ -42,11 +48,13 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @OneToMany(mappedBy="user")
     @lombok.Getter @lombok.Setter
+    @JsonView(WithUserEmails.class)
     private Set<UserEmail> userEmails = new HashSet<>();
     
     @Size(min = 2, max = 5)
     @Column(name = "lang_key", length = 5)
     @lombok.Getter @lombok.Setter
+    @JsonView(Scalar.class)
     private String langKey;
 
     @JsonIgnore

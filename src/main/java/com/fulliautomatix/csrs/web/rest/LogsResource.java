@@ -1,5 +1,6 @@
 package com.fulliautomatix.csrs.web.rest;
 
+import com.fasterxml.jackson.annotation.*;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import com.codahale.metrics.annotation.Timed;

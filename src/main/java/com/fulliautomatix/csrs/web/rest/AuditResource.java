@@ -1,5 +1,6 @@
 package com.fulliautomatix.csrs.web.rest;
 
+import com.fasterxml.jackson.annotation.*;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.service.AuditEventService;
 import com.fulliautomatix.csrs.web.propertyeditors.LocaleDateTimeEditor;
