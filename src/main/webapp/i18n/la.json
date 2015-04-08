@@ -36,7 +36,37 @@
                 "rr": {
                     "0": "",
                     "1": "Vestigium",
-                    "2": "Transcursorium"
+                    "2": "Transcursorium",
+                    "noThanks": "Nullum"
+                }
+            }
+        },
+        "renewal": {
+            "title": "Forma sodales et subscriptione",
+            "membership": "Sodalitas",
+            "subtotal": "Subtotal",
+            "multiYear": "Optio multi-anno",
+            "forOneYear": "Annus pro sodalibus debitam quantitatem esse:",
+            "forThreeYears": "Nam optio triennium, multiplicabo subtotal arca \"D\" per tres:",
+            "subtract": "Subtrahas XXX pro membra ordinarius, aut XV pro alia omnia:",
+            "threeYearTotal": "Totum debitum ad sodales et subscriptionibus triennium",
+            "renewForOneYear": "Sodales per unum annum eligam",
+            "renewForThreeYears": "Sodales per triennium eligam",
+            "rr": {
+                "noThanks": "Non cupio",
+                "subscription": "Subscription ad acta Renaissance et Reformationem",
+                "prices": {
+                    "1": "Sodales omnes",
+                    "2": "Tantum pro pupula et reducta"
+                }
+            },
+            "iter": {
+                "subscribe": "Subscribo",
+                "noThanks": "Non cupio",
+                "subscription": "Subscription ad acta ITER",
+                "prices": {
+                    "1": "Sodales omnes",
+                    "2": "Tantum pro pupula et reducta"
                 }
             }
         },

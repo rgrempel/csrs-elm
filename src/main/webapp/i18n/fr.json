@@ -36,7 +36,37 @@
                 "rr": {
                     "0": "",
                     "1": "Imprimée",
-                    "2": "Electronique"
+                    "2": "Electronique",
+                    "noThanks": "Aucun"
+                }
+            }
+        },
+        "renewal": {
+            "title": "Formulaire d'adhésion et d'abonnement",
+            "membership": "Adhésion",
+            "subtotal": "Subtotal",
+            "multiYear": "Formules pluriannuelles",
+            "forOneYear": "Pour une année, la somme due est:",
+            "forThreeYears": "Pour formule de trois ans, multiplier le sous-total dans la case D par trois:",
+            "subtract": "Soustraire $30 pour les membres réguliers ou $15 pour tous les autres membres:",
+            "threeYearTotal": "Montant total dû pour l'adhésion et les abonnements de trois ans",
+            "renewForOneYear": "Sélectionnez adhésion d'un an",
+            "renewForThreeYears": "Sélectionnez adhésion de trois ans",
+            "rr": {
+                "noThanks": "Non merci",
+                "subscription": "Abonnement à la revue Renaissance et Réforme",
+                "prices": {
+                    "1": "Tous les membres (sauf les étudiants et retraités)",
+                    "2": "Pour étudiants et retraités seulement"
+                }
+            },
+            "iter": {
+                "subscribe": "Abonner",
+                "noThanks": "Non merci",
+                "subscription": "Abonnement à ITER",
+                "prices": {
+                    "1": "Tous les membres (sauf les étudiants et retraités)",
+                    "2": "Pour étudiants et retraités seulement"
                 }
             }
         },

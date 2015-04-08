@@ -22,7 +22,11 @@ import java.util.Set;
 public class Annual implements Serializable {
     // For JsonView
     public interface Scalar {};
+
     public interface WithContact extends Scalar, Contact.Scalar {};
+    public interface WithRenewal extends Scalar, Renewal.Scalar {};
+    
+    public interface WithEverything extends WithContact, WithRenewal {};
 
     @Id
     @SequenceGenerator(name="t_annual_id_seq", sequenceName="t_annual_id_seq", allocationSize=1)
@@ -54,8 +58,13 @@ public class Annual implements Serializable {
 
     @ManyToOne
     @lombok.Getter @lombok.Setter
-    @JsonView({WithContact.class})
+    @JsonView(WithContact.class)
     private Contact contact;
+
+    @ManyToOne
+    @lombok.Getter @lombok.Setter
+    @JsonView(WithRenewal.class)
+    private Renewal renewal;
 
     @PrePersist 
     public void checkDefaults () {

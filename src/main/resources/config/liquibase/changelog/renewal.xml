@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <changeSet id="addRenewals" author="ryan">
+        <createTable tableName="T_RENEWAL">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="price_in_cents" type="integer">
+                <constraints nullable="false" />
+            </column>
+            
+            <column name="year" type="integer">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="duration" type="integer" defaultValueNumeric="1">
+                <constraints nullable="false" />
+            </column>
+            
+            <column name="membership" type="integer">
+                <constraints nullable="false" />
+            </column>
+            
+            <column name="iter" type="bit" defaultValueBoolean="false">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="rr" type="integer" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+            
+            <column name="contact_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            
+            <column name="created_by" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            
+            <column name="created_date" type="timestamp with time zone" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            
+            <column name="last_modified_by" type="varchar"/>
+            
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <addColumn tableName="T_ANNUAL">
+            <column name="renewal_id" type="bigint" />
+        </addColumn>
+
+        <createIndex indexName="idx_annual_renewal_id" tableName="T_ANNUAL">
+            <column name="renewal_id" />
+        </createIndex>
+        
+        <addForeignKeyConstraint baseColumnNames="renewal_id"
+                                 baseTableName="T_ANNUAL"
+                                 constraintName="fk_annual_renewal"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_RENEWAL"
+                                 onDelete="SET NULL"
+                                 onUpdate="CASCADE" />
+                             
+        <createIndex indexName="idx_renewal_contact_id" tableName="T_RENEWAL">
+            <column name="contact_id" />
+        </createIndex>
+        
+        <addForeignKeyConstraint baseColumnNames="contact_id"
+                                 baseTableName="T_RENEWAL"
+                                 constraintName="fk_renewal_contact"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_CONTACT"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+        
+    </changeSet>
+</databaseChangeLog>

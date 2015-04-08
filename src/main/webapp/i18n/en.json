@@ -36,7 +36,37 @@
                 "rr": {
                     "0": "",
                     "1": "Print",
-                    "2": "Electronic"
+                    "2": "Electronic",
+                    "noThanks": "None"
+                }
+            }
+        },
+        "renewal": {
+            "title": "Membership and Subscription Form",
+            "membership": "Membership",
+            "subtotal": "Subtotal",
+            "multiYear": "Multi-year option",
+            "forOneYear": "For a one-year membership, the amount due would be:",
+            "forThreeYears": "For the three-year option, multiply the Subtotal in Box D by three:",
+            "subtract": "Subtract $30 for regular members or $15 for all other members",
+            "threeYearTotal": "Total Due for Three-year Membership and Subscriptions",
+            "renewForOneYear": "Select one-year membership",
+            "renewForThreeYears": "Select three-year membership",
+            "rr": {
+                "noThanks": "No thanks",
+                "subscription": "Subscription to Renaissance and Reformation",
+                "prices": {
+                    "1": "All Members",
+                    "2": "For Students and Retirees only"
+                }
+            },
+            "iter": {
+                "subscribe": "Subscribe",
+                "noThanks": "No thanks",
+                "subscription": "Subscription to ITER",
+                "prices": {
+                    "1": "All Members",
+                    "2": "For Students and Retirees only"
                 }
             }
         },

@@ -10,6 +10,11 @@ angular.module('csrsApp').directive('csrsModal', function () {
                 content.append(clone);
             });
 
+            if (attr.csrsModal == "sm" || attr.csrsModal == "lg") {
+                var modalDialog = $(element).find('.modal-dialog');
+                modalDialog.toggleClass('modal-' + attr.csrsModal, true);
+            }
+
             var modal = $(element).find('.modal');
             modal.modal({
                 show: true,

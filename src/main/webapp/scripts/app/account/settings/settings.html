@@ -42,6 +42,45 @@
                         </table>
                     </div>
                 </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <b class="panel-title" style="vertical-align: middle;" translate="csrsApp.processForms.annualData">Annual Data</b>
+
+                            <span class="btn-group" style="margin-left: 12px;">
+                                <button type="button" class="btn btn-success" ng-click="settingsController.renew(contact)"><b>Join / Renew</b></button>
+                            </span>
+                        </div>
+
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th class="col-xs-1 col-md-1 col-lg-1" translate="csrsApp.annual.year">Year</th>
+                                    <th class="col-xs-3 col-md-3 col-lg-2 text-center" translate="csrsApp.annual.membership">Membership Status</th>
+                                    <th class="col-xs-1 col-md-1 col-lg-1" translate="csrsApp.annual.iter">ITER</th>
+                                    <th class="col-xs-3 col-md-3 col-lg-2 text-center" translate="csrsApp.annual.rr">Renaissance and Reformation</th>
+                                    <th class="col-xs-4 col-md-2 col-lg-1 text-center">
+                                    </th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <tr ng-repeat="annual in contact.annuals | orderBy: '-year' track by annual.id">
+                                    <td style="vertical-align: middle;" ng-bind="annual.year">2015</td>
+                        
+                                    <td style="vertical-align: middle;" translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</td>
+
+                                    <td style="vertical-align: middle;">
+                                        <span ng-show="annual.iter" class="glyphicon glyphicon-ok"></span>
+                                    </td>
+
+                                    <td style="vertical-align: middle;" translate="csrsApp.annual.data.rr.{{annual.rr}}">Renaissance and Reformation</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

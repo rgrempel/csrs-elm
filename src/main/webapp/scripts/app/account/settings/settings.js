@@ -44,6 +44,12 @@ angular.module('csrsApp').controller('SettingsController', function ($scope, Pri
             contact: contact
         });
     };
+
+    this.renew = function (contact) {
+        $state.go('renewal', {
+            contact: contact
+        });
+    };
 });
 
 angular.module('csrsApp').config(function ($stateProvider) {

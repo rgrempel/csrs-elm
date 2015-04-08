@@ -130,6 +130,112 @@ csrsApp:
                     fr: "Electronique"
                     la: "Transcursorium"
 
+                noThanks:
+                    en: "None"
+                    fr: "Aucun"
+                    la: "Nullum"
+
+
+    renewal:
+        title:
+            en: "Membership and Subscription Form"
+            fr: "Formulaire d'adhésion et d'abonnement"
+            la: "Forma sodales et subscriptione"
+
+        membership:
+            en: "Membership"
+            fr: "Adhésion"
+            la: "Sodalitas"
+
+        subtotal:
+            en: "Subtotal"
+            fr: "Subtotal"
+            la: "Subtotal"
+
+        multiYear:
+            en: "Multi-year option"
+            fr: "Formules pluriannuelles"
+            la: "Optio multi-anno"
+
+        forOneYear:
+            en: "For a one-year membership, the amount due would be:"
+            fr: "Pour une année, la somme due est:"
+            la: "Annus pro sodalibus debitam quantitatem esse:"
+
+        forThreeYears:
+            en: "For the three-year option, multiply the Subtotal in Box D by three:"
+            fr: "Pour formule de trois ans, multiplier le sous-total dans la case D par trois:"
+            la: "Nam optio triennium, multiplicabo subtotal arca \"D\" per tres:"
+
+        subtract:
+            en: "Subtract $30 for regular members or $15 for all other members"
+            fr: "Soustraire $30 pour les membres réguliers ou $15 pour tous les autres membres:"
+            la: "Subtrahas XXX pro membra ordinarius, aut XV pro alia omnia:"
+
+        threeYearTotal:
+            en: "Total Due for Three-year Membership and Subscriptions"
+            fr: "Montant total dû pour l'adhésion et les abonnements de trois ans"
+            la: "Totum debitum ad sodales et subscriptionibus triennium"
+
+        renewForOneYear:
+            en: "Select one-year membership"
+            fr: "Sélectionnez adhésion d'un an"
+            la: "Sodales per unum annum eligam"
+
+        renewForThreeYears:
+            en: "Select three-year membership"
+            fr: "Sélectionnez adhésion de trois ans"
+            la: "Sodales per triennium eligam"
+
+        rr:
+            noThanks:
+                en: "No thanks"
+                fr: "Non merci"
+                la: "Non cupio"
+
+            subscription:
+                en: "Subscription to Renaissance and Reformation"
+                fr: "Abonnement à la revue Renaissance et Réforme"
+                la: "Subscription ad acta Renaissance et Reformationem"
+
+            prices:
+                "1":
+                    en: "All Members"
+                    fr: "Tous les membres (sauf les étudiants et retraités)"
+                    la: "Sodales omnes"
+
+                "2": 
+                    en: "For Students and Retirees only"
+                    fr: "Pour étudiants et retraités seulement"
+                    la: "Tantum pro pupula et reducta"
+                
+        iter:
+            subscribe:
+                en: "Subscribe"
+                fr: "Abonner"
+                la: "Subscribo"
+
+            noThanks:
+                en: "No thanks"
+                fr: "Non merci"
+                la: "Non cupio"
+
+            subscription:
+                en: "Subscription to ITER"
+                fr: "Abonnement à ITER"
+                la: "Subscription ad acta ITER"
+                
+            prices:
+                "1":
+                    en: "All Members"
+                    fr: "Tous les membres (sauf les étudiants et retraités)"
+                    la: "Sodales omnes"
+
+                "2": 
+                    en: "For Students and Retirees only"
+                    fr: "Pour étudiants et retraités seulement"
+                    la: "Tantum pro pupula et reducta"
+                 
     contact: 
         home: 
             title:

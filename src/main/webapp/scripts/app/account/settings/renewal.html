@@ -1,0 +1,277 @@
+<div csrs-modal>
+    <div class="modal-header">
+        <button type="button" class="close" aria-hidden="true" ng-click="renewalForm.cancel()">&times;</button>
+        <h3 class="modal-title" id="modal-label" translate="csrsApp.renewal.title">Join or Renew for ...</h3>
+    </div>
+
+    <div class="modal-body">
+        <table style="width: 100%; table-layout: fixed;">
+            <colgroup>
+                <col style="width: 24px;" />
+                <col />
+                <col style="width: 68px;" />
+                <col style="width: 88px;" />
+            </colgroup>
+
+            <tr>
+                <td class="text-right">
+                    <h4>A.&nbsp;</h4>
+                </td>
+
+                <td>
+                    <h4 translate="csrsApp.renewal.membership">Membership</h4>
+                </td>
+
+                <td><!-- blank --></td>
+
+                <td rowspan="{{renewalForm.membershipOptions.length + 1}}"> 
+                    <div class="text-right" 
+                            style="vertical-align: middle; 
+                                border: 2px solid black;
+                                margin-top: 24px;
+                                margin-left: 18px;
+                                padding: 12px;">
+                        <b ng-bind="renewalForm.price.a / 100 | currency : '$ ' : 0">100</b>
+                    </div>
+                </td>
+            </tr>
+
+            <tr ng-repeat="option in renewalForm.membershipOptions">
+                <td ng-click="renewalForm.renewal.membership = option.code" style="cursor: pointer;">
+                    <span ng-show="renewalForm.renewal.membership == option.code" class="glyphicon glyphicon-ok" style="font-size: 1em"></span> 
+                </td>
+                
+                <td>
+                    <a ng-click="renewalForm.renewal.membership = option.code" 
+                    translate="csrsApp.annual.data.membership.{{option.code}}"
+                    ng-class="{'text-bold': renewalForm.renewal.membership == option.code}">Membership type</a>
+                </td>
+
+                <td ng-click="renewalForm.renewal.membership = option.code"
+                    style="cursor: pointer;"
+                    ng-bind="option.price / 100 | currency : ($first ? '$ ' : ' ') : 0" class="text-right">100</td>
+            </tr>
+
+            <tr>
+                <td class="text-right" style="vertical-align: top;">
+                    <h4>B.&nbsp;</h4>
+                </td>
+
+                <td colspan="2">
+                    <h4 translate="csrsApp.renewal.rr.subscription">Subscription to Renaissance and Reformation</h4>
+                </td>
+
+                <td rowspan="{{renewalForm.rrOptions.length + 2}}">
+                    <div class="text-right" 
+                            style="vertical-align: middle; 
+                                border: 2px solid black;
+                                margin-top: 6px;
+                                margin-left: 18px;
+                                padding: 12px;">
+                        <b ng-bind="renewalForm.price.b / 100 | currency : '$ ' : 0">100</b>
+                    </div>
+                </td>
+            </tr>
+
+            <tr ng-repeat="option in renewalForm.rrOptions">
+                <td><!-- blank --></td>
+
+                <td translate="csrsApp.renewal.rr.prices.{{option.code}}">All members</td>
+
+                <td ng-bind="option.price / 100 | currency : ' ' : 0" class="text-right">100</td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="text-center">
+                    <div class="btn-group" style="margin-top: 6px;">
+                        <button type="button"
+                                ng-click="renewalForm.renewal.rr = 1"
+                                ng-class="{
+                                    'btn': true, 
+                                    'btn-sm': true, 
+                                    'btn-primary': renewalForm.renewal.rr == 1,
+                                    'btn-default': renewalForm.renewal.rr != 1
+                                }"
+                                translate="csrsApp.annual.data.rr.1">Print</button>
+                        
+                        <button type="button" 
+                                ng-click="renewalForm.renewal.rr = 2"
+                                ng-class="{
+                                    'btn': true,
+                                    'btn-sm': true, 
+                                    'btn-primary': renewalForm.renewal.rr == 2,
+                                    'btn-default': renewalForm.renewal.rr != 2
+                                }"
+                                translate="csrsApp.annual.data.rr.2">Electronic</button>
+                        
+                        <button type="button"
+                                ng-click="renewalForm.renewal.rr = 0"
+                                ng-class="{
+                                    'btn': true,
+                                    'btn-sm': true, 
+                                    'btn-primary': renewalForm.renewal.rr == 0,
+                                    'btn-default': renewalForm.renewal.rr != 0
+                                }" 
+                                translate="csrsApp.renewal.rr.noThanks">Do not subsscribe</button>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-right">
+                    <h4>C.&nbsp;</h4>
+                </td>
+
+                <td>
+                    <h4 translate="csrsApp.renewal.iter.subscription">Subscription to Iter</h4>
+                </td>
+
+                <td><!-- blank --></td>
+
+                <td rowspan="{{renewalForm.iterOptions.length + 2}}">    
+                    <div class="text-right" 
+                            style="vertical-align: middle; 
+                                border: 2px solid black;
+                                margin-top: 6px;
+                                margin-left: 18px;
+                                padding: 12px;">
+                        <b ng-bind="renewalForm.price.c / 100 | currency : '$ ' : 0">100</b>
+                    </div>
+                </td>
+            </tr>
+
+            <tr ng-repeat="option in renewalForm.iterOptions">
+                <td><!-- blank --></td>
+
+                <td translate="csrsApp.renewal.iter.prices.{{option.code}}">All members</td>
+
+                <td ng-bind="option.price / 100 | currency : ' ' : 0" class="text-right">100</td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="text-center">
+                    <div class="btn-group" style="margin-top: 6px;">
+                        <button type="button" 
+                                ng-click="renewalForm.renewal.iter = true"
+                                ng-class="{
+                                    'btn': true,
+                                    'btn-sm': true, 
+                                    'btn-primary': renewalForm.renewal.iter,
+                                    'btn-default': !renewalForm.renewal.iter
+                                }"
+                                translate="csrsApp.renewal.iter.subscribe">Subscribe</button>
+                        
+                        <button type="button"
+                                ng-click="renewalForm.renewal.iter = false"
+                                ng-class="{
+                                    'btn': true,
+                                    'btn-sm': true, 
+                                    'btn-primary': !renewalForm.renewal.iter,
+                                    'btn-default': renewalForm.renewal.iter
+                                }" 
+                                translate="csrsApp.renewal.iter.noThanks">Do not subsscribe</button>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-right">
+                    <h4>D.&nbsp;</h4>
+                </td>
+
+                <td colspan="2">
+                    <h4 translate="csrsApp.renewal.subtotal">Subtotal</h4>
+                </td>
+                
+                <td rowspan="2">
+                    <div class="text-right" 
+                            style="vertical-align: middle; 
+                                border: 4px solid black;
+                                margin-top: 6px;
+                                margin-left: 18px;
+                                padding: 12px;">
+                        <b ng-bind="renewalForm.price.d / 100 | currency : '$ ' : 0">100</b>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td><!-- blank --></td>
+                <td colspan="2">
+                    <b translate="csrsApp.renewal.forOneYear">For a one year membership, the amount due is:</b>
+
+                    <div class="text-center" style="margin-top: 6px">
+                        <button type="button" 
+                                ng-click="renewalForm.renewForOneYear()"
+                                class="btn btn-success"
+                                translate="csrsApp.renewal.renewForOneYear">Renew for one year</button>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="text-right">
+                    <h4>E.&nbsp;</h4>
+                </td>
+
+                <td colspan="2">
+                    <h4 translate="csrsApp.renewal.multiYear">Multi-year option</h4>
+                </td>
+            </tr>
+
+            <tr>
+                <td><!-- blank --></td>
+                
+                <td colspan="2" translate="csrsApp.renewal.forThreeYears">For the three-year option, multiply the Subtotal in Box D by three:</td>
+
+                <td>
+                    <div class="text-right"
+                            style="padding-right: 12px"
+                            ng-bind="renewalForm.price.d * 3 / 100 | currency : '$ ' : 0">$200</div>
+                </td>
+            </tr>
+
+            <tr>
+                <td><!-- blank --></td>
+                
+                <td colspan="2" translate="csrsApp.renewal.subtract">Subtract $30 for regular members or $15 for all other members</td>
+                
+                <td>
+                    <div class="text-right" style="padding-right: 12px">
+                        <span ng-show="renewalForm.renewal.membership == 2">- 30</span>
+                        <span ng-hide="renewalForm.renewal.membership == 2">- 15</span>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td><!-- blank --></td>
+                
+                <td colspan="2">
+                    <b translate="csrsApp.renewal.threeYearTotal">Total Due for Three-year Membership and Subscriptions</b>
+                    
+                    <div class="text-center" style="margin-top: 6px">
+                        <button type="button" 
+                                ng-click="renewalForm.renewForThreeYears()"
+                                class="btn btn-success"
+                                translate="csrsApp.renewal.renewForThreeYears">Renew for three years</button>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="text-right"
+                            style="border: 4px solid black;
+                                margin-left: 18px;
+                                padding: 12px;">
+
+                        <b ng-bind="renewalForm.price.e / 100 | currency : '$ ' : 0">$170</b>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="modal-footer" style="display: none;">
+        <div csrs-error-occurred="renewalForm.error"></div>    
+    </div>
+</div>
