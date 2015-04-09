@@ -24,7 +24,7 @@
 
                 <td><!-- blank --></td>
 
-                <td rowspan="{{renewalForm.membershipOptions.length + 1}}"> 
+                <td rowspan="{{renewalForm.prices.membership.length + 1}}"> 
                     <div class="text-right" 
                             style="vertical-align: middle; 
                                 border: 2px solid black;
@@ -36,7 +36,7 @@
                 </td>
             </tr>
 
-            <tr ng-repeat="option in renewalForm.membershipOptions">
+            <tr ng-repeat="option in renewalForm.prices.membership">
                 <td ng-click="renewalForm.renewal.membership = option.code" style="cursor: pointer;">
                     <span ng-show="renewalForm.renewal.membership == option.code" class="glyphicon glyphicon-ok" style="font-size: 1em"></span> 
                 </td>
@@ -61,7 +61,7 @@
                     <h4 translate="csrsApp.renewal.rr.subscription">Subscription to Renaissance and Reformation</h4>
                 </td>
 
-                <td rowspan="{{renewalForm.rrOptions.length + 2}}">
+                <td rowspan="{{renewalForm.prices.rr.length + 2}}">
                     <div class="text-right" 
                             style="vertical-align: middle; 
                                 border: 2px solid black;
@@ -73,7 +73,7 @@
                 </td>
             </tr>
 
-            <tr ng-repeat="option in renewalForm.rrOptions">
+            <tr ng-repeat="option in renewalForm.prices.rr">
                 <td><!-- blank --></td>
 
                 <td translate="csrsApp.renewal.rr.prices.{{option.code}}">All members</td>
@@ -128,7 +128,7 @@
 
                 <td><!-- blank --></td>
 
-                <td rowspan="{{renewalForm.iterOptions.length + 2}}">    
+                <td rowspan="{{renewalForm.prices.iter.length + 2}}">    
                     <div class="text-right" 
                             style="vertical-align: middle; 
                                 border: 2px solid black;
@@ -140,7 +140,7 @@
                 </td>
             </tr>
 
-            <tr ng-repeat="option in renewalForm.iterOptions">
+            <tr ng-repeat="option in renewalForm.prices.iter">
                 <td><!-- blank --></td>
 
                 <td translate="csrsApp.renewal.iter.prices.{{option.code}}">All members</td>
@@ -269,9 +269,10 @@
                 </td>
             </tr>
         </table>
+
+        <div csrs-error-occurred="renewalForm.error"></div>    
     </div>
 
     <div class="modal-footer" style="display: none;">
-        <div csrs-error-occurred="renewalForm.error"></div>    
     </div>
 </div>
