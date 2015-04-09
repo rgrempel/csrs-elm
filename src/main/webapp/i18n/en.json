@@ -43,6 +43,7 @@
         },
         "renewal": {
             "title": "Membership and Subscription Form",
+            "joinOrRenew": "Join / Renew",
             "membership": "Membership",
             "subtotal": "Subtotal",
             "multiYear": "Multi-year option",
@@ -292,6 +293,7 @@
         "createAccount": {
             "title": "Create Account",
             "blurb": "To create an account, provide your email address below. We will send you an email invitation -- it should arrive within minutes. If it does not arrive, check whether it was marked as spam. You can also send another invitation from here if needed.",
+            "loginBlurb": "To create your account, provide whatever username and password you would like to use.",
             "email": "Email Address",
             "sendInvitation": "Send Invitation",
             "invitationSent": "Invitation Sent",

@@ -43,6 +43,7 @@
         },
         "renewal": {
             "title": "Formulaire d'adhésion et d'abonnement",
+            "joinOrRenew": "Adhérer / Renouveler",
             "membership": "Adhésion",
             "subtotal": "Subtotal",
             "multiYear": "Formules pluriannuelles",
@@ -292,6 +293,7 @@
         "createAccount": {
             "title": "Création de compte utilisateur",
             "blurb": "Pour créer un compte, indiquez votre adresse email ci-dessous. Nous vous enverrons une invitation par courriel - il devrait arriver en quelques minutes. Se il ne arrive pas, vérifier se il a été marqués comme courrier indésirable. Vous pouvez également envoyer une autre invitation à partir d'ici si nécessaire.",
+            "loginBlurb": "Pour créer votre compte, fournir toutes les nom d'utilisateur et mot de passe vous souhaitez utiliser.",
             "email": "Email",
             "sendInvitation": "Envoyer une invitation",
             "invitationSent": "Invitation a été envoyée",

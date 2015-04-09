@@ -142,6 +142,11 @@ csrsApp:
             fr: "Formulaire d'adhésion et d'abonnement"
             la: "Forma sodales et subscriptione"
 
+        joinOrRenew:
+            en: "Join / Renew"
+            fr: "Adhérer / Renouveler"
+            la: "Adhere / Renovare"
+
         membership:
             en: "Membership"
             fr: "Adhésion"
@@ -993,10 +998,21 @@ invitation:
                 également envoyer une autre invitation à partir d'ici si
                 nécessaire.
             la: >-
-                Tesseram creare praestate inscriptio electronica sequitur.
+                Tesseram creare, praestate inscriptio electronica sequitur.
                 Mittemus vobis inuitavit -- intra minuta pervenerit. Si non
                 venit, si hæc ita se ut spamma. Etiam si opus mittere hinc
                 invitationem alius.
+
+        loginBlurb:
+            en: >-
+                To create your account, provide whatever username and password
+                you would like to use.
+            fr: >-
+                Pour créer votre compte, fournir toutes les nom d'utilisateur
+                et mot de passe vous souhaitez utiliser.
+            la: >-
+                Tesseram creare, provideat nomine usoris et signum vos amo
+                utor.
 
         email:
             en: "Email Address"
