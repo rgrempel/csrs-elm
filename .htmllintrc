@@ -1,0 +1,10 @@
+{
+    // names of npm modules to load into htmllint
+    "plugins": [],
+
+    "id-class-style": "dash",
+    "attr-name-style": "dash",
+    "attr-req-value": false
+
+    // TODO: export htmllint's default cfg
+}
