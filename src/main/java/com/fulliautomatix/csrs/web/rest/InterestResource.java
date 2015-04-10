@@ -8,25 +8,24 @@ import com.fulliautomatix.csrs.repository.InterestRepository;
 import com.fulliautomatix.csrs.repository.ContactRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.security.SecurityUtils;
+import com.fulliautomatix.csrs.security.OwnerService;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Set;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * REST controller for managing Interest.
@@ -44,15 +43,8 @@ public class InterestResource {
     @Inject
     private ContactRepository contactRepository;
 
-    public void checkAccess (Interest interest) {
-        Long contactId = interest.getContact().getId();
-
-        Contact authorized = contactRepository.findOneForLogin(SecurityUtils.getCurrentLogin(), contactId);
-
-        if (authorized == null) {
-            throw new AccessDeniedException("Not permitted for this user.");
-        }
-    }
+    @Inject
+    private OwnerService ownerService;
 
     /**
      * POST  /interests -> Create a new interest.
@@ -63,6 +55,7 @@ public class InterestResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
+    @Transactional
     public ResponseEntity<Void> create (@Valid @RequestBody Interest interest) throws URISyntaxException {
         log.debug("REST request to save Interest : {}", interest);
 
@@ -70,9 +63,7 @@ public class InterestResource {
             return ResponseEntity.badRequest().header("Failure", "A new interest cannot already have an ID").build();
         }
 
-        if (!SecurityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) {
-            checkAccess(interest);
-        }
+        ownerService.checkNewOwner(interest);
 
         interest = interestRepository.save(interest);
         return ResponseEntity.created(new URI("/api/interests/" + interest.getId())).build();
@@ -87,16 +78,16 @@ public class InterestResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
+    @Transactional
     public ResponseEntity<Void> update (@Valid @RequestBody Interest interest) throws URISyntaxException {
         log.debug("REST request to update Interest : {}", interest);
         
         if (interest.getId() == null) {
             return ResponseEntity.badRequest().header("Failure", "An updated interest must already have an ID").build();
         }
-        
-        if (!SecurityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) {
-            checkAccess(interest);
-        }
+
+        ownerService.checkOldOwner(interestRepository, interest.getId());
+        ownerService.checkNewOwner(interest);
 
         interest = interestRepository.save(interest);
         return ResponseEntity.ok().build();
@@ -112,6 +103,7 @@ public class InterestResource {
     @Timed
     @RolesAllowed(AuthoritiesConstants.ADMIN)
     @JsonView(Interest.WithContact.class)
+    @Transactional(readOnly = true)
     public ResponseEntity<List<Interest>> getAll () throws URISyntaxException {
         List<Interest> interests = interestRepository.findAll();
         return new ResponseEntity<>(interests, HttpStatus.OK);
@@ -127,18 +119,13 @@ public class InterestResource {
     )
     @Timed
     @JsonView(Interest.WithContact.class)
+    @Transactional(readOnly = true)
     public ResponseEntity<Interest> get (@PathVariable Long id) {
         log.debug("REST request to get Interest : {}", id);
         
-        return Optional.ofNullable(
-            interestRepository.findOne(id)
-        ).map((interest) -> {
-            if (!SecurityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) {
-                checkAccess(interest);
-            }
-
-            return new ResponseEntity<>(interest, HttpStatus.OK);
-        }).orElse(
+        return ownerService.findOneForLogin(interestRepository, id).map(interest ->
+            new ResponseEntity<>(interest, HttpStatus.OK)
+        ).orElse(
             new ResponseEntity<>(HttpStatus.NOT_FOUND)
         );
     }
@@ -155,12 +142,7 @@ public class InterestResource {
     public void delete (@PathVariable Long id) {
         log.debug("REST request to delete Interest : {}", id);
 
-        if (!SecurityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) {
-            Interest interest = interestRepository.findOneForLogin(SecurityUtils.getCurrentLogin(), id);
-            if (interest == null) {
-                throw new AccessDeniedException("Not allowed for this user.");
-            }
-        }
+        ownerService.checkOldOwner(interestRepository, id);
 
         interestRepository.delete(id);
     }

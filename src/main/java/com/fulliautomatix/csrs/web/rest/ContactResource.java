@@ -12,6 +12,7 @@ import com.fulliautomatix.csrs.repository.ContactRepository;
 import com.fulliautomatix.csrs.repository.EmailRepository;
 import com.fulliautomatix.csrs.repository.ContactEmailRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
+import com.fulliautomatix.csrs.security.OwnerService;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
 import com.fulliautomatix.csrs.web.rest.util.ValidationException;
 import com.fulliautomatix.csrs.security.SecurityUtils;
@@ -21,10 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.Errors;
 import org.hibernate.Hibernate;
@@ -34,9 +32,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * REST controller for managing Contact.
@@ -56,6 +52,9 @@ public class ContactResource {
 
     @Inject 
     private ContactEmailRepository contactEmailRepository;
+
+    @Inject
+    private OwnerService ownerService;
 
     /**
      * POST  /contacts -> Create a new contact.
@@ -104,16 +103,15 @@ public class ContactResource {
             throw new ValidationException("Contact failed validation", errors);
         }
 
-        contact = contactRepository.save(contact);
+        final Contact saved = contactRepository.save(contact);
         
         // Hook up all the emails ...
-        Set<Email> emails = emailRepository.findAllForLogin(SecurityUtils.getCurrentLogin());
-        for (Email e : emails) {
+        emailRepository.findAllForLogin(SecurityUtils.getCurrentLogin()).stream().forEach(e -> {
             ContactEmail ce = new ContactEmail();
             ce.setEmail(e);
-            ce.setContact(contact);
-            ce = contactEmailRepository.save(ce);
-        }
+            ce.setContact(saved);
+            contactEmailRepository.save(ce);
+        });
         
         return ResponseEntity.created(new URI("/api/contacts/" + contact.getId())).build();
     }
@@ -121,9 +119,11 @@ public class ContactResource {
     /**
      * PUT  /contacts -> Updates an existing contact.
      */
-    @RequestMapping(value = "/contacts",
+    @RequestMapping(
+        value = "/contacts",
         method = RequestMethod.PUT,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public ResponseEntity<Void> update(@Valid @RequestBody Contact contact, Errors errors) throws URISyntaxException {
         log.debug("REST request to update Contact : {}", contact);
@@ -143,9 +143,11 @@ public class ContactResource {
     /**
      * PUT  /contacts -> Updates an existing contact for the user
      */
-    @RequestMapping(value = "/account/contacts",
+    @RequestMapping(
+        value = "/account/contacts",
         method = RequestMethod.PUT,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     @RolesAllowed(AuthoritiesConstants.USER)
     public ResponseEntity<Void> updateForUser (@Valid @RequestBody Contact contact, Errors errors) throws URISyntaxException {
@@ -158,12 +160,9 @@ public class ContactResource {
         if (contact.getId() == null) {
             return ResponseEntity.badRequest().header("Failure", "An existing must already have an ID").build();
         }
-        
-        String login = SecurityUtils.getCurrentLogin();
-        Contact existing = contactRepository.findOneForLogin(login, contact.getId());
-        if (existing == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+
+        ownerService.checkOldOwner(contactRepository, contact.getId());
+        ownerService.checkNewOwner(contact);
 
         contact = contactRepository.save(contact);
 
@@ -173,9 +172,11 @@ public class ContactResource {
     /**
      * GET  /contacts -> get all the contacts.
      */
-    @RequestMapping(value = "/contacts",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/contacts",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     @JsonView(Contact.Scalar.class)
     public ResponseEntity<List<Contact>> getAll(@RequestParam(value = "page" , required = false) Integer offset,
@@ -206,9 +207,9 @@ public class ContactResource {
             Hibernate.initialize(contact.getAnnuals());
             Hibernate.initialize(contact.getInterests());
 
-            for (ContactEmail ce : contact.getContactEmails()) {
+            contact.getContactEmails().stream().forEach(ce -> {
                 Hibernate.initialize(ce.getEmail());
-            }
+            });
         }
 
         return new ResponseEntity<>(contacts, HttpStatus.OK);
@@ -227,23 +228,24 @@ public class ContactResource {
     @JsonView(Contact.WithAnnuals.class)
     @Transactional(readOnly = true)
     public ResponseEntity<List<Contact>> getAll (@RequestParam(value = "fullNameSearch") String search) throws URISyntaxException {
-        List<Contact> contacts = contactRepository.searchByFullNameLikeLower((search + "%").toLowerCase());
+        List<Contact> contacts = contactRepository.searchByFullNameLikeLower(("%" + search + "%").toLowerCase());
         
-        // Need to fetch annuals before closing session ... ideally, doing it later would also work, but it doesn't  
-        for (Contact c : contacts) {
+        contacts.stream().forEach(c -> {
             Hibernate.initialize(c.getAnnuals());
-        }
+        });
 
-        return new ResponseEntity<List<Contact>>(contacts, HttpStatus.OK);
+        return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
     
     /**
      * GET  /contacts/:id -> get the "id" contact with annuals
      */
-    @RequestMapping(value = "/contacts/{id}",
-            params = "withAnnualsAndInterests",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/contacts/{id}",
+        params = "withAnnualsAndInterests",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     @JsonView(Contact.WithEverything.class)
     @Transactional(readOnly = true)
@@ -255,9 +257,9 @@ public class ContactResource {
             Hibernate.initialize(contact.getAnnuals());
             Hibernate.initialize(contact.getInterests());
 
-            for (ContactEmail ce : contact.getContactEmails()) {
+            contact.getContactEmails().stream().forEach((ce) -> {
                 Hibernate.initialize(ce.getEmail());
-            }
+            });
 
             return new ResponseEntity<>(contact, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -265,26 +267,32 @@ public class ContactResource {
     /**
      * GET  /contacts/:id -> get the "id" contact.
      */
-    @RequestMapping(value = "/contacts/{id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/contacts/{id}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     @JsonView(Contact.WithEverything.class)
     public ResponseEntity<Contact> get(@PathVariable Long id) {
         log.debug("REST request to get Contact : {}", id);
-        return Optional.ofNullable(contactRepository.findOne(id))
-            .map(contact -> new ResponseEntity<>(
-                contact,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return Optional.ofNullable(
+            contactRepository.findOne(id)
+        ).map(
+            contact -> new ResponseEntity<>(contact, HttpStatus.OK)
+        ).orElse(
+            new ResponseEntity<>(HttpStatus.NOT_FOUND)
+        );
     }
 
     /**
      * DELETE  /contacts/:id -> delete the "id" contact.
      */
-    @RequestMapping(value = "/contacts/{id}",
-            method = RequestMethod.DELETE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/contacts/{id}",
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public void delete(@PathVariable Long id) {
         log.debug("REST request to delete Contact : {}", id);

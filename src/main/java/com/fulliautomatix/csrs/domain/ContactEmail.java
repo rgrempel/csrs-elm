@@ -12,7 +12,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.*;
 
 /**
  * An email address for a contact.
@@ -22,7 +23,7 @@ import java.util.Set;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @JsonIdentityInfo(generator=JSOGGenerator.class)
 @lombok.ToString(of={"id"})
-public class ContactEmail implements Serializable {
+public class ContactEmail implements Serializable, HasOwner {
     // For JsonView
     public interface Scalar {};
 
@@ -49,4 +50,9 @@ public class ContactEmail implements Serializable {
     @NotNull
     @JsonView(WithContact.class)
     private Contact contact;
+    
+    @Override
+    public Set<Contact> findOwners () {
+        return Stream.of(contact).collect(Collectors.toSet());
+    }
 }

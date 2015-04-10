@@ -14,10 +14,15 @@ import java.util.Optional;
 /**
  * Spring Data JPA repository for the Email entity.
  */
-public interface EmailRepository extends JpaRepository<Email, Long> {
+public interface EmailRepository extends FindsForLogin<Email, Long> {
 
     Optional<Email> findOneByEmailAddress (String email);
 
     @Query("SELECT DISTINCT e FROM Email e JOIN e.userEmails ue JOIN ue.user u WHERE u.login = ?1")
     Set<Email> findAllForLogin (String login);
+
+    @Query("SELECT DISTINCT e FROM Email e JOIN e.userEmails ue JOIN ue.user u WHERE u.login = ?1 AND e.id = ?2")
+    @Override
+    Optional<Email> findOneForLogin (String login, Long id);
+
 }

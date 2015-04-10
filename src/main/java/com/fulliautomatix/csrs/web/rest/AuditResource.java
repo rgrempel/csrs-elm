@@ -26,23 +26,32 @@ public class AuditResource {
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(LocalDateTime.class, new LocaleDateTimeEditor("yyyy-MM-dd", false));
+        binder.registerCustomEditor(
+            LocalDateTime.class,
+            new LocaleDateTimeEditor("yyyy-MM-dd", false)
+        );
     }
 
-    @RequestMapping(value = "/audits/all",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/audits/all",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @RolesAllowed(AuthoritiesConstants.ADMIN)
-    public List<AuditEvent> findAll() {
+    public List<AuditEvent> findAll () {
         return auditEventService.findAll();
     }
 
-    @RequestMapping(value = "/audits/byDates",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/audits/byDates",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @RolesAllowed(AuthoritiesConstants.ADMIN)
-    public List<AuditEvent> findByDates(@RequestParam(value = "fromDate") LocalDateTime fromDate,
-                                    @RequestParam(value = "toDate") LocalDateTime toDate) {
+    public List<AuditEvent> findByDates (
+        @RequestParam(value = "fromDate") LocalDateTime fromDate,
+        @RequestParam(value = "toDate") LocalDateTime toDate
+    ) {
         return auditEventService.findByDates(fromDate, toDate);
     }
 }

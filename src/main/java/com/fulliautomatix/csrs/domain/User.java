@@ -10,8 +10,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.*;
 
 /**
  * A user.
@@ -19,7 +19,7 @@ import java.util.Set;
 @Entity
 @Table(name = "T_USER")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class User extends AbstractAuditingEntity implements Serializable {
+public class User extends AbstractAuditingEntity implements Serializable, HasOwner {
     // For JsonView
     public interface Scalar {};
 
@@ -74,4 +74,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @lombok.Getter @lombok.Setter
     private Set<PersistentToken> persistentTokens = new HashSet<>();
 
+    @Override
+    public Set<Contact> findOwners () {
+        return userEmails.stream().flatMap(ue -> 
+            ue.findOwners().stream()
+        ).collect(Collectors.toSet());
+    }
 }

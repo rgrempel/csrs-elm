@@ -14,6 +14,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.*;
 
 /**
  * A Contact.
@@ -47,7 +48,7 @@ import java.util.*;
     )
 })
 @lombok.ToString(of={"id", "salutation", "firstName", "lastName", "department", "affiliation"})
-public class Contact implements Serializable {
+public class Contact implements Serializable, HasOwner {
     // For JsonView
     public interface Scalar {};
 
@@ -162,6 +163,11 @@ public class Contact implements Serializable {
     @JsonView(WithInterests.class)
     private Set<Interest> interests = new HashSet<>();
     
+    @Override
+    public Set<Contact> findOwners () {
+        return Stream.of(this).collect(Collectors.toSet());
+    }
+
     @PrePersist 
     public void checkDefaults () {
         if (omitNameFromDirectory == null) omitNameFromDirectory = false;

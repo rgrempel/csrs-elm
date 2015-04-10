@@ -13,7 +13,8 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.*;
 
 /**
  * An email address activation for a user.
@@ -24,7 +25,7 @@ import java.util.Set;
 @JsonIdentityInfo(generator=JSOGGenerator.class)
 @lombok.ToString(of={"id", "activationKey", "dateSent", "dateUsed"})
 @lombok.EqualsAndHashCode(of={"activationKey"})
-public class UserEmailActivation implements Serializable {
+public class UserEmailActivation implements Serializable, HasOwner {
     // For JsonView
     public interface Scalar {};
 
@@ -61,4 +62,10 @@ public class UserEmailActivation implements Serializable {
     @Column(name = "date_used")
     @JsonView(Scalar.class)
     private DateTime dateUsed;
+    
+    @Override
+    public Set<Contact> findOwners () {
+        return userEmail.findOwners();
+    }
+
 }

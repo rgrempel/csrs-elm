@@ -34,44 +34,57 @@ public class UserResource {
     /**
      * GET  /users -> get all users.
      */
-    @RequestMapping(value = "/users",
+    @RequestMapping(
+        value = "/users",
         method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     @RolesAllowed(AuthoritiesConstants.ADMIN)
     @JsonView(User.Scalar.class)
-    public List<User> getAll() {
+    public List<User> getAll () {
         log.debug("REST request to get all Users");
+
         return userRepository.findAll();
     }
 
     /**
      * GET  /users/:login -> get the "login" user.
      */
-    @RequestMapping(value = "/users/{login}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/users/{login}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     @RolesAllowed(AuthoritiesConstants.ADMIN)
     @JsonView(User.Scalar.class)
-    public ResponseEntity<User> getUser(@PathVariable String login) {
+    public ResponseEntity<User> getUser (@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
-        return userRepository.findOneByLogin(login)
-                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        return userRepository.findOneByLogin(login).map(user -> 
+            new ResponseEntity<>(user, HttpStatus.OK)
+        ).orElse(
+            new ResponseEntity<>(HttpStatus.NOT_FOUND)
+        );
     }
 
     /**
      * HEAD /users/:login -> check if "login" user exists ...
      */
-    @RequestMapping(value = "/users/{login}",
-            method = RequestMethod.HEAD,
-            produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(
+        value = "/users/{login}",
+        method = RequestMethod.HEAD,
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
     @Timed
     public ResponseEntity checkUser (@PathVariable String login) {
         log.debug("REST request to check user login : {}", login);
-        return userRepository.findOneByLogin(login)
-            .map(user -> new ResponseEntity<>(HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        return userRepository.findOneByLogin(login).map(user -> 
+            new ResponseEntity<>(HttpStatus.OK)
+        ).orElse(
+            new ResponseEntity<>(HttpStatus.NOT_FOUND)
+        );
     }
 }

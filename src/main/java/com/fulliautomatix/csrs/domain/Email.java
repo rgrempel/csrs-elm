@@ -11,8 +11,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
+import java.util.stream.*;
 
 /**
  * An email address.
@@ -24,7 +24,7 @@ import java.util.HashSet;
 @lombok.ToString(of={"id", "emailAddress"})
 @lombok.EqualsAndHashCode(of={"emailAddress"})
 @lombok.NoArgsConstructor
-public class Email implements Serializable {
+public class Email implements Serializable, HasOwner {
     // For JsonView
     public interface Scalar {};
 
@@ -74,5 +74,12 @@ public class Email implements Serializable {
         } else {
             this.emailAddress = address.trim().toLowerCase();
         }
+    }
+    
+    @Override
+    public Set<Contact> findOwners () {
+        return getContactEmails().stream().map(ce ->
+            ce.getContact()
+        ).collect(Collectors.toSet());
     }
 }

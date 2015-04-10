@@ -6,22 +6,23 @@ import com.fulliautomatix.csrs.domain.Renewal;
 import com.fulliautomatix.csrs.repository.RenewalRepository;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
+import com.fulliautomatix.csrs.security.OwnerService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.annotation.security.RolesAllowed;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * REST controller for managing Renewal.
@@ -36,6 +37,9 @@ public class RenewalResource {
     @Inject
     private RenewalRepository renewalRepository;
 
+    @Inject
+    private OwnerService ownerService;
+
     /**
      * POST  /renewals -> Create a new renewal.
      */
@@ -45,12 +49,16 @@ public class RenewalResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
+    @RolesAllowed(AuthoritiesConstants.USER)
+    @Transactional
     public ResponseEntity<Void> create (@Valid @RequestBody Renewal renewal) throws URISyntaxException {
         log.debug("REST request to save Renewal : {}", renewal);
 
         if (renewal.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new renewal cannot already have an ID").build();
         }
+
+        ownerService.checkNewOwner(renewal);
         
         renewal = renewalRepository.save(renewal);
 
@@ -66,12 +74,13 @@ public class RenewalResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
+    @RolesAllowed(AuthoritiesConstants.USER)
+    @Transactional
     public ResponseEntity<Void> update (@RequestBody Renewal renewal) throws URISyntaxException {
         log.debug("REST request to update Renewal : {}", renewal);
 
-        if (renewal.getId() == null) {
-            return create(renewal);
-        }
+        ownerService.checkOldOwner(renewalRepository, renewal.getId());
+        ownerService.checkNewOwner(renewal);
 
         renewal = renewalRepository.save(renewal);
         
@@ -87,13 +96,17 @@ public class RenewalResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
+    @RolesAllowed(AuthoritiesConstants.USER)
     @JsonView(Renewal.WithContact.class)
-    public ResponseEntity<List<Renewal>> getAll(@RequestParam(value = "page" , required = false) Integer offset,
-                                  @RequestParam(value = "per_page", required = false) Integer limit)
-        throws URISyntaxException {
-        Page<Renewal> page = renewalRepository.findAll(PaginationUtil.generatePageRequest(offset, limit));
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/renewals", offset, limit);
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    @Transactional(readOnly = true)
+    public ResponseEntity<Collection<Renewal>> getAll () throws URISyntaxException {
+        Collection<Renewal> renewals = ownerService.findAllForLogin(renewalRepository);
+
+        renewals.stream().forEach((renewal) -> {
+            Hibernate.initialize(renewal.getContact());
+        });
+
+        return new ResponseEntity<>(renewals, HttpStatus.OK);
     }
 
     /**
@@ -106,14 +119,14 @@ public class RenewalResource {
     )
     @Timed
     @JsonView(Renewal.WithContact.class)
+    @Transactional(readOnly = true)
     public ResponseEntity<Renewal> get (@PathVariable Long id) {
         log.debug("REST request to get Renewal : {}", id);
 
-        return Optional.ofNullable(
-            renewalRepository.findOne(id)
-        ).map(
-            renewal -> new ResponseEntity<>(renewal, HttpStatus.OK)
-        ).orElse(
+        return ownerService.findOneForLogin(renewalRepository, id).map((renewal) -> {
+            Hibernate.initialize(renewal.getContact());
+            return new ResponseEntity<>(renewal, HttpStatus.OK);
+        }).orElse(
             new ResponseEntity<>(HttpStatus.NOT_FOUND)
         );
     }
@@ -129,6 +142,9 @@ public class RenewalResource {
     @Timed
     public void delete (@PathVariable Long id) {
         log.debug("REST request to delete Renewal : {}", id);
+
+        ownerService.checkOldOwner(renewalRepository, id);
+
         renewalRepository.delete(id);
     }
 }

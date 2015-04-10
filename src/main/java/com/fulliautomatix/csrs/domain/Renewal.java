@@ -14,6 +14,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.*;
 
 /**
  * A Renewal.
@@ -23,7 +24,7 @@ import java.util.*;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @JsonIdentityInfo(generator=JSOGGenerator.class)
 @lombok.ToString(of={"id", "year", "duration", "membership", "iter", "rr", "priceInCents"})
-public class Renewal extends AbstractAuditingEntity implements Serializable {
+public class Renewal extends AbstractAuditingEntity implements Serializable, HasOwner {
     // For JsonView
     public interface Scalar {};
     
@@ -83,4 +84,9 @@ public class Renewal extends AbstractAuditingEntity implements Serializable {
     @lombok.Getter @lombok.Setter
     @JsonView(WithContact.class)
     private Contact contact;
+    
+    @Override
+    public Set<Contact> findOwners () {
+        return Stream.of(contact).collect(Collectors.toSet());
+    }
 }

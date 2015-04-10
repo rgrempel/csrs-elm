@@ -8,8 +8,8 @@ import com.voodoodyne.jackson.jsog.JSOGGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.*;
 
 /**
  * An Interest.
@@ -19,7 +19,7 @@ import java.util.Set;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @JsonIdentityInfo(generator=JSOGGenerator.class)
 @lombok.ToString(of={"id", "interest"})
-public class Interest implements Serializable {
+public class Interest implements Serializable, HasOwner {
     // For JsonView
     public interface Scalar {};
 
@@ -43,4 +43,8 @@ public class Interest implements Serializable {
     @JsonView(WithContact.class)
     private Contact contact;
 
+    @Override
+    public Set<Contact> findOwners () {
+        return Stream.of(contact).collect(Collectors.toSet());
+    }
 }

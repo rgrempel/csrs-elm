@@ -102,9 +102,11 @@ public class AccountResource {
     /**
      * GET  /authenticate -> check if the user is authenticated, and return its login.
      */
-    @RequestMapping(value = "/authenticate",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/authenticate",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public String isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
@@ -114,52 +116,61 @@ public class AccountResource {
     /**
      * GET  /account -> get the current user.
      */
-    @RequestMapping(value = "/account",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/account",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public ResponseEntity<UserDTO> getAccount() {
-        return Optional.ofNullable(userService.getUserWithAuthorities())
-            .map(user -> new ResponseEntity<>(
-                new UserDTO(
-                    user.getLogin(),
-                    null,
-                    user.getLangKey(),
-                    user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toList())),
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+        return Optional.ofNullable(
+            userService.getUserWithAuthorities()
+        ).map(user -> 
+            new ResponseEntity<>(
+                new UserDTO(user.getLogin(), null, user.getLangKey(),
+                    user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toList())
+                ), HttpStatus.OK
+            )
+        ).orElse(
+            new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
+        );
     }
 
     /**
      * POST  /account -> update the current user information.
      */
-    @RequestMapping(value = "/account",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/account",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     @Transactional
     public ResponseEntity<String> saveAccount(@RequestBody UserDTO userDTO) {
-        return userRepository
-            .findOneByLogin(userDTO.getLogin())
-            .filter(u -> u.getLogin().equals(SecurityUtils.getCurrentLogin()))
-            .map(u -> {
-                userService.updateUserInformation(userDTO.getLangKey());
-                return new ResponseEntity<String>(HttpStatus.OK);
-            })
-            .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+        return userRepository.findOneByLogin(userDTO.getLogin()).filter(u -> 
+            u.getLogin().equals(SecurityUtils.getCurrentLogin())
+        ).map(u -> {
+            userService.updateUserInformation(userDTO.getLangKey());
+            return new ResponseEntity<String>(HttpStatus.OK);
+        }).orElseGet(() -> 
+            new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
+        );
     }
 
     /**
      * POST  /change_password -> changes the current user's password
      */
-    @RequestMapping(value = "/account/change_password",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/account/change_password",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public ResponseEntity<?> changePassword(@RequestBody String password) {
         if (StringUtils.isEmpty(password)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
+
         userService.changePassword(password);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -167,16 +178,20 @@ public class AccountResource {
     /**
      * GET  /account/sessions -> get the current open sessions.
      */
-    @RequestMapping(value = "/account/sessions",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/account/sessions",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public ResponseEntity<List<PersistentToken>> getCurrentSessions() {
-        return userRepository.findOneByLogin(SecurityUtils.getCurrentLogin())
-            .map(user -> new ResponseEntity<>(
-                persistentTokenRepository.findByUser(user),
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+        return userRepository.findOneByLogin(
+            SecurityUtils.getCurrentLogin()
+        ).map(user ->
+            new ResponseEntity<>(persistentTokenRepository.findByUser(user), HttpStatus.OK)
+        ).orElse(
+            new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
+        );
     }
 
     /**
@@ -192,15 +207,21 @@ public class AccountResource {
      *   There is an API to invalidate the current session, but there is no API to check which session uses which
      *   cookie.
      */
-    @RequestMapping(value = "/account/sessions/{series}",
-            method = RequestMethod.DELETE)
+    @RequestMapping(
+        value = "/account/sessions/{series}",
+        method = RequestMethod.DELETE
+    )
     @Timed
     public void invalidateSession(@PathVariable String series) throws UnsupportedEncodingException {
         String decodedSeries = URLDecoder.decode(series, "UTF-8");
-        userRepository.findOneByLogin(SecurityUtils.getCurrentLogin()).ifPresent(u -> {
-            persistentTokenRepository.findByUser(u).stream()
-                .filter(persistentToken -> StringUtils.equals(persistentToken.getSeries(), decodedSeries))
-                .findAny().ifPresent(t -> persistentTokenRepository.delete(decodedSeries));
+        userRepository.findOneByLogin(
+            SecurityUtils.getCurrentLogin()
+        ).ifPresent(u -> {
+            persistentTokenRepository.findByUser(u).stream().filter(persistentToken -> 
+                StringUtils.equals(persistentToken.getSeries(), decodedSeries)
+            ).findAny().ifPresent(t -> 
+                persistentTokenRepository.delete(decodedSeries)
+            );
         });
     }
 }

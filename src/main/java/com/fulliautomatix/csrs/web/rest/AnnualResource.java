@@ -38,11 +38,13 @@ public class AnnualResource {
     /**
      * POST  /annuals -> Create a new annual.
      */
-    @RequestMapping(value = "/annuals",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/annuals",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public ResponseEntity<Void> create(@RequestBody Annual annual) throws URISyntaxException {
+    public ResponseEntity<Void> create (@RequestBody Annual annual) throws URISyntaxException {
         log.debug("REST request to save Annual : {}", annual);
         if (annual.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new annual cannot already have an ID").build();
@@ -54,9 +56,11 @@ public class AnnualResource {
     /**
      * PUT  /annuals -> Updates an existing annual.
      */
-    @RequestMapping(value = "/annuals",
+    @RequestMapping(
+        value = "/annuals",
         method = RequestMethod.PUT,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     public ResponseEntity<Void> update(@RequestBody Annual annual) throws URISyntaxException {
         log.debug("REST request to update Annual : {}", annual);
@@ -70,9 +74,11 @@ public class AnnualResource {
     /**
      * GET  /annuals -> get all the annuals.
      */
-    @RequestMapping(value = "/annuals",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/annuals",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     @JsonView(Annual.WithContact.class)
     public ResponseEntity<List<Annual>> getAll(@RequestParam(value = "page" , required = false) Integer offset,
@@ -86,28 +92,35 @@ public class AnnualResource {
     /**
      * GET  /annuals/:id -> get the "id" annual.
      */
-    @RequestMapping(value = "/annuals/{id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/annuals/{id}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
     @JsonView(Annual.WithContact.class)
-    public ResponseEntity<Annual> get(@PathVariable Long id) {
+    public ResponseEntity<Annual> get (@PathVariable Long id) {
         log.debug("REST request to get Annual : {}", id);
-        return Optional.ofNullable(annualRepository.findOne(id))
-            .map(annual -> new ResponseEntity<>(
-                annual,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        return Optional.ofNullable(
+            annualRepository.findOne(id)
+        ).map(annual -> 
+            new ResponseEntity<>(annual, HttpStatus.OK)
+        ).orElse(
+            new ResponseEntity<>(HttpStatus.NOT_FOUND)
+        );
     }
 
     /**
      * DELETE  /annuals/:id -> delete the "id" annual.
      */
-    @RequestMapping(value = "/annuals/{id}",
-            method = RequestMethod.DELETE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(
+        value = "/annuals/{id}",
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Timed
-    public void delete(@PathVariable Long id) {
+    public void delete (@PathVariable Long id) {
         log.debug("REST request to delete Annual : {}", id);
         annualRepository.delete(id);
     }
