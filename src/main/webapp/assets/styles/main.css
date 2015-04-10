@@ -8649,52 +8649,60 @@ button.close {
 }
 
 /* line 1, ../../../scss/_custom.scss */
+.csrs-price-box {
+  vertical-align: middle;
+  border: 2px solid black;
+  margin-left: 18px;
+  padding: 12px;
+}
+
+/* line 8, ../../../scss/_custom.scss */
 .multi-line {
   white-space: pre-line;
 }
 
-/* line 5, ../../../scss/_custom.scss */
+/* line 12, ../../../scss/_custom.scss */
 .help-block {
   margin-bottom: 0px;
 }
 
-/* line 9, ../../../scss/_custom.scss */
+/* line 16, ../../../scss/_custom.scss */
 .navbar-xs {
   min-height: 40px;
   height: 40px;
   margin-bottom: 12px;
 }
 
-/* line 15, ../../../scss/_custom.scss */
+/* line 22, ../../../scss/_custom.scss */
 .navbar-xs .navbar-brand {
   padding: 6px 12px;
   font-size: 16px;
   line-height: 28px;
 }
 
-/* line 21, ../../../scss/_custom.scss */
+/* line 28, ../../../scss/_custom.scss */
 .navbar-xs .navbar-nav > li > a {
   padding-top: 6px;
   padding-bottom: 6px;
   line-height: 28px;
 }
 
-/* line 27, ../../../scss/_custom.scss */
+/* line 34, ../../../scss/_custom.scss */
 .text-bold {
   font-weight: bold;
 }
 
-/* line 31, ../../../scss/_custom.scss */
+/* line 38, ../../../scss/_custom.scss */
 .contact-list {
   padding: 8px;
 }
 
-/* line 35, ../../../scss/_custom.scss */
+/* line 42, ../../../scss/_custom.scss */
 .translation-message {
   font-size: 80%;
 }
 
-/* line 39, ../../../scss/_custom.scss */
+/* line 46, ../../../scss/_custom.scss */
 .csrs-logo {
   display: inline-block;
   width: 347px;
@@ -8703,47 +8711,47 @@ button.close {
   background-size: contain;
 }
 
-/* line 47, ../../../scss/_custom.scss */
+/* line 54, ../../../scss/_custom.scss */
 .well .panel-default > .panel-heading {
   background-color: #e8e8e8;
 }
 
-/* line 51, ../../../scss/_custom.scss */
+/* line 58, ../../../scss/_custom.scss */
 .well .panel-default > .panel-footer {
   background-color: #e8e8e8;
 }
 
-/* line 55, ../../../scss/_custom.scss */
+/* line 62, ../../../scss/_custom.scss */
 .voffset4 {
   margin-top: 4px;
 }
 
-/* line 56, ../../../scss/_custom.scss */
+/* line 63, ../../../scss/_custom.scss */
 .voffset6 {
   margin-top: 6px;
 }
 
-/* line 57, ../../../scss/_custom.scss */
+/* line 64, ../../../scss/_custom.scss */
 .voffset8 {
   margin-top: 8px;
 }
 
-/* line 58, ../../../scss/_custom.scss */
+/* line 65, ../../../scss/_custom.scss */
 .voffset12 {
   margin-top: 12px;
 }
 
-/* line 59, ../../../scss/_custom.scss */
+/* line 66, ../../../scss/_custom.scss */
 .voffset16 {
   margin-top: 16px;
 }
 
-/* line 60, ../../../scss/_custom.scss */
+/* line 67, ../../../scss/_custom.scss */
 .voffset18 {
   margin-top: 18px;
 }
 
-/* line 61, ../../../scss/_custom.scss */
+/* line 68, ../../../scss/_custom.scss */
 .voffset24 {
   margin-top: 24px;
 }
