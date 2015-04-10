@@ -30,7 +30,8 @@
         this.renewal = {
             membership: 2,
             iter: false,
-            rr: 0
+            rr: 0,
+            duration: 1
         };
 
         this.price = {
@@ -118,6 +119,8 @@
         self.price.d = self.price.a + self.price.b + self.price.c;
 
         self.price.e = (self.price.d * 3) - membership.reduction;
+
+        self.price.f = self.renewal.duration == 1 ? self.price.d : self.price.e;
     }
 })();
 

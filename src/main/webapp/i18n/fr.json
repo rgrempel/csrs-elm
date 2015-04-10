@@ -44,9 +44,13 @@
         "renewal": {
             "title": "Formulaire d'adhésion et d'abonnement",
             "joinOrRenew": "Adhérer / Renouveler",
+            "duration": "Durée",
             "membership": "Adhésion",
             "subtotal": "Subtotal",
+            "yourTotal": "Total de vos sélections",
             "multiYear": "Formules pluriannuelles",
+            "oneYear": "Une année",
+            "threeYears": "Trois ans",
             "forOneYear": "Pour une année, la somme due est:",
             "forThreeYears": "Pour formule de trois ans, multiplier le sous-total dans la case D par trois:",
             "subtract": "Soustraire $30 pour les membres réguliers ou $15 pour tous les autres membres:",

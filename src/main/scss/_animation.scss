@@ -1,5 +1,19 @@
 @import "compass/css3";
 
+.bounce-change.value-changed-add {
+    -webkit-animation: bounceIn 1s;
+    -moz-animation: bounceIn 1s;
+    -ms-animation: bounceIn 1s;
+    animation: bounceIn 1s;
+}
+
+.flip-change.value-changed-add {
+    -webkit-animation: flip 1s;
+    -moz-animation: flip 1s;
+    -ms-animation: flip 1s;
+    animation: flip 1s;
+}
+
 .yoyo.ng-enter, 
 .yoyo.ng-leave {
     @include single-transition(all, 400ms, cubic-bezier(0.250, 0.250, 0.750, 0.750));
@@ -20,7 +34,6 @@
     opacity: 1;
     height: 30px;
 }
-
 
 .animate-fade.ng-enter,
 .animate-fade.ng-leave {

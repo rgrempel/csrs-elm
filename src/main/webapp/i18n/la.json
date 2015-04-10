@@ -44,9 +44,13 @@
         "renewal": {
             "title": "Forma sodales et subscriptione",
             "joinOrRenew": "Adhere / Renovare",
+            "duration": "Durationem",
             "membership": "Sodalitas",
             "subtotal": "Subtotal",
+            "yourTotal": "Totum enim tua excerpta",
             "multiYear": "Optio multi-anno",
+            "oneYear": "Annus",
+            "threeYears": "Triennium",
             "forOneYear": "Annus pro sodalibus debitam quantitatem esse:",
             "forThreeYears": "Nam optio triennium, multiplicabo subtotal arca \"D\" per tres:",
             "subtract": "Subtrahas XXX pro membra ordinarius, aut XV pro alia omnia:",

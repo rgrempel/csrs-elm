@@ -8540,6 +8540,22 @@ button.close {
   }
 }
 /* line 3, ../../../scss/_animation.scss */
+.bounce-change.value-changed-add {
+  -webkit-animation: bounceIn 1s;
+  -moz-animation: bounceIn 1s;
+  -ms-animation: bounceIn 1s;
+  animation: bounceIn 1s;
+}
+
+/* line 10, ../../../scss/_animation.scss */
+.flip-change.value-changed-add {
+  -webkit-animation: flip 1s;
+  -moz-animation: flip 1s;
+  -ms-animation: flip 1s;
+  animation: flip 1s;
+}
+
+/* line 17, ../../../scss/_animation.scss */
 .yoyo.ng-enter,
 .yoyo.ng-leave {
   -moz-transition: all 400ms cubic-bezier(0.25, 0.25, 0.75, 0.75);
@@ -8550,7 +8566,7 @@ button.close {
   display: block;
 }
 
-/* line 10, ../../../scss/_animation.scss */
+/* line 24, ../../../scss/_animation.scss */
 .yoyo-ng-leave.ng-leave-active,
 .yoyo.ng-enter {
   -moz-transform: rotateX(90deg) rotateZ(90deg);
@@ -8561,7 +8577,7 @@ button.close {
   height: 0px;
 }
 
-/* line 17, ../../../scss/_animation.scss */
+/* line 31, ../../../scss/_animation.scss */
 .yoyo.ng-enter.ng-enter-active,
 .yoyo.ng-leave {
   -moz-transform: rotateX(0deg) rotateZ(0deg);
@@ -8572,7 +8588,7 @@ button.close {
   height: 30px;
 }
 
-/* line 25, ../../../scss/_animation.scss */
+/* line 38, ../../../scss/_animation.scss */
 .animate-fade.ng-enter,
 .animate-fade.ng-leave {
   -moz-transition: all 1s;
@@ -8581,31 +8597,31 @@ button.close {
   transition: all 1s;
 }
 
-/* line 30, ../../../scss/_animation.scss */
+/* line 43, ../../../scss/_animation.scss */
 .animate-fade.ng-enter {
   opacity: 0.2;
   background-color: #AAAAAA;
 }
 
-/* line 35, ../../../scss/_animation.scss */
+/* line 48, ../../../scss/_animation.scss */
 .animate-fade.ng-enter.ng-enter-active {
   opacity: 1;
   background-color: #FFFFDD;
 }
 
-/* line 40, ../../../scss/_animation.scss */
+/* line 53, ../../../scss/_animation.scss */
 .animate-fade.ng-leave {
   opacity: 1;
   background-color: #FFFFDD;
 }
 
-/* line 45, ../../../scss/_animation.scss */
+/* line 58, ../../../scss/_animation.scss */
 .animate-fade.ng-leave.ng-leave-active {
   opacity: 0.2;
   background-color: #AAAAAA;
 }
 
-/* line 51, ../../../scss/_animation.scss */
+/* line 64, ../../../scss/_animation.scss */
 .move.ng-enter,
 .move.ng-leave {
   -moz-transition: all 600ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
@@ -8616,7 +8632,7 @@ button.close {
   display: block;
 }
 
-/* line 58, ../../../scss/_animation.scss */
+/* line 71, ../../../scss/_animation.scss */
 .move.ng-enter.ng-enter-active,
 .move.ng-leave {
   opacity: 1;
@@ -8624,7 +8640,7 @@ button.close {
   height: 30px;
 }
 
-/* line 65, ../../../scss/_animation.scss */
+/* line 78, ../../../scss/_animation.scss */
 .move.ng-leave.ng-leave-active,
 .move.ng-enter {
   opacity: 0;

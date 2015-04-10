@@ -44,9 +44,13 @@
         "renewal": {
             "title": "Membership and Subscription Form",
             "joinOrRenew": "Join / Renew",
+            "duration": "Duration",
             "membership": "Membership",
             "subtotal": "Subtotal",
+            "yourTotal": "Total for your selections",
             "multiYear": "Multi-year option",
+            "oneYear": "One year",
+            "threeYears": "Three years",
             "forOneYear": "For a one-year membership, the amount due would be:",
             "forThreeYears": "For the three-year option, multiply the Subtotal in Box D by three:",
             "subtract": "Subtract $30 for regular members or $15 for all other members",

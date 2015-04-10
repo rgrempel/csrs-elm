@@ -147,6 +147,11 @@ csrsApp:
             fr: "Adhérer / Renouveler"
             la: "Adhere / Renovare"
 
+        duration:
+            en: "Duration"
+            fr: "Durée"
+            la: "Durationem"
+
         membership:
             en: "Membership"
             fr: "Adhésion"
@@ -157,10 +162,25 @@ csrsApp:
             fr: "Subtotal"
             la: "Subtotal"
 
+        yourTotal:
+            en: "Total for your selections"
+            fr: "Total de vos sélections"
+            la: "Totum enim tua excerpta"
+
         multiYear:
             en: "Multi-year option"
             fr: "Formules pluriannuelles"
             la: "Optio multi-anno"
+
+        oneYear:
+            en: "One year"
+            fr: "Une année"
+            la: "Annus"
+        
+        threeYears:
+            en: "Three years"
+            fr: "Trois ans"
+            la: "Triennium"
 
         forOneYear:
             en: "For a one-year membership, the amount due would be:"
