@@ -4,19 +4,17 @@
     angular.module('csrsApp').controller('RenewalController', RenewalController);
 
     angular.extend(RenewalController.prototype, {
-        loadRenewal: loadRenewal,
-        renewForOneYear: renewForOneYear,
-        renewForThreeYears: renewForThreeYears,
         cancel: cancel,
         saveRenewal: saveRenewal,
         updatePrices: updatePrices
     });
  
-    function RenewalController ($scope, $state, _, membershipPricesFor) {
+    function RenewalController ($scope, $state, _, membershipPricesFor, Renewal) {
         'ngInject';
         
         this.scope = $scope;
         this._ = _;
+        this.Renewal = Renewal;
 
         this.contact = $state.params.contact;
 
@@ -31,7 +29,11 @@
             membership: 2,
             iter: false,
             rr: 0,
-            duration: 1
+            year: 2015,
+            duration: 1,
+            contact: {
+                id: this.contact.id
+            }
         };
 
         this.price = {
@@ -39,7 +41,8 @@
             b: 0,
             c: 0,
             d: 0,
-            e: 0
+            e: 0,
+            f: 0
         };
    
         var self = this;
@@ -52,29 +55,6 @@
         });
     }
 
-    function loadRenewal () {
-        /* jshint validthis: true */
-        var self = this;
-
-        UserContact.query({}, function (result) {
-            self.contacts = result;
-            self.contactsError = null;
-            self.gotContacts = true;
-        }, function (error) {
-            self.contacts = [];
-            self.contactsError = angular.toJson(error.data);
-            self.gotContacts = false;
-        });
-    }
-
-    function renewForOneYear () {
-
-    }
-
-    function renewForThreeYears () {
-
-    }
-
     function cancel () {
         /* jshint validthis: true */
         this.scope.modalController.go('^');
@@ -83,8 +63,14 @@
     function saveRenewal () {
         /* jshint validthis: true */
         var self = this;
-        Renewal.save({}, this.renewal, function () {
+
+        // We pass to the database what we displayed to the user,
+        // so that we can throw an error if the database disagrees
+        this.renewal.priceInCents = this.price.f;
+
+        this.Renewal.save({}, this.renewal, function () {
             self.error = null;
+            self.scope.modalController.go('^');
         }, function (error) {
             self.error = angular.toJson(error.data);
         });

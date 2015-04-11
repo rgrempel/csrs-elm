@@ -11,7 +11,6 @@ import com.fulliautomatix.csrs.repository.UserEmailRepository;
 import com.fulliautomatix.csrs.repository.UserEmailActivationRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
-import com.fulliautomatix.csrs.web.rest.util.ValidationException;
 import com.fulliautomatix.csrs.web.rest.dto.AccountCreationDTO;
 import com.fulliautomatix.csrs.service.util.RandomUtil;
 import com.fulliautomatix.csrs.service.MailService;
@@ -25,7 +24,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.Errors;
 import org.hibernate.Hibernate;
 
 import org.joda.time.DateTime;
@@ -92,12 +90,8 @@ public class InvitationResource {
     )
     @Timed
     @Transactional
-    public ResponseEntity<Void> sendCreateAccountInvitation (@RequestBody @Valid AccountCreationDTO request, Errors errors, HttpServletRequest servletRequest) throws URISyntaxException {
+    public ResponseEntity<Void> sendCreateAccountInvitation (@RequestBody @Valid AccountCreationDTO request, HttpServletRequest servletRequest) throws URISyntaxException {
         log.debug("REST request to send account creation invitation : {}", request);
-
-        if (errors.hasErrors()) {
-            throw new ValidationException("Request failed validation", errors);
-        }
 
         // Get the existing email address, or create a new one
         Email email = emailRepository.findOneByEmailAddress(request.getEmail()).orElseGet(() -> {

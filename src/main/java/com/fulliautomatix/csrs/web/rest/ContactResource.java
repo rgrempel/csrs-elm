@@ -14,7 +14,6 @@ import com.fulliautomatix.csrs.repository.ContactEmailRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.security.OwnerService;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
-import com.fulliautomatix.csrs.web.rest.util.ValidationException;
 import com.fulliautomatix.csrs.security.SecurityUtils;
 
 import org.slf4j.Logger;
@@ -65,15 +64,11 @@ public class ContactResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
-    public ResponseEntity<Void> create (@RequestBody @Valid Contact contact, Errors errors) throws URISyntaxException {
+    public ResponseEntity<Void> create (@RequestBody @Valid Contact contact) throws URISyntaxException {
         log.debug("REST request to save Contact : {}", contact);
 
         if (contact.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new contact cannot already have an ID").build();
-        }
-
-        if (errors.hasErrors()) {
-            throw new ValidationException("Contact failed validation", errors);
         }
 
         contact = contactRepository.save(contact);
@@ -92,15 +87,11 @@ public class ContactResource {
     @Timed
     @RolesAllowed(AuthoritiesConstants.USER)
     @Transactional
-    public ResponseEntity<Void> createForUser (@RequestBody @Valid Contact contact, Errors errors) throws URISyntaxException {
+    public ResponseEntity<Void> createForUser (@RequestBody @Valid Contact contact) throws URISyntaxException {
         log.debug("REST request to save Contact for account : {}", contact);
 
         if (contact.getId() != null) {
             return ResponseEntity.badRequest().header("Failure", "A new contact cannot already have an ID").build();
-        }
-
-        if (errors.hasErrors()) {
-            throw new ValidationException("Contact failed validation", errors);
         }
 
         final Contact saved = contactRepository.save(contact);
@@ -125,13 +116,9 @@ public class ContactResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
-    public ResponseEntity<Void> update(@Valid @RequestBody Contact contact, Errors errors) throws URISyntaxException {
+    public ResponseEntity<Void> update(@Valid @RequestBody Contact contact) throws URISyntaxException {
         log.debug("REST request to update Contact : {}", contact);
-        
-        if (errors.hasErrors()) {
-            throw new ValidationException("Contact failed validation", errors);
-        }
-        
+         
         if (contact.getId() == null) {
             return ResponseEntity.badRequest().header("Failure", "An existing must already have an ID").build();
         }
@@ -150,13 +137,9 @@ public class ContactResource {
     )
     @Timed
     @RolesAllowed(AuthoritiesConstants.USER)
-    public ResponseEntity<Void> updateForUser (@Valid @RequestBody Contact contact, Errors errors) throws URISyntaxException {
+    public ResponseEntity<Void> updateForUser (@Valid @RequestBody Contact contact) throws URISyntaxException {
         log.debug("REST request to update Contact : {}", contact);
         
-        if (errors.hasErrors()) {
-            throw new ValidationException("Contact failed validation", errors);
-        }
-
         if (contact.getId() == null) {
             return ResponseEntity.badRequest().header("Failure", "An existing must already have an ID").build();
         }
