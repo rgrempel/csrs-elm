@@ -5,8 +5,7 @@
 
     angular.extend(RenewalController.prototype, {
         cancel: cancel,
-        saveRenewal: saveRenewal,
-        updatePrices: updatePrices
+        saveRenewal: saveRenewal
     });
  
     function RenewalController ($scope, $state, _, membershipPricesFor, Renewal) {
@@ -51,7 +50,9 @@
             
             $scope.$watch(function () {
                 return self.renewal;
-            }, angular.bind(self, self.updatePrices), true);
+            }, function () {
+                self.price = self.prices.getPrice(self.renewal);
+            }, true);
         });
     }
 
@@ -74,39 +75,6 @@
         }, function (error) {
             self.error = angular.toJson(error.data);
         });
-    }
-
-    function updatePrices () {
-        /* jshint validthis: true */
-        var self = this;
-
-        var membership = self._.find(self.prices.membership, {
-            code: self.renewal.membership
-        });
-
-        self.price.a = membership.price;
-
-        if (self.renewal.rr > 0) {
-            self.price.b = self._.find(self.prices.rr, {
-                code: membership.rrCode
-            }).price;
-        } else {
-            self.price.b = 0;
-        }
-
-        if (self.renewal.iter) {
-            self.price.c = self._.find(self.prices.iter, {
-                code: membership.iterCode
-            }).price;
-        } else {
-            self.price.c = 0;
-        }
-
-        self.price.d = self.price.a + self.price.b + self.price.c;
-
-        self.price.e = (self.price.d * 3) - membership.reduction;
-
-        self.price.f = self.renewal.duration == 1 ? self.price.d : self.price.e;
     }
 })();
 
