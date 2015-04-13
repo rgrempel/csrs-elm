@@ -3,11 +3,13 @@
 (function () {
     angular.module('csrsApp').factory('membershipPricesFor', membershipPricesForProvider);
     
-    function membershipPricesForProvider ($q, _) {
+    function membershipPricesForProvider ($q, _, Product) {
         'ngInject';
 
         return function membershipPricesFor (year) {
-            return $q.when(new MembershipPrices(_));
+            return Product.query().$promise.then(function (productList) {
+                return new MembershipPrices(productList, _);
+            });
         };
     }
 
@@ -15,57 +17,26 @@
         getPrice: getPrice
     });
 
-    function MembershipPrices (_) {
+    function MembershipPrices (productList, _) {
         this._ = _;
 
-        angular.extend(this, {
-            membership: [{
-                code: 1,
-                rrCode: 1,
-                iterCode: 1,
-                price: 10000,
-                reduction: 1500
-            },{
-                code: 2,
-                rrCode: 1,
-                iterCode: 1,
-                price: 4000,
-                reduction: 3000
-            },{
-                code: 3,
-                rrCode: 1,
-                iterCode: 1,
-                price: 2000,
-                reduction: 1500
-            },{
-                code: 4,
-                rrCode: 2,
-                iterCode: 2,
-                price: 2000,
-                reduction: 1500
-            },{
-                code: 5,
-                rrCode: 2,
-                iterCode: 2,
-                price: 2000,
-                reduction: 1500
-            }],
-            
-            rr: [{
-                code: 1,
-                price: 3500
-            },{
-                code: 2,
-                price: 3000
-            }],
-            
-            iter: [{
-                code: 1,
-                price: 2500
-            },{
-                code: 2,
-                price: 1800
-            }]
+        var self = this;
+
+        // Adapt from the productList to something that is more fluent
+        angular.forEach(productList, function (product) {
+            self[product.code] = _.map(product.productCategories, function (productCategory) {
+                var category = {
+                    code: productCategory.code,
+                    price: productCategory.productCategoryPrices[0].priceInCents,
+                    reduction: productCategory.productCategoryPrices[0].threeYearReductionInCents
+                };
+
+                angular.forEach(productCategory.productCategoriesImplies, function (productCategoryImplies) {
+                    category[productCategoryImplies.impliesProductCategory.product.code + 'Code'] = productCategoryImplies.impliesProductCategory.code;
+                });
+
+                return category;
+            });
         });
     }
     

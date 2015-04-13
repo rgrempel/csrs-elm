@@ -33,7 +33,7 @@
                 </td>
             </tr>
 
-            <tr ng-repeat="option in renewalForm.prices.membership">
+            <tr ng-repeat="option in (renewalForm.prices.membership | orderBy: 'code')">
                 <td ng-click="renewalForm.renewal.membership = option.code" style="cursor: pointer;">
                     <span ng-show="renewalForm.renewal.membership == option.code" class="glyphicon glyphicon-ok" style="font-size: 1em"></span> 
                 </td>
@@ -67,7 +67,7 @@
                 </td>
             </tr>
 
-            <tr ng-repeat="option in renewalForm.prices.rr">
+            <tr ng-repeat="option in (renewalForm.prices.rr | orderBy : 'code')">
                 <td><!-- blank --></td>
 
                 <td translate="csrsApp.renewal.rr.prices.{{option.code}}">All members</td>
@@ -131,7 +131,7 @@
                 </td>
             </tr>
 
-            <tr ng-repeat="option in renewalForm.prices.iter">
+            <tr ng-repeat="option in (renewalForm.prices.iter | orderBy : 'code')">
                 <td><!-- blank --></td>
 
                 <td translate="csrsApp.renewal.iter.prices.{{option.code}}">All members</td>

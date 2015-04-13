@@ -80,7 +80,343 @@
                                  referencedColumnNames="id"
                                  referencedTableName="T_CONTACT"
                                  onDelete="CASCADE"
+                                 onUpdate="CASCADE" /> 
+    </changeSet>
+
+    <changeSet id="addProducts" author="ryan">
+        <createTable tableName="T_PRODUCT">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="code" type="varchar">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createIndex tableName="T_PRODUCT" indexName="idx_product_code">
+            <column name="code" />
+        </createIndex>
+
+        <insert tableName="T_PRODUCT">
+            <column name="code" value="membership" />
+            <column name="id" value="1" />
+        </insert>
+
+        <insert tableName="T_PRODUCT">
+            <column name="code" value="rr" />
+            <column name="id" value="2" />
+        </insert>
+
+        <insert tableName="T_PRODUCT">
+            <column name="code" value="iter" />
+            <column name="id" value="3" />
+        </insert>
+
+        <sql>SELECT setVal('t_product_id_seq', 4);</sql>
+
+        <createTable tableName="T_PRODUCT_CATEGORY">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+
+            <column name="product_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="code" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createIndex tableName="T_PRODUCT_CATEGORY" indexName="idx_product_category_code">
+            <column name="code" />
+        </createIndex>
+
+        <createIndex tableName="T_PRODUCT_CATEGORY" indexName="idx_product_category_product_id">
+            <column name="product_id" />
+        </createIndex>
+
+        <createIndex tableName="T_PRODUCT_CATEGORY" indexName="idx_product_category_combined" unique="true">
+            <column name="code" />
+            <column name="product_id" />
+        </createIndex>
+        
+        <addForeignKeyConstraint baseColumnNames="product_id"
+                                 baseTableName="T_PRODUCT_CATEGORY"
+                                 constraintName="fk_product_category_product"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_PRODUCT"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+
+        <insert tableName="T_PRODUCT_CATEGORY">
+            <column name="id" valueNumeric="1" />
+            <column name="product_id" valueNumeric="1" />
+            <column name="code" valueNumeric="1" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_CATEGORY">
+            <column name="id" valueNumeric="2" />
+            <column name="product_id" valueNumeric="1" />
+            <column name="code" valueNumeric="2" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_CATEGORY">
+            <column name="id" valueNumeric="3" />
+            <column name="product_id" valueNumeric="1" />
+            <column name="code" valueNumeric="3" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_CATEGORY">
+            <column name="id" valueNumeric="4" />
+            <column name="product_id" valueNumeric="1" />
+            <column name="code" valueNumeric="4" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_CATEGORY">
+            <column name="id" valueNumeric="5" />
+            <column name="product_id" valueNumeric="1" />
+            <column name="code" valueNumeric="5" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_CATEGORY">
+            <column name="id" valueNumeric="6" />
+            <column name="product_id" valueNumeric="2" />
+            <column name="code" valueNumeric="1" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_CATEGORY">
+            <column name="id" valueNumeric="7" />
+            <column name="product_id" valueNumeric="2" />
+            <column name="code" valueNumeric="2" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_CATEGORY">
+            <column name="id" valueNumeric="8" />
+            <column name="product_id" valueNumeric="3" />
+            <column name="code" valueNumeric="1" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_CATEGORY">
+            <column name="id" valueNumeric="9" />
+            <column name="product_id" valueNumeric="3" />
+            <column name="code" valueNumeric="2" />
+        </insert>
+        
+        <sql>SELECT setVal('t_product_category_id_seq', 10);</sql>
+
+        <createTable tableName="T_PRODUCT_CATEGORY_IMPLIES">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="product_category_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="implies_product_category_id" type="bigint">
+                <constraints nullable="false" />
+            </column>            
+        </createTable>
+
+        <createIndex tableName="T_PRODUCT_CATEGORY_IMPLIES" indexName="idx_product_category_implies_product_category">
+            <column name="product_category_id" />
+        </createIndex>
+
+        <createIndex tableName="T_PRODUCT_CATEGORY_IMPLIES" indexName="idx_product_category_implies_implies_product_category">
+            <column name="implies_product_category_id" />
+        </createIndex>
+
+        <createIndex tableName="T_PRODUCT_CATEGORY_IMPLIES" indexName="idx_product_category_implies_combined" unique="true">
+            <column name="implies_product_category_id" />
+            <column name="product_category_id" />
+        </createIndex>
+        
+        <addForeignKeyConstraint baseColumnNames="product_category_id"
+                                 baseTableName="T_PRODUCT_CATEGORY_IMPLIES"
+                                 constraintName="fk_product_category_implies_product_category"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_PRODUCT_CATEGORY"
+                                 onDelete="CASCADE"
                                  onUpdate="CASCADE" />
         
+        <addForeignKeyConstraint baseColumnNames="implies_product_category_id"
+                                 baseTableName="T_PRODUCT_CATEGORY_IMPLIES"
+                                 constraintName="fk_product_category_implies_implies_product_category"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_PRODUCT_CATEGORY"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+
+        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+            <column name="id" valueNumeric="1" />
+            <column name="product_category_id" valueNumeric="1" />
+            <column name="implies_product_category_id" valueNumeric="6" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+            <column name="id" valueNumeric="2" />
+            <column name="product_category_id" valueNumeric="1" />
+            <column name="implies_product_category_id" valueNumeric="8" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+            <column name="id" valueNumeric="3" />
+            <column name="product_category_id" valueNumeric="2" />
+            <column name="implies_product_category_id" valueNumeric="6" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+            <column name="id" valueNumeric="4" />
+            <column name="product_category_id" valueNumeric="2" />
+            <column name="implies_product_category_id" valueNumeric="8" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+            <column name="id" valueNumeric="5" />
+            <column name="product_category_id" valueNumeric="3" />
+            <column name="implies_product_category_id" valueNumeric="6" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+            <column name="id" valueNumeric="6" />
+            <column name="product_category_id" valueNumeric="3" />
+            <column name="implies_product_category_id" valueNumeric="8" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+            <column name="id" valueNumeric="7" />
+            <column name="product_category_id" valueNumeric="4" />
+            <column name="implies_product_category_id" valueNumeric="7" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+            <column name="id" valueNumeric="8" />
+            <column name="product_category_id" valueNumeric="4" />
+            <column name="implies_product_category_id" valueNumeric="9" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+            <column name="id" valueNumeric="9" />
+            <column name="product_category_id" valueNumeric="5" />
+            <column name="implies_product_category_id" valueNumeric="7" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+            <column name="id" valueNumeric="10" />
+            <column name="product_category_id" valueNumeric="5" />
+            <column name="implies_product_category_id" valueNumeric="9" />
+        </insert>
+
+        <sql>SELECT setVal('t_product_category_implies_id_seq', 11);</sql>
+
+        <createTable tableName="T_PRODUCT_CATEGORY_PRICE">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="product_category_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="start_year" type="int" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="price_in_cents" type="int">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="three_year_reduction_in_cents" type="int" defaultValueNumeric="0">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createIndex tableName="T_PRODUCT_CATEGORY_PRICE" indexName="idx_product_category_price_product_category">
+            <column name="product_category_id" />
+        </createIndex>
+
+        <createIndex tableName="T_PRODUCT_CATEGORY_PRICE" indexName="idx_product_category_price_start_year">
+            <column name="start_year" />
+        </createIndex>
+
+        <createIndex tableName="T_PRODUCT_CATEGORY_PRICE" indexName="idx_product_category_price_combined" unique="true">
+            <column name="product_category_id" />
+            <column name="start_year" />
+        </createIndex>
+        
+        <addForeignKeyConstraint baseColumnNames="product_category_id"
+                                 baseTableName="T_PRODUCT_CATEGORY_PRICE"
+                                 constraintName="fk_product_category_price_product_category"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_PRODUCT_CATEGORY"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+
+        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+            <column name="id" valueNumeric="1" />
+            <column name="product_category_id" valueNumeric="1" />
+            <column name="price_in_cents" valueNumeric="10000" />
+            <column name="three_year_reduction_in_cents" valueNumeric="1500" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+            <column name="id" valueNumeric="2" />
+            <column name="product_category_id" valueNumeric="2" />
+            <column name="price_in_cents" valueNumeric="4000" />
+            <column name="three_year_reduction_in_cents" valueNumeric="3000" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+            <column name="id" valueNumeric="3" />
+            <column name="product_category_id" valueNumeric="3" />
+            <column name="price_in_cents" valueNumeric="2000" />
+            <column name="three_year_reduction_in_cents" valueNumeric="1500" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+            <column name="id" valueNumeric="4" />
+            <column name="product_category_id" valueNumeric="4" />
+            <column name="price_in_cents" valueNumeric="2000" />
+            <column name="three_year_reduction_in_cents" valueNumeric="1500" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+            <column name="id" valueNumeric="5" />
+            <column name="product_category_id" valueNumeric="5" />
+            <column name="price_in_cents" valueNumeric="2000" />
+            <column name="three_year_reduction_in_cents" valueNumeric="1500" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+            <column name="id" valueNumeric="6" />
+            <column name="product_category_id" valueNumeric="6" />
+            <column name="price_in_cents" valueNumeric="3500" />
+            <column name="three_year_reduction_in_cents" valueNumeric="0" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+            <column name="id" valueNumeric="7" />
+            <column name="product_category_id" valueNumeric="7" />
+            <column name="price_in_cents" valueNumeric="3000" />
+            <column name="three_year_reduction_in_cents" valueNumeric="0" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+            <column name="id" valueNumeric="8" />
+            <column name="product_category_id" valueNumeric="8" />
+            <column name="price_in_cents" valueNumeric="2500" />
+            <column name="three_year_reduction_in_cents" valueNumeric="0" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+            <column name="id" valueNumeric="9" />
+            <column name="product_category_id" valueNumeric="9" />
+            <column name="price_in_cents" valueNumeric="1800" />
+            <column name="three_year_reduction_in_cents" valueNumeric="0" />
+        </insert>
+        
+        <sql>SELECT setVal('t_product_category_price_id_seq', 10);</sql>
     </changeSet>
 </databaseChangeLog>
