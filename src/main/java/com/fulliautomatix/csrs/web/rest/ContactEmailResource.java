@@ -9,7 +9,6 @@ import com.fulliautomatix.csrs.repository.ContactEmailRepository;
 import com.fulliautomatix.csrs.repository.EmailRepository;
 import com.fulliautomatix.csrs.repository.ContactRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
-import com.fulliautomatix.csrs.security.SecurityUtils;
 import com.fulliautomatix.csrs.security.OwnerService;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;

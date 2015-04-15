@@ -7,8 +7,6 @@ import com.fulliautomatix.csrs.domain.HasOwner;
 import com.fulliautomatix.csrs.domain.Contact;
 import com.fulliautomatix.csrs.repository.ContactRepository;
 import com.fulliautomatix.csrs.repository.FindsForLogin;
-import com.fulliautomatix.csrs.security.SecurityUtils;
-import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 
 import javax.inject.Inject;
 
@@ -26,22 +24,25 @@ public class OwnerService {
     @Inject
     private ContactRepository contactRepository;
 
+    @Inject
+    private SecurityUtils securityUtils;
+
     public void checkNewOwner (HasOwner object) {
-        if (SecurityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) return;
+        if (securityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) return;
 
         Set<Long> contactIds = object.findOwners().stream().map(Contact::getId).collect(Collectors.toSet());
         if (contactIds.isEmpty()) {
             throw new AccessDeniedException("Not permitted for this user.");
         }
 
-        Set<Contact> authorized = contactRepository.findAllForLogin(SecurityUtils.getCurrentLogin(), contactIds);
+        Set<Contact> authorized = contactRepository.findAllForLogin(securityUtils.getCurrentLogin(), contactIds);
         if (authorized.isEmpty()) {
             throw new AccessDeniedException("Not permitted for this user.");
         }
     }
 
     public <T, PK extends Serializable> void checkOldOwner (FindsForLogin<T, PK> repository, PK key) {
-        if (SecurityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) return;
+        if (securityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) return;
         
         findOneForLogin(repository, key).orElseThrow(() -> {
             return new AccessDeniedException("Not allowed for this user.");
@@ -49,18 +50,18 @@ public class OwnerService {
     }
 
     public <T, PK extends Serializable> Optional<T> findOneForLogin (FindsForLogin<T, PK> repository, PK key) {
-        if (SecurityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) {
+        if (securityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) {
             return Optional.ofNullable(repository.findOne(key));
         } else {
-            return repository.findOneForLogin(SecurityUtils.getCurrentLogin(), key);
+            return repository.findOneForLogin(securityUtils.getCurrentLogin(), key);
         }
     }
 
     public <T, PK extends Serializable> Collection<T> findAllForLogin (FindsForLogin<T, PK> repository) {
-        if (SecurityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) {
+        if (securityUtils.isUserInRole(AuthoritiesConstants.ADMIN)) {
             return repository.findAll();
         } else {
-            return repository.findAllForLogin(SecurityUtils.getCurrentLogin());
+            return repository.findAllForLogin(securityUtils.getCurrentLogin());
         }
     }
 }

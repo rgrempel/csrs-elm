@@ -59,6 +59,9 @@ public class AccountResource {
     @Inject
     private UserEmailRepository userEmailRepository;
 
+    @Inject
+    private SecurityUtils securityUtils;
+
     /**
      * POST  /register -> register the user.
      */
@@ -148,7 +151,7 @@ public class AccountResource {
     @Transactional
     public ResponseEntity<String> saveAccount(@RequestBody UserDTO userDTO) {
         return userRepository.findOneByLogin(userDTO.getLogin()).filter(u -> 
-            u.getLogin().equals(SecurityUtils.getCurrentLogin())
+            u.getLogin().equals(securityUtils.getCurrentLogin())
         ).map(u -> {
             userService.updateUserInformation(userDTO.getLangKey());
             return new ResponseEntity<String>(HttpStatus.OK);
@@ -186,7 +189,7 @@ public class AccountResource {
     @Timed
     public ResponseEntity<List<PersistentToken>> getCurrentSessions() {
         return userRepository.findOneByLogin(
-            SecurityUtils.getCurrentLogin()
+            securityUtils.getCurrentLogin()
         ).map(user ->
             new ResponseEntity<>(persistentTokenRepository.findByUser(user), HttpStatus.OK)
         ).orElse(
@@ -215,7 +218,7 @@ public class AccountResource {
     public void invalidateSession(@PathVariable String series) throws UnsupportedEncodingException {
         String decodedSeries = URLDecoder.decode(series, "UTF-8");
         userRepository.findOneByLogin(
-            SecurityUtils.getCurrentLogin()
+            securityUtils.getCurrentLogin()
         ).ifPresent(u -> {
             persistentTokenRepository.findByUser(u).stream().filter(persistentToken -> 
                 StringUtils.equals(persistentToken.getSeries(), decodedSeries)

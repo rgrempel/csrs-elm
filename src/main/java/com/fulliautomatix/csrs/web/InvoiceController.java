@@ -71,8 +71,7 @@ public class InvoiceController {
         
         Locale locale = Locale.forLanguageTag("en");
         Context context = new Context(locale);
-    //       context.setVariable("email", email);
-    //       context.setVariable("baseUrl", baseUrl);
+        context.setVariable("renewal", renewal);
         
         pdfService.createPDF(output, context, "invoice");
     }

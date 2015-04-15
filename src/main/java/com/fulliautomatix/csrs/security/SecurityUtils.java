@@ -1,5 +1,6 @@
 package com.fulliautomatix.csrs.security;
 
+import org.springframework.stereotype.Service;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,15 +13,13 @@ import java.util.Collection;
 /**
  * Utility class for Spring Security.
  */
+@Service
 public final class SecurityUtils {
-
-    private SecurityUtils() {
-    }
 
     /**
      * Get the login of the current user.
      */
-    public static String getCurrentLogin() {
+    public String getCurrentLogin() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         UserDetails springSecurityUser = null;
@@ -41,7 +40,7 @@ public final class SecurityUtils {
      *
      * @return true if the user is authenticated, false otherwise
      */
-    public static boolean isAuthenticated() {
+    public boolean isAuthenticated() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Collection<? extends GrantedAuthority> authorities = securityContext.getAuthentication().getAuthorities();
         if (authorities != null) {
@@ -58,7 +57,7 @@ public final class SecurityUtils {
     /**
      * If the current user has a specific security role.
      */
-    public static boolean isUserInRole(String role) {
+    public boolean isUserInRole(String role) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         if(authentication != null) {

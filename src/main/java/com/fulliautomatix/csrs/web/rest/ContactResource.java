@@ -55,6 +55,9 @@ public class ContactResource {
     @Inject
     private OwnerService ownerService;
 
+    @Inject
+    private SecurityUtils securityUtils;
+
     /**
      * POST  /contacts -> Create a new contact.
      */
@@ -97,7 +100,7 @@ public class ContactResource {
         final Contact saved = contactRepository.save(contact);
         
         // Hook up all the emails ...
-        emailRepository.findAllForLogin(SecurityUtils.getCurrentLogin()).stream().forEach(e -> {
+        emailRepository.findAllForLogin(securityUtils.getCurrentLogin()).stream().forEach(e -> {
             ContactEmail ce = new ContactEmail();
             ce.setEmail(e);
             ce.setContact(saved);
@@ -183,7 +186,7 @@ public class ContactResource {
     @JsonView(Contact.WithEverything.class)
     @Transactional(readOnly = true)
     public ResponseEntity<Set<Contact>> getAllForAccount () throws URISyntaxException {
-        String login = SecurityUtils.getCurrentLogin();
+        String login = securityUtils.getCurrentLogin();
         Set<Contact> contacts = contactRepository.findAllForLogin(login);
 
         for (Contact contact : contacts) {

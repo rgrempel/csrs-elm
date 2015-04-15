@@ -7,7 +7,6 @@ import com.fulliautomatix.csrs.domain.Contact;
 import com.fulliautomatix.csrs.repository.InterestRepository;
 import com.fulliautomatix.csrs.repository.ContactRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
-import com.fulliautomatix.csrs.security.SecurityUtils;
 import com.fulliautomatix.csrs.security.OwnerService;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
 
