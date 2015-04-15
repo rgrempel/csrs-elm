@@ -100,6 +100,10 @@ public class UserService {
         });
     }
 
+    public Optional<User> getUser () {
+        return userRepository.findOneByLogin(securityUtils.getCurrentLogin());
+    }
+
     @Transactional(readOnly = true)
     public User getUserWithAuthorities() {
         User currentUser = userRepository.findOneByLogin(securityUtils.getCurrentLogin()).get();

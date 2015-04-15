@@ -9,6 +9,7 @@ import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.security.OwnerService;
 import com.fulliautomatix.csrs.service.PriceService;
 import com.fulliautomatix.csrs.service.PDFService;
+import com.fulliautomatix.csrs.service.UserService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,9 @@ public class InvoiceController {
     @Inject
     private PDFService pdfService;
 
+    @Inject
+    private UserService userService;
+
     /**
      * GET  /renewals/:id/invoice.pdf -> get the "id" renewal.
      */
@@ -69,7 +73,11 @@ public class InvoiceController {
         
         Hibernate.initialize(renewal.getContact());
         
-        Locale locale = Locale.forLanguageTag("en");
+        String language = userService.getUser().map(user -> 
+            user.getLangKey()
+        ).orElse("en");
+
+        Locale locale = Locale.forLanguageTag(language);
         Context context = new Context(locale);
         context.setVariable("renewal", renewal);
         
