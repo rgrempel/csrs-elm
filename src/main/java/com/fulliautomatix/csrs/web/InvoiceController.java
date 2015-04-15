@@ -8,12 +8,11 @@ import com.fulliautomatix.csrs.web.rest.util.ResourceNotFoundException;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.security.OwnerService;
 import com.fulliautomatix.csrs.service.PriceService;
+import com.fulliautomatix.csrs.service.PDFService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.apache.fop.apps.*;
-import org.xml.sax.helpers.DefaultHandler;
 import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.http.*;
@@ -23,9 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
-import javax.xml.transform.sax.SAXResult;
-import javax.xml.transform.*;
-import javax.xml.transform.stream.StreamSource;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.annotation.security.RolesAllowed;
@@ -53,13 +49,7 @@ public class InvoiceController {
     private PriceService priceService;
 
     @Inject
-    private SpringTemplateEngine templateEngine;
-
-    @Inject
-    private FopFactory fopFactory;
-    
-    @Inject
-    private TransformerFactory transformerFactory;
+    private PDFService pdfService;
 
     /**
      * GET  /renewals/:id/invoice.pdf -> get the "id" renewal.
@@ -67,14 +57,12 @@ public class InvoiceController {
     @RequestMapping(
         value = "/renewals/{id}/invoice.pdf",
         method = RequestMethod.GET,
-        produces = MimeConstants.MIME_PDF
+        produces = "application/pdf" 
     )
     @Timed
     @RolesAllowed(AuthoritiesConstants.USER)
     @Transactional(readOnly = true)
-    public void getInvoice (@PathVariable Long id, OutputStream output) 
-        throws FOPException, IOException, TransformerConfigurationException, TransformerException 
-    {
+    public void getInvoice (@PathVariable Long id, OutputStream output) {
         log.debug("REST request to get invoice for Renewal : {}", id);
 
         Renewal renewal = ownerService.findOneForLogin(renewalRepository, id).get();
@@ -85,27 +73,7 @@ public class InvoiceController {
         Context context = new Context(locale);
     //       context.setVariable("email", email);
     //       context.setVariable("baseUrl", baseUrl);
-
-        Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, output);
         
-        PipedReader reader = new PipedReader();
-        PipedWriter writer = new PipedWriter(reader);
-        
-        new Thread(
-            new Runnable() {
-                public void run () {
-                    templateEngine.process("invoice", context, writer);
-                    try {
-                        writer.close();
-                    } catch (IOException e) {}
-                }
-            }
-        ).start();
-
-        Transformer transformer = transformerFactory.newTransformer();
-        Source src = new StreamSource(reader);
-        Result res = new SAXResult(fop.getDefaultHandler());
-        transformer.transform(src, res);
-        reader.close();
+        pdfService.createPDF(output, context, "invoice");
     }
 }
