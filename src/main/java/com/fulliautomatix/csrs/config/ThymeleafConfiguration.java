@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+import org.thymeleaf.templatemode.StandardTemplateModeHandlers;
 
 @Configuration
 public class ThymeleafConfiguration {
@@ -35,5 +36,17 @@ public class ThymeleafConfiguration {
         messageSource.setBasename("classpath:/mails/messages/messages");
         messageSource.setDefaultEncoding(CharEncoding.UTF_8);
         return messageSource;
+    }
+    
+    @Bean
+    @Description("Thymeleaf template resolver serving XML for FOP")
+    public ClassLoaderTemplateResolver fopTemplateResolver() {
+        ClassLoaderTemplateResolver fopTemplateResolver = new ClassLoaderTemplateResolver();
+        fopTemplateResolver.setPrefix("pdf/");
+        fopTemplateResolver.setSuffix(".fop.xml");
+        fopTemplateResolver.setTemplateMode("XML");
+        fopTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
+        fopTemplateResolver.setOrder(2);
+        return fopTemplateResolver;
     }
 }
