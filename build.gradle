@@ -5,7 +5,7 @@ buildscript {
     }
 
     dependencies {
-        classpath('org.springframework.boot:spring-boot-gradle-plugin:1.2.1.RELEASE')
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}")
         classpath('com.moowork.gradle:gradle-node-plugin:0.8')    
         classpath('com.moowork.gradle:gradle-grunt-plugin:0.6')
     }
