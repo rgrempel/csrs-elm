@@ -3,6 +3,8 @@ package com.fulliautomatix.csrs.config;
 import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,11 +12,16 @@ import org.springframework.context.annotation.Description;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templatemode.StandardTemplateModeHandlers;
+import javax.inject.Inject;
 
 @Configuration
+@EnableConfigurationProperties(ThymeleafProperties.class)
 public class ThymeleafConfiguration {
 
     private final Logger log = LoggerFactory.getLogger(ThymeleafConfiguration.class);
+
+    @Inject
+    private ThymeleafProperties properties;
 
     @Bean
     @Description("Thymeleaf template resolver serving HTML 5 emails")
@@ -24,6 +31,7 @@ public class ThymeleafConfiguration {
         emailTemplateResolver.setSuffix(".html");
         emailTemplateResolver.setTemplateMode("HTML5");
         emailTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
+        emailTemplateResolver.setCacheable(properties.isCache());
         emailTemplateResolver.setOrder(1);
         return emailTemplateResolver;
     }
@@ -46,6 +54,7 @@ public class ThymeleafConfiguration {
         fopTemplateResolver.setSuffix(".fop.xml");
         fopTemplateResolver.setTemplateMode("XML");
         fopTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
+        fopTemplateResolver.setCacheable(properties.isCache());
         fopTemplateResolver.setOrder(2);
         return fopTemplateResolver;
     }
