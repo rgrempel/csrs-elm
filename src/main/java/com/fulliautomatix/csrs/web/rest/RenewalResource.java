@@ -7,6 +7,7 @@ import com.fulliautomatix.csrs.repository.RenewalRepository;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.security.OwnerService;
+import com.fulliautomatix.csrs.service.PriceService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +41,9 @@ public class RenewalResource {
     @Inject
     private OwnerService ownerService;
 
+    @Inject
+    private PriceService priceService;
+
     /**
      * POST  /renewals -> Create a new renewal.
      */
@@ -59,6 +63,11 @@ public class RenewalResource {
         }
 
         ownerService.checkNewOwner(renewal);
+
+        Integer calculatedPrice = priceService.priceInCentsForRenewal(renewal);
+        if (!calculatedPrice.equals(renewal.getPriceInCents())) {
+            throw new RuntimeException("Price calculated on server does not match submitted price.");
+        }
         
         renewal = renewalRepository.save(renewal);
 
@@ -81,6 +90,11 @@ public class RenewalResource {
 
         ownerService.checkOldOwner(renewalRepository, renewal.getId());
         ownerService.checkNewOwner(renewal);
+
+        Integer calculatedPrice = priceService.priceInCentsForRenewal(renewal);
+        if (!calculatedPrice.equals(renewal.getPriceInCents())) {
+            throw new RuntimeException("Price calculated on server does not match submitted price.");
+        }
 
         renewal = renewalRepository.save(renewal);
         

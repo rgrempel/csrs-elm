@@ -189,6 +189,7 @@ public class ContactResource {
         for (Contact contact : contacts) {
             Hibernate.initialize(contact.getAnnuals());
             Hibernate.initialize(contact.getInterests());
+            Hibernate.initialize(contact.getRenewals());
 
             contact.getContactEmails().stream().forEach(ce -> {
                 Hibernate.initialize(ce.getEmail());
@@ -239,6 +240,7 @@ public class ContactResource {
         ).map((contact) -> {
             Hibernate.initialize(contact.getAnnuals());
             Hibernate.initialize(contact.getInterests());
+            Hibernate.initialize(contact.getRenewals());
 
             contact.getContactEmails().stream().forEach((ce) -> {
                 Hibernate.initialize(ce.getEmail());
@@ -261,9 +263,17 @@ public class ContactResource {
         log.debug("REST request to get Contact : {}", id);
         return Optional.ofNullable(
             contactRepository.findOne(id)
-        ).map(
-            contact -> new ResponseEntity<>(contact, HttpStatus.OK)
-        ).orElse(
+        ).map(contact -> {
+            Hibernate.initialize(contact.getAnnuals());
+            Hibernate.initialize(contact.getInterests());
+            Hibernate.initialize(contact.getRenewals());
+
+            contact.getContactEmails().stream().forEach((ce) -> {
+                Hibernate.initialize(ce.getEmail());
+            });
+                
+            return new ResponseEntity<>(contact, HttpStatus.OK);
+        }).orElse(
             new ResponseEntity<>(HttpStatus.NOT_FOUND)
         );
     }

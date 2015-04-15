@@ -24,15 +24,16 @@
         //     iter: {}
         // };
         
-        this.renewal = {
+        this.renewal = this.contact.renewals[0] || {
             membership: 2,
             iter: false,
             rr: 0,
             year: 2015,
-            duration: 1,
-            contact: {
-                id: this.contact.id
-            }
+            duration: 1
+        };
+
+        this.renewal.contact = {
+            id: this.contact.id
         };
 
         this.price = {
@@ -58,7 +59,9 @@
 
     function cancel () {
         /* jshint validthis: true */
-        this.scope.modalController.go('^');
+        this.scope.modalController.go('^', {}, {
+            reload: true
+        });
     }
 
     function saveRenewal () {
@@ -69,7 +72,9 @@
         // so that we can throw an error if the database disagrees
         this.renewal.priceInCents = this.price.f;
 
-        this.Renewal.save({}, this.renewal, function () {
+        var saver = this.renewal.id ? this.Renewal.update : this.Renewal.save;
+
+        saver.call(this.Renewal, {}, this.renewal, function () {
             self.error = null;
             self.scope.modalController.go('^');
         }, function (error) {
