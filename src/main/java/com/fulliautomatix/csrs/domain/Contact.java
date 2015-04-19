@@ -176,6 +176,26 @@ public class Contact implements Serializable, HasOwner {
         return Stream.of(this).collect(Collectors.toSet());
     }
 
+    public boolean empty (String s) {
+        return (s == null) || (s.length() == 0);
+    }
+
+    public String fullName () {
+        return Stream.of(salutation, firstName, lastName).filter(o -> 
+            !empty(o)
+        ).collect(Collectors.joining(" "));
+    }
+
+    public String fullAddress () {
+        String cityState = Stream.of(city, region).filter(o ->
+            !empty(o)
+        ).collect(Collectors.joining(", "));
+
+        return Stream.of(street, cityState, country, postalCode).filter(o ->
+            !empty(o)
+        ).collect(Collectors.joining("\n"));
+    }
+
     @PrePersist 
     public void checkDefaults () {
         if (omitNameFromDirectory == null) omitNameFromDirectory = false;
