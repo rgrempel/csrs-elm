@@ -44,7 +44,14 @@ public class PDFService {
             PipedWriter writer = new PipedWriter(reader);
         
             // Get the templateEngine to start streaming the XML
-            streamFop(writer, context, template);
+            new Thread(() -> {
+                templateEngine.process(template, context, writer);
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
 
             // Get FOP to consume the XML
             Transformer transformer = transformerFactory.newTransformer();
@@ -55,11 +62,5 @@ public class PDFService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Async
-    private void streamFop (PipedWriter writer, Context context, String template) throws IOException {
-        templateEngine.process(template, context, writer);
-        writer.close();
     }
 }
