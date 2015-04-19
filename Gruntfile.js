@@ -454,6 +454,14 @@ module.exports = function (grunt) {
             })
         );
 
+        var products = yaml.safeLoad(
+            fs.readFileSync('src/main/i18n/products.yml', {
+                encoding: 'utf8'
+            })
+        );
+
+        _.assign(doc, products);
+
         var result = {};
         var keys = [];
 
@@ -493,6 +501,14 @@ module.exports = function (grunt) {
             })
         );
 
+        var products = yaml.safeLoad(
+            fs.readFileSync('src/main/i18n/products.yml', {
+                encoding: 'utf8'
+            })
+        );
+
+        _.assign(doc, products);
+        
         var result = {};
         var keys = [];
 

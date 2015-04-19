@@ -19,6 +19,68 @@ error:
         fr: "Message:"
         la: "Nuntius:"
 
+invoice:
+    name:
+        en: "Canadian Society for Renaissance Studies"
+        fr: "Société canadienne d'études de la Renaissance"
+        la: "Societate Canadian Studiorum Renascerentur"
+
+    invoice:
+        en: "Invoice"
+        fr: "Facture"
+        la: "Cautionem"
+
+    item:
+        en: "Item"
+        fr: "Objet"
+        la: "Res"
+
+    quantity:
+        en: "Quantity"
+        fr: "Quantité"
+        la: "Quantitatem"
+
+    unitPrice:
+        en: "Unit Price"
+        fr: "Prix unitaire"
+        la: "Pretium unitas"
+
+    total:
+        en: "Total"
+        fr: "Total"
+        la: "Totum"
+        
+    membership:
+        en: "Membership"
+        fr: "Adhésion"
+        la: "Sodalitas"
+
+    membershipType:
+        "1":
+            en: "Patron"
+            fr: "Membre bienfaiteur"
+            la: "Patronum"
+
+        "2":
+            en: "Regular Member"
+            fr: "Membre régulier"
+            la: "Membrum Ordinarius"
+
+        "3":
+            en: "Ph.D. without full-time employment"
+            fr: "Ph.D. sans emploi à temps plein"
+            la: "Cessatura"
+
+        "4":
+            en: "Retired"
+            fr: "Professeur à la retraite"
+            la: "Reductus"
+
+        "5":
+            en: "Student"
+            fr: "Étudiant(e)"
+            la: "Pupula"
+
 email:
     signature:
         en: "Canadian Society for Renaissance Studies"

@@ -203,6 +203,7 @@
             "language": "Lingua"
         },
         "form": {
+            "select": "{{type}} eligam",
             "username": "Nomen usoris",
             "username.placeholder": "Nomen usoris tuum",
             "newpassword": "Signum novum",
@@ -506,6 +507,35 @@
                     "minlength": "Your last name is required to be at least 1 character",
                     "maxlength": "Your last name cannot be longer than 50 characters"
                 }
+            }
+        }
+    },
+    "product": {
+        "base": {
+            "membership": "Sodalitas",
+            "iter": "ITER",
+            "rr": "Renaissance et Reformationem"
+        },
+        "variable": {
+            "membershipType": "Genus sodales",
+            "subscriptionType": "Genus subscriptionis",
+            "subscriptionFormat": "Forma subscriptionis"
+        },
+        "value": {
+            "membershipType": {
+                "patron": "Patronum",
+                "regular": "Membrum Ordinarius",
+                "unemployed": "Cessatura",
+                "retired": "Reductus",
+                "student": "Pupula"
+            },
+            "subscriptionType": {
+                "allMembers": "Sodales omnes",
+                "studentsAndRetirees": "Tantum pro pupula et reducta"
+            },
+            "subscriptionFormat": {
+                "print": "Vestigium",
+                "electronic": "Transcursorium"
             }
         }
     }

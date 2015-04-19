@@ -203,6 +203,7 @@
             "language": "Langue"
         },
         "form": {
+            "select": "Sélectionnez {{type}}",
             "username": "Nom d'utilisateur",
             "username.placeholder": "Votre nom d'utilisateur",
             "newpassword": "Nouveau mot de passe",
@@ -506,6 +507,35 @@
                     "minlength": "Votre nom doit comporter au moins un caractère",
                     "maxlength": "Votre nom ne doit pas comporter plus de 50 caractères"
                 }
+            }
+        }
+    },
+    "product": {
+        "base": {
+            "membership": "Adhésion",
+            "iter": "ITER",
+            "rr": "Renaissance et Réforme"
+        },
+        "variable": {
+            "membershipType": "Type d'adhésion",
+            "subscriptionType": "Type d'abonnement",
+            "subscriptionFormat": "Format de abonnement"
+        },
+        "value": {
+            "membershipType": {
+                "patron": "Membre bienfaiteur",
+                "regular": "Membre régulier",
+                "unemployed": "Ph.D. sans emploi à temps plein",
+                "retired": "Professeur à la retraite",
+                "student": "Étudiant(e)"
+            },
+            "subscriptionType": {
+                "allMembers": "Tous les membres (sauf les étudiants et retraités)",
+                "studentsAndRetirees": "Pour étudiants et retraités seulement"
+            },
+            "subscriptionFormat": {
+                "print": "Imprimée",
+                "electronic": "Electronique"
             }
         }
     }

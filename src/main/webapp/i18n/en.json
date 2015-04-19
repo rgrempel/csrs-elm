@@ -203,6 +203,7 @@
             "language": "Language"
         },
         "form": {
+            "select": "Select {{type}}",
             "username": "Username",
             "username.placeholder": "Your user name",
             "newpassword": "New password",
@@ -506,6 +507,35 @@
                     "minlength": "Your last name is required to be at least 1 character",
                     "maxlength": "Your last name cannot be longer than 50 characters"
                 }
+            }
+        }
+    },
+    "product": {
+        "base": {
+            "membership": "Membership",
+            "iter": "ITER",
+            "rr": "Renaissance and Reformation"
+        },
+        "variable": {
+            "membershipType": "Membership type",
+            "subscriptionType": "Subscription type",
+            "subscriptionFormat": "Subscription format"
+        },
+        "value": {
+            "membershipType": {
+                "patron": "Patron",
+                "regular": "Regular Member",
+                "unemployed": "Ph.D. without full-time employment",
+                "retired": "Retired",
+                "student": "Student"
+            },
+            "subscriptionType": {
+                "allMembers": "All Members",
+                "studentsAndRetirees": "For Students and Retirees only"
+            },
+            "subscriptionFormat": {
+                "print": "Print",
+                "electronic": "Electronic"
             }
         }
     }

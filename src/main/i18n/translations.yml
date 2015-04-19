@@ -698,7 +698,12 @@ global:
             fr: "Langue"
             la: "Lingua"
     
-    form: 
+    form:
+        select:
+            en: "Select {{type}}"
+            fr: "Sélectionnez {{type}}"
+            la: "{{type}} eligam"
+
         username:
             en: "Username"
             fr: "Nom d'utilisateur"

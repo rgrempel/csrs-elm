@@ -1,0 +1,82 @@
+product:
+    base:
+        membership:
+            en: "Membership"
+            fr: "Adhésion"
+            la: "Sodalitas"
+
+        iter:
+            en: "ITER"
+            fr: "ITER"
+            la: "ITER"
+
+        rr:
+            en: "Renaissance and Reformation"
+            fr: "Renaissance et Réforme"
+            la: "Renaissance et Reformationem"
+
+    variable:
+        membershipType:
+            en: "Membership type"
+            fr: "Type d'adhésion"
+            la: "Genus sodales"
+
+        subscriptionType:
+            en: "Subscription type"
+            fr: "Type d'abonnement"
+            la: "Genus subscriptionis"
+
+        subscriptionFormat:
+            en: "Subscription format"
+            fr: "Format de abonnement"
+            la: "Forma subscriptionis"
+
+    value:
+        membershipType:
+            patron:
+                en: "Patron"
+                fr: "Membre bienfaiteur"
+                la: "Patronum"
+
+            regular:
+                en: "Regular Member"
+                fr: "Membre régulier"
+                la: "Membrum Ordinarius"
+
+            unemployed:
+                en: "Ph.D. without full-time employment"
+                fr: "Ph.D. sans emploi à temps plein"
+                la: "Cessatura"
+
+            retired:
+                en: "Retired"
+                fr: "Professeur à la retraite"
+                la: "Reductus"
+
+            student:
+                en: "Student"
+                fr: "Étudiant(e)"
+                la: "Pupula"
+           
+        subscriptionType:
+            allMembers:
+                en: "All Members"
+                fr: "Tous les membres (sauf les étudiants et retraités)"
+                la: "Sodales omnes"
+
+            studentsAndRetirees: 
+                en: "For Students and Retirees only"
+                fr: "Pour étudiants et retraités seulement"
+                la: "Tantum pro pupula et reducta"
+
+        subscriptionFormat:
+            print:
+                en: "Print"
+                fr: "Imprimée"
+                la: "Vestigium"
+
+            electronic:
+                en: "Electronic"
+                fr: "Electronique"
+                la: "Transcursorium"
+        
