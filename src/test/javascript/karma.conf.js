@@ -37,6 +37,7 @@ module.exports = function (config) {
             'main/webapp/bower_components/ng-focus-on/ng-focus-on.js',
             'main/webapp/bower_components/jsog/lib/JSOG.js',
             'main/webapp/bower_components/ngAnimate-animate.css/animate.js',
+            'main/webapp/bower_components/streamjs/stream.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',
