@@ -1,0 +1,44 @@
+{
+  "name": "streamjs",
+  "version": "1.3.0",
+  "description": "Object Streaming Pipeline for JavaScript - inspired by the Java 8 Streams API",
+  "homepage": "https://github.com/winterbe/streamjs",
+  "author": {
+    "name": "Benjamin Winterberg",
+    "url": "http://winterbe.com"
+  },
+  "keywords": [
+    "functional",
+    "collection",
+    "pipeline",
+    "stream",
+    "lazy",
+    "utils",
+    "java",
+    "array"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/winterbe/streamjs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/winterbe/streamjs/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-qunit": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.10"
+  },
+  "main": "stream.js",
+  "files": [
+    "stream.js",
+    "stream-min.js",
+    "LICENSE"
+  ]
+}
