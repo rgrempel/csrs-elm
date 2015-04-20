@@ -17,32 +17,31 @@ import java.util.*;
 import java.util.stream.*;
 
 @Entity
-@Table(name = "T_PRODUCT_CATEGORY_IMPLIES")
+@Table(name = "T_PRODUCT_PREREQ")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @JsonIdentityInfo(generator=JSOGGenerator.class)
 @lombok.ToString(of={"id"})
-public class ProductCategoryImplies implements Serializable {
+public class ProductPrereq implements Serializable {
     // For JsonView
     public interface Scalar {};
 
-    public interface WithProductCategory extends Scalar, ProductCategory.Scalar {};
-    
+    public interface WithProduct extends Scalar, Product.Scalar {};
+ 
     @Id
-    @SequenceGenerator(name="t_product_category_implies_id_seq", sequenceName="t_product_category_implies_id_seq", allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_product_category_implies_id_seq")
+    @SequenceGenerator(name="t_product_prereq_id_seq", sequenceName="t_product_prereq_id_seq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_product_prereq_id_seq")
     @lombok.Getter @lombok.Setter
     @JsonView(Scalar.class)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_category_id")
     @lombok.Getter @lombok.Setter
-    @JsonView(WithProductCategory.class)
-    private ProductCategory productCategory;
-    
+    @JsonView(WithProduct.class)
+    Product product;
+
     @ManyToOne
-    @JoinColumn(name = "implies_product_category_id")
+    @JoinColumn(name="requires_product_id")
     @lombok.Getter @lombok.Setter
-    @JsonView(WithProductCategory.class)
-    private ProductCategory impliesProductCategory;
+    @JsonView(WithProduct.class)
+    Product requiresProduct;
 }

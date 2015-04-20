@@ -8649,60 +8649,78 @@ button.close {
 }
 
 /* line 1, ../../../scss/_custom.scss */
-.csrs-price-box {
+.csrs-price-container {
+  display: table-cell;
+  width: 88px;
   vertical-align: middle;
-  border: 2px solid black;
-  margin-left: 18px;
-  padding: 12px;
 }
 
-/* line 8, ../../../scss/_custom.scss */
+/* line 7, ../../../scss/_custom.scss */
+.csrs-price-box {
+  border: 2px solid black;
+  width: 60px;
+  height: 60px;
+  margin-left: 14px;
+  text-align: center;
+  display: table;
+}
+
+/* line 16, ../../../scss/_custom.scss */
+.csrs-price {
+  margin-top: auto;
+  margin-bottom: auto;
+  font-weight: bold;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/* line 24, ../../../scss/_custom.scss */
 .multi-line {
   white-space: pre-line;
 }
 
-/* line 12, ../../../scss/_custom.scss */
+/* line 28, ../../../scss/_custom.scss */
 .help-block {
   margin-bottom: 0px;
 }
 
-/* line 16, ../../../scss/_custom.scss */
+/* line 32, ../../../scss/_custom.scss */
 .navbar-xs {
   min-height: 40px;
   height: 40px;
   margin-bottom: 12px;
 }
 
-/* line 22, ../../../scss/_custom.scss */
+/* line 38, ../../../scss/_custom.scss */
 .navbar-xs .navbar-brand {
   padding: 6px 12px;
   font-size: 16px;
   line-height: 28px;
 }
 
-/* line 28, ../../../scss/_custom.scss */
+/* line 44, ../../../scss/_custom.scss */
 .navbar-xs .navbar-nav > li > a {
   padding-top: 6px;
   padding-bottom: 6px;
   line-height: 28px;
 }
 
-/* line 34, ../../../scss/_custom.scss */
+/* line 50, ../../../scss/_custom.scss */
 .text-bold {
   font-weight: bold;
 }
 
-/* line 38, ../../../scss/_custom.scss */
+/* line 54, ../../../scss/_custom.scss */
 .contact-list {
   padding: 8px;
 }
 
-/* line 42, ../../../scss/_custom.scss */
+/* line 58, ../../../scss/_custom.scss */
 .translation-message {
   font-size: 80%;
 }
 
-/* line 46, ../../../scss/_custom.scss */
+/* line 62, ../../../scss/_custom.scss */
 .csrs-logo {
   display: inline-block;
   width: 347px;
@@ -8711,47 +8729,47 @@ button.close {
   background-size: contain;
 }
 
-/* line 54, ../../../scss/_custom.scss */
+/* line 70, ../../../scss/_custom.scss */
 .well .panel-default > .panel-heading {
   background-color: #e8e8e8;
 }
 
-/* line 58, ../../../scss/_custom.scss */
+/* line 74, ../../../scss/_custom.scss */
 .well .panel-default > .panel-footer {
   background-color: #e8e8e8;
 }
 
-/* line 62, ../../../scss/_custom.scss */
+/* line 78, ../../../scss/_custom.scss */
 .voffset4 {
   margin-top: 4px;
 }
 
-/* line 63, ../../../scss/_custom.scss */
+/* line 79, ../../../scss/_custom.scss */
 .voffset6 {
   margin-top: 6px;
 }
 
-/* line 64, ../../../scss/_custom.scss */
+/* line 80, ../../../scss/_custom.scss */
 .voffset8 {
   margin-top: 8px;
 }
 
-/* line 65, ../../../scss/_custom.scss */
+/* line 81, ../../../scss/_custom.scss */
 .voffset12 {
   margin-top: 12px;
 }
 
-/* line 66, ../../../scss/_custom.scss */
+/* line 82, ../../../scss/_custom.scss */
 .voffset16 {
   margin-top: 16px;
 }
 
-/* line 67, ../../../scss/_custom.scss */
+/* line 83, ../../../scss/_custom.scss */
 .voffset18 {
   margin-top: 18px;
 }
 
-/* line 68, ../../../scss/_custom.scss */
+/* line 84, ../../../scss/_custom.scss */
 .voffset24 {
   margin-top: 24px;
 }

@@ -8,7 +8,7 @@
         saveRenewal: saveRenewal
     });
  
-    function RenewalController ($scope, $state, _, membershipPricesFor, Renewal) {
+    function RenewalController ($scope, $state, _, membershipPricesFor, Renewal, Product, Stream) {
         'ngInject';
         
         this.scope = $scope;
@@ -17,6 +17,15 @@
 
         this.contact = $state.params.contact;
 
+        this.products = [];
+        this.pricesPicked = {};
+
+        var self = this;
+
+        Product.query().$promise.then(function (products) {
+            self.products = products;
+        });
+
         // this.error;
         // this.prices = {
         //     membership: {},
@@ -24,10 +33,11 @@
         //     iter: {}
         // };
         
-        this.renewal = this.contact.renewals[0] || {
-            membership: 2,
-            iter: false,
-            rr: 0,
+/*        this.renewal = this.contact.renewals[0] || {
+            // Default to regular membership, no subscriptions, 1 year 
+            renewalItems: [{
+                productVariantPrice:
+            }],
             year: 2015,
             duration: 1
         };
@@ -35,7 +45,8 @@
         this.renewal.contact = {
             id: this.contact.id
         };
-
+*/
+        /*
         this.price = {
             a: 0,
             b: 0,
@@ -55,6 +66,7 @@
                 self.price = self.prices.getPrice(self.renewal);
             }, true);
         });
+        */
     }
 
     function cancel () {

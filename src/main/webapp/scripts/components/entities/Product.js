@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('csrsApp').factory('Product', function ($resource) {
-    return $resource('api/prices/:id', {}, {
+    return $resource('api/products/:id', {}, {
         'query': {
             method: 'GET',
             isArray: true,

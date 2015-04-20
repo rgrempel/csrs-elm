@@ -1,16 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format"
+         xmlns:th="http://www.thymeleaf.org">
+
     <fo:layout-master-set>
-        <fo:simple-page-master master-name="A4-portrait" page-height="29.7cm" page-width="21.0cm" margin="2cm">
+        <fo:simple-page-master master-name="letter" page-height="11in" page-width="8.5in" margin="1in">
             <fo:region-body />
         </fo:simple-page-master>
     </fo:layout-master-set>
     
-    <fo:page-sequence master-reference="A4-portrait">
+    <fo:page-sequence master-reference="letter">
         <fo:flow flow-name="xsl-region-body">
-            <fo:block>
-                Hello, World!
+            <fo:block th:text="#{invoice.name}">Canadian Society for Renaissance Studies</fo:block>
+            <fo:block font-style="italic">http://csrs-scer.ca/</fo:block>
+            <fo:block th:text="#{invoice.invoice}">Invoice</fo:block>
+
+            <fo:block padding-top="12px">
+                <fo:block th:text="${renewal.contact.fullName()}">Paul Dyck</fo:block>
+                <fo:block linefeed-treatment="preserve" th:text="${renewal.contact.fullAddress()}" />
             </fo:block>
+            
+            <fo:table>
+                <fo:table-header>
+                    <fo:table-row>
+                        <fo:table-cell>
+                            <fo:block th:text="#{invoice.item}">Item</fo:block>
+                        </fo:table-cell>
+
+                        <fo:table-cell>
+                            <fo:block th:text="#{invoice.quantity}">Quantity</fo:block>
+                        </fo:table-cell>
+                        
+                        <fo:table-cell>
+                            <fo:block th:text="#{invoice.unitPrice}">Unit Price</fo:block>
+                        </fo:table-cell>
+                        
+                        <fo:table-cell>
+                            <fo:block th:text="#{invoice.total}">Total</fo:block>
+                        </fo:table-cell>
+                    </fo:table-row>
+                </fo:table-header>
+
+                <fo:table-body>
+                    <fo:table-row>
+                        <fo:table-cell th:if="${renewal.membership.intValue() > 0}">
+                            <fo:block th:text="#{invoice.membership} + ' (' + #{invoice.membershipType.__${renewal.membership}__} + ')'">Membership (Regular Member)</fo:block>
+                        </fo:table-cell>
+                    </fo:table-row>
+                </fo:table-body>
+            </fo:table>
         </fo:flow>
     </fo:page-sequence>
 </fo:root>

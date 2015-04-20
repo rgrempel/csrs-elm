@@ -84,6 +84,12 @@
     </changeSet>
 
     <changeSet id="addProducts" author="ryan">
+
+        <!-- The product is essentially a marketing concept ... it is
+             something which you might be interested in at a higher level of
+             abstraction ... where you're probably just interested in one. Like
+             a membership that has a variety of options. -->
+
         <createTable tableName="T_PRODUCT">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -94,233 +100,338 @@
             </column>
         </createTable>
 
-        <createIndex tableName="T_PRODUCT" indexName="idx_product_code">
+        <createIndex tableName="T_PRODUCT" indexName="idx_product_code" unique="true">
             <column name="code" />
         </createIndex>
 
         <insert tableName="T_PRODUCT">
-            <column name="code" value="membership" />
             <column name="id" value="1" />
+            <column name="code" value="product.base.membership" />
         </insert>
 
         <insert tableName="T_PRODUCT">
-            <column name="code" value="rr" />
             <column name="id" value="2" />
+            <column name="code" value="product.base.rr" />
         </insert>
 
         <insert tableName="T_PRODUCT">
-            <column name="code" value="iter" />
             <column name="id" value="3" />
+            <column name="code" value="product.base.iter" />
         </insert>
 
         <sql>SELECT setVal('t_product_id_seq', 4);</sql>
 
-        <createTable tableName="T_PRODUCT_CATEGORY">
+        <!-- Sometimes you must order one product in order to qualify
+             for another product (e.g. must have a membership to qualify
+             for a subscription). We express that here. -->
+
+        <createTable tableName="T_PRODUCT_PREREQ">
             <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false" />
+                <constraints primaryKey="true" nullable="false"/>
             </column>
 
             <column name="product_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 
-            <column name="code" type="int">
+            <column name="requires_product_id" type="bigint">
                 <constraints nullable="false" />
             </column>
         </createTable>
 
-        <createIndex tableName="T_PRODUCT_CATEGORY" indexName="idx_product_category_code">
-            <column name="code" />
-        </createIndex>
-
-        <createIndex tableName="T_PRODUCT_CATEGORY" indexName="idx_product_category_product_id">
+        <createIndex tableName="T_PRODUCT_PREREQ" indexName="idx_product_prereq_product_id">
             <column name="product_id" />
         </createIndex>
 
-        <createIndex tableName="T_PRODUCT_CATEGORY" indexName="idx_product_category_combined" unique="true">
-            <column name="code" />
-            <column name="product_id" />
+        <createIndex tableName="T_PRODUCT_PREREQ" indexName="idx_product_prereq_requires_product_id">
+            <column name="requires_product_id" />
         </createIndex>
-        
+
+        <createIndex tableName="T_PRODUCT_PREREQ" indexName="idx_product_prereq_combined" unique="true">
+            <column name="product_id" />
+            <column name="requires_product_id" />
+        </createIndex>
+
         <addForeignKeyConstraint baseColumnNames="product_id"
-                                 baseTableName="T_PRODUCT_CATEGORY"
-                                 constraintName="fk_product_category_product"
+                                 baseTableName="T_PRODUCT_PREREQ"
+                                 constraintName="fk_product_prereq_product"
                                  referencedColumnNames="id"
                                  referencedTableName="T_PRODUCT"
                                  onDelete="CASCADE"
+                                 onUpdate="CASCADE" /> 
+
+        <addForeignKeyConstraint baseColumnNames="requires_product_id"
+                                 baseTableName="T_PRODUCT_PREREQ"
+                                 constraintName="fk_product_prereq_requires_product"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_PRODUCT"
+                                 onDelete="RESTRICT"
                                  onUpdate="CASCADE" />
 
-        <insert tableName="T_PRODUCT_CATEGORY">
+        <sql>ALTER TABLE t_product_prereq ADD CONSTRAINT con_product_prereq_no_match CHECK (product_id != requires_product_id);</sql> 
+
+        <insert tableName="T_PRODUCT_PREREQ">
+            <column name="id" value="1" />
+            <column name="product_id" value="2" />
+            <column name="requires_product_id" value="1" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_PREREQ">
+            <column name="id" value="2" />
+            <column name="product_id" value="3" />
+            <column name="requires_product_id" value="1" />
+        </insert>
+        
+        <sql>SELECT setVal('t_product_prereq_id_seq', 3);</sql>
+
+        <!-- A productVariable is an axis on which a choice can
+             be made about a product ... for instance, size or color. They can
+             be re-used across products ... in fact, we don't tie them to a
+             product at all. Instead, they are tied to productVariants, which are tied to
+             products. So, this is primarily a way of organizing the UI for
+             finding productVariants. -->
+
+        <createTable tableName="T_PRODUCT_VARIABLE">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+
+            <column name="code" type="varchar">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createIndex tableName="T_PRODUCT_VARIABLE" indexName="idx_product_variable_code" unique="true">
+            <column name="code" />
+        </createIndex>
+
+        <insert tableName="T_PRODUCT_VARIABLE">
             <column name="id" valueNumeric="1" />
-            <column name="product_id" valueNumeric="1" />
-            <column name="code" valueNumeric="1" />
+            <column name="code" value="product.variable.membershipType" />
         </insert>
 
-        <insert tableName="T_PRODUCT_CATEGORY">
+        <insert tableName="T_PRODUCT_VARIABLE">
             <column name="id" valueNumeric="2" />
-            <column name="product_id" valueNumeric="1" />
-            <column name="code" valueNumeric="2" />
+            <column name="code" value="product.variable.subscriptionType" />
         </insert>
-        
-        <insert tableName="T_PRODUCT_CATEGORY">
+
+        <insert tableName="T_PRODUCT_VARIABLE">
             <column name="id" valueNumeric="3" />
-            <column name="product_id" valueNumeric="1" />
-            <column name="code" valueNumeric="3" />
+            <column name="code" value="product.variable.subscriptionFormat" />
         </insert>
         
-        <insert tableName="T_PRODUCT_CATEGORY">
+        <sql>SELECT setVal('t_product_variable_id_seq', 4);</sql>
+
+        <!-- Product value are the values which exist along each axis. -->
+
+        <createTable tableName="T_PRODUCT_VALUE">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+
+            <column name="product_variable_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="code" type="varchar">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createIndex tableName="T_PRODUCT_VALUE" indexName="idx_product_value_product_variable_id">
+            <column name="product_variable_id" />
+        </createIndex>
+        
+        <createIndex tableName="T_PRODUCT_VALUE" indexName="idx_product_value_code" unique="true">
+            <column name="code" />
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="product_variable_id"
+                                 baseTableName="T_PRODUCT_VALUE"
+                                 constraintName="fk_product_value_product_variable"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_PRODUCT_VARIABLE"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+
+        <insert tableName="T_PRODUCT_VALUE">
+            <column name="id" valueNumeric="1" />
+            <column name="product_variable_id" valueNumeric="1" />
+            <column name="code" value="product.value.membershipType.patron" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_VALUE">
+            <column name="id" valueNumeric="2" />
+            <column name="product_variable_id" valueNumeric="1" />
+            <column name="code" value="product.value.membershipType.regular" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VALUE">
+            <column name="id" valueNumeric="3" />
+            <column name="product_variable_id" valueNumeric="1" />
+            <column name="code" value="product.value.membershipType.unemployed" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VALUE">
             <column name="id" valueNumeric="4" />
-            <column name="product_id" valueNumeric="1" />
-            <column name="code" valueNumeric="4" />
+            <column name="product_variable_id" valueNumeric="1" />
+            <column name="code" value="product.value.membershipType.retired" />
         </insert>
 
-        <insert tableName="T_PRODUCT_CATEGORY">
+        <insert tableName="T_PRODUCT_VALUE">
             <column name="id" valueNumeric="5" />
-            <column name="product_id" valueNumeric="1" />
-            <column name="code" valueNumeric="5" />
+            <column name="product_variable_id" valueNumeric="1" />
+            <column name="code" value="product.value.membershipType.student" />
         </insert>
         
-        <insert tableName="T_PRODUCT_CATEGORY">
+        <insert tableName="T_PRODUCT_VALUE">
             <column name="id" valueNumeric="6" />
-            <column name="product_id" valueNumeric="2" />
-            <column name="code" valueNumeric="1" />
+            <column name="product_variable_id" valueNumeric="2" />
+            <column name="code" value="product.value.subscriptionType.allMembers" />
         </insert>
 
-        <insert tableName="T_PRODUCT_CATEGORY">
+        <insert tableName="T_PRODUCT_VALUE">
             <column name="id" valueNumeric="7" />
-            <column name="product_id" valueNumeric="2" />
-            <column name="code" valueNumeric="2" />
+            <column name="product_variable_id" valueNumeric="2" />
+            <column name="code" value="product.value.subscriptionType.studentsAndRetirees" />
         </insert>
         
-        <insert tableName="T_PRODUCT_CATEGORY">
+        <insert tableName="T_PRODUCT_VALUE">
             <column name="id" valueNumeric="8" />
-            <column name="product_id" valueNumeric="3" />
-            <column name="code" valueNumeric="1" />
+            <column name="product_variable_id" valueNumeric="3" />
+            <column name="code" value="product.value.subscriptionFormat.print" />
         </insert>
 
-        <insert tableName="T_PRODUCT_CATEGORY">
+        <insert tableName="T_PRODUCT_VALUE">
             <column name="id" valueNumeric="9" />
-            <column name="product_id" valueNumeric="3" />
-            <column name="code" valueNumeric="2" />
+            <column name="product_variable_id" valueNumeric="3" />
+            <column name="code" value="product.value.subscriptionFormat.electronic" />
         </insert>
-        
-        <sql>SELECT setVal('t_product_category_id_seq', 10);</sql>
 
-        <createTable tableName="T_PRODUCT_CATEGORY_IMPLIES">
+        <sql>SELECT setVal('t_product_value_id_seq', 10);</sql>
+
+        <!-- Sometimes choosing one value should imply another value. For instance,
+             choosing "Regular Member" in membershipType implies "All Members"
+             in subscriptionType. -->
+
+        <createTable tableName="T_PRODUCT_VALUE_IMPLIES">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="product_category_id" type="bigint">
+            <column name="product_value_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 
-            <column name="implies_product_category_id" type="bigint">
+            <column name="implies_product_value_id" type="bigint">
                 <constraints nullable="false" />
             </column>            
         </createTable>
 
-        <createIndex tableName="T_PRODUCT_CATEGORY_IMPLIES" indexName="idx_product_category_implies_product_category">
-            <column name="product_category_id" />
+        <createIndex tableName="T_PRODUCT_VALUE_IMPLIES" indexName="idx_product_value_implies_product_value">
+            <column name="product_value_id" />
         </createIndex>
 
-        <createIndex tableName="T_PRODUCT_CATEGORY_IMPLIES" indexName="idx_product_category_implies_implies_product_category">
-            <column name="implies_product_category_id" />
+        <createIndex tableName="T_PRODUCT_VALUE_IMPLIES" indexName="idx_product_value_implies_implies_product_valuey">
+            <column name="implies_product_value_id" />
         </createIndex>
 
-        <createIndex tableName="T_PRODUCT_CATEGORY_IMPLIES" indexName="idx_product_category_implies_combined" unique="true">
-            <column name="implies_product_category_id" />
-            <column name="product_category_id" />
+        <createIndex tableName="T_PRODUCT_VALUE_IMPLIES" indexName="idx_product_value_implies_combined" unique="true">
+            <column name="implies_product_value_id" />
+            <column name="product_value_id" />
         </createIndex>
         
-        <addForeignKeyConstraint baseColumnNames="product_category_id"
-                                 baseTableName="T_PRODUCT_CATEGORY_IMPLIES"
-                                 constraintName="fk_product_category_implies_product_category"
+        <addForeignKeyConstraint baseColumnNames="product_value_id"
+                                 baseTableName="T_PRODUCT_VALUE_IMPLIES"
+                                 constraintName="fk_product_value_implies_product_value"
                                  referencedColumnNames="id"
-                                 referencedTableName="T_PRODUCT_CATEGORY"
+                                 referencedTableName="T_PRODUCT_VALUE"
                                  onDelete="CASCADE"
                                  onUpdate="CASCADE" />
         
-        <addForeignKeyConstraint baseColumnNames="implies_product_category_id"
-                                 baseTableName="T_PRODUCT_CATEGORY_IMPLIES"
-                                 constraintName="fk_product_category_implies_implies_product_category"
+        <addForeignKeyConstraint baseColumnNames="implies_product_value_id"
+                                 baseTableName="T_PRODUCT_VALUE_IMPLIES"
+                                 constraintName="fk_product_value_implies_implies_product_value"
                                  referencedColumnNames="id"
-                                 referencedTableName="T_PRODUCT_CATEGORY"
+                                 referencedTableName="T_PRODUCT_VALUE"
                                  onDelete="CASCADE"
                                  onUpdate="CASCADE" />
 
-        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+        <sql>ALTER TABLE t_product_value_implies ADD CONSTRAINT con_product_value_implies_no_match CHECK (product_value_id != implies_product_value_id);</sql>
+
+        <insert tableName="T_PRODUCT_VALUE_IMPLIES">
             <column name="id" valueNumeric="1" />
-            <column name="product_category_id" valueNumeric="1" />
-            <column name="implies_product_category_id" valueNumeric="6" />
+            <column name="product_value_id" valueNumeric="1" />
+            <column name="implies_product_value_id" valueNumeric="6" />
         </insert>
 
-        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+        <insert tableName="T_PRODUCT_VALUE_IMPLIES">
             <column name="id" valueNumeric="2" />
-            <column name="product_category_id" valueNumeric="1" />
-            <column name="implies_product_category_id" valueNumeric="8" />
+            <column name="product_value_id" valueNumeric="2" />
+            <column name="implies_product_value_id" valueNumeric="6" />
         </insert>
 
-        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+        <insert tableName="T_PRODUCT_VALUE_IMPLIES">
             <column name="id" valueNumeric="3" />
-            <column name="product_category_id" valueNumeric="2" />
-            <column name="implies_product_category_id" valueNumeric="6" />
+            <column name="product_value_id" valueNumeric="3" />
+            <column name="implies_product_value_id" valueNumeric="6" />
         </insert>
 
-        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+        <insert tableName="T_PRODUCT_VALUE_IMPLIES">
             <column name="id" valueNumeric="4" />
-            <column name="product_category_id" valueNumeric="2" />
-            <column name="implies_product_category_id" valueNumeric="8" />
+            <column name="product_value_id" valueNumeric="4" />
+            <column name="implies_product_value_id" valueNumeric="7" />
         </insert>
 
-        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
+        <insert tableName="T_PRODUCT_VALUE_IMPLIES">
             <column name="id" valueNumeric="5" />
-            <column name="product_category_id" valueNumeric="3" />
-            <column name="implies_product_category_id" valueNumeric="6" />
+            <column name="product_value_id" valueNumeric="5" />
+            <column name="implies_product_value_id" valueNumeric="7" />
         </insert>
 
-        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
-            <column name="id" valueNumeric="6" />
-            <column name="product_category_id" valueNumeric="3" />
-            <column name="implies_product_category_id" valueNumeric="8" />
-        </insert>
+        <sql>SELECT setVal('t_product_value_implies_id_seq', 6);</sql>
 
-        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
-            <column name="id" valueNumeric="7" />
-            <column name="product_category_id" valueNumeric="4" />
-            <column name="implies_product_category_id" valueNumeric="7" />
-        </insert>
+        <!-- This table represents the products which are actually available,
+             with whatever combination of productValues the product possesses. -->
 
-        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
-            <column name="id" valueNumeric="8" />
-            <column name="product_category_id" valueNumeric="4" />
-            <column name="implies_product_category_id" valueNumeric="9" />
-        </insert>
-
-        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
-            <column name="id" valueNumeric="9" />
-            <column name="product_category_id" valueNumeric="5" />
-            <column name="implies_product_category_id" valueNumeric="7" />
-        </insert>
-
-        <insert tableName="T_PRODUCT_CATEGORY_IMPLIES">
-            <column name="id" valueNumeric="10" />
-            <column name="product_category_id" valueNumeric="5" />
-            <column name="implies_product_category_id" valueNumeric="9" />
-        </insert>
-
-        <sql>SELECT setVal('t_product_category_implies_id_seq', 11);</sql>
-
-        <createTable tableName="T_PRODUCT_CATEGORY_PRICE">
+        <createTable tableName="T_PRODUCT_VARIANT">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="product_category_id" type="bigint">
+            <column name="product_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 
-            <column name="start_year" type="int" defaultValueNumeric="0">
+            <!-- This is just a bit of a reminder as to what it is ... not
+                 actually used as such. -->
+            <column name="code" type="varchar" />
+        </createTable>
+
+        <createIndex tableName="T_PRODUCT_VARIANT" indexName="idx_product_variant_product_id">
+            <column name="product_id" />
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="product_id"
+                                 baseTableName="T_PRODUCT_VARIANT"
+                                 constraintName="fk_product_variant_product"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_PRODUCT"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+                             
+        <!-- Each variant can have multiple prices ... we track when they are valid from. -->
+
+        <createTable tableName="T_PRODUCT_VARIANT_PRICE">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="product_variant_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="valid_from" type="timestamp with time zone" defaultValueDate="${now}">
                 <constraints nullable="false" />
             </column>
 
@@ -333,90 +444,461 @@
             </column>
         </createTable>
 
-        <createIndex tableName="T_PRODUCT_CATEGORY_PRICE" indexName="idx_product_category_price_product_category">
-            <column name="product_category_id" />
+        <createIndex tableName="T_PRODUCT_VARIANT_PRICE" indexName="idx_product_variant_price_product_variant">
+            <column name="product_variant_id" />
         </createIndex>
 
-        <createIndex tableName="T_PRODUCT_CATEGORY_PRICE" indexName="idx_product_category_price_start_year">
-            <column name="start_year" />
+        <createIndex tableName="T_PRODUCT_VARIANT_PRICE" indexName="idx_product_variant_price_valid_from">
+            <column name="valid_from" />
         </createIndex>
 
-        <createIndex tableName="T_PRODUCT_CATEGORY_PRICE" indexName="idx_product_category_price_combined" unique="true">
-            <column name="product_category_id" />
-            <column name="start_year" />
+        <createIndex tableName="T_PRODUCT_VARIANT_PRICE" indexName="idx_product_variant_price_combined" unique="true">
+            <column name="product_variant_id" />
+            <column name="valid_from" />
         </createIndex>
         
-        <addForeignKeyConstraint baseColumnNames="product_category_id"
-                                 baseTableName="T_PRODUCT_CATEGORY_PRICE"
-                                 constraintName="fk_product_category_price_product_category"
+        <addForeignKeyConstraint baseColumnNames="product_variant_id"
+                                 baseTableName="T_PRODUCT_VARIANT_PRICE"
+                                 constraintName="fk_product_variant_price_product_variant"
                                  referencedColumnNames="id"
-                                 referencedTableName="T_PRODUCT_CATEGORY"
+                                 referencedTableName="T_PRODUCT_VARIANT"
                                  onDelete="CASCADE"
                                  onUpdate="CASCADE" />
 
-        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+        <!-- This table associates the productValues with the
+             productVariants. That is, it records, for each variant, what
+             values apply to that variant. -->
+
+        <createTable tableName="T_PRODUCT_VARIANT_VALUE">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="product_variant_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="product_value_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createIndex tableName="T_PRODUCT_VARIANT_VALUE" indexName="idx_product_variant_value_product_variant_id">
+            <column name="product_variant_id" />
+        </createIndex>
+
+        <createIndex tableName="T_PRODUCT_VARIANT_VALUE" indexName="idx_product_variant_value_product_value_id">
+            <column name="product_value_id" />
+        </createIndex>
+        
+        <createIndex tableName="T_PRODUCT_VARIANT_VALUE" indexName="idx_product_variant_value_combined" unique="true">
+            <column name="product_variant_id" />
+            <column name="product_value_id" />
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="product_variant_id"
+                                 baseTableName="T_PRODUCT_VARIANT_VALUE"
+                                 constraintName="fk_product_variant_value_product_variant"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_PRODUCT_VARIANT"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+
+        <addForeignKeyConstraint baseColumnNames="product_value_id"
+                                 baseTableName="T_PRODUCT_VARIANT_VALUE"
+                                 constraintName="fk_product_variant_value_product_value"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_PRODUCT_VALUE"
+                                 onDelete="RESTRICT"
+                                 onUpdate="CASCADE" />
+
+        <!-- Now insert the initial data. Eventually, we should have a UI for this, but
+             this is easier for now. -->
+
+        <insert tableName="T_PRODUCT_VARIANT">
             <column name="id" valueNumeric="1" />
-            <column name="product_category_id" valueNumeric="1" />
+            <column name="product_id" valueNumeric="1" />
+            <column name="code" value="product.variant.membership.patron" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VARIANT_PRICE">
+            <column name="id" valueNumeric="1" />
+            <column name="product_variant_id" valueNumeric="1" />
             <column name="price_in_cents" valueNumeric="10000" />
             <column name="three_year_reduction_in_cents" valueNumeric="1500" />
         </insert>
-        
-        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
+            <column name="id" valueNumeric="1" />
+            <column name="product_variant_id" valueNumeric="1" />
+            <column name="product_value_id" valueNumeric="1" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_VARIANT">
             <column name="id" valueNumeric="2" />
-            <column name="product_category_id" valueNumeric="2" />
+            <column name="product_id" valueNumeric="1" />
+            <column name="code" value="product.variant.membership.regular" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VARIANT_PRICE">
+            <column name="id" valueNumeric="2" />
+            <column name="product_variant_id" valueNumeric="2" />
             <column name="price_in_cents" valueNumeric="4000" />
             <column name="three_year_reduction_in_cents" valueNumeric="3000" />
         </insert>
         
-        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
+            <column name="id" valueNumeric="2" />
+            <column name="product_variant_id" valueNumeric="2" />
+            <column name="product_value_id" valueNumeric="2" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_VARIANT">
             <column name="id" valueNumeric="3" />
-            <column name="product_category_id" valueNumeric="3" />
+            <column name="product_id" valueNumeric="1" />
+            <column name="code" value="product.variant.membership.unemployed" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_VARIANT_PRICE">
+            <column name="id" valueNumeric="3" />
+            <column name="product_variant_id" valueNumeric="3" />
             <column name="price_in_cents" valueNumeric="2000" />
             <column name="three_year_reduction_in_cents" valueNumeric="1500" />
         </insert>
         
-        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
+            <column name="id" valueNumeric="3" />
+            <column name="product_variant_id" valueNumeric="3" />
+            <column name="product_value_id" valueNumeric="3" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VARIANT">
             <column name="id" valueNumeric="4" />
-            <column name="product_category_id" valueNumeric="4" />
-            <column name="price_in_cents" valueNumeric="2000" />
-            <column name="three_year_reduction_in_cents" valueNumeric="1500" />
+            <column name="product_id" valueNumeric="1" />
+            <column name="code" value="product.variant.membership.retired" />
         </insert>
         
-        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+        <insert tableName="T_PRODUCT_VARIANT_PRICE">
+            <column name="id" valueNumeric="4" />
+            <column name="product_variant_id" valueNumeric="4" />
+            <column name="price_in_cents" valueNumeric="2000" />
+            <column name="three_year_reduction_in_cents" valueNumeric="1500" />
+        </insert> 
+        
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
+            <column name="id" valueNumeric="4" />
+            <column name="product_variant_id" valueNumeric="4" />
+            <column name="product_value_id" valueNumeric="4" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VARIANT">
             <column name="id" valueNumeric="5" />
-            <column name="product_category_id" valueNumeric="5" />
+            <column name="product_id" valueNumeric="1" />
+            <column name="code" value="product.variant.membership.student" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_VARIANT_PRICE">
+            <column name="id" valueNumeric="5" />
+            <column name="product_variant_id" valueNumeric="5" />
             <column name="price_in_cents" valueNumeric="2000" />
             <column name="three_year_reduction_in_cents" valueNumeric="1500" />
         </insert>
+
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
+            <column name="id" valueNumeric="5" />
+            <column name="product_variant_id" valueNumeric="5" />
+            <column name="product_value_id" valueNumeric="5" />
+        </insert>
         
-        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+        <insert tableName="T_PRODUCT_VARIANT">
             <column name="id" valueNumeric="6" />
-            <column name="product_category_id" valueNumeric="6" />
-            <column name="price_in_cents" valueNumeric="3500" />
-            <column name="three_year_reduction_in_cents" valueNumeric="0" />
+            <column name="product_id" valueNumeric="2" />
+            <column name="code" value="product.variant.rr.allMembers.electronic" />
         </insert>
         
-        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
+            <column name="id" valueNumeric="6" />
+            <column name="product_variant_id" valueNumeric="6" />
+            <column name="product_value_id" valueNumeric="6" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
             <column name="id" valueNumeric="7" />
-            <column name="product_category_id" valueNumeric="7" />
-            <column name="price_in_cents" valueNumeric="3000" />
-            <column name="three_year_reduction_in_cents" valueNumeric="0" />
+            <column name="product_variant_id" valueNumeric="6" />
+            <column name="product_value_id" valueNumeric="9" />
+        </insert> 
+        
+        <insert tableName="T_PRODUCT_VARIANT_PRICE">
+            <column name="id" valueNumeric="6" />
+            <column name="product_variant_id" valueNumeric="6" />
+            <column name="price_in_cents" valueNumeric="3500" />
         </insert>
         
-        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+        <insert tableName="T_PRODUCT_VARIANT">
+            <column name="id" valueNumeric="7" />
+            <column name="product_id" valueNumeric="2" />
+            <column name="code" value="product.variant.rr.allMembers.print" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
             <column name="id" valueNumeric="8" />
-            <column name="product_category_id" valueNumeric="8" />
-            <column name="price_in_cents" valueNumeric="2500" />
-            <column name="three_year_reduction_in_cents" valueNumeric="0" />
+            <column name="product_variant_id" valueNumeric="7" />
+            <column name="product_value_id" valueNumeric="6" />
         </insert>
         
-        <insert tableName="T_PRODUCT_CATEGORY_PRICE">
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
             <column name="id" valueNumeric="9" />
-            <column name="product_category_id" valueNumeric="9" />
-            <column name="price_in_cents" valueNumeric="1800" />
-            <column name="three_year_reduction_in_cents" valueNumeric="0" />
+            <column name="product_variant_id" valueNumeric="7" />
+            <column name="product_value_id" valueNumeric="8" />
+        </insert> 
+        
+        <insert tableName="T_PRODUCT_VARIANT_PRICE">
+            <column name="id" valueNumeric="7" />
+            <column name="product_variant_id" valueNumeric="7" />
+            <column name="price_in_cents" valueNumeric="3500" />
         </insert>
         
-        <sql>SELECT setVal('t_product_category_price_id_seq', 10);</sql>
+        <insert tableName="T_PRODUCT_VARIANT">
+            <column name="id" valueNumeric="8" />
+            <column name="product_id" valueNumeric="2" />
+            <column name="code" value="product.variant.rr.studentRetired.electronic" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
+            <column name="id" valueNumeric="10" />
+            <column name="product_variant_id" valueNumeric="8" />
+            <column name="product_value_id" valueNumeric="7" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
+            <column name="id" valueNumeric="11" />
+            <column name="product_variant_id" valueNumeric="8" />
+            <column name="product_value_id" valueNumeric="9" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_VARIANT_PRICE">
+            <column name="id" valueNumeric="8" />
+            <column name="product_variant_id" valueNumeric="8" />
+            <column name="price_in_cents" valueNumeric="3000" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_VARIANT">
+            <column name="id" valueNumeric="9" />
+            <column name="product_id" valueNumeric="2" />
+            <column name="code" value="product.variant.rr.studentRetired.print" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
+            <column name="id" valueNumeric="12" />
+            <column name="product_variant_id" valueNumeric="9" />
+            <column name="product_value_id" valueNumeric="7" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
+            <column name="id" valueNumeric="13" />
+            <column name="product_variant_id" valueNumeric="9" />
+            <column name="product_value_id" valueNumeric="8" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VARIANT_PRICE">
+            <column name="id" valueNumeric="9" />
+            <column name="product_variant_id" valueNumeric="9" />
+            <column name="price_in_cents" valueNumeric="3000" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_VARIANT">
+            <column name="id" valueNumeric="10" />
+            <column name="product_id" valueNumeric="3" />
+            <column name="code" value="product.variant.iter.allMembers" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
+            <column name="id" valueNumeric="14" />
+            <column name="product_variant_id" valueNumeric="10" />
+            <column name="product_value_id" valueNumeric="6" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VARIANT_PRICE">
+            <column name="id" valueNumeric="10" />
+            <column name="product_variant_id" valueNumeric="10" />
+            <column name="price_in_cents" valueNumeric="2500" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VARIANT">
+            <column name="id" valueNumeric="11" />
+            <column name="product_id" valueNumeric="2" />
+            <column name="code" value="product.variant.iter.studentRetired" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_VARIANT_VALUE">
+            <column name="id" valueNumeric="15" />
+            <column name="product_variant_id" valueNumeric="11" />
+            <column name="product_value_id" valueNumeric="7" />
+        </insert>
+
+        <insert tableName="T_PRODUCT_VARIANT_PRICE">
+            <column name="id" valueNumeric="11" />
+            <column name="product_variant_id" valueNumeric="11" />
+            <column name="price_in_cents" valueNumeric="1800" />
+        </insert>
+
+        <sql>SELECT setVal('t_product_variant_id_seq', 12);</sql>
+        
+        <sql>SELECT setVal('t_product_variant_price_id_seq', 12);</sql>
+        
+        <sql>SELECT setVal('t_product_variant_value_id_seq', 16);</sql>
+
+        <dropColumn tableName="T_RENEWAL" columnName="membership" />
+        <dropColumn tableName="T_RENEWAL" columnName="iter" />
+        <dropColumn tableName="T_RENEWAL" columnName="rr" />
+
+        <createTable tableName="T_RENEWAL_ITEM">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="renewal_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <!-- Dive into the price quoted ... should be immutable ... -->
+            <column name="product_variant_price_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createIndex tableName="T_RENEWAL_ITEM" indexName="idx_renewal_item_renewal_id">
+            <column name="renewal_id" />
+        </createIndex>
+
+        <createIndex tableName="T_RENEWAL_ITEM" indexName="idx_renewal_item_product_variant_price_id">
+            <column name="product_variant_price_id" />
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="renewal_id"
+                                 baseTableName="T_RENEWAL_ITEM"
+                                 constraintName="fk_renewal_item_renewal"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_RENEWAL"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+                             
+        <addForeignKeyConstraint baseColumnNames="product_variant_price_id"
+                                 baseTableName="T_RENEWAL_ITEM"
+                                 constraintName="fk_renewal_item_product_variant_price"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_PRODUCT_VARIANT_PRICE"
+                                 onDelete="RESTRICT"
+                                 onUpdate="CASCADE" />                         
+    </changeSet>
+
+    <changeSet id="addOrderToProductValues" author="ryan">
+        <addColumn tableName="T_PRODUCT_VALUE">
+            <column name="order" type="int" />
+        </addColumn>
+
+        <createIndex tableName="T_PRODUCT_VALUE" indexName="idx_product_value_order">
+            <column name="order" />
+        </createIndex>
+
+        <update tableName="T_PRODUCT_VALUE">
+            <column name="order" value="1" />
+            <where>id = 1</where>
+        </update>
+        
+        <update tableName="T_PRODUCT_VALUE">
+            <column name="order" value="2" />
+            <where>id = 2</where>
+        </update>
+
+        <update tableName="T_PRODUCT_VALUE">
+            <column name="order" value="3" />
+            <where>id = 3</where>
+        </update>
+        
+        <update tableName="T_PRODUCT_VALUE">
+            <column name="order" value="4" />
+            <where>id = 4</where>
+        </update>
+
+        <update tableName="T_PRODUCT_VALUE">
+            <column name="order" value="5" />
+            <where>id = 5</where>
+        </update>
+
+        <update tableName="T_PRODUCT_VALUE">
+            <column name="order" value="6" />
+            <where>id = 6</where>
+        </update>
+
+        <update tableName="T_PRODUCT_VALUE">
+            <column name="order" value="7" />
+            <where>id = 7</where>
+        </update>
+
+        <update tableName="T_PRODUCT_VALUE">
+            <column name="order" value="8" />
+            <where>id = 8</where>
+        </update>
+
+        <update tableName="T_PRODUCT_VALUE">
+            <column name="order" value="9" />
+            <where>id = 9</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="fixIterPrice" author="ryan">
+        <update tableName="T_PRODUCT_VARIANT">
+            <column name="product_id" valueNumeric="3" />
+            <where>id = 11</where>
+        </update>
+    </changeSet>
+    
+    <changeSet id="addOrderToProductsAndProductVariables" author="ryan">
+        <addColumn tableName="T_PRODUCT">
+            <column name="order" type="int" />
+        </addColumn>
+
+        <createIndex tableName="T_PRODUCT" indexName="idx_product_order">
+            <column name="order" />
+        </createIndex>
+
+        <update tableName="T_PRODUCT">
+            <column name="order" value="1" />
+            <where>id = 1</where>
+        </update>
+        
+        <update tableName="T_PRODUCT">
+            <column name="order" value="2" />
+            <where>id = 2</where>
+        </update>
+
+        <update tableName="T_PRODUCT">
+            <column name="order" value="3" />
+            <where>id = 3</where>
+        </update>
+        
+        <addColumn tableName="T_PRODUCT_VARIABLE">
+            <column name="order" type="int" />
+        </addColumn>
+
+        <createIndex tableName="T_PRODUCT_VARIABLE" indexName="idx_product_variable_order">
+            <column name="order" />
+        </createIndex>
+
+        <update tableName="T_PRODUCT_VARIABLE">
+            <column name="order" value="1" />
+            <where>id = 1</where>
+        </update>
+        
+        <update tableName="T_PRODUCT_VARIABLE">
+            <column name="order" value="2" />
+            <where>id = 2</where>
+        </update>
+
+        <update tableName="T_PRODUCT_VARIABLE">
+            <column name="order" value="3" />
+            <where>id = 3</where>
+        </update>
     </changeSet>
 </databaseChangeLog>

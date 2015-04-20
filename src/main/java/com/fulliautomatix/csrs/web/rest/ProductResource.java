@@ -3,7 +3,7 @@ package com.fulliautomatix.csrs.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.annotation.*;
 
-import com.fulliautomatix.csrs.domain.Product;
+import com.fulliautomatix.csrs.domain.*;
 import com.fulliautomatix.csrs.repository.ProductRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 
@@ -25,21 +25,22 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 /**
- * REST controller for managing Prices.
+ * REST controller for managing Products.
  */
 @RestController
 @RequestMapping("/api")
-public class PriceResource {
-    private final Logger log = LoggerFactory.getLogger(PriceResource.class);
+@RolesAllowed(AuthoritiesConstants.USER)
+public class ProductResource {
+    private final Logger log = LoggerFactory.getLogger(ProductResource.class);
 
     @Inject
     ProductRepository productRepository;
 
     /**
-     * GET  /prices -> get all the prices.
+     * GET  /products -> get all the products.
      */
     @RequestMapping(
-        value = "/prices",
+        value = "/products",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -51,10 +52,21 @@ public class PriceResource {
         List<Product> products = productRepository.findAll();
 
         products.stream().forEach((product) -> {
-            product.getProductCategories().stream().forEach((productCategory) -> {
-                Hibernate.initialize(productCategory.getProductCategoriesImplies());
-                Hibernate.initialize(productCategory.getProductCategoriesImpliedBy());
-                Hibernate.initialize(productCategory.getProductCategoryPrices());
+            Hibernate.initialize(product.getProductPrereqRequires());
+            Hibernate.initialize(product.getProductPrereqRequiredBy());
+            
+            product.getProductVariants().stream().forEach((pv) -> {
+                Hibernate.initialize(pv.getProductVariantPrices());
+
+                pv.getProductVariantValues().stream().forEach((pvv) -> {
+                    ProductValue productValue = pvv.getProductValue();
+
+                    Hibernate.initialize(productValue.getProductValueImplies());
+                    Hibernate.initialize(productValue.getProductValueImpliedBy());
+
+                    ProductVariable productVariable = productValue.getProductVariable();
+                    Hibernate.initialize(productVariable.getProductValues());
+                });
             });
         });
 

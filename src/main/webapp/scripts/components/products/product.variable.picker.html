@@ -1,0 +1,30 @@
+<div style="margin-left: 24px; margin-bottom: 3px;">
+    <em translate="global.form.select" translate-values="{
+        type: '{{productVariablePicker.productVariable.code | translate}}'
+    }">Select Membership type</em>
+</div>
+    
+<div class="clearfix" ng-repeat="productValue in productVariablePicker.productVariable.productValues | orderBy: 'order'">    
+    <div class="pull-left" style="width: 24px; min-width: 24px; cursor: pointer;" 
+        ng-click="productVariablePicker.selectProductValue(productValue)">
+
+        <span ng-show="productVariablePicker.isProductValueSelected(productValue)" class="glyphicon glyphicon-ok" style="font-size: 1em"></span>
+        <span ng-hide="productVariablePicker.isProductValueSelected(productValue)">&nbsp;</span>
+    </div>
+
+    <div class="pull-right text-right" 
+            style="width: 68px; cursor: pointer;"
+            ng-click="productVariablePicker.selectProductValue(productValue)"
+            ng-bind="productVariablePicker.priceForProductValue(productValue, $first)" class="text-right">100</div>
+
+    <div>
+        <a translate="{{productValue.code}}" 
+            ng-bind="productVariablePicker.priceForProductValue(productValue, $first)"
+            ng-click="productVariablePicker.selectProductValue(productValue)"
+            style="cursor: pointer;"
+            ng-class="{
+                'text-bold': productVariablePicker.isProductValueSelected(productValue)
+            }">Regular member</a>
+    </div>
+</div>
+

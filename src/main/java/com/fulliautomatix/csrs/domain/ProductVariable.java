@@ -16,45 +16,42 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.*;
 
+/**
+ * A Product Variable.
+ */
 @Entity
-@Table(name = "T_PRODUCT_CATEGORY_PRICE")
+@Table(name = "T_PRODUCT_VARIABLE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @JsonIdentityInfo(generator=JSOGGenerator.class)
-@lombok.ToString(of={"id"})
-public class ProductCategoryPrice implements Serializable {
+@lombok.ToString(of={"id", "code", "order"})
+@lombok.EqualsAndHashCode(of={"code"})
+public class ProductVariable implements Serializable {
     // For JsonView
     public interface Scalar {};
- 
-    public interface WithProductCategory extends Scalar, ProductCategory.Scalar {};
 
+    public interface WithProductValues extends Scalar, ProductValue.Scalar {};
+ 
     @Id
-    @SequenceGenerator(name="t_product_category_price_id_seq", sequenceName="t_product_category_price_id_seq", allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_product_category_price_id_seq")
+    @SequenceGenerator(name="t_product_variable_id_seq", sequenceName="t_product_variable_id_seq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_product_variable_id_seq")
     @lombok.Getter @lombok.Setter
     @JsonView(Scalar.class)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "product_category_id")
-    @lombok.Getter @lombok.Setter
-    @JsonView(WithProductCategory.class)
-    private ProductCategory productCategory;
-   
-    @Column(name = "start_year", nullable=false)
+    @Column(name="code", nullable=false)
     @NotNull
     @lombok.Getter @lombok.Setter
     @JsonView(Scalar.class)
-    private Integer startYear;
-    
-    @Column(name = "price_in_cents", nullable=false)
-    @NotNull
+    private String code;
+
+    @Column(name="order")
     @lombok.Getter @lombok.Setter
     @JsonView(Scalar.class)
-    private Integer priceInCents;
-    
-    @Column(name = "three_year_reduction_in_cents", nullable=false)
-    @NotNull
+    private Integer order;
+
+    @OneToMany(mappedBy="productVariable")
     @lombok.Getter @lombok.Setter
-    @JsonView(Scalar.class)
-    private Integer threeYearReductionInCents;
+    @BatchSize(size=50)
+    @JsonView(WithProductValues.class)
+    private Set<ProductValue> productValues;
 }

@@ -5,8 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.fulliautomatix.csrs.domain.Renewal;
-import com.fulliautomatix.csrs.domain.ProductCategoryPrice;
-import com.fulliautomatix.csrs.repository.ProductCategoryPriceRepository;
+import com.fulliautomatix.csrs.domain.ProductVariantPrice;
 
 import javax.inject.Inject;
 import java.util.*;
@@ -18,9 +17,10 @@ import java.util.*;
 public class PriceService {
     private final Logger log = LoggerFactory.getLogger(PriceService.class);
 
-    @Inject
-    private ProductCategoryPriceRepository priceRepository;
+ //   @Inject
+ //   private ProductCategoryPriceRepository priceRepository;
 
+/*
     public Integer priceInCentsForRenewal (Renewal renewal) {
         return priceRepository.membershipPriceForCode(
             renewal.getMembership()
@@ -63,4 +63,5 @@ public class PriceService {
             return new RuntimeException("Problem getting prices");
         });
     }
+    */
 }

@@ -64,11 +64,11 @@ public class RenewalResource {
 
         ownerService.checkNewOwner(renewal);
 
-        Integer calculatedPrice = priceService.priceInCentsForRenewal(renewal);
+  /*      Integer calculatedPrice = priceService.priceInCentsForRenewal(renewal);
         if (!calculatedPrice.equals(renewal.getPriceInCents())) {
             throw new RuntimeException("Price calculated on server does not match submitted price.");
         }
-        
+   */     
         renewal = renewalRepository.save(renewal);
 
         return ResponseEntity.created(new URI("/api/renewals/" + renewal.getId())).build();
@@ -90,12 +90,12 @@ public class RenewalResource {
 
         ownerService.checkOldOwner(renewalRepository, renewal.getId());
         ownerService.checkNewOwner(renewal);
-
+/*
         Integer calculatedPrice = priceService.priceInCentsForRenewal(renewal);
         if (!calculatedPrice.equals(renewal.getPriceInCents())) {
             throw new RuntimeException("Price calculated on server does not match submitted price.");
         }
-
+*/
         renewal = renewalRepository.save(renewal);
         
         return ResponseEntity.ok().build();

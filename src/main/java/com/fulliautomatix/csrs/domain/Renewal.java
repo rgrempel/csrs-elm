@@ -23,15 +23,16 @@ import java.util.stream.*;
 @Table(name = "T_RENEWAL")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @JsonIdentityInfo(generator=JSOGGenerator.class)
-@lombok.ToString(of={"id", "year", "duration", "membership", "iter", "rr", "priceInCents"})
+@lombok.ToString(of={"id", "year", "duration", "priceInCents"})
 public class Renewal extends AbstractAuditingEntity implements Serializable, HasOwner {
     // For JsonView
     public interface Scalar {};
     
     public interface WithAnnuals extends Scalar, Annual.Scalar {};
     public interface WithContact extends Scalar, Contact.Scalar {};
+    public interface WithRenewalItems extends Scalar, Contact.Scalar, RenewalItem.Scalar {};
 
-    public interface WithEverything extends WithAnnuals, WithContact {};
+    public interface WithEverything extends WithAnnuals, WithContact, WithRenewalItems {};
 
     @Id
     @SequenceGenerator(name="t_renewal_id_seq", sequenceName="t_renewal_id_seq", allocationSize=1)
@@ -53,6 +54,13 @@ public class Renewal extends AbstractAuditingEntity implements Serializable, Has
     @JsonView(WithAnnuals.class)
     private Set<Annual> annuals = new HashSet<>();
     
+    @OneToMany(mappedBy="renewal")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @lombok.Getter @lombok.Setter
+    @BatchSize(size=50)
+    @JsonView(WithRenewalItems.class)
+    private Set<RenewalItem> renewalItems = new HashSet<>();
+    
     @Column(name = "year", nullable=false)
     @NotNull
     @lombok.Getter @lombok.Setter
@@ -64,21 +72,6 @@ public class Renewal extends AbstractAuditingEntity implements Serializable, Has
     @lombok.Getter @lombok.Setter
     @JsonView(Scalar.class)
     private Integer duration;
-
-    @Column(name = "membership", nullable=false)
-    @lombok.Getter @lombok.Setter
-    @JsonView(Scalar.class)
-    private Integer membership;
-
-    @Column(name = "iter", nullable=false)
-    @lombok.Getter @lombok.Setter
-    @JsonView(Scalar.class)
-    private Boolean iter;
-
-    @Column(name = "rr", nullable=false)
-    @lombok.Getter @lombok.Setter
-    @JsonView(Scalar.class)
-    private Integer rr;
 
     @ManyToOne
     @lombok.Getter @lombok.Setter
