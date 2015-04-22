@@ -8648,14 +8648,14 @@ button.close {
   height: 0px;
 }
 
-/* line 1, ../../../scss/_custom.scss */
+/* line 1, ../../scripts/components/products/_product.scss */
 .csrs-price-container {
   display: table-cell;
   width: 88px;
   vertical-align: middle;
 }
 
-/* line 7, ../../../scss/_custom.scss */
+/* line 7, ../../scripts/components/products/_product.scss */
 .csrs-price-box {
   border: 2px solid black;
   width: 60px;
@@ -8665,7 +8665,7 @@ button.close {
   display: table;
 }
 
-/* line 16, ../../../scss/_custom.scss */
+/* line 16, ../../scripts/components/products/_product.scss */
 .csrs-price {
   margin-top: auto;
   margin-bottom: auto;
@@ -8674,53 +8674,53 @@ button.close {
   vertical-align: middle;
 }
 
-/* line 24, ../../../scss/_custom.scss */
+/* line 3, ../../../scss/_custom.scss */
 .multi-line {
   white-space: pre-line;
 }
 
-/* line 28, ../../../scss/_custom.scss */
+/* line 7, ../../../scss/_custom.scss */
 .help-block {
   margin-bottom: 0px;
 }
 
-/* line 32, ../../../scss/_custom.scss */
+/* line 11, ../../../scss/_custom.scss */
 .navbar-xs {
   min-height: 40px;
   height: 40px;
   margin-bottom: 12px;
 }
 
-/* line 38, ../../../scss/_custom.scss */
+/* line 17, ../../../scss/_custom.scss */
 .navbar-xs .navbar-brand {
   padding: 6px 12px;
   font-size: 16px;
   line-height: 28px;
 }
 
-/* line 44, ../../../scss/_custom.scss */
+/* line 23, ../../../scss/_custom.scss */
 .navbar-xs .navbar-nav > li > a {
   padding-top: 6px;
   padding-bottom: 6px;
   line-height: 28px;
 }
 
-/* line 50, ../../../scss/_custom.scss */
+/* line 29, ../../../scss/_custom.scss */
 .text-bold {
   font-weight: bold;
 }
 
-/* line 54, ../../../scss/_custom.scss */
+/* line 33, ../../../scss/_custom.scss */
 .contact-list {
   padding: 8px;
 }
 
-/* line 58, ../../../scss/_custom.scss */
+/* line 37, ../../../scss/_custom.scss */
 .translation-message {
   font-size: 80%;
 }
 
-/* line 62, ../../../scss/_custom.scss */
+/* line 41, ../../../scss/_custom.scss */
 .csrs-logo {
   display: inline-block;
   width: 347px;
@@ -8729,47 +8729,47 @@ button.close {
   background-size: contain;
 }
 
-/* line 70, ../../../scss/_custom.scss */
+/* line 49, ../../../scss/_custom.scss */
 .well .panel-default > .panel-heading {
   background-color: #e8e8e8;
 }
 
-/* line 74, ../../../scss/_custom.scss */
+/* line 53, ../../../scss/_custom.scss */
 .well .panel-default > .panel-footer {
   background-color: #e8e8e8;
 }
 
-/* line 78, ../../../scss/_custom.scss */
+/* line 57, ../../../scss/_custom.scss */
 .voffset4 {
   margin-top: 4px;
 }
 
-/* line 79, ../../../scss/_custom.scss */
+/* line 58, ../../../scss/_custom.scss */
 .voffset6 {
   margin-top: 6px;
 }
 
-/* line 80, ../../../scss/_custom.scss */
+/* line 59, ../../../scss/_custom.scss */
 .voffset8 {
   margin-top: 8px;
 }
 
-/* line 81, ../../../scss/_custom.scss */
+/* line 60, ../../../scss/_custom.scss */
 .voffset12 {
   margin-top: 12px;
 }
 
-/* line 82, ../../../scss/_custom.scss */
+/* line 61, ../../../scss/_custom.scss */
 .voffset16 {
   margin-top: 16px;
 }
 
-/* line 83, ../../../scss/_custom.scss */
+/* line 62, ../../../scss/_custom.scss */
 .voffset18 {
   margin-top: 18px;
 }
 
-/* line 84, ../../../scss/_custom.scss */
+/* line 63, ../../../scss/_custom.scss */
 .voffset24 {
   margin-top: 24px;
 }
