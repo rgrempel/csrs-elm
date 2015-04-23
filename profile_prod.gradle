@@ -1,4 +1,12 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 apply plugin: 'com.moowork.node'
+
+apply plugin: 'com.moowork.gulp'
+
+ext {
+    logbackLoglevel = "INFO"
+}
 
 dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: spring_boot_version
@@ -8,12 +16,27 @@ bootRun {
   args = ["--spring.profiles.active=prod"]
 }
 
+processResources {
+    filesMatching('**/logback.xml') {
+        filter {
+            it.replace('${logback.loglevel}', logbackLoglevel)
+        }
+    }
+}
+
 task setProdProperties(dependsOn: bootRun) << {
     doFirst {
         System.setProperty('spring.profiles.active', 'prod')
     }
 }
 
+gulp_build.dependsOn 'npmInstall'
+gulp_build.dependsOn 'bower'
+processResources.dependsOn gulp_build
+test.dependsOn gulp_test
+bootRun.dependsOn gulp_test
+
+/*
 task gruntBuild(type: Exec) {
    commandLine 'grunt', '--force', 'build'
 }
@@ -27,4 +50,4 @@ gruntBuild.dependsOn 'bower'
 processResources.dependsOn gruntBuild
 test.dependsOn gruntTest
 bootRun.dependsOn gruntTest
-
+*/

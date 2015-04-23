@@ -20,7 +20,7 @@ describe('Controllers Tests ', function () {
         };
     });
 
-
+/*
     describe('SettingsController', function () {
 
         beforeEach(inject(function ($rootScope, $controller, $q) {
@@ -53,4 +53,5 @@ describe('Controllers Tests ', function () {
             expect($scope.success).toBe('OK');
         });
     });
+    */
 });

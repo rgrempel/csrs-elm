@@ -2,7 +2,9 @@ package com.fulliautomatix.csrs.web.rest;
 
 import com.fulliautomatix.csrs.Application;
 import com.fulliautomatix.csrs.domain.Annual;
+import com.fulliautomatix.csrs.domain.Contact;
 import com.fulliautomatix.csrs.repository.AnnualRepository;
+import com.fulliautomatix.csrs.repository.ContactRepository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -53,9 +55,13 @@ public class AnnualResourceTest {
     @Inject
     private AnnualRepository annualRepository;
 
+    @Inject
+    private ContactRepository contactRepository;
+
     private MockMvc restAnnualMockMvc;
 
     private Annual annual;
+    private Contact contact;
 
     @PostConstruct
     public void setup() {
@@ -71,7 +77,10 @@ public class AnnualResourceTest {
         annual.setYear(DEFAULT_YEAR);
         annual.setMembership(DEFAULT_MEMBERSHIP);
         annual.setIter(DEFAULT_ITER);
-        annual.setRR(DEFAULT_RR);
+        annual.setRr(DEFAULT_RR);
+        
+        contact = new Contact();
+        contact.setLastName("LAST_NAME");
     }
 
     @Test
@@ -79,6 +88,9 @@ public class AnnualResourceTest {
     public void createAnnual() throws Exception {
         // Validate the database is empty
         assertThat(annualRepository.findAll()).hasSize(0);
+
+        contactRepository.saveAndFlush(contact);
+        annual.setContact(contact);
 
         // Create the Annual
         restAnnualMockMvc.perform(post("/api/annuals")
@@ -93,12 +105,15 @@ public class AnnualResourceTest {
         assertThat(testAnnual.getYear()).isEqualTo(DEFAULT_YEAR);
         assertThat(testAnnual.getMembership()).isEqualTo(DEFAULT_MEMBERSHIP);
         assertThat(testAnnual.getIter()).isEqualTo(DEFAULT_ITER);
-        assertThat(testAnnual.getRR()).isEqualTo(DEFAULT_RR);
+        assertThat(testAnnual.getRr()).isEqualTo(DEFAULT_RR);
     }
 
     @Test
     @Transactional
     public void getAllAnnuals() throws Exception {
+        contactRepository.saveAndFlush(contact);
+        annual.setContact(contact);
+        
         // Initialize the database
         annualRepository.saveAndFlush(annual);
 
@@ -116,6 +131,9 @@ public class AnnualResourceTest {
     @Test
     @Transactional
     public void getAnnual() throws Exception {
+        contactRepository.saveAndFlush(contact);
+        annual.setContact(contact);
+        
         // Initialize the database
         annualRepository.saveAndFlush(annual);
 
@@ -141,6 +159,9 @@ public class AnnualResourceTest {
     @Test
     @Transactional
     public void updateAnnual() throws Exception {
+        contactRepository.saveAndFlush(contact);
+        annual.setContact(contact);
+        
         // Initialize the database
         annualRepository.saveAndFlush(annual);
 
@@ -148,7 +169,7 @@ public class AnnualResourceTest {
         annual.setYear(UPDATED_YEAR);
         annual.setMembership(UPDATED_MEMBERSHIP);
         annual.setIter(UPDATED_ITER);
-        annual.setRR(UPDATED_RR);
+        annual.setRr(UPDATED_RR);
         restAnnualMockMvc.perform(put("/api/annuals")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(annual)))
@@ -161,12 +182,15 @@ public class AnnualResourceTest {
         assertThat(testAnnual.getYear()).isEqualTo(UPDATED_YEAR);
         assertThat(testAnnual.getMembership()).isEqualTo(UPDATED_MEMBERSHIP);
         assertThat(testAnnual.getIter()).isEqualTo(UPDATED_ITER);
-        assertThat(testAnnual.getRR()).isEqualTo(UPDATED_RR);
+        assertThat(testAnnual.getRr()).isEqualTo(UPDATED_RR);
     }
 
     @Test
     @Transactional
     public void deleteAnnual() throws Exception {
+        contactRepository.saveAndFlush(contact);
+        annual.setContact(contact);
+        
         // Initialize the database
         annualRepository.saveAndFlush(annual);
 
