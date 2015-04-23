@@ -14,6 +14,7 @@ import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
 import com.fulliautomatix.csrs.web.rest.dto.AccountCreationDTO;
 import com.fulliautomatix.csrs.service.util.RandomUtil;
 import com.fulliautomatix.csrs.service.MailService;
+import com.fulliautomatix.csrs.service.LazyService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
-import org.hibernate.Hibernate;
 
 import org.joda.time.DateTime;
 import javax.validation.Valid;
@@ -53,6 +53,9 @@ public class InvitationResource {
     @Inject
     private UserEmailActivationRepository userEmailActivationRepository;
 
+    @Inject
+    private LazyService lazyService;
+    
     /**
      * GET   /invitation/key -> Verify an invitation that exists
      */
@@ -66,9 +69,7 @@ public class InvitationResource {
     @Transactional(readOnly = true)
     public ResponseEntity<UserEmailActivation> getInvitation (@PathVariable String key) throws URISyntaxException {
         return userEmailActivationRepository.findByActivationKey(key).map((activation) -> {
-            // Make sure it loaded ...
-            Hibernate.initialize(activation.getUserEmail().getEmail());
-
+            lazyService.initializeForJsonView(activation, UserEmailActivation.WithUserEmail.class); 
             return new ResponseEntity<UserEmailActivation>(activation, HttpStatus.OK);
         }).orElse(
             new ResponseEntity<UserEmailActivation>(HttpStatus.NOT_FOUND)

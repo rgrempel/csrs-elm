@@ -15,6 +15,7 @@ import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.security.OwnerService;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
 import com.fulliautomatix.csrs.security.SecurityUtils;
+import com.fulliautomatix.csrs.service.LazyService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.Errors;
-import org.hibernate.Hibernate;
 
 import javax.validation.Valid;
 import javax.annotation.security.RolesAllowed;
@@ -54,6 +54,9 @@ public class ContactResource {
 
     @Inject
     private OwnerService ownerService;
+
+    @Inject
+    private LazyService lazyService;
 
     @Inject
     private SecurityUtils securityUtils;
@@ -188,16 +191,7 @@ public class ContactResource {
     public ResponseEntity<Set<Contact>> getAllForAccount () throws URISyntaxException {
         String login = securityUtils.getCurrentLogin();
         Set<Contact> contacts = contactRepository.findAllForLogin(login);
-
-        for (Contact contact : contacts) {
-            Hibernate.initialize(contact.getAnnuals());
-            Hibernate.initialize(contact.getInterests());
-            Hibernate.initialize(contact.getRenewals());
-
-            contact.getContactEmails().stream().forEach(ce -> {
-                Hibernate.initialize(ce.getEmail());
-            });
-        }
+        lazyService.initializeForJsonView(contacts, Contact.WithEverything.class);
 
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
@@ -216,10 +210,7 @@ public class ContactResource {
     @Transactional(readOnly = true)
     public ResponseEntity<List<Contact>> getAll (@RequestParam(value = "fullNameSearch") String search) throws URISyntaxException {
         List<Contact> contacts = contactRepository.searchByFullNameLikeLower(("%" + search + "%").toLowerCase());
-        
-        contacts.stream().forEach(c -> {
-            Hibernate.initialize(c.getAnnuals());
-        });
+        lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class); 
 
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
@@ -241,14 +232,7 @@ public class ContactResource {
         return Optional.ofNullable(
             contactRepository.findOneWithAnnualsAndInterestsAndEmail(id)
         ).map((contact) -> {
-            Hibernate.initialize(contact.getAnnuals());
-            Hibernate.initialize(contact.getInterests());
-            Hibernate.initialize(contact.getRenewals());
-
-            contact.getContactEmails().stream().forEach((ce) -> {
-                Hibernate.initialize(ce.getEmail());
-            });
-
+            lazyService.initializeForJsonView(contact, Contact.WithEverything.class);
             return new ResponseEntity<>(contact, HttpStatus.OK);
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -262,19 +246,13 @@ public class ContactResource {
     )
     @Timed
     @JsonView(Contact.WithEverything.class)
+    @Transactional(readOnly=true)
     public ResponseEntity<Contact> get(@PathVariable Long id) {
         log.debug("REST request to get Contact : {}", id);
         return Optional.ofNullable(
             contactRepository.findOne(id)
-        ).map(contact -> {
-            Hibernate.initialize(contact.getAnnuals());
-            Hibernate.initialize(contact.getInterests());
-            Hibernate.initialize(contact.getRenewals());
-
-            contact.getContactEmails().stream().forEach((ce) -> {
-                Hibernate.initialize(ce.getEmail());
-            });
-                
+        ).map((contact) -> {
+            lazyService.initializeForJsonView(contact, Contact.WithEverything.class);
             return new ResponseEntity<>(contact, HttpStatus.OK);
         }).orElse(
             new ResponseEntity<>(HttpStatus.NOT_FOUND)

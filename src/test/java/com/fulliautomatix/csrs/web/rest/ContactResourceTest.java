@@ -2,6 +2,7 @@ package com.fulliautomatix.csrs.web.rest;
 
 import com.fulliautomatix.csrs.Application;
 import com.fulliautomatix.csrs.domain.Contact;
+import com.fulliautomatix.csrs.service.LazyService;
 import com.fulliautomatix.csrs.repository.ContactRepository;
 
 import org.junit.Before;
@@ -55,11 +56,14 @@ public class ContactResourceTest {
     private static final String UPDATED_COUNTRY = "UPDATED_TEXT";
     private static final String DEFAULT_POSTAL_CODE = "SAMPLE_TEXT";
     private static final String UPDATED_POSTAL_CODE = "UPDATED_TEXT";
-    private static final String DEFAULT_EMAIL = "SAMPLE_TEXT";
-    private static final String UPDATED_EMAIL = "UPDATED_TEXT";
+ //   private static final String DEFAULT_EMAIL = "SAMPLE_TEXT";
+ //   private static final String UPDATED_EMAIL = "UPDATED_TEXT";
 
     @Inject
     private ContactRepository contactRepository;
+
+    @Inject
+    private LazyService lazyService;
 
     private MockMvc restContactMockMvc;
 
@@ -70,6 +74,7 @@ public class ContactResourceTest {
         MockitoAnnotations.initMocks(this);
         ContactResource contactResource = new ContactResource();
         ReflectionTestUtils.setField(contactResource, "contactRepository", contactRepository);
+        ReflectionTestUtils.setField(contactResource, "lazyService", lazyService);
         this.restContactMockMvc = MockMvcBuilders.standaloneSetup(contactResource).build();
     }
 
@@ -85,7 +90,7 @@ public class ContactResourceTest {
         contact.setRegion(DEFAULT_REGION);
         contact.setCountry(DEFAULT_COUNTRY);
         contact.setPostalCode(DEFAULT_POSTAL_CODE);
-        contact.setEmail(DEFAULT_EMAIL);
+//        contact.setEmail(DEFAULT_EMAIL);
     }
 
     @Test
@@ -113,7 +118,7 @@ public class ContactResourceTest {
         assertThat(testContact.getRegion()).isEqualTo(DEFAULT_REGION);
         assertThat(testContact.getCountry()).isEqualTo(DEFAULT_COUNTRY);
         assertThat(testContact.getPostalCode()).isEqualTo(DEFAULT_POSTAL_CODE);
-        assertThat(testContact.getEmail()).isEqualTo(DEFAULT_EMAIL);
+ //       assertThat(testContact.getEmail()).isEqualTo(DEFAULT_EMAIL);
     }
 
     @Test
@@ -135,8 +140,7 @@ public class ContactResourceTest {
                 .andExpect(jsonPath("$.[0].city").value(DEFAULT_CITY.toString()))
                 .andExpect(jsonPath("$.[0].region").value(DEFAULT_REGION.toString()))
                 .andExpect(jsonPath("$.[0].country").value(DEFAULT_COUNTRY.toString()))
-                .andExpect(jsonPath("$.[0].postalCode").value(DEFAULT_POSTAL_CODE.toString()))
-                .andExpect(jsonPath("$.[0].email").value(DEFAULT_EMAIL.toString()));
+                .andExpect(jsonPath("$.[0].postalCode").value(DEFAULT_POSTAL_CODE.toString()));
     }
 
     @Test
@@ -144,6 +148,10 @@ public class ContactResourceTest {
     public void getContact() throws Exception {
         // Initialize the database
         contactRepository.saveAndFlush(contact);
+
+        assertThat(contact).isNotNull();
+        assertThat(contact.getId()).isNotNull();
+        assertThat(restContactMockMvc).isNotNull();
 
         // Get the contact
         restContactMockMvc.perform(get("/api/contacts/{id}", contact.getId()))
@@ -158,8 +166,7 @@ public class ContactResourceTest {
             .andExpect(jsonPath("$.city").value(DEFAULT_CITY.toString()))
             .andExpect(jsonPath("$.region").value(DEFAULT_REGION.toString()))
             .andExpect(jsonPath("$.country").value(DEFAULT_COUNTRY.toString()))
-            .andExpect(jsonPath("$.postalCode").value(DEFAULT_POSTAL_CODE.toString()))
-            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()));
+            .andExpect(jsonPath("$.postalCode").value(DEFAULT_POSTAL_CODE.toString()));
     }
 
     @Test
@@ -186,7 +193,7 @@ public class ContactResourceTest {
         contact.setRegion(UPDATED_REGION);
         contact.setCountry(UPDATED_COUNTRY);
         contact.setPostalCode(UPDATED_POSTAL_CODE);
-        contact.setEmail(UPDATED_EMAIL);
+     //   contact.setEmail(UPDATED_EMAIL);
         restContactMockMvc.perform(put("/api/contacts")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(contact)))
@@ -205,7 +212,7 @@ public class ContactResourceTest {
         assertThat(testContact.getRegion()).isEqualTo(UPDATED_REGION);
         assertThat(testContact.getCountry()).isEqualTo(UPDATED_COUNTRY);
         assertThat(testContact.getPostalCode()).isEqualTo(UPDATED_POSTAL_CODE);
-        assertThat(testContact.getEmail()).isEqualTo(UPDATED_EMAIL);
+   //     assertThat(testContact.getEmail()).isEqualTo(UPDATED_EMAIL);
     }
 
     @Test

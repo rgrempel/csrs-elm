@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.fulliautomatix.csrs.domain.*;
 import com.fulliautomatix.csrs.repository.ProductRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
+import com.fulliautomatix.csrs.service.LazyService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +15,6 @@ import org.springframework.http.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
-
-import org.hibernate.Hibernate;
 
 import javax.validation.Valid;
 import javax.annotation.security.RolesAllowed;
@@ -36,6 +35,9 @@ public class ProductResource {
     @Inject
     ProductRepository productRepository;
 
+    @Inject
+    private LazyService lazyService;
+    
     /**
      * GET  /products -> get all the products.
      */
@@ -50,25 +52,7 @@ public class ProductResource {
     @JsonView(Product.DeepTree.class)
     public ResponseEntity<List<Product>> getAll () throws URISyntaxException {
         List<Product> products = productRepository.findAll();
-
-        products.stream().forEach((product) -> {
-            Hibernate.initialize(product.getProductPrereqRequires());
-            Hibernate.initialize(product.getProductPrereqRequiredBy());
-            
-            product.getProductVariants().stream().forEach((pv) -> {
-                Hibernate.initialize(pv.getProductVariantPrices());
-
-                pv.getProductVariantValues().stream().forEach((pvv) -> {
-                    ProductValue productValue = pvv.getProductValue();
-
-                    Hibernate.initialize(productValue.getProductValueImplies());
-                    Hibernate.initialize(productValue.getProductValueImpliedBy());
-
-                    ProductVariable productVariable = productValue.getProductVariable();
-                    Hibernate.initialize(productVariable.getProductValues());
-                });
-            });
-        });
+        lazyService.initializeForJsonView(products, Product.DeepTree.class);
 
         return new ResponseEntity<>(products, HttpStatus.OK);
     }

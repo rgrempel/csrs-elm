@@ -8,11 +8,11 @@ import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.security.OwnerService;
 import com.fulliautomatix.csrs.service.PriceService;
+import com.fulliautomatix.csrs.service.LazyService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +44,9 @@ public class RenewalResource {
     @Inject
     private PriceService priceService;
 
+    @Inject
+    private LazyService lazyService;
+    
     /**
      * POST  /renewals -> Create a new renewal.
      */
@@ -115,10 +118,7 @@ public class RenewalResource {
     @Transactional(readOnly = true)
     public ResponseEntity<Collection<Renewal>> getAll () throws URISyntaxException {
         Collection<Renewal> renewals = ownerService.findAllForLogin(renewalRepository);
-
-        renewals.stream().forEach((renewal) -> {
-            Hibernate.initialize(renewal.getContact());
-        });
+        lazyService.initializeForJsonView(renewals, Renewal.WithContact.class);
 
         return new ResponseEntity<>(renewals, HttpStatus.OK);
     }
@@ -138,7 +138,7 @@ public class RenewalResource {
         log.debug("REST request to get Renewal : {}", id);
 
         return ownerService.findOneForLogin(renewalRepository, id).map((renewal) -> {
-            Hibernate.initialize(renewal.getContact());
+            lazyService.initializeForJsonView(renewal, Renewal.WithContact.class);
             return new ResponseEntity<>(renewal, HttpStatus.OK);
         }).orElse(
             new ResponseEntity<>(HttpStatus.NOT_FOUND)
