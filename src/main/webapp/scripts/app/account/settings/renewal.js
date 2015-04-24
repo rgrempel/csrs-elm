@@ -8,7 +8,7 @@
         saveRenewal: saveRenewal
     });
  
-    function RenewalController ($scope, $state, _, membershipPricesFor, Renewal, Product, Stream) {
+    function RenewalController ($scope, $state, _, Renewal, ProductGroup, Stream) {
         'ngInject';
         
         this.scope = $scope;
@@ -22,8 +22,8 @@
 
         var self = this;
 
-        Product.query().$promise.then(function (products) {
-            self.products = products;
+        ProductGroup.get({id: 1}).$promise.then(function (productGroup) {
+            self.products = Stream(productGroup.productGroupProducts).map('product').toArray();
         });
 
         // this.error;

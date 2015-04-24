@@ -901,4 +901,102 @@
             <where>id = 3</where>
         </update>
     </changeSet>
+
+    <changeSet id="addProductGroups" author="ryan">
+        <createTable tableName="T_PRODUCT_GROUP">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="code" type="varchar">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="configuration" type="varchar" />
+        </createTable>
+
+        <createIndex tableName="T_PRODUCT_GROUP" indexName="idx_product_group_code">
+            <column name="code" />
+        </createIndex>
+
+        <createTable tableName="T_PRODUCT_GROUP_PRODUCT">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="product_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="product_group_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="configuration" type="varchar" />
+        </createTable>
+
+        <createIndex tableName="T_PRODUCT_GROUP_PRODUCT" indexName="idx_product_group_product_id">
+            <column name="product_id" />
+        </createIndex>
+
+        <createIndex tableName="T_PRODUCT_GROUP_PRODUCT" indexName="idx_product_group_product_group_id">
+            <column name="product_group_id" />
+        </createIndex>
+        
+        <createIndex tableName="T_PRODUCT_GROUP_PRODUCT" indexName="idx_product_group_combined" unique="true">
+            <column name="product_id" />
+            <column name="product_group_id" />
+        </createIndex>
+        
+        <addForeignKeyConstraint baseColumnNames="product_id"
+                                 baseTableName="T_PRODUCT_GROUP_PRODUCT"
+                                 constraintName="fk_product_group_product_product"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_PRODUCT"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+                             
+        <addForeignKeyConstraint baseColumnNames="product_group_id"
+                                 baseTableName="T_PRODUCT_GROUP_PRODUCT"
+                                 constraintName="fk_product_group_product_product_group"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_PRODUCT_GROUP"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+
+        <addColumn tableName="T_PRODUCT">
+            <column name="configuration" type="varchar" />
+        </addColumn>
+
+        <addColumn tableName="T_PRODUCT_VARIABLE">
+            <column name="configuration" type="varchar" />
+        </addColumn>
+
+        <insert tableName="T_PRODUCT_GROUP">
+            <column name="id" valueNumeric="1" />
+            <column name="code" value="product.group.base.renewal" />
+        </insert>
+
+        <sql>SELECT setVal('t_product_group_id_seq', 1);</sql>
+
+        <insert tableName="T_PRODUCT_GROUP_PRODUCT">
+            <column name="id" valueNumeric="1" />
+            <column name="product_group_id" valueNumeric="1" />
+            <column name="product_id" valueNumeric="1" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_GROUP_PRODUCT">
+            <column name="id" valueNumeric="2" />
+            <column name="product_group_id" valueNumeric="1" />
+            <column name="product_id" valueNumeric="2" />
+        </insert>
+        
+        <insert tableName="T_PRODUCT_GROUP_PRODUCT">
+            <column name="id" valueNumeric="3" />
+            <column name="product_group_id" valueNumeric="1" />
+            <column name="product_id" valueNumeric="3" />
+        </insert>
+        
+        <sql>SELECT setVal('t_product_group_product_id_seq', 4);</sql>
+    </changeSet>
 </databaseChangeLog>

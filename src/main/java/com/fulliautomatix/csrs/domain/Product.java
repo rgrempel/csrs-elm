@@ -28,9 +28,13 @@ public class Product implements Serializable {
 
     public interface WithProductVariants extends Scalar, ProductVariant.Scalar {};
     public interface WithProductPrereqs extends Scalar, ProductPrereq.WithProduct {};
+    public interface WithProductGroupProducts extends Scalar, ProductGroupProduct.WithProductGroup {};
 
-    public interface WithEverything extends WithProductVariants, WithProductPrereqs {};
-    public interface DeepTree extends WithEverything,
+    public interface WithEverything extends WithProductVariants, WithProductPrereqs, WithProductGroupProducts {};
+
+    // Note that this does not include ProductGroupProducts
+    public interface DeepTree extends WithProductVariants,
+                                      WithProductPrereqs,
                                       ProductVariant.WithEverything, 
                                       ProductVariantValue.WithEverything,
                                       ProductValue.WithEverything,
@@ -56,7 +60,12 @@ public class Product implements Serializable {
     @JsonView(Scalar.class)
     private Integer order;
 
-    @OneToMany(mappedBy = "product")
+    @Column(name="configuration")
+    @lombok.Getter @lombok.Setter
+    @JsonView(Scalar.class)
+    private String configuration;
+
+    @OneToMany(mappedBy="product")
     @lombok.Getter @lombok.Setter
     @BatchSize(size=50)
     @JsonView(WithProductVariants.class)
@@ -73,5 +82,11 @@ public class Product implements Serializable {
     @BatchSize(size=50)
     @JsonView(WithProductPrereqs.class)
     private Set<ProductPrereq> productPrereqRequiredBy = new HashSet<>();
+    
+    @OneToMany(mappedBy="product")
+    @lombok.Getter @lombok.Setter
+    @BatchSize(size=50)
+    @JsonView(WithProductGroupProducts.class)
+    private Set<ProductGroupProduct> productGroupProducts = new HashSet<>();
 
 }

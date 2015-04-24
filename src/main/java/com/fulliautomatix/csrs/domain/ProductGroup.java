@@ -16,24 +16,22 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.*;
 
-/**
- * A Product Variable.
- */
 @Entity
-@Table(name = "T_PRODUCT_VARIABLE")
+@Table(name = "T_PRODUCT_GROUP")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @JsonIdentityInfo(generator=JSOGGenerator.class)
-@lombok.ToString(of={"id", "code", "order"})
+@lombok.ToString(of={"id", "code"})
 @lombok.EqualsAndHashCode(of={"code"})
-public class ProductVariable implements Serializable {
+public class ProductGroup implements Serializable {
     // For JsonView
     public interface Scalar {};
 
-    public interface WithProductValues extends Scalar, ProductValue.Scalar {};
- 
+    public interface WithProductGroupProducts extends Scalar, ProductGroupProduct.WithProduct {};
+    public interface DeepTree extends WithProductGroupProducts, Product.DeepTree {};
+
     @Id
-    @SequenceGenerator(name="t_product_variable_id_seq", sequenceName="t_product_variable_id_seq", allocationSize=1)
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_product_variable_id_seq")
+    @SequenceGenerator(name="t_product_group_id_seq", sequenceName="t_product_group_id_seq", allocationSize=1)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_product_group_id_seq")
     @lombok.Getter @lombok.Setter
     @JsonView(Scalar.class)
     private Long id;
@@ -44,19 +42,15 @@ public class ProductVariable implements Serializable {
     @JsonView(Scalar.class)
     private String code;
 
-    @Column(name="order")
-    @lombok.Getter @lombok.Setter
-    @JsonView(Scalar.class)
-    private Integer order;
-
     @Column(name="configuration")
     @lombok.Getter @lombok.Setter
     @JsonView(Scalar.class)
     private String configuration;
 
-    @OneToMany(mappedBy="productVariable")
+    @OneToMany(mappedBy = "productGroup")
     @lombok.Getter @lombok.Setter
     @BatchSize(size=50)
-    @JsonView(WithProductValues.class)
-    private Set<ProductValue> productValues;
+    @JsonView(WithProductGroupProducts.class)
+    private Set<ProductGroupProduct> productGroupProducts = new HashSet<>();
+
 }
