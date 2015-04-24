@@ -240,7 +240,7 @@ gulp.task('usemin', function() {
 
 gulp.task('ngconstant:dev', function() {
     return ngConstant({
-        dest: 'app.constants.js',
+        dest: 'constants.js',
         name: 'csrsApp',
         deps:   false,
         noFile: true,
@@ -250,13 +250,12 @@ gulp.task('ngconstant:dev', function() {
             ENV: 'dev',
             VERSION: parseVersionFromBuildGradle()
         }
-    })
-        .pipe(gulp.dest(yeoman.app + 'scripts/app/'));
+    }).pipe(gulp.dest(yeoman.app + 'scripts/app/config/'));
 });
 
 gulp.task('ngconstant:prod', function() {
     return ngConstant({
-        dest: 'app.constants.js',
+        dest: 'constants.js',
         name: 'csrsApp',
         deps:   false,
         noFile: true,
@@ -266,8 +265,7 @@ gulp.task('ngconstant:prod', function() {
             ENV: 'prod',
             VERSION: parseVersionFromBuildGradle()
         }
-    })
-        .pipe(gulp.dest(yeoman.tmp + 'scripts/app/'));
+    }).pipe(gulp.dest(yeoman.tmp + 'scripts/app/config/'));
 });
 
 gulp.task('jshint', function() {
