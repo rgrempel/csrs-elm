@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.inject.Inject;
 import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 
 import java.util.*;
 import java.io.*;
@@ -26,54 +27,41 @@ public class LazyService {
         initializeForJsonView(bean, desiredJsonView, new HashSet<Object>());
     }
 
-    public void initializeForJsonView (final Collection<Object> beanCollection, final Class desiredJsonView) {
-        initializeForJsonView(beanCollection, desiredJsonView, new HashSet<Object>());
-    }
-
-    private void initializeForJsonView (final Collection<Object> beanCollection, final Class desiredJsonView, final Set<Object> beans) {
-        if (beanCollection == null) return;
-        
-        if (beans.contains(beanCollection)) return;
-        beans.add(beanCollection);
-
-        beanCollection.stream().forEach((bean) -> {
-            initializeForJsonView(bean, desiredJsonView, beans);
-        });
-    }
-        
     // Note that we could (perhaps should) cache which fields for which classes are needed for which desiredJsonViews
     private void initializeForJsonView (final Object bean, final Class desiredJsonView, final Set<Object> beans) {
         if (bean == null) return;
-        
+
         // Return if we've already considered this one.
         if (beans.contains(bean)) return;
         beans.add(bean);
-
-        ReflectionUtils.doWithFields(bean.getClass(), (field) -> {
-            Optional.ofNullable(field.getAnnotation(OneToMany.class)).ifPresent((oneToMany) -> {
-                Optional.ofNullable(field.getAnnotation(JsonView.class)).ifPresent((fieldJsonView) -> {
-                    Arrays.stream(fieldJsonView.value()).forEach((jsonView) -> {
-                        if (jsonView.isAssignableFrom(desiredJsonView)) {
-                            // We have a hit. We iterate over the collection, which will
-                            // force it to be loaded, and we check whether it has anything
-                            // that needs to be loaded.
-                            try {
-                                if (!field.isAccessible()) {
-                                    field.setAccessible(true);
-                                }
-
-                                Object fieldValue = field.get(bean);
-                                
-                                if (fieldValue instanceof Collection) {
-                                    initializeForJsonView((Collection) fieldValue, desiredJsonView, beans);
-                                }
-                            } catch (Exception ex) {
-                                throw new RuntimeException(ex);
-                            } 
-                        }
+        
+        if (bean instanceof Collection) {
+            for (Object value : (Collection) bean) {
+                initializeForJsonView(value, desiredJsonView, beans);
+            }
+        } else {
+            ReflectionUtils.doWithFields(bean.getClass(), (field) -> {
+                // We need to check both OneToMany and ManyToOne, because there may
+                // be something on the other side of a ManyToOne that should be
+                // loaded.
+                if (
+                    field.getAnnotation(OneToMany.class) != null ||
+                    field.getAnnotation(ManyToOne.class) != null
+                ) {
+                    Optional.ofNullable(field.getAnnotation(JsonView.class)).ifPresent((fieldJsonView) -> {
+                        Arrays.stream(fieldJsonView.value()).forEach((jsonView) -> {
+                            if (jsonView.isAssignableFrom(desiredJsonView)) {
+                                try {
+                                    if (!field.isAccessible()) field.setAccessible(true);
+                                    initializeForJsonView(field.get(bean), desiredJsonView, beans);
+                                } catch (Exception ex) {
+                                    throw new RuntimeException(ex);
+                                } 
+                            }
+                        });
                     });
-                });
+                }
             });
-        });
+        }
     }
 }
