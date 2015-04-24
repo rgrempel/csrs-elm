@@ -21,6 +21,8 @@ var gulp = require('gulp'),
     del = require('del'),
     url = require('url'),
     wiredep = require('wiredep').stream,
+    angularFilesort = require('gulp-angular-filesort'),
+    inject = require('gulp-inject'),
     fs = require('fs'),
     runSequence = require('run-sequence'),
     browserSync = require('browser-sync');
@@ -103,7 +105,7 @@ gulp.task('styles', ['compass'], function() {
 });
 
 gulp.task('serve', function() {
-    runSequence('wiredep:test', 'wiredep:app', 'ngconstant:dev', 'compass', function () {
+    runSequence('wiredep:test', 'wiredep:app', 'inject', 'ngconstant:dev', 'compass', function () {
         var baseUri = 'http://localhost:' + yeoman.apiPort;
         // Routes to proxy to the backend. Routes ending with a / will setup
         // a redirect so that if accessed without a trailing slash, will
@@ -210,8 +212,16 @@ gulp.task('wiredep:test', function () {
         .pipe(gulp.dest('src/test/javascript'));
 });
 
+gulp.task('inject', function () {
+    return gulp.src('src/main/webapp/index.html').pipe(
+        inject(gulp.src('src/main/webapp/scripts/**/*.js').pipe(angularFilesort()), {
+            relative: true                                             
+        })
+    ).pipe(gulp.dest('src/main/webapp'));
+});
+
 gulp.task('build', function () {
-    runSequence('clean', 'copy', 'wiredep:app', 'ngconstant:prod', 'usemin');
+    runSequence('clean', 'copy', 'wiredep:app', 'inject', 'ngconstant:prod', 'usemin');
 });
 
 gulp.task('usemin', function() {
