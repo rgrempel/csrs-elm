@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('csrsApp').factory('Product', function ($resource) {
+angular.module('csrsApp').factory('Product', function ($resource, JSOG) {
     return $resource('api/products/:id', {}, {
         'query': {
             method: 'GET',

@@ -35,10 +35,10 @@ angular.module('csrsApp').directive('csrsFormControl', function () {
             formGroup.ngModel = ngModel;
 
             scope.$watch(
-                function (scope) {
+                function (/* scope */) {
                     return ngModel.$invalid && form.$submitted;
                 },
-                function (newValue, oldValue) {
+                function (newValue /*, oldValue */) {
                     formGroup.setHasError(newValue);
                 }
             );
@@ -61,7 +61,7 @@ angular.module('csrsApp').directive('csrsHelpBlock', function () {
             element.toggleClass('hidden', true);
 
             scope.$watch(
-                function (scope) {
+                function (/* scope */) {
                     var model = formGroup.ngModel;
                     if (model === null) {
                         return true;
@@ -75,7 +75,7 @@ angular.module('csrsApp').directive('csrsHelpBlock', function () {
                         }
                     }
                 },
-                function (newValue, oldValue) {
+                function (newValue /*, oldValue*/) {
                     element.toggleClass('hidden', newValue);
                 }
             );
@@ -92,11 +92,11 @@ angular.module('csrsApp').directive('csrsValidateMatches', function () {
         },
 
         link: function (scope, element, attr, ngModel) {
-            ngModel.$validators.csrsValidateMatches = function (modelValue, viewValue) {
+            ngModel.$validators.csrsValidateMatches = function (modelValue /*, viewValue */) {
                 return modelValue === scope.csrsValidateMatches;
             };
             
-            scope.$watch("csrsValidateMatches", function() {
+            scope.$watch('csrsValidateMatches', function() {
                 ngModel.$validate();
             });
         }

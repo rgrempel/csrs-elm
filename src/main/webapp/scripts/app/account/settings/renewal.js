@@ -8,7 +8,7 @@
         saveRenewal: saveRenewal
     });
  
-    function RenewalController ($scope, $state, _, Renewal, ProductGroup, Stream) {
+    function RenewalController ($scope, $state, _, Renewal, ProductGroup) {
         'ngInject';
         
         this.scope = $scope;

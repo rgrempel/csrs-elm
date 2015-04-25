@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('csrsApp').factory('UserContact', function ($resource, _) {
+angular.module('csrsApp').factory('UserContact', function ($resource, _, JSOG) {
     return $resource('api/account/contacts/:id', {}, {
         'query': {
             method: 'GET',

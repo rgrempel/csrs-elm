@@ -6,7 +6,7 @@ angular.module('csrsApp').controller('ReallyCreateAccountController', function (
     this.email = this.invitation.userEmail.email.emailAddress;
 
     this.createAccount = function () {
-        if (!$scope.createAccountForm.$valid) return;
+        if (!$scope.createAccountForm.$valid) {return;}
 
         this.serverError = null;
         this.account.langKey = $translate.use();

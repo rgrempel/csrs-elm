@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('csrsApp').factory('ContactEmail', function ($resource) {
+angular.module('csrsApp').factory('ContactEmail', function ($resource, JSOG) {
     return $resource('api/contactEmails/:id', {}, {
         'query': {
             method: 'GET',

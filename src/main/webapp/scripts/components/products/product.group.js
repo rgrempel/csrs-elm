@@ -28,7 +28,7 @@
         var self = this;
         $scope.$watch(function () {
             return self.productGroup;
-        }, function (newValue, oldValue) {
+        }, function (newValue /*, oldValue */) {
             self.products = Stream.Optional.ofNullable(newValue).map(function (productGroup) {
                 return Stream(productGroup.productGroupProducts).map('product').toArray();                
             }).orElse([]); 

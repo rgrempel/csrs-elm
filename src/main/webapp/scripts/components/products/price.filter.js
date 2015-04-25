@@ -8,7 +8,9 @@
 
         return function priceFilter (price, useDollarSign) {
             // Make it default to true if undefined
-            useDollarSign = !(useDollarSign === false);
+            if (useDollarSign === undefined) {
+                useDollarSign = true;
+            }
 
             var precision = (price % 100 === 0) ? 0 : 2;
             var prefix = useDollarSign ? '$' : ' ';

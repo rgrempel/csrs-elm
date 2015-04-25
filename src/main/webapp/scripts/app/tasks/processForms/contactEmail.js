@@ -27,8 +27,8 @@ angular.module('csrsApp').controller('ContactEmailCtrl', function (_, $http, Con
         });
     };
     
-    this.commit = function (interest) {
-        if (!$scope.newEmailForm.$valid) return;
+    this.commit = function () {
+        if (!$scope.newEmailForm.$valid) {return;}
 
         // This is special-cased -- we send up a contactId
         // and an emailAddress to create ...

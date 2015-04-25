@@ -29,20 +29,16 @@
     }
 
     ProductVariableController.prototype = {
-        selectProductValue: selectProductValue,
-        isProductValueSelected: isProductValueSelected,
-        priceForProductValue: priceForProductValue
+        selectProductValue : function selectProductValue (productValue) {
+            this.productValuePicked = productValue;
+        },
+
+        isProductValueSelected : function isProductValueSelected (productValue) {
+            return this.productValuePicked === productValue;
+        },
+
+        priceForProductValue : function priceForProductValue (productValue, showDollar) {
+            return this.productPicker.priceForProductValue(productValue, showDollar);
+        }
     };
-
-    function selectProductValue (productValue) {
-        this.productValuePicked = productValue;
-    }
-
-    function isProductValueSelected (productValue) {
-        return this.productValuePicked === productValue;
-    }
-
-    function priceForProductValue (productValue, showDollar) {
-        return this.productPicker.priceForProductValue(productValue, showDollar);
-    }
 })();

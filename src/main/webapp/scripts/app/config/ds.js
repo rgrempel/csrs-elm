@@ -3,12 +3,12 @@
 
     angular.module('csrsApp').config(DSConfigurer);
 
-    function DSConfigurer (DSProvider, DSHttpAdapterProvider) {
+    function DSConfigurer (DSProvider, DSHttpAdapterProvider, $windowProvider) {
         'ngInject';
 
-        DSProvider.defaults.basePath = '/api';
+        var JSOG = $windowProvider.$get().JSOG;
 
-        var defaultDeserialize = DSHttpAdapterProvider.defaults.deserialize;
+        DSProvider.defaults.basePath = '/api';
 
         DSHttpAdapterProvider.defaults.deserialize = function (resourceConfig, data) {
             var theData = data ? ('data' in data ? data.data : data) : data;

@@ -16,7 +16,7 @@ angular.module('csrsApp').controller('InvitationController', function ($state, $
                 $state.go('reallyCreateAccount', {
                     invitation: result
                 });
-            }, function (error) {
+            }, function (/*error*/) {
                 self.noSuchInvitation = true;
             });
         }

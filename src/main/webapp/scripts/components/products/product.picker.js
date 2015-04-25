@@ -32,7 +32,7 @@
         this.valuesPicked = {};
         var self = this;
 
-        $scope.$watch('pricePicked', function (newValue, oldValue) {
+        $scope.$watch('pricePicked', function (newValue /*, oldValue */) {
             // When the pricePicked changes, we want to update all of the
             // valuesPicked to match.  Unless the pricePicked is null ... that
             // is, we've decided *not* to pick a price.  In that case, we leave
@@ -46,7 +46,7 @@
 
         $scope.$watchCollection(function () {
             return self.valuesPicked;
-        }, function (newValue, oldValue) {
+        }, function (/*newValue, oldValue */) {
             var now = Date.now();
             
             // When the collection of valuesPicked changes, we want to figure
@@ -66,21 +66,13 @@
                 }).toArray(); 
             }).orElse([]);
 
-            if (picked.length == 1) {
+            if (picked.length === 1) {
                 self.pricePicked = picked[0];
             } else {
                 self.pricePicked = null;
             }
         });
     }
-
-    ProductController.prototype = {
-        getProductCode: getProductCode,
-        getHeading: getHeading,
-        getProductVariables: getProductVariables,
-        priceForProductValue: priceForProductValue,
-        pricesForProductValue: pricesForProductValue
-    };
 
     /*
      * The structure of a product is like this:
@@ -125,54 +117,56 @@
      *  }
      */
 
-    function getProductCode () {
-        return this.product.code;
-    }
+    ProductController.prototype = {
+        getProductCode : function getProductCode () {
+            return this.product.code;
+        },
 
-    function getHeading () {
-        return this.heading;
-    }
+        getHeading : function getHeading () {
+            return this.heading;
+        },
 
-    function getProductVariables () {
-        var Stream = this.Stream;
+        getProductVariables : function getProductVariables () {
+            var Stream = this.Stream;
 
-        var pv = Stream.Optional.ofNullable(this.product).map(function (product) {
-            return product.productVariants;
-        }).map(function (productVariants) {
-            return Stream(productVariants)
-                .flatMap('productVariantValues')
-                .map('productValue.productVariable')
-                .distinct()
-                .toArray();
-        }).orElse([]);
+            var pv = Stream.Optional.ofNullable(this.product).map(function (product) {
+                return product.productVariants;
+            }).map(function (productVariants) {
+                return Stream(productVariants)
+                    .flatMap('productVariantValues')
+                    .map('productValue.productVariable')
+                    .distinct()
+                    .toArray();
+            }).orElse([]);
 
-        return pv;
-    }
+            return pv;
+        },
 
-    function pricesForProductValue (productValue) {
-        var Stream = this.Stream;
-        var now = Date.now();
+        pricesForProductValue : function pricesForProductValue (productValue) {
+            var Stream = this.Stream;
+            var now = Date.now();
 
-        return Stream(
-            this.product.productVariants
-        ).filter(function (productVariant) {
             return Stream(
-                productVariant.productVariantValues
-            ).map('productValue').anyMatch(function (pv) {
-                return pv.id === productValue.id;
+                this.product.productVariants
+            ).filter(function (productVariant) {
+                return Stream(
+                    productVariant.productVariantValues
+                ).map('productValue').anyMatch(function (pv) {
+                    return pv.id === productValue.id;
+                });
+            }).flatMap('productVariantPrices').filter(function (price) {
+                return now > price.validFrom;
             });
-        }).flatMap('productVariantPrices').filter(function (price) {
-            return now > price.validFrom;
-        });
-    }
+        },
 
-    function priceForProductValue (productValue, showDollar) {
-        var self = this;
+        priceForProductValue : function priceForProductValue (productValue, showDollar) {
+            var self = this;
 
-        return this.pricesForProductValue(
-            productValue
-        ).max('validFrom').map(function (price) {
-            return self.priceFilter(price.priceInCents, showDollar);
-        }).orElse(null);
-    }
+            return this.pricesForProductValue(
+                productValue
+            ).max('validFrom').map(function (price) {
+                return self.priceFilter(price.priceInCents, showDollar);
+            }).orElse(null);
+        }
+    };
 })();

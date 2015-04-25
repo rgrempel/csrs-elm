@@ -6,7 +6,7 @@
     function membershipPricesForProvider ($q, _, Product) {
         'ngInject';
 
-        return function membershipPricesFor (year) {
+        return function membershipPricesFor (/*year*/) {
             return Product.query().$promise.then(function (productList) {
                 return new MembershipPrices(productList, _);
             });
@@ -70,7 +70,7 @@
 
         price.e = (price.d * 3) - membership.reduction;
 
-        price.f = renewal.duration == 1 ? price.d : price.e;
+        price.f = renewal.duration === 1 ? price.d : price.e;
 
         return price;
     }

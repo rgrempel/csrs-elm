@@ -3,7 +3,7 @@
 
     angular.module('csrsApp').config(TranslationConfigurer);
 
-    function TranslationConfigurer ($translateProvider) {
+    function TranslationConfigurer ($translateProvider, $windowProvider) {
         'ngInject';
 
         // Initialize angular-translate
@@ -14,8 +14,10 @@
 
         var language;
 
-        if (window) {
-            var navigator = window.navigator;
+        var $window = $windowProvider.$get();
+
+        if ($window) {
+            var navigator = $window.navigator;
             language = (navigator.languages && navigator.languages[0]) ||
                             navigator.language ||
                             navigator.browserLanguage ||

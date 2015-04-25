@@ -16,7 +16,7 @@ angular.module('csrsApp').controller('ContactModalController', function ($scope,
         var self = this;
         self.serverError = null;
 
-        if (!$scope.editForm.$valid) return;
+        if (!$scope.editForm.$valid) {return;}
 
         if (this.contact.id) {
             Contact.update({}, this.contact, function () {
@@ -33,7 +33,7 @@ angular.module('csrsApp').controller('ContactModalController', function ($scope,
                     $scope.modalController.go('processFormsDetail', {
                         id: data.id
                     });
-                }).error(function (data, status, headers, config) {
+                }).error(function (data /*, status, headers, config*/) {
                     self.serverError = angular.toJson(data);
                 });
             }, function (httpResponse) {

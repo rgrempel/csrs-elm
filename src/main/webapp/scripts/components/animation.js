@@ -6,7 +6,7 @@ angular.module('csrsApp').directive('csrsAnimateOnChange', function ($animate) {
             csrsAnimateOnChange: '='
         },
 
-        link: function (scope, element, attr) {
+        link: function (scope, element /*, attr*/) {
             scope.$watch('csrsAnimateOnChange', function (oldValue, newValue) {
                 if (oldValue !== newValue) {
                     $animate.removeClass(element, 'value-changed').finally(function () {

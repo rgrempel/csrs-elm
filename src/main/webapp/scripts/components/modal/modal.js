@@ -5,12 +5,12 @@ angular.module('csrsApp').directive('csrsModal', function () {
         templateUrl: 'scripts/components/modal/modal.html',
         transclude: true,
         link: function (scope, element, attr, ctrl, transclude) {
-            transclude (scope, function (clone, transcludedScope) {
+            transclude (scope, function (clone /*, transcludedScope */) {
                 var content = $(element).find('.modal-content');
                 content.append(clone);
             });
 
-            if (attr.csrsModal == "sm" || attr.csrsModal == "lg") {
+            if (attr.csrsModal === 'sm' || attr.csrsModal === 'lg') {
                 var modalDialog = $(element).find('.modal-dialog');
                 modalDialog.toggleClass('modal-' + attr.csrsModal, true);
             }

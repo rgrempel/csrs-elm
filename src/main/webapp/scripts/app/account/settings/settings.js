@@ -21,13 +21,6 @@
         });
     });
 
-    SettingsController.prototype = {
-        loadContacts: loadContacts,
-        saveNewContact: saveNewContact,
-        startEditing: startEditing,
-        renew: renew
-    };
-
     function SettingsController ($scope, Principal, Auth, UserContact, $state) {
         'ngInject';
 
@@ -47,44 +40,46 @@
         this.loadContacts();
     }
 
-    function loadContacts () {
-        var self = this;
-        this.Principal.identity().then(function(account) {
-            self.account = account;
+    SettingsController.prototype = {
+        loadContacts : function loadContacts () {
+            var self = this;
+            this.Principal.identity().then(function(account) {
+                self.account = account;
 
-            self.UserContact.query({}, function (result) {
-                self.contacts = result;
-                self.contactsError = null;
-                self.gotContacts = true;
-            }, function (error) {
-                self.contacts = [];
-                self.contactsError = angular.toJson(error.data);
-                self.gotContacts = false;
+                self.UserContact.query({}, function (result) {
+                    self.contacts = result;
+                    self.contactsError = null;
+                    self.gotContacts = true;
+                }, function (error) {
+                    self.contacts = [];
+                    self.contactsError = angular.toJson(error.data);
+                    self.gotContacts = false;
+                });
             });
-        });
-    }
+        },
 
-    function saveNewContact () {
-        if (!this.scope.newContactForm.$valid) return;
+        saveNewContact : function saveNewContact () {
+            if (!this.scope.newContactForm.$valid) {return;}
 
-        var self = this;
-        this.UserContact.save({}, this.newContact, function () {
-            self.newContactError = null;
-            self.loadContacts();
-        }, function (error) {
-            self.newContactError = angular.toJson(error.data);
-        });
-    }
+            var self = this;
+            this.UserContact.save({}, this.newContact, function () {
+                self.newContactError = null;
+                self.loadContacts();
+            }, function (error) {
+                self.newContactError = angular.toJson(error.data);
+            });
+        },
 
-    function startEditing (contact) {
-        this.state.go('editUserContact', {
-            contact: contact
-        });
-    }
+        startEditing : function startEditing (contact) {
+            this.state.go('editUserContact', {
+                contact: contact
+            });
+        },
 
-    function renew (contact) {
-        this.state.go('renewal', {
-            contact: contact
-        });
-    }
+        renew : function renew (contact) {
+            this.state.go('renewal', {
+                contact: contact
+            });
+        }
+    };
 })();

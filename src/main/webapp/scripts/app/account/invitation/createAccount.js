@@ -8,7 +8,7 @@ angular.module('csrsApp').controller('CreateAccountController', function (Accoun
     focus('email');
 
     this.sendInvitation = function () {
-        if (!$scope.createAccountForm.$valid) return;
+        if (!$scope.createAccountForm.$valid) {return;}
 
         this.success = false;
         this.serverError = null;
@@ -26,7 +26,7 @@ angular.module('csrsApp').controller('CreateAccountController', function (Accoun
     };
 
     this.checkInvitation = function () {
-        if (!$scope.useInvitationForm.$valid) return;
+        if (!$scope.useInvitationForm.$valid) {return;}
 
         $state.go('invitation', {
             key: this.key
