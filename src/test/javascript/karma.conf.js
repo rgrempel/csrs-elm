@@ -38,6 +38,8 @@ module.exports = function (config) {
             'main/webapp/bower_components/jsog/lib/JSOG.js',
             'main/webapp/bower_components/ngAnimate-animate.css/animate.js',
             'main/webapp/bower_components/streamjs/stream.js',
+            'main/webapp/bower_components/js-data/dist/js-data.js',
+            'main/webapp/bower_components/js-data-angular/dist/js-data-angular.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

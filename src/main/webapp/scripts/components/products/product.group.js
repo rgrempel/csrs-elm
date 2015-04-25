@@ -6,7 +6,7 @@
     function csrsProductGroup () {
         return {
             scope: {
-                products: '=csrsProductGroup',
+                productGroup: '=csrsProductGroup',
                 pricesPicked: '=csrsPricesPicked'
             },
             templateUrl: 'scripts/components/products/product.group.html',
@@ -22,10 +22,18 @@
 
     angular.module('csrsApp').controller('ProductGroupController', ProductGroupController);
 
-    function ProductGroupController () {
+    function ProductGroupController ($scope, Stream) {
         'ngInject';
 
-    } 
+        var self = this;
+        $scope.$watch(function () {
+            return self.productGroup;
+        }, function (newValue, oldValue) {
+            self.products = Stream.Optional.ofNullable(newValue).map(function (productGroup) {
+                return Stream(productGroup.productGroupProducts).map('product').toArray();                
+            }).orElse([]); 
+        });
+    }
 
     ProductGroupController.prototype = {
         headingForIndex: headingForIndex

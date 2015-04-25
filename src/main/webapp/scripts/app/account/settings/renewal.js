@@ -22,8 +22,8 @@
 
         var self = this;
 
-        ProductGroup.get({id: 1}).$promise.then(function (productGroup) {
-            self.products = Stream(productGroup.productGroupProducts).map('product').toArray();
+        ProductGroup.find(1).then(function (productGroup) {
+            self.productGroup = productGroup;
         });
 
         // this.error;
