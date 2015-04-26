@@ -8648,6 +8648,51 @@ button.close {
   height: 0px;
 }
 
+/* line 1, ../../scripts/app/admin/metrics/_metrics.scss */
+.metrics-counter {
+  font-weight: bold;
+}
+
+/* line 1, ../../scripts/app/tasks/processForms/_process-forms.scss */
+.process-forms-search-box {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+/* line 6, ../../scripts/app/tasks/processForms/_process-forms.scss */
+.process-forms-detail-delete {
+  margin-left: 6px;
+}
+
+/* line 10, ../../scripts/app/tasks/processForms/_process-forms.scss */
+.process-forms-detail-remove-interest {
+  margin-left: 4px;
+}
+
+/* line 14, ../../scripts/app/tasks/processForms/_process-forms.scss */
+.process-forms-annual-year-input {
+  width: 4em;
+}
+
+/* line 18, ../../scripts/app/tasks/processForms/_process-forms.scss */
+.contact-form-guts label {
+  margin-top: 0px;
+  width: 100%;
+}
+
+/* line 23, ../../scripts/app/tasks/processForms/_process-forms.scss */
+.contact-form-guts legend {
+  /* Duplicate label */
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: bold;
+  /* Cancel some bootstrap defaults */
+  font-size: 100%;
+  color: black;
+  border-bottom: none;
+}
+
 /* line 1, ../../scripts/components/products/_product.scss */
 .csrs-price-container {
   display: table-cell;
@@ -8656,6 +8701,54 @@ button.close {
 }
 
 /* line 7, ../../scripts/components/products/_product.scss */
+.product-variable {
+  margin-left: 24px;
+  margin-bottom: 3px;
+}
+
+/* line 12, ../../scripts/components/products/_product.scss */
+.product-value-checkbox {
+  width: 24px;
+  min-width: 24px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+/* line 19, ../../scripts/components/products/_product.scss */
+.product-value-list-item {
+  cursor: pointer;
+}
+
+/* line 23, ../../scripts/components/products/_product.scss */
+.product-value-price {
+  width: 68px;
+  cursor: pointer;
+}
+
+/* line 28, ../../scripts/components/products/_product.scss */
+.product-picker {
+  display: table;
+  width: 100%;
+}
+
+/* line 33, ../../scripts/components/products/_product.scss */
+.product-picker-left {
+  display: table-cell;
+  vertical-align: top;
+}
+
+/* line 38, ../../scripts/components/products/_product.scss */
+.product-picker-heading {
+  width: 24px;
+  margin-bottom: 4px;
+}
+
+/* line 43, ../../scripts/components/products/_product.scss */
+.product-picker-title {
+  margin-bottom: 4px;
+}
+
+/* line 47, ../../scripts/components/products/_product.scss */
 .csrs-price-box {
   border: 2px solid black;
   width: 60px;
@@ -8665,7 +8758,7 @@ button.close {
   display: table;
 }
 
-/* line 16, ../../scripts/components/products/_product.scss */
+/* line 56, ../../scripts/components/products/_product.scss */
 .csrs-price {
   margin-top: auto;
   margin-bottom: auto;
@@ -8675,52 +8768,79 @@ button.close {
 }
 
 /* line 3, ../../../scss/_custom.scss */
+label input {
+  margin-top: 5px;
+  font-weight: normal;
+}
+
+/* line 8, ../../../scss/_custom.scss */
+label textarea {
+  margin-top: 5px;
+  font-weight: normal;
+}
+
+/* line 13, ../../../scss/_custom.scss */
+password-strength-bar {
+  margin-left: 6px;
+}
+
+/* line 17, ../../../scss/_custom.scss */
+.vertical-align-middle {
+  vertical-align: middle;
+}
+
+/* line 21, ../../../scss/_custom.scss */
+.button-space-left {
+  margin-left: 4px;
+}
+
+/* line 25, ../../../scss/_custom.scss */
 .multi-line {
   white-space: pre-line;
 }
 
-/* line 7, ../../../scss/_custom.scss */
+/* line 29, ../../../scss/_custom.scss */
 .help-block {
   margin-bottom: 0px;
 }
 
-/* line 11, ../../../scss/_custom.scss */
+/* line 33, ../../../scss/_custom.scss */
 .navbar-xs {
   min-height: 40px;
   height: 40px;
   margin-bottom: 12px;
 }
 
-/* line 17, ../../../scss/_custom.scss */
+/* line 39, ../../../scss/_custom.scss */
 .navbar-xs .navbar-brand {
   padding: 6px 12px;
   font-size: 16px;
   line-height: 28px;
 }
 
-/* line 23, ../../../scss/_custom.scss */
+/* line 45, ../../../scss/_custom.scss */
 .navbar-xs .navbar-nav > li > a {
   padding-top: 6px;
   padding-bottom: 6px;
   line-height: 28px;
 }
 
-/* line 29, ../../../scss/_custom.scss */
+/* line 51, ../../../scss/_custom.scss */
 .text-bold {
   font-weight: bold;
 }
 
-/* line 33, ../../../scss/_custom.scss */
+/* line 55, ../../../scss/_custom.scss */
 .contact-list {
   padding: 8px;
 }
 
-/* line 37, ../../../scss/_custom.scss */
+/* line 59, ../../../scss/_custom.scss */
 .translation-message {
   font-size: 80%;
 }
 
-/* line 41, ../../../scss/_custom.scss */
+/* line 63, ../../../scss/_custom.scss */
 .csrs-logo {
   display: inline-block;
   width: 347px;
@@ -8729,47 +8849,47 @@ button.close {
   background-size: contain;
 }
 
-/* line 49, ../../../scss/_custom.scss */
+/* line 71, ../../../scss/_custom.scss */
 .well .panel-default > .panel-heading {
   background-color: #e8e8e8;
 }
 
-/* line 53, ../../../scss/_custom.scss */
+/* line 75, ../../../scss/_custom.scss */
 .well .panel-default > .panel-footer {
   background-color: #e8e8e8;
 }
 
-/* line 57, ../../../scss/_custom.scss */
+/* line 79, ../../../scss/_custom.scss */
 .voffset4 {
   margin-top: 4px;
 }
 
-/* line 58, ../../../scss/_custom.scss */
+/* line 80, ../../../scss/_custom.scss */
 .voffset6 {
   margin-top: 6px;
 }
 
-/* line 59, ../../../scss/_custom.scss */
+/* line 81, ../../../scss/_custom.scss */
 .voffset8 {
   margin-top: 8px;
 }
 
-/* line 60, ../../../scss/_custom.scss */
+/* line 82, ../../../scss/_custom.scss */
 .voffset12 {
   margin-top: 12px;
 }
 
-/* line 61, ../../../scss/_custom.scss */
+/* line 83, ../../../scss/_custom.scss */
 .voffset16 {
   margin-top: 16px;
 }
 
-/* line 62, ../../../scss/_custom.scss */
+/* line 84, ../../../scss/_custom.scss */
 .voffset18 {
   margin-top: 18px;
 }
 
-/* line 63, ../../../scss/_custom.scss */
+/* line 85, ../../../scss/_custom.scss */
 .voffset24 {
   margin-top: 24px;
 }

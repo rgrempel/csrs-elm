@@ -21,10 +21,10 @@
             <td>{{'health.indicator.' + k | translate}}</td>
             <td class="text-center"><span class="label" ng-class="getLabelClass(v.status)">{{'health.status.' + v.status | translate}}</span></td>
             <td class="text-center">
-                <div id="healthCheck" class="row" ng-show="v.error">
+                <div class="row" ng-show="v.error">
                     <div class="col-md-4">
                         <a class="hand" ng-click="showHealthcheckException = !showHealthcheckException">
-                            <i class="glyphicon glyphicon-eye-open"></i>
+                            <span class="glyphicon glyphicon-eye-open"></span>
                         </a>
                         <div class="popover" ng-show="showHealthcheckException">
                             <div class="popover-title">

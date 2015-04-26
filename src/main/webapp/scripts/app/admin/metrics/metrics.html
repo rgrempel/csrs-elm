@@ -8,7 +8,7 @@
 <h3 translate="metrics.jvm.title">JVM Metrics</h3>
 <div class="row" ng-hide="updatingMetrics">
     <div class="col-md-4">
-        <b translate="metrics.jvm.memory.title">Memory</b>
+        <span class="metrics-counter" translate="metrics.jvm.memory.title">Memory</span>
         <p>{{'metrics.jvm.memory.total' | translate}} ({{metrics.gauges['jvm.memory.total.used'].value / 1000000 | number:0}}M / {{metrics.gauges['jvm.memory.total.max'].value / 1000000 | number:0}}M)</p>
         <div class="progress progress-striped">
             <div class="progress-bar progress-bar-success" role="progressbar"
@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="col-md-4">
-        <b translate="metrics.jvm.threads.title">Threads</b> (Total: {{metrics.gauges['jvm.threads.count'].value}}) <a class="hand" ng-click="refreshThreadDumpData()" data-toggle="modal" data-target="#threadDump"><i class="glyphicon glyphicon-eye-open"></i></a>
+        <span class="metrics-counter" translate="metrics.jvm.threads.title">Threads</span> (Total: {{metrics.gauges['jvm.threads.count'].value}}) <a class="hand" ng-click="refreshThreadDumpData()" data-toggle="modal" data-target="#thread-dump"><span class="glyphicon glyphicon-eye-open"></span></a>
         <p>{{'metrics.jvm.threads.runnable' | translate}} {{metrics.gauges['jvm.threads.runnable.count'].value}}</p>
         <div class="progress progress-striped">
             <div class="progress-bar progress-bar-success" role="progressbar"
@@ -84,7 +84,7 @@
         </div>
     </div>
     <div class="col-md-4">
-        <b translate="metrics.jvm.gc.title">Garbage collections</b>
+        <span class="metrics-counter" translate="metrics.jvm.gc.title">Garbage collections</span>
         <div class="row">
             <div class="col-md-9" translate="metrics.jvm.gc.marksweepcount">Mark Sweep count</div>
             <div class="col-md-3 text-right">{{metrics.gauges['jvm.garbage.PS-MarkSweep.count'].value}}</div>
@@ -106,7 +106,15 @@
 <div class="well well-lg" ng-show="updatingMetrics" translate="metrics.updating">Updating...</div>
 
 <h3 translate="metrics.jvm.http.title">HTTP requests (events per second)</h3>
-<p>{{'metrics.jvm.http.active' | translate}} <b>{{metrics.counters['com.codahale.metrics.servlet.InstrumentedFilter.activeRequests'].count | number:0}}</b> - {{'metrics.jvm.http.total' | translate}} <b>{{metrics.timers['com.codahale.metrics.servlet.InstrumentedFilter.requests'].count | number:0}}</b></p>
+
+<p>
+    <span translate="metrics.jvm.http.active">Active</span>
+    <span class="metrics-counter" ng-bind="metrics.counters['com.codahale.metrics.servlet.InstrumentedFilter.activeRequests'].count | number:0">100</span>
+    <span>-</span>
+    <span translate="metrics.jvm.http.total">Total</span>
+    <span class="metrics-counter" ng-bind="metrics.timers['com.codahale.metrics.servlet.InstrumentedFilter.requests'].count | number:0">100</span>
+</p>
+
 <div class="table-responsive">
     <table class="table table-striped">
         <thead>
@@ -131,6 +139,7 @@
                          ng-style="{width: ((metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].count * 100 / metrics.timers['com.codahale.metrics.servlet.InstrumentedFilter.requests'].count) | number:0) + '%'}">
                         {{metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].count}}
                     </div>
+                </div>
             </td>
             <td class="text-right">
                 {{metrics.meters['com.codahale.metrics.servlet.InstrumentedFilter.responseCodes.ok'].mean_rate | number:2}}
@@ -301,13 +310,13 @@
 
 </div>
 <!-- Modal used to display the threads dump -->
-<div id="threadDump" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="thread-dump" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-label" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel" translate="metrics.jvm.threads.dump.title">Threads dump</h4>
+                <h4 class="modal-title" id="my-modal-label" translate="metrics.jvm.threads.dump.title">Threads dump</h4>
             </div>
             <div class="modal-body well">
                 <span class="label label-primary" ng-click="threadDumpFilter = {}">{{'metrics.jvm.threads.all' | translate}}&nbsp;<span class="badge">{{threadDumpAll}}</span></span>&nbsp;

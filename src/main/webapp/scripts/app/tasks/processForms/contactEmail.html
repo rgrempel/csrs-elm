@@ -6,9 +6,9 @@
     <table class="table table-striped">
         <tbody>
             <tr class="animate-fade" ng-repeat="contactEmail in emailCtrl.contact.contactEmails">
-                <td style="vertical-align: middle;" ng-bind="contactEmail.email.emailAddress">rgrempel@gmail.com</td>
+                <td class="vertical-align-middle" ng-bind="contactEmail.email.emailAddress">rgrempel@gmail.com</td>
 
-                <td class="text-right" style="vertical-align: middle;">
+                <td class="text-right vertical-align-middle">
                     <button class="btn btn-danger btn-xs" ng-click="emailCtrl.confirmDelete(contactEmail)">
                         <span class="glyphicon glyphicon-trash"></span>
                     </button>
@@ -26,7 +26,7 @@
                                     <button type="submit" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok"></span></button>
                                 </span>
                                 
-                                <span style="margin-left: 4px;" class="input-group-btn">
+                                <span class="input-group-btn button-space-left">
                                     <button type="button" ng-click="emailCtrl.cancel()" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
                                 </span>
                             </div>

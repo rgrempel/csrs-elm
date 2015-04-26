@@ -11,11 +11,14 @@
             <div class="row">
                 <div class="col-xs-6">
                     <div csrs-form-group>
-                        <label translate="global.form.username">Login</label>
-                        <input csrs-form-control auto-focus required name="username" type="text" 
-                               placeholder="{{'global.form.username.placeholder' | translate}}"
-                               ng-model="reallyCreateAccountController.account.login"
-                               csrs-unique-login />
+                        <label>
+                            <span translate="global.form.username">Login</span>
+                            <input csrs-form-control auto-focus required name="username" type="text" 
+                                   placeholder="{{'global.form.username.placeholder' | translate}}"
+                                   ng-model="reallyCreateAccountController.account.login"
+                                   csrs-unique-login />
+                        </label>
+
                         <p csrs-help-block="required" translate="global.messages.validate.required">Required</p>
                         <p csrs-help-block="uniqueLogin" csrs-validate="always" translate="global.messages.validate.alreadyTaken">Already taken</p>
                     </div>
@@ -23,6 +26,7 @@
 
                 <div class="col-xs-6">
                     <div csrs-form-group>
+                        <!-- htmllint label-req-for="false" -->
                         <label translate="global.form.email">E-mail</label>
                         <p class="form-control-static" ng-bind="reallyCreateAccountController.email"></p> 
                     </div>
@@ -32,25 +36,29 @@
             <div class="row">
                 <div class="col-xs-6">
                     <div csrs-form-group>
-                        <label translate="global.form.newpassword">New password</label>
-                        <input csrs-form-control type="password" name="password" 
-                               placeholder="{{'global.form.newpassword.placeholder' | translate}}"
-                               ng-model="reallyCreateAccountController.account.password" ng-minlength=5 ng-maxlength=50 required />
+                        <label>
+                            <span translate="global.form.newpassword">New password</span>
+                            <input csrs-form-control type="password" name="password" 
+                                placeholder="{{'global.form.newpassword.placeholder' | translate}}"
+                                ng-model="reallyCreateAccountController.account.password" ng-minlength="5" ng-maxlength="50" required />
+                        </label>
+                        
+                        <password-strength-bar password-to-check="reallyCreateAccountController.account.password"></password-strength-bar>
                         
                         <p csrs-help-block="required" translate="global.messages.validate.required">Your password is required.</p>
                         <p csrs-help-block="minlength" translate="global.messages.validate.newpassword.minlength">Must be at least 5 characters</p>
-
-                        <password-strength-bar style="margin-left: 6px;" password-to-check="reallyCreateAccountController.account.password"></password-strength-bar>
                     </div>
                 </div>
 
                 <div class="col-xs-6">
                     <div csrs-form-group>
-                        <label translate="global.form.confirmpassword">New password confirmation</label>
-                        <input csrs-form-control type="password" name="confirm_password" 
-                               placeholder="{{'global.form.confirmpassword.placeholder' | translate}}"
-                               csrs-validate-matches="reallyCreateAccountController.account.password"
-                               ng-model="reallyCreateAccountController.confirmPassword">
+                        <label>
+                            <span translate="global.form.confirmpassword">New password confirmation</span>
+                            <input csrs-form-control type="password" name="confirm_password" 
+                                   placeholder="{{'global.form.confirmpassword.placeholder' | translate}}"
+                                   csrs-validate-matches="reallyCreateAccountController.account.password"
+                                   ng-model="reallyCreateAccountController.confirmPassword">
+                        </label>
 
                         <p csrs-help-block="csrsValidateMatches" translate="global.messages.error.dontmatch">Password confirmation does not match</p>
                     </div>

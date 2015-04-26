@@ -1,25 +1,25 @@
 <div csrs-modal>
-    <form name="editForm" role="form" novalidate ng-submit="contactForm.save()">
-        <div class="modal-header">
-            <button type="button" class="close" aria-hidden="true" ng-click="contactForm.cancel()">&times;</button>
-            <h4 class="modal-title" id="modal-label" translate="csrsApp.contact.home.createOrEditLabel">Create or edit a Contact</h4>
-        </div>
+    <div class="modal-header">
+        <button type="button" class="close" aria-hidden="true" ng-click="contactForm.cancel()">&times;</button>
+        <h4 class="modal-title" id="modal-label" translate="csrsApp.contact.home.createOrEditLabel">Create or edit a Contact</h4>
+    </div>
 
-        <div class="modal-body">
+    <div class="modal-body">
+        <form name="editForm" role="form" novalidate ng-submit="contactForm.save()">
             <div csrs-contact-form-guts="contactForm.contact"></div>
-        </div>
+        </form>
+    </div>
 
-        <div class="modal-footer">
-            <div csrs-error-occurred="contactForm.serverError"></div>
-            
-            <button type="button" class="btn btn-default" ng-click="contactForm.cancel()">
-                <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
-            </button>
+    <div class="modal-footer">
+        <div csrs-error-occurred="contactForm.serverError"></div>
+        
+        <button type="button" class="btn btn-default" ng-click="contactForm.cancel()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+        </button>
 
-            <button type="submit" class="btn btn-primary">
-                <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
-            </button>
-        </div>
-    </form>
+        <button type="button" class="btn btn-success" ng-click="contactForm.save()">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+        </button>
+    </div>
 </div>
 

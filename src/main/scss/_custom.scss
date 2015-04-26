@@ -1,5 +1,27 @@
 @import "../webapp/scripts/**/*";
 
+label input {
+    margin-top: 5px;
+    font-weight: normal;
+}
+
+label textarea {
+    margin-top: 5px;
+    font-weight: normal;
+}
+
+password-strength-bar {
+    margin-left: 6px;
+}
+
+.vertical-align-middle {
+    vertical-align: middle;
+}
+
+.button-space-left {
+    margin-left: 4px;
+}
+
 .multi-line {
     white-space: pre-line;
 }

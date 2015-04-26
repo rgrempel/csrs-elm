@@ -6,18 +6,24 @@
     <table class="table table-striped">
         <tbody>
             <tr class="animate-fade" ng-repeat="interest in interestsCtrl.contact.interests">
-                <td style="vertical-align: middle;">
+                <td class="vertical-align-middle">
                     <span ng-hide="interest.editMode" ng-bind="interest.interest">Interest</span>
                     <input ng-show="interest.editMode" type="text" ng-model="interest.interest" /> 
                 </td>
 
-                <td class="text-right" style="vertical-align: middle;">
+                <td class="text-right vertical-align-middle">
                     <button ng-hide="interest.editMode" class="btn btn-danger btn-xs" ng-click="interestsCtrl.remove(interest)">
                         <span class="glyphicon glyphicon-trash"></span>
                     </button>
+
                     <div class="btn-group" ng-show="interest.editMode">
-                        <button ng-click="interestsCtrl.commit(interest)" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok"></span></button>
-                        <button style="margin-left: 4px;" ng-click="interestsCtrl.cancel(interest)" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
+                        <button ng-click="interestsCtrl.commit(interest)" class="btn btn-success btn-xs">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                        
+                        <button ng-click="interestsCtrl.cancel(interest)" class="btn btn-warning btn-xs">
+                            <span class="glyphicon glyphicon-remove process-forms-detail-remove-interest"></span>
+                        </button>
                     </div>
                 </td>
             </tr>

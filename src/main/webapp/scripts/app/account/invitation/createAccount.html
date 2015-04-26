@@ -8,9 +8,9 @@
 
         <form name="createAccountForm" role="form" novalidate ng-submit="createAccountController.sendInvitation()" >
             <div csrs-form-group>
-                <label translate="invitation.createAccount.email">Email Address</label>
+                <label for="email-input" translate="invitation.createAccount.email">Email Address</label>
                 <div class="input-group">
-                    <input csrs-form-control focus-on="email" required type="email" ng-model="createAccountController.email" />
+                    <input id="email-input" csrs-form-control focus-on="email" required type="email" ng-model="createAccountController.email" />
                     <span class="input-group-btn">
                         <button type="submit" class="btn btn-primary">
                             <span class="glyphicon glyphicon-send">&nbsp;</span><span translate="invitation.createAccount.sendInvitation">Send Invitation</span>
@@ -41,9 +41,9 @@
 
         <form name="useInvitationForm" role="form" novalidate ng-submit="createAccountController.checkInvitation()" >
             <div csrs-form-group>
-                <label translate="invitation.use.key">Invitation Key</label>
+                <label for="key-input" translate="invitation.use.key">Invitation Key</label>
                 <div class="input-group">
-                    <input csrs-form-control required focus-on="key" type="text" ng-model="createAccountController.key" />
+                    <input id="key-input" csrs-form-control required focus-on="key" type="text" ng-model="createAccountController.key" />
                     <span class="input-group-btn">
                         <button type="submit" class="btn btn-primary">
                             <span class="glyphicon glyphicon-tag">&nbsp;</span><span translate="invitation.use.useThisInvitation">Use Invitation</span>

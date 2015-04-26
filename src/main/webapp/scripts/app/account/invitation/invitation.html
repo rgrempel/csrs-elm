@@ -2,16 +2,16 @@
     <div class="col-xs-12">
         <h2 translate="invitation.use.pageTitle">Use an Invitation</h2>
 
-        <div style="padding-bottom: 12px" translate="invitation.use.blurb">
+        <p translate="invitation.use.blurb">
             If you have an invitation to create an account or reset your password, paste the key below.
             The key should be a long number.
-        </div>      
+        </p>      
 
         <form name="useInvitationForm" role="form" novalidate ng-submit="invitationController.checkInvitation()" >
             <div csrs-form-group>
-                <label translate="invitation.use.key">Invitation Key</label>
+                <label for="invitation-key" translate="invitation.use.key">Invitation Key</label>
                 <div class="input-group">
-                    <input csrs-form-control required type="text" auto-focus ng-model="invitationController.key" />
+                    <input id="invitation-key" csrs-form-control required type="text" auto-focus ng-model="invitationController.key" />
                     <span class="input-group-btn">
                         <button type="submit" class="btn btn-primary">
                             <span class="glyphicon glyphicon-tag">&nbsp;</span><span translate="invitation.use.useThisInvitation">Use Invitation</span>

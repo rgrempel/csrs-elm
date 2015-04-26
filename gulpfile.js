@@ -20,6 +20,8 @@ var gulp = require('gulp'),
     flatten = require('gulp-flatten'),
     del = require('del'),
     url = require('url'),
+    htmllint = require('gulp-htmllint'),
+    htmlhint = require("gulp-htmlhint"),
     wiredep = require('wiredep').stream,
     angularFilesort = require('gulp-angular-filesort'),
     inject = require('gulp-inject'),
@@ -282,6 +284,20 @@ gulp.task('jshint', function() {
     return gulp.src(['gulpfile.js', yeoman.app + 'scripts/**/*.js'])
         .pipe(jshint())
         .pipe(jshint.reporter('jshint-stylish'));
+});
+
+gulp.task('htmllint', function () {
+    return gulp.src(
+        ['src/main/webapp/index.html', yeoman.app + 'scripts/**/*.html']
+    ).pipe(htmllint());
+});
+
+gulp.task('htmlhint', function () {
+    return gulp.src(
+        ['src/main/webapp/index.html', yeoman.app + 'scripts/**/*.html']
+    ).pipe(htmlhint({
+        'doctype-first': false
+    })).pipe(htmlhint.reporter())
 });
 
 gulp.task('server', ['serve'], function () {

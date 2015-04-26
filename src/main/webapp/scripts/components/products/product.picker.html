@@ -1,11 +1,11 @@
-<div style="display: table; width: 100%;">
+<div class="product-picker">
     <!-- Left side ... list of choices ... -->
-    <div style="display: table-cell; vertical-align: top;">
-        <h4 style="width: 24px; margin-bottom: 4px;" class="pull-left text-right">
+    <div class="product-picker-left">
+        <h4 class="product-picker-heading pull-left text-right">
             <span ng-bind="productPicker.getHeading()">A.</span>&nbsp;
         </h4>
         
-        <h4 style="margin-bottom: 4px;" translate="{{productPicker.getProductCode()}}">Membership</h4>
+        <h4 class="product-picker-title" translate="{{productPicker.getProductCode()}}">Membership</h4>
 
         <div class="clearfix"
              csrs-product-variable-picker="productVariable"

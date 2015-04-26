@@ -16,6 +16,7 @@ angular.module('csrsApp').controller('ContactModalController', function ($scope,
         var self = this;
         self.serverError = null;
 
+        $scope.editForm.$setSubmitted();
         if (!$scope.editForm.$valid) {return;}
 
         if (this.contact.id) {

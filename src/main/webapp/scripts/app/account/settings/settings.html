@@ -20,7 +20,7 @@
                             <button class="btn btn-primary btn-sm pull-right" ng-click="settingsController.startEditing(contact)">
                                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit">Edit</span>
                             </button>
-                            <div class="clearfix" style="vertical-align: middle;" translate="csrsApp.contact.home.pleaseEdit">Please edit if needed.</div>
+                            <div class="clearfix vertical-align-middle" translate="csrsApp.contact.home.pleaseEdit">Please edit if needed.</div>
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                         <table class="table table-striped">
                             <tbody>
                                 <tr class="animate-fade" ng-repeat="contactEmail in contact.contactEmails">
-                                    <td style="vertical-align: middle;" ng-bind="contactEmail.email.emailAddress">rgrempel@gmail.com</td>
+                                    <td class="vertical-align-middle" ng-bind="contactEmail.email.emailAddress">rgrempel@gmail.com</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -46,11 +46,11 @@
                 <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <b class="panel-title" style="vertical-align: middle;" translate="csrsApp.processForms.annualData">Annual Data</b>
+                            <span class="panel-title vertical-align-middle text-bold" translate="csrsApp.processForms.annualData">Annual Data</span>
 
-                            <span class="btn-group" style="margin-left: 12px;">
+                            <span class="btn-group button-space-left">
                                 <button type="button" class="btn btn-success" ng-click="settingsController.renew(contact)">
-                                    <b translate="csrsApp.renewal.joinOrRenew">Join / Renew</b>
+                                    <span class="text-bold" translate="csrsApp.renewal.joinOrRenew">Join / Renew</span>
                                 </button>
                             </span>
                         </div>
@@ -69,15 +69,15 @@
                             
                             <tbody>
                                 <tr ng-repeat="annual in contact.annuals | orderBy: '-year' track by annual.id">
-                                    <td style="vertical-align: middle;" ng-bind="annual.year">2015</td>
+                                    <td class="vertical-align-middle" ng-bind="annual.year">2015</td>
                         
-                                    <td style="vertical-align: middle;" translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</td>
+                                    <td class="vertical-align-middle" translate="csrsApp.annual.data.membership.{{annual.membership}}">Membership Status</td>
 
-                                    <td style="vertical-align: middle;">
+                                    <td class="vertical-align-middle">
                                         <span ng-show="annual.iter" class="glyphicon glyphicon-ok"></span>
                                     </td>
 
-                                    <td style="vertical-align: middle;" translate="csrsApp.annual.data.rr.{{annual.rr}}">Renaissance and Reformation</td>
+                                    <td class="vertical-align-middle" translate="csrsApp.annual.data.rr.{{annual.rr}}">Renaissance and Reformation</td>
                                 </tr>
                             </tbody>
                         </table>
