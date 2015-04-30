@@ -21,12 +21,12 @@ apply from: 'liquibase.gradle'
 apply from: 'gatling.gradle'
 
 group = 'com.fulliautomatix.csrs'
-version = '0.1b7'
+version = '0.2b1'
 description = ''
 
 war {
     baseName = 'csrs'
-    version =  '0.1b7'
+    version =  '0.2b1'
 }
 
 if (project.hasProperty('prod')) {
