@@ -1,3 +1,5 @@
+/// <reference path="stream.d.ts" />
+
 //{
 
 

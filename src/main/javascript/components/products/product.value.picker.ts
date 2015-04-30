@@ -23,36 +23,28 @@ module CSRS {
     
     class ProductValueController {
         scope: angular.IScope;
+        Stream: streamjs.Stream;
         pricePicked: IProductVariantPrice;
         productValue: IProductValue;
         readOnly: boolean;
         selected: boolean;
         
-        constructor ($scope : angular.IScope, Stream: any) {
+        constructor ($scope : angular.IScope, Stream: streamjs.Stream) {
             'ngInject';
 
             this.scope = $scope;
+            this.Stream = Stream;
 
             $scope.$watch(() => {
                 return this.pricePicked;
-            }, (newValue) => {
-                // If the newValue is null, we just return ...
-                if (!newValue) return;
-
-                // console.log("productValuePicker check pricePicked to see if we're selected");
-
-                // Otherwise, check whether we've been picked ...
-                var selected = Stream(
-                    newValue.productVariant.productVariantValues
-                ).map('productValue').anyMatch((pv: IProductValue) => {
-                    pv && (pv.id === this.productValue.id)
-                });
-
-                if (selected) this.select();
+            }, (newValue: IProductVariantPrice) => {
+                this.handlePricePicked(newValue);
             });
 
             $scope.$on('otherProductValueSelected', (event : angular.IAngularEvent, otherProductValue: IProductValue) => {
-                var matched : boolean = Stream(this.productValue.productValueImpliedBy).map('productValue').anyMatch((pv: IProductValue) => {
+                var matched : boolean = Stream(
+                    this.productValue.productValueImpliedBy
+                ).map('productValue').anyMatch((pv: IProductValue) => {
                     return pv && (pv.id === otherProductValue.id);
                 });
 
@@ -60,14 +52,30 @@ module CSRS {
             });
         }
 
-        select () {
+        select () : void {
             if (!this.selected) {
                 this.scope.$emit('productValueSelected', this.productValue);
             }
         }
 
-        selectClicked () {
+        selectClicked () : void {
             if (!this.readOnly) this.select();
+        }
+
+        handlePricePicked (newValue: IProductVariantPrice) : void {
+            // If the newValue is null, we just return ...
+            if (!newValue) return;
+
+            // console.log("productValuePicker check pricePicked to see if we're selected");
+
+            // Otherwise, check whether we've been picked ...
+            var selected = this.Stream(
+                newValue.productVariant.productVariantValues
+            ).map('productValue').anyMatch((pv: IProductValue) => {
+                return pv && (pv.id === this.productValue.id)
+            });
+
+            if (selected) this.select();
         }
     }
 

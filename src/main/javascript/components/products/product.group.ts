@@ -21,16 +21,16 @@ module CSRS {
         productGroup : IProductGroup;
         products: Array<IProduct>;
 
-        constructor ($scope : angular.IScope, Stream : any) {
+        constructor ($scope : angular.IScope, Stream : streamjs.Stream) {
             'ngInject';
 
             $scope.$watch(() => {
                 return this.productGroup;
-            }, (newValue) => {
+            }, (newValue: IProductGroup) => {
                 this.products = Stream.Optional.ofNullable(newValue).map((productGroup : IProductGroup) => {
                     // console.log("setting productGroup.products");
-                    return Stream(productGroup.productGroupProducts).map('product').toArray();                
-                }).orElse([]);    
+                    return Stream(productGroup.productGroupProducts).map<IProduct>('product').toArray();                
+                }).orElse([]);
             });
             
             // When a productValue is selected, broadcast the event so that other
@@ -38,11 +38,11 @@ module CSRS {
             $scope.$on('productValueSelected', this.productValueSelectedListener);
         }
         
-        headingForIndex (index : number) {
+        headingForIndex (index : number) : string {
             return String.fromCharCode(65 + index) + '.';
         }
         
-        productValueSelectedListener (event : angular.IAngularEvent, productValue : IProductValue) {
+        productValueSelectedListener (event : angular.IAngularEvent, productValue : IProductValue) : void {
             event.currentScope.$broadcast('otherProductValueSelected', productValue);
         }
     }

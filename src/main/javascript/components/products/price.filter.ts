@@ -11,7 +11,7 @@ module CSRS {
     angular.module('csrsApp').filter('price', function (currencyFilter : Function) : IPriceFilter {
         'ngInject';
 
-        return function priceFilter (price : number, useDollarSign : boolean) : string {
+        return function priceFilter (price: number, useDollarSign: boolean) : string {
             // Make it default to true if undefined
             if (useDollarSign === undefined) {
                 useDollarSign = true;

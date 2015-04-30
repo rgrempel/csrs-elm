@@ -20,7 +20,7 @@ module CSRS {
     });
 
     export class ProductController {
-        Stream: any;
+        Stream: streamjs.Stream;
         priceFilter: IPriceFilter;
         productVariablePickers: Array<ProductVariableController>;
         product: IProduct;
@@ -28,7 +28,7 @@ module CSRS {
         productVariables: Array<IProductVariable>;
         heading: string;
 
-        constructor (Stream: any, priceFilter: IPriceFilter, $scope: angular.IScope, _: _.LoDashStatic) {
+        constructor (Stream: streamjs.Stream, priceFilter: IPriceFilter, $scope: angular.IScope, _: _.LoDashStatic) {
             'ngInject';
  
             this.Stream = Stream;
@@ -50,33 +50,7 @@ module CSRS {
             $scope.$watchCollection(() => {
                 return Stream(this.productVariablePickers).map('productValuePicked').toArray();
             }, (newValue: Array<IProductValue>) => {
-                var now = Date.now();
-               
-                // console.log("productPicker.settingPricePicked from values picked");
-
-                // When the collection of values picked changes, try to figure out
-                // what price we've picked.
-                var picked = Stream.Optional.ofNullable(this.product).map((product: IProduct) => {
-                    return Stream(product.productVariants).filter((variant: IProductVariant) => {
-                        return Stream(
-                            variant.productVariantValues
-                        ).map('productValue').allMatch((productValue: IProductValue) => {
-                            return Stream(newValue).anyMatch((pickedValue: IProductValue) => {
-                                return pickedValue && (pickedValue.id === productValue.id);
-                            });
-                        });
-                    }).map('productVariantPrices').map((priceArray: Array<IProductVariantPrice>) => {
-                        return Stream(priceArray).filter((price: IProductVariantPrice) => {
-                            return now > price.validFrom;
-                        }).max('validFrom').orElse(null);
-                    }).toArray(); 
-                }).orElse([]);
-
-                if (picked.length === 1) {
-                    this.pricePicked = picked[0];
-                } else {
-                    this.pricePicked = null;
-                }
+                this.handleProductValuesPicked(newValue);
             });
             
             $scope.$watch(() => {
@@ -86,8 +60,8 @@ module CSRS {
 
                 this.productVariables = Stream.Optional.ofNullable(newValue).map((product: IProduct) => {
                     return Stream(product.productVariants)
-                        .flatMap('productVariantValues')
-                        .map('productValue.productVariable')
+                        .flatMap<IProductVariantValue>('productVariantValues')
+                        .map<IProductVariable>('productValue.productVariable')
                         .distinct()
                         .toArray();
                 }).orElse([]);
@@ -102,7 +76,7 @@ module CSRS {
             return this.heading;
         }
 
-        pricesForProductValue (productValue: IProductValue) {
+        pricesForProductValue (productValue: IProductValue) : streamjs.Pipeline<IProductVariantPrice> {
             var Stream = this.Stream;
             var now = Date.now();
 
@@ -111,15 +85,19 @@ module CSRS {
             ).filter((productVariant: IProductVariant) => {
                 return Stream(
                     productVariant.productVariantValues
-                ).map('productValue').anyMatch((pv: IProductValue) => {
+                ).map<IProductValue>(
+                    'productValue'
+                ).anyMatch((pv: IProductValue) => {
                     return pv.id === productValue.id;
                 });
-            }).flatMap('productVariantPrices').filter((price: IProductVariantPrice) => {
+            }).flatMap<IProductVariantPrice>(
+                'productVariantPrices'
+            ).filter((price: IProductVariantPrice) => {
                 return now > price.validFrom;
             });
         }
 
-        priceForProductValue (productValue: IProductValue, showDollar: boolean) :string {
+        priceForProductValue (productValue: IProductValue, showDollar: boolean) : string {
             // console.log("productPicker.priceForProductValue");
 
             return this.pricesForProductValue(
@@ -127,6 +105,36 @@ module CSRS {
             ).max('validFrom').map((price: IProductVariantPrice) => {
                 return this.priceFilter(price.priceInCents, showDollar);
             }).orElse(null);
+        }
+
+        handleProductValuesPicked (newValue: Array<IProductValue>) : void {
+            var now = Date.now();
+            
+            // console.log("productPicker.settingPricePicked from values picked");
+
+            // When the collection of values picked changes, try to figure out
+            // what price we've picked.
+            var picked = this.Stream.Optional.ofNullable(this.product).map((product: IProduct) => {
+                return this.Stream(product.productVariants).filter((variant: IProductVariant) => {
+                    return this.Stream(
+                        variant.productVariantValues
+                    ).map('productValue').allMatch((productValue: IProductValue) => {
+                        return this.Stream(newValue).anyMatch((pickedValue: IProductValue) => {
+                            return pickedValue && (pickedValue.id === productValue.id);
+                        });
+                    });
+                }).map('productVariantPrices').map((priceArray: Array<IProductVariantPrice>) => {
+                    return this.Stream(priceArray).filter((price: IProductVariantPrice) => {
+                        return now > price.validFrom;
+                    }).max('validFrom').orElse(null);
+                }).toArray(); 
+            }).orElse([]);
+
+            if (picked.length === 1) {
+                this.pricePicked = picked[0];
+            } else {
+                this.pricePicked = null;
+            }
         }
     }
     

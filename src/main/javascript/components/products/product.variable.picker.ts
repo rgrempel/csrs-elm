@@ -39,11 +39,11 @@ module CSRS {
             });
         }
 
-        getImpliedBy () {
+        getImpliedBy () : IProductVariable {
             return this.productVariable.impliedBy;
         }
 
-        priceForProductValue (productValue: IProductValue, showDollar : boolean) {
+        priceForProductValue (productValue: IProductValue, showDollar: boolean) : string {
             return this.productPicker.priceForProductValue(productValue, showDollar);
         }
     }
