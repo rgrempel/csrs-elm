@@ -72,7 +72,7 @@ gulp.task('ts-lint', function () {
 });
 
 gulp.task('ts-refs', function () {
-    var target = gulp.src(yeoman.types + 'app.d.ts');
+    var target = gulp.src(yeoman.types + 'app.ts');
     
     var sources = gulp.src([
         yeoman.javascript + '**/*.ts',
@@ -387,7 +387,7 @@ gulp.task('htmlhint', function () {
         ['src/main/webapp/index.html', yeoman.app + 'scripts/**/*.html']
     ).pipe(htmlhint({
         'doctype-first': false
-    })).pipe(htmlhint.reporter())
+    })).pipe(htmlhint.reporter());
 });
 
 gulp.task('server', ['serve'], function () {
