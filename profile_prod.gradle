@@ -32,22 +32,7 @@ task setProdProperties(dependsOn: bootRun) << {
 
 gulp_build.dependsOn 'npmInstall'
 gulp_build.dependsOn 'bower'
-processResources.dependsOn gulp_build
+//processResources.dependsOn gulp_build
 test.dependsOn gulp_test
-bootRun.dependsOn gulp_test
+// bootRun.dependsOn gulp_test
 
-/*
-task gruntBuild(type: Exec) {
-   commandLine 'grunt', '--force', 'build'
-}
-
-task gruntTest(type: Exec) {
-   commandLine 'grunt', 'test'
-}
-
-gruntBuild.dependsOn 'npmInstall'
-gruntBuild.dependsOn 'bower'
-processResources.dependsOn gruntBuild
-test.dependsOn gruntTest
-bootRun.dependsOn gruntTest
-*/
