@@ -5,5 +5,6 @@
     "indent-width": false,
     "id-class-style": "dash",
     "attr-name-style": "dash",
-    "attr-req-value": false
+    "attr-req-value": false,
+    "line-end-style": false
 }

@@ -1,0 +1,25 @@
+.product-value
+    .selector(
+        ng-click = "productValuePicker.select()"
+    )
+        span(
+            ng-show = "productValuePicker.selected"
+            class = "glyphicon glyphicon-ok"
+        )
+        span(
+            ng-hide = "productValuePicker.selected"
+        ) &nbsp;
+
+    .price(
+        ng-click = "productValuePicker.select()"
+        ng-bind = "productValuePicker.price"
+    ) 100
+
+    .description
+        a(
+            translate = "{{productValuePicker.productValue.code}}" 
+            ng-bind = "productValuePicker.price"
+            ng-click = "productValuePicker.select()"
+            ng-class = "{'text-bold': productValuePicker.selected}"
+        ) Regular member
+

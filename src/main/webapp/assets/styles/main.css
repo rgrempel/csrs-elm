@@ -8548,14 +8548,6 @@ button.close {
 }
 
 /* line 10, ../../../scss/_animation.scss */
-.flip-change.value-changed-add {
-  -webkit-animation: flip 1s;
-  -moz-animation: flip 1s;
-  -ms-animation: flip 1s;
-  animation: flip 1s;
-}
-
-/* line 17, ../../../scss/_animation.scss */
 .yoyo.ng-enter,
 .yoyo.ng-leave {
   -moz-transition: all 400ms cubic-bezier(0.25, 0.25, 0.75, 0.75);
@@ -8566,7 +8558,7 @@ button.close {
   display: block;
 }
 
-/* line 24, ../../../scss/_animation.scss */
+/* line 17, ../../../scss/_animation.scss */
 .yoyo-ng-leave.ng-leave-active,
 .yoyo.ng-enter {
   -moz-transform: rotateX(90deg) rotateZ(90deg);
@@ -8577,7 +8569,7 @@ button.close {
   height: 0px;
 }
 
-/* line 31, ../../../scss/_animation.scss */
+/* line 24, ../../../scss/_animation.scss */
 .yoyo.ng-enter.ng-enter-active,
 .yoyo.ng-leave {
   -moz-transform: rotateX(0deg) rotateZ(0deg);
@@ -8588,7 +8580,7 @@ button.close {
   height: 30px;
 }
 
-/* line 38, ../../../scss/_animation.scss */
+/* line 31, ../../../scss/_animation.scss */
 .animate-fade.ng-enter,
 .animate-fade.ng-leave {
   -moz-transition: all 1s;
@@ -8597,31 +8589,31 @@ button.close {
   transition: all 1s;
 }
 
-/* line 43, ../../../scss/_animation.scss */
+/* line 36, ../../../scss/_animation.scss */
 .animate-fade.ng-enter {
   opacity: 0.2;
   background-color: #AAAAAA;
 }
 
-/* line 48, ../../../scss/_animation.scss */
+/* line 41, ../../../scss/_animation.scss */
 .animate-fade.ng-enter.ng-enter-active {
   opacity: 1;
   background-color: #FFFFDD;
 }
 
-/* line 53, ../../../scss/_animation.scss */
+/* line 46, ../../../scss/_animation.scss */
 .animate-fade.ng-leave {
   opacity: 1;
   background-color: #FFFFDD;
 }
 
-/* line 58, ../../../scss/_animation.scss */
+/* line 51, ../../../scss/_animation.scss */
 .animate-fade.ng-leave.ng-leave-active {
   opacity: 0.2;
   background-color: #AAAAAA;
 }
 
-/* line 64, ../../../scss/_animation.scss */
+/* line 57, ../../../scss/_animation.scss */
 .move.ng-enter,
 .move.ng-leave {
   -moz-transition: all 600ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
@@ -8632,7 +8624,7 @@ button.close {
   display: block;
 }
 
-/* line 71, ../../../scss/_animation.scss */
+/* line 64, ../../../scss/_animation.scss */
 .move.ng-enter.ng-enter-active,
 .move.ng-leave {
   opacity: 1;
@@ -8640,7 +8632,7 @@ button.close {
   height: 30px;
 }
 
-/* line 78, ../../../scss/_animation.scss */
+/* line 71, ../../../scss/_animation.scss */
 .move.ng-leave.ng-leave-active,
 .move.ng-enter {
   opacity: 0;
@@ -8648,39 +8640,39 @@ button.close {
   height: 0px;
 }
 
-/* line 1, ../../scripts/app/admin/metrics/_metrics.scss */
+/* line 1, ../../../javascript/app/admin/metrics/_metrics.scss */
 .metrics-counter {
   font-weight: bold;
 }
 
-/* line 1, ../../scripts/app/tasks/processForms/_process-forms.scss */
+/* line 1, ../../../javascript/app/tasks/processForms/_process-forms.scss */
 .process-forms-search-box {
   padding-left: 12px;
   padding-right: 12px;
 }
 
-/* line 6, ../../scripts/app/tasks/processForms/_process-forms.scss */
+/* line 6, ../../../javascript/app/tasks/processForms/_process-forms.scss */
 .process-forms-detail-delete {
   margin-left: 6px;
 }
 
-/* line 10, ../../scripts/app/tasks/processForms/_process-forms.scss */
+/* line 10, ../../../javascript/app/tasks/processForms/_process-forms.scss */
 .process-forms-detail-remove-interest {
   margin-left: 4px;
 }
 
-/* line 14, ../../scripts/app/tasks/processForms/_process-forms.scss */
+/* line 14, ../../../javascript/app/tasks/processForms/_process-forms.scss */
 .process-forms-annual-year-input {
   width: 4em;
 }
 
-/* line 18, ../../scripts/app/tasks/processForms/_process-forms.scss */
+/* line 18, ../../../javascript/app/tasks/processForms/_process-forms.scss */
 .contact-form-guts label {
   margin-top: 0px;
   width: 100%;
 }
 
-/* line 23, ../../scripts/app/tasks/processForms/_process-forms.scss */
+/* line 23, ../../../javascript/app/tasks/processForms/_process-forms.scss */
 .contact-form-guts legend {
   /* Duplicate label */
   display: inline-block;
@@ -8693,63 +8685,35 @@ button.close {
   border-bottom: none;
 }
 
-/* line 1, ../../scripts/components/products/_product.scss */
-.csrs-price-container {
-  display: table-cell;
-  width: 88px;
-  vertical-align: middle;
-}
-
-/* line 7, ../../scripts/components/products/_product.scss */
-.product-variable {
-  margin-left: 24px;
-  margin-bottom: 3px;
-}
-
-/* line 12, ../../scripts/components/products/_product.scss */
-.product-value-checkbox {
-  width: 24px;
-  min-width: 24px;
-  cursor: pointer;
-  font-size: 1em;
-}
-
-/* line 19, ../../scripts/components/products/_product.scss */
-.product-value-list-item {
-  cursor: pointer;
-}
-
-/* line 23, ../../scripts/components/products/_product.scss */
-.product-value-price {
-  width: 68px;
-  cursor: pointer;
-}
-
-/* line 28, ../../scripts/components/products/_product.scss */
+/* line 1, ../../../javascript/components/products/_product.picker.scss */
 .product-picker {
   display: table;
   width: 100%;
 }
-
-/* line 33, ../../scripts/components/products/_product.scss */
-.product-picker-left {
+/* line 5, ../../../javascript/components/products/_product.picker.scss */
+.product-picker .price-container {
+  display: table-cell;
+  width: 88px;
+  vertical-align: middle;
+}
+/* line 11, ../../../javascript/components/products/_product.picker.scss */
+.product-picker .product-picker-list {
   display: table-cell;
   vertical-align: top;
 }
-
-/* line 38, ../../scripts/components/products/_product.scss */
-.product-picker-heading {
+/* line 16, ../../../javascript/components/products/_product.picker.scss */
+.product-picker .product-picker-heading {
   width: 24px;
   margin-bottom: 4px;
+  float: left;
+  text-align: right;
 }
-
-/* line 43, ../../scripts/components/products/_product.scss */
-.product-picker-title {
+/* line 23, ../../../javascript/components/products/_product.picker.scss */
+.product-picker .product-picker-title {
   margin-bottom: 4px;
 }
-
-/* line 47, ../../scripts/components/products/_product.scss */
-.csrs-price-box {
+/* line 27, ../../../javascript/components/products/_product.picker.scss */
+.product-picker .price-box {
   border: 2px solid black;
   width: 60px;
   height: 60px;
@@ -8757,14 +8721,45 @@ button.close {
   text-align: center;
   display: table;
 }
-
-/* line 56, ../../scripts/components/products/_product.scss */
-.csrs-price {
+/* line 36, ../../../javascript/components/products/_product.picker.scss */
+.product-picker .price-box.value-changed-add {
+  -moz-animation: flip 1s;
+  -webkit-animation: flip 1s;
+  animation: flip 1s;
+}
+/* line 40, ../../../javascript/components/products/_product.picker.scss */
+.product-picker .price {
   margin-top: auto;
   margin-bottom: auto;
   font-weight: bold;
   display: table-cell;
   vertical-align: middle;
+}
+
+/* line 2, ../../../javascript/components/products/_product.value.scss */
+.product-value .selector {
+  float: left;
+  width: 24px;
+  min-width: 24px;
+  cursor: pointer;
+  font-size: 1em;
+}
+/* line 10, ../../../javascript/components/products/_product.value.scss */
+.product-value .price {
+  float: right;
+  text-align: right;
+  width: 68px;
+  cursor: pointer;
+}
+/* line 17, ../../../javascript/components/products/_product.value.scss */
+.product-value .description {
+  cursor: pointer;
+}
+
+/* line 1, ../../../javascript/components/products/_product.variable.scss */
+.product-variable {
+  margin-left: 24px;
+  margin-bottom: 3px;
 }
 
 /* line 3, ../../../scss/_custom.scss */

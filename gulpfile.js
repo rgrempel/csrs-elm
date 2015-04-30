@@ -15,10 +15,14 @@ var gulp = require('gulp'),
     ngConstant = require('gulp-ng-constant-fork'),
     jshint = require('gulp-jshint'),
     rev = require('gulp-rev'),
+    jade = require('gulp-jade'),
+    tslint = require('gulp-tslint'),
+    tsc = require('gulp-typescript'),
     proxy = require('proxy-middleware'),
     es = require('event-stream'),
     flatten = require('gulp-flatten'),
     del = require('del'),
+    s = require('string'),
     url = require('url'),
     htmllint = require('gulp-htmllint'),
     htmlhint = require("gulp-htmlhint"),
@@ -34,6 +38,9 @@ var karma = require('gulp-karma')({configFile: 'src/test/javascript/karma.conf.j
 var yeoman = {
     app: 'src/main/webapp/',
     dist: 'src/main/webapp/dist/',
+    scripts: 'src/main/webapp/scripts/',
+    javascript: 'src/main/javascript/',
+    types: 'src/main/javascript/types/',
     test: 'src/test/javascript/spec/',
     tmp: '.tmp/',
     scss: 'src/main/',
@@ -59,6 +66,45 @@ gulp.task('clean', function (cb) {
 
 gulp.task('clean:tmp', function (cb) {
   del([yeoman.tmp], cb);
+});
+
+gulp.task('ts-lint', function () {
+    return gulp.src(yeoman.scripts + '**/*.ts').pipe(tslint()).pipe(tslint.report('prose'));
+});
+
+gulp.task('ts-refs', function () {
+    var target = gulp.src(yeoman.types + 'app.d.ts');
+    
+    var sources = gulp.src([
+        yeoman.javascript + '**/*.ts',
+        '!' + yeoman.types + '**/*.ts'
+    ], {
+        read: false
+    });
+
+    return target.pipe(inject(sources, {
+        starttag: '//{',
+        endtag: '//}',
+        transform: function (filepath) {
+            return '/// <reference path="' + filepath + '" />';
+        },
+        relative: true
+    })).pipe(gulp.dest(yeoman.types));
+});
+
+gulp.task('ts-compile', ['ts-refs'], function () {
+    var tsResult = gulp.src(yeoman.javascript + '**/*.ts')
+           //          .pipe(sourcemaps.init())
+                       .pipe(tsc({
+                           target: 'ES5',
+                           declarationFiles: false,
+                           noExternalResolve: true
+                       }));
+
+        tsResult.dts.pipe(gulp.dest(yeoman.scripts));
+        return tsResult.js
+//                        .pipe(sourcemaps.write('.'))
+                        .pipe(gulp.dest(yeoman.scripts));
 });
 
 gulp.task('test', ['wiredep:test', 'ngconstant:dev'], function() {
@@ -278,6 +324,51 @@ gulp.task('ngconstant:prod', function() {
             VERSION: parseVersionFromBuildGradle()
         }
     }).pipe(gulp.dest(yeoman.tmp + 'scripts/app/config/'));
+});
+
+gulp.task('jade', function () {
+    return gulp.src(yeoman.javascript + '**/*.jade').pipe(jade({
+        pretty: true
+    })).pipe(gulp.dest(yeoman.scripts));
+});
+
+gulp.task('clean:scripts', function (cb) {
+    del([yeoman.scripts], cb);
+});
+
+gulp.task('copy:scripts', function () {
+    return gulp.src([
+        yeoman.javascript + '**/*',
+        '!**/*.jade',
+        '!**/*.ts',
+        '!**/*.scss'
+    ]).pipe(
+        gulp.dest(yeoman.scripts)
+    );
+});
+
+gulp.task('build:scripts', ['copy:scripts', 'jade', 'ts-compile', 'compass']); 
+
+gulp.task('scripts', ['clean:scripts'], function () {
+    runSequence('build:scripts', 'inject');
+});
+
+gulp.task('copy', function() {
+    return es.merge(
+        gulp.src(
+            yeoman.app + 'i18n/**'
+        ).pipe(
+            gulp.dest(yeoman.dist + 'i18n/')
+        ),
+              
+        gulp.src(
+            yeoman.app + 'assets/**/*.{woff,svg,ttf,eot}'
+        ).pipe(
+            flatten()
+        ).pipe(
+            gulp.dest(yeoman.dist + 'assets/fonts/')
+        )
+    );
 });
 
 gulp.task('jshint', function() {

@@ -1,0 +1,6 @@
+div(
+    ng-repeat = "product in productGroupPicker.products | orderBy: 'order' track by product.id"
+    csrs-product-picker = "product"
+    csrs-price-picked = "productGroupPicker.pricesPicked[product.id]"
+    csrs-heading = "{{productGroupPicker.headingForIndex($index)}}"
+)

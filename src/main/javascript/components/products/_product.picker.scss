@@ -1,0 +1,49 @@
+.product-picker {
+    display: table;
+    width: 100%;
+
+    .price-container {
+        display: table-cell;
+        width: 88px;
+        vertical-align: middle;
+    }
+
+    .product-picker-list {
+        display: table-cell;
+        vertical-align: top;
+    }
+
+    .product-picker-heading {
+        width: 24px;
+        margin-bottom: 4px;
+        float: left;
+        text-align: right;
+    }
+
+    .product-picker-title {
+        margin-bottom: 4px;
+    }
+
+    .price-box {
+        border: 2px solid black;
+        width: 60px;
+        height: 60px;
+        margin-left: 14px;
+        text-align: center;
+        display: table;
+    }
+    
+    .price-box.value-changed-add {
+        @include animation(flip 1s);
+    }
+
+    .price {
+        margin-top: auto;
+        margin-bottom: auto;
+        font-weight: bold;
+        display: table-cell;
+        vertical-align: middle;
+    }
+}
+
+
