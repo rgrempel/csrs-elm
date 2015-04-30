@@ -8741,19 +8741,22 @@ button.close {
   float: left;
   width: 24px;
   min-width: 24px;
-  cursor: pointer;
   font-size: 1em;
 }
-/* line 10, ../../../javascript/components/products/_product.value.scss */
+/* line 9, ../../../javascript/components/products/_product.value.scss */
 .product-value .price {
   float: right;
   text-align: right;
   width: 68px;
+}
+/* line 15, ../../../javascript/components/products/_product.value.scss */
+.product-value * {
   cursor: pointer;
 }
-/* line 17, ../../../javascript/components/products/_product.value.scss */
-.product-value .description {
-  cursor: pointer;
+
+/* line 21, ../../../javascript/components/products/_product.value.scss */
+.product-value.read-only * {
+  cursor: inherit;
 }
 
 /* line 1, ../../../javascript/components/products/_product.variable.scss */

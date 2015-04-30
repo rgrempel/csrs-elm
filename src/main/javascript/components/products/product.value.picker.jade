@@ -1,6 +1,8 @@
-.product-value
+.product-value(
+        ng-class = "{'read-only': productValuePicker.readOnly}"
+    )
     .selector(
-        ng-click = "productValuePicker.select()"
+        ng-click = "productValuePicker.selectClicked()"
     )
         span(
             ng-show = "productValuePicker.selected"
@@ -11,15 +13,20 @@
         ) &nbsp;
 
     .price(
-        ng-click = "productValuePicker.select()"
+        ng-click = "productValuePicker.selectClicked()"
         ng-bind = "productValuePicker.price"
     ) 100
 
     .description
         a(
+            ng-if = "!productValuePicker.readOnly"
             translate = "{{productValuePicker.productValue.code}}" 
-            ng-bind = "productValuePicker.price"
             ng-click = "productValuePicker.select()"
+            ng-class = "{'text-bold': productValuePicker.selected}"
+        ) Regular member
+        span(
+            ng-if = "productValuePicker.readOnly"
+            translate = "{{productValuePicker.productValue.code}}" 
             ng-class = "{'text-bold': productValuePicker.selected}"
         ) Regular member
 

@@ -8,6 +8,7 @@ module CSRS {
                 productValue: '=csrsProductValuePicker',
                 selected: '=csrsSelected',
                 pricePicked: '=csrsPricePicked',
+                readOnly: '=csrsReadOnly',
                 price: '@csrsPrice'
             },
 
@@ -22,6 +23,7 @@ module CSRS {
         scope: angular.IScope;
         pricePicked: IProductVariantPrice;
         productValue: IProductValue;
+        readOnly: boolean;
 
         constructor ($scope : angular.IScope, Stream: any) {
             'ngInject';
@@ -55,6 +57,10 @@ module CSRS {
 
         select () {
             this.scope.$emit('productValueSelected', this.productValue);
+        }
+
+        selectClicked () {
+            if (!this.readOnly) this.select();
         }
     }
 
