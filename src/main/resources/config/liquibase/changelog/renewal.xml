@@ -999,4 +999,44 @@
         
         <sql>SELECT setVal('t_product_group_product_id_seq', 4);</sql>
     </changeSet>
+
+    <changeSet id="addProductVariableImpliedBy" author="ryan">
+        <!-- We already track values that imply other values, but
+             we don't track the variables yet ... that is, is one
+             variable completely dependent on another, if they
+             are together in some context? -->
+
+        <addColumn tableName="T_PRODUCT_VARIABLE">
+            <column name="implied_by_id" type="bigint" />
+        </addColumn>
+
+        <createIndex tableName="T_PRODUCT_VARIABLE" indexName="idx_product_variable_implied_by">
+            <column name="implied_by_id" />
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="implied_by_id"
+                                 baseTableName="T_PRODUCT_VARIABLE"
+                                 constraintName="fk_product_variable_implied_by"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_PRODUCT_VARIABLE"
+                                 onDelete="SET NULL"
+                                 onUpdate="CASCADE" />
+
+        <update tableName="T_PRODUCT_VARIABLE">
+            <column name="implied_by_id" valueNumeric="1" />
+            <where>id = 1</where>
+        </update>
+    </changeSet>
+    
+    <changeSet id="fixProductVariableImplies" author="ryan">
+        <update tableName="T_PRODUCT_VARIABLE">
+            <column name="implied_by_id" valueNumeric="1" />
+            <where>id = 2</where>
+        </update>
+        
+        <update tableName="T_PRODUCT_VARIABLE">
+            <column name="implied_by_id" valueNumeric="NULL" />
+            <where>id = 1</where>
+        </update>
+    </changeSet>
 </databaseChangeLog>

@@ -40,6 +40,7 @@ public class Product implements Serializable {
                                       ProductValue.WithEverything,
                                       ProductValueImplies.WithProductValue,
                                       ProductVariable.WithProductValues,
+                                      ProductVariable.WithImpliedBy,
                                       ProductVariantPrice.WithProductVariant {};
 
     @Id

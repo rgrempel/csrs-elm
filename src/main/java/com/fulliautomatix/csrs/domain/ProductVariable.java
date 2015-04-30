@@ -30,6 +30,10 @@ public class ProductVariable implements Serializable {
     public interface Scalar {};
 
     public interface WithProductValues extends Scalar, ProductValue.Scalar {};
+    public interface WithImpliedBy extends Scalar {};
+    public interface WithImplies extends Scalar {};
+
+    public interface WithEverything extends WithProductValues, WithImpliedBy, WithImplies {};
  
     @Id
     @SequenceGenerator(name="t_product_variable_id_seq", sequenceName="t_product_variable_id_seq", allocationSize=1)
@@ -59,4 +63,17 @@ public class ProductVariable implements Serializable {
     @BatchSize(size=50)
     @JsonView(WithProductValues.class)
     private Set<ProductValue> productValues;
+
+    @ManyToOne
+    @JoinColumn(name = "implied_by_id")
+    @lombok.Getter @lombok.Setter
+    @JsonView(WithImpliedBy.class)
+    private ProductVariable impliedBy;
+    
+    @OneToMany(mappedBy="impliedBy")
+    @lombok.Getter @lombok.Setter
+    @BatchSize(size=50)
+    @JsonView(WithImplies.class)
+    private Set<ProductVariable> implies;
+
 }
