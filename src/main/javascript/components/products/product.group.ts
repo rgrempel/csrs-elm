@@ -1,8 +1,10 @@
 /// <reference path="../../types/tsd.d.ts" />
-/// <reference path="../../types/app.d.ts" />
+/// <reference path="../../types/app.ts" />
 
 module CSRS {
-    angular.module('csrsApp').directive('csrsProductGroup', function csrsProductGroup () {
+    'use strict';
+
+    angular.module('csrsApp').directive('csrsProductGroup', () => {
         return {
             scope: {
                 productGroup: '=csrsProductGroup',
@@ -25,7 +27,8 @@ module CSRS {
             $scope.$watch(() => {
                 return this.productGroup;
             }, (newValue) => {
-                this.products = Stream.Optional.ofNullable(newValue).map(function (productGroup : IProductGroup) {
+                this.products = Stream.Optional.ofNullable(newValue).map((productGroup : IProductGroup) => {
+                    // console.log("setting productGroup.products");
                     return Stream(productGroup.productGroupProducts).map('product').toArray();                
                 }).orElse([]);    
             });

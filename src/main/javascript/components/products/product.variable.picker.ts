@@ -1,8 +1,10 @@
 /// <reference path="../../types/tsd.d.ts" />
-/// <reference path="../../types/app.d.ts" />
+/// <reference path="../../types/app.ts" />
 
 module CSRS {
-    angular.module('csrsApp').directive('csrsProductVariablePicker', function csrsProductVariablePicker () {
+    'use strict';
+
+    angular.module('csrsApp').directive('csrsProductVariablePicker', () => {
         return {
             scope: {
                 productVariable: '=csrsProductVariablePicker',
@@ -26,6 +28,7 @@ module CSRS {
             'ngInject';
 
             $scope.$on('productValueSelected', (event, productValue) => {
+                // console.log("productVariablePicker responding to productValueSelected");
                 this.productValuePicked = productValue;
             });
 

@@ -1,8 +1,10 @@
 /// <reference path="../../types/tsd.d.ts" />
-/// <reference path="../../types/app.d.ts" />
+/// <reference path="../../types/app.ts" />
 
 module CSRS {
-    angular.module('csrsApp').directive('csrsProductValuePicker', function csrsProductValuePicker () {
+    'use strict';
+
+    angular.module('csrsApp').directive('csrsProductValuePicker', () => {
         return {
             scope: {
                 productValue: '=csrsProductValuePicker',
@@ -24,7 +26,8 @@ module CSRS {
         pricePicked: IProductVariantPrice;
         productValue: IProductValue;
         readOnly: boolean;
-
+        selected: boolean;
+        
         constructor ($scope : angular.IScope, Stream: any) {
             'ngInject';
 
@@ -36,19 +39,21 @@ module CSRS {
                 // If the newValue is null, we just return ...
                 if (!newValue) return;
 
+                // console.log("productValuePicker check pricePicked to see if we're selected");
+
                 // Otherwise, check whether we've been picked ...
                 var selected = Stream(
                     newValue.productVariant.productVariantValues
-                ).map('productValue').anyMatch(function (pv: IProductValue) {
-                    pv.id === this.productValue.id
+                ).map('productValue').anyMatch((pv: IProductValue) => {
+                    pv && (pv.id === this.productValue.id)
                 });
 
                 if (selected) this.select();
             });
 
-            $scope.$on('otherProductValueSelected', (event : angular.IAngularEvent, productValue: IProductValue) => {
-                var matched : boolean = Stream(this.productValue.productValueImpliedBy).map('productValue').anyMatch(function (pv: IProductValue) {
-                    return pv.id === productValue.id;
+            $scope.$on('otherProductValueSelected', (event : angular.IAngularEvent, otherProductValue: IProductValue) => {
+                var matched : boolean = Stream(this.productValue.productValueImpliedBy).map('productValue').anyMatch((pv: IProductValue) => {
+                    return pv && (pv.id === otherProductValue.id);
                 });
 
                 if (matched) this.select();
@@ -56,7 +61,9 @@ module CSRS {
         }
 
         select () {
-            this.scope.$emit('productValueSelected', this.productValue);
+            if (!this.selected) {
+                this.scope.$emit('productValueSelected', this.productValue);
+            }
         }
 
         selectClicked () {

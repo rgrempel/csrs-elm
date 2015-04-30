@@ -1,4 +1,9 @@
+/// <reference path="../../types/tsd.d.ts" />
+/// <reference path="../../types/app.ts" />
+
 module CSRS {
+    'use strict';
+
     export interface IProductGroup {
         id: number;
         productGroupProducts: Array<IProductGroupProduct>;

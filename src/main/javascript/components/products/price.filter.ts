@@ -1,12 +1,14 @@
 /// <reference path="../../types/tsd.d.ts" />
-/// <reference path="../../types/app.d.ts" />
+/// <reference path="../../types/app.ts" />
 
 module CSRS {
+    'use strict';
+
     export interface IPriceFilter {
         (price: number, useDollarSign: boolean) : string;
     }
 
-    angular.module('csrsApp').filter('price', function priceFilterProvider (currencyFilter : Function) : IPriceFilter {
+    angular.module('csrsApp').filter('price', function (currencyFilter : Function) : IPriceFilter {
         'ngInject';
 
         return function priceFilter (price : number, useDollarSign : boolean) : string {

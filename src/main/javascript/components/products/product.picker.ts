@@ -1,8 +1,10 @@
 /// <reference path="../../types/tsd.d.ts" />
-/// <reference path="../../types/app.d.ts" />
+/// <reference path="../../types/app.ts" />
 
 module CSRS {
-    angular.module('csrsApp').directive('csrsProductPicker', function csrsProductPicker () {
+    'use strict';
+
+    angular.module('csrsApp').directive('csrsProductPicker', () => {
         return {
             scope: {
                 product: '=csrsProductPicker',
@@ -36,10 +38,12 @@ module CSRS {
             this.productVariablePickers = [];
 
             $scope.$on('productVariableCreated', (event, productVariablePicker) => {
+                // console.log("productController: producVariableCreated");
                 this.productVariablePickers.push(productVariablePicker);
             });
 
             $scope.$on('productVariableDestroyed', (event, productVariablePicker) => {
+                // console.log("productController: producVariableDestroyed");
                 _.pull(this.productVariablePickers, productVariablePicker);
             });
 
@@ -47,20 +51,22 @@ module CSRS {
                 return Stream(this.productVariablePickers).map('productValuePicked').toArray();
             }, (newValue: Array<IProductValue>) => {
                 var now = Date.now();
-                
+               
+                // console.log("productPicker.settingPricePicked from values picked");
+
                 // When the collection of values picked changes, try to figure out
                 // what price we've picked.
-                var picked = Stream.Optional.ofNullable(this.product).map(function (product: IProduct) {
-                    return Stream(product.productVariants).filter(function (variant: IProductVariant) {
+                var picked = Stream.Optional.ofNullable(this.product).map((product: IProduct) => {
+                    return Stream(product.productVariants).filter((variant: IProductVariant) => {
                         return Stream(
                             variant.productVariantValues
-                        ).map('productValue').allMatch(function (productValue: IProductValue) {
-                            return Stream(newValue).anyMatch(function (pickedValue: IProductValue) {
+                        ).map('productValue').allMatch((productValue: IProductValue) => {
+                            return Stream(newValue).anyMatch((pickedValue: IProductValue) => {
                                 return pickedValue && (pickedValue.id === productValue.id);
                             });
                         });
-                    }).map('productVariantPrices').map(function (priceArray: Array<IProductVariantPrice>) {
-                        return Stream(priceArray).filter(function (price: IProductVariantPrice) {
+                    }).map('productVariantPrices').map((priceArray: Array<IProductVariantPrice>) => {
+                        return Stream(priceArray).filter((price: IProductVariantPrice) => {
                             return now > price.validFrom;
                         }).max('validFrom').orElse(null);
                     }).toArray(); 
@@ -76,7 +82,9 @@ module CSRS {
             $scope.$watch(() => {
                 return this.product;
             }, (newValue) => {
-                this.productVariables = Stream.Optional.ofNullable(newValue).map(function (product: IProduct) {
+                // console.log("productPicker: setting product");
+
+                this.productVariables = Stream.Optional.ofNullable(newValue).map((product: IProduct) => {
                     return Stream(product.productVariants)
                         .flatMap('productVariantValues')
                         .map('productValue.productVariable')
@@ -86,11 +94,11 @@ module CSRS {
             });
         }
 
-        getProductCode () {
+        getProductCode () : string {
             return this.product.code;
         }
 
-        getHeading () {
+        getHeading () : string {
             return this.heading;
         }
 
@@ -100,18 +108,20 @@ module CSRS {
 
             return Stream(
                 this.product.productVariants
-            ).filter(function (productVariant: IProductVariant) {
+            ).filter((productVariant: IProductVariant) => {
                 return Stream(
                     productVariant.productVariantValues
-                ).map('productValue').anyMatch(function (pv: IProductValue) {
+                ).map('productValue').anyMatch((pv: IProductValue) => {
                     return pv.id === productValue.id;
                 });
-            }).flatMap('productVariantPrices').filter(function (price: IProductVariantPrice) {
+            }).flatMap('productVariantPrices').filter((price: IProductVariantPrice) => {
                 return now > price.validFrom;
             });
         }
 
-        priceForProductValue (productValue: IProductValue, showDollar: boolean) {
+        priceForProductValue (productValue: IProductValue, showDollar: boolean) :string {
+            // console.log("productPicker.priceForProductValue");
+
             return this.pricesForProductValue(
                 productValue
             ).max('validFrom').map((price: IProductVariantPrice) => {
