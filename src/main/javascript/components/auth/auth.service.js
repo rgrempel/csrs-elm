@@ -35,8 +35,8 @@ angular.module('csrsApp')
                 Principal.authenticate(null);
             },
 
-            authorize: function() {
-                return Principal.identity()
+            authorize: function(force) {
+                return Principal.identity(force)
                     .then(function() {
                         var isAuthenticated = Principal.isAuthenticated();
 
