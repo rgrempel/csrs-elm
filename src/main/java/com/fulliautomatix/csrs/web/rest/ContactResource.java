@@ -209,7 +209,7 @@ public class ContactResource {
     @JsonView(Contact.WithAnnuals.class)
     @Transactional(readOnly = true)
     public ResponseEntity<List<Contact>> getAll (@RequestParam(value = "fullNameSearch") String search) throws URISyntaxException {
-        List<Contact> contacts = contactRepository.searchByFullNameLikeLower(("%" + search + "%").toLowerCase());
+        List<Contact> contacts = contactRepository.searchByFullNameLikeLower(("%" + search + "%"));
         lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class); 
 
         return new ResponseEntity<>(contacts, HttpStatus.OK);

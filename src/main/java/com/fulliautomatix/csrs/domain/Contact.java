@@ -87,6 +87,24 @@ public class Contact implements Serializable, HasOwner {
     @JsonView(Scalar.class)
     private String lastName;
 
+    @Column(
+        name = "plain_first_name",
+        insertable = false,
+        updatable = false
+    )
+    @lombok.Getter @lombok.Setter
+    @JsonView(Scalar.class)
+    private String plainFirstName;
+
+    @Column(
+        name = "plain_last_name",
+        insertable = false,
+        updatable = false
+    )
+    @lombok.Getter @lombok.Setter
+    @JsonView(Scalar.class)
+    private String plainLastName;
+
     @Column(name = "department")
     @lombok.Getter @lombok.Setter
     @JsonView(Scalar.class)

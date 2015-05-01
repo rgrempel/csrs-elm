@@ -10,4 +10,5 @@
     <include file="classpath:config/liquibase/changelog/extra_fields_for_form.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/registration.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/renewal.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/unaccented_search.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

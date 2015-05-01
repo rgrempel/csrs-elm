@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <changeSet id="unaccented-search" author="ryan">
+        <dropIndex tableName="T_CONTACT" indexName="idx_contact_first_name_lower" />
+        <dropIndex tableName="T_CONTACT" indexName="idx_contact_last_name_lower" />
+
+        <addColumn tableName="T_CONTACT">
+            <column name="plain_first_name" type="varchar" />
+            <column name="plain_last_name" type="varchar" />
+        </addColumn>
+
+        <createIndex tableName="T_CONTACT" indexName="idx_contact_plain_first_name">
+            <column name="plain_first_name" />
+        </createIndex>
+
+        <createIndex tableName="T_CONTACT" indexName="idx_contact_plain_last_name">
+            <column name="plain_last_name" />
+        </createIndex>
+
+        <update tableName="T_CONTACT">
+            <column name="plain_first_name" valueComputed="lower(unaccent(first_name))" />
+            <column name="plain_last_name" valueComputed="lower(unaccent(last_name))" />
+        </update>
+    </changeSet>
+
+    <changeSet id="plainifyNames" author="ryan" runOnChange="true">
+        <createProcedure><![CDATA[
+            CREATE OR REPLACE FUNCTION plainify_names () RETURNS trigger AS $func$
+            BEGIN
+                NEW.plain_last_name := lower(unaccent(NEW.last_name));
+                NEW.plain_first_name := lower(unaccent(NEW.first_name));
+
+                RETURN NEW;
+            END;
+            $func$ LANGUAGE plpgsql STABLE;
+        ]]></createProcedure>
+    
+        <sql><![CDATA[
+            DROP TRIGGER IF EXISTS plainify_names ON t_contact;
+
+            CREATE TRIGGER plainify
+            BEFORE INSERT OR UPDATE OF first_name, last_name
+            ON t_contact
+            FOR EACH ROW 
+            EXECUTE PROCEDURE plainify_names();
+        ]]></sql>
+    </changeSet>
+</databaseChangeLog>
