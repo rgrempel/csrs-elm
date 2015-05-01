@@ -16,6 +16,7 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     rev = require('gulp-rev'),
     jade = require('gulp-jade'),
+    sort = require('gulp-sort'),
     tslint = require('gulp-tslint'),
     tsc = require('gulp-typescript'),
     proxy = require('proxy-middleware'),
@@ -308,6 +309,10 @@ gulp.task('inject', ['scripts'], function () {
         inject(
             gulp.src(
                 'src/main/webapp/scripts/**/*.js'
+            ).pipe(
+                // Do a regular sort first, since angularFilesort by itself
+                // does not seem to be deterministic.
+                sort()
             ).pipe(
                 angularFilesort()
             ), 
