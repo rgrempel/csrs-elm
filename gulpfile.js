@@ -59,12 +59,12 @@ var parseVersionFromBuildGradle = function() {
     return versionRegex.exec(buildGradle)[1];
 };
 
-gulp.task('clean', function (cb) {
-  del([yeoman.dist], cb);
+gulp.task('clean', ['clean:scripts'], function (cb) {
+    del([yeoman.dist], cb);
 });
 
 gulp.task('clean:tmp', function (cb) {
-  del([yeoman.tmp], cb);
+    del([yeoman.tmp], cb);
 });
 
 gulp.task('clean:scripts', function (cb) {
@@ -301,7 +301,7 @@ gulp.task('wiredep:test', function () {
     );
 });
 
-gulp.task('inject', function () {
+gulp.task('inject', ['scripts'], function () {
     return gulp.src(
         'src/main/webapp/index.html'
     ).pipe(
@@ -320,44 +320,42 @@ gulp.task('inject', function () {
 });
 
 gulp.task('build', function () {
-    runSequence('clean', 'clean:scripts', 'copy', 'wiredep:app', 'scripts', 'ngconstant:prod', 'usemin');
+    runSequence('clean', 'copy', 'wiredep:app', 'inject', 'ngconstant:prod', 'usemin');
 });
 
-gulp.task('usemin', function() {
-    runSequence('images', 'styles', function () {
-        return gulp.src([
-            yeoman.app + '**/*.html',
-            '!' + yeoman.app + 'bower_components/**/*.html']
-        ).pipe(
-            usemin({
-                css: [
-                    prefix.apply(),
-                    minifyCss({
-                        // Replace relative paths for static resources with absolute path with root
-                        root: 'src/main/webapp'
-                    }),
-                    'concat', // Needs to be present for minifyCss root option to work
-                    rev()
-                ],
+gulp.task('usemin', ['images', 'styles', 'scripts'], function() {
+    return gulp.src([
+        yeoman.app + '**/*.html',
+        '!' + yeoman.app + 'bower_components/**/*.html']
+    ).pipe(
+        usemin({
+            css: [
+                prefix.apply(),
+                minifyCss({
+                    // Replace relative paths for static resources with absolute path with root
+                    root: 'src/main/webapp'
+                }),
+                'concat', // Needs to be present for minifyCss root option to work
+                rev()
+            ],
 
-                html: [
-                    minifyHtml({
-                        empty: true,
-                        conditionals: true
-                    })
-                ],
+            html: [
+                minifyHtml({
+                    empty: true,
+                    conditionals: true
+                })
+            ],
 
-                js: [
-                    ngAnnotate(),
-                    uglify(),
-                    'concat',
-                    rev()
-                ]
-            })
-        ).pipe(
-            gulp.dest(yeoman.dist)
-        );
-    });
+            js: [
+                ngAnnotate(),
+                uglify(),
+                'concat',
+                rev()
+            ]
+        })
+    ).pipe(
+        gulp.dest(yeoman.dist)
+    );
 });
 
 gulp.task('ngconstant:dev', function() {
@@ -417,11 +415,7 @@ gulp.task('copy:scripts', function () {
     );
 });
 
-gulp.task('build:scripts', ['copy:scripts', 'jade', 'ts-compile', 'compass']); 
-
-gulp.task('scripts', ['clean:scripts'], function () {
-    runSequence('build:scripts', 'inject');
-});
+gulp.task('scripts', ['copy:scripts', 'jade', 'ts-compile', 'compass']); 
 
 gulp.task('copy', function() {
     return es.merge(
