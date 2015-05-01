@@ -5446,8 +5446,8 @@ tbody.collapse.in {
 /* line 11, ../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_navbar.scss */
 .navbar {
   position: relative;
-  min-height: 50px;
-  margin-bottom: 20px;
+  min-height: 40px;
+  margin-bottom: 10px;
   border: 1px solid transparent;
 }
 /* line 14, ../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/mixins/_clearfix.scss */
@@ -5606,10 +5606,10 @@ tbody.collapse.in {
 /* line 164, ../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_navbar.scss */
 .navbar-brand {
   float: left;
-  padding: 15px 15px;
+  padding: 10px 15px;
   font-size: 18px;
   line-height: 20px;
-  height: 50px;
+  height: 40px;
 }
 /* line 171, ../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_navbar.scss */
 .navbar-brand:hover, .navbar-brand:focus {
@@ -5632,8 +5632,8 @@ tbody.collapse.in {
   float: right;
   margin-right: 15px;
   padding: 9px 10px;
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 3px;
+  margin-bottom: 3px;
   background-color: transparent;
   background-image: none;
   border: 1px solid transparent;
@@ -5663,7 +5663,7 @@ tbody.collapse.in {
 
 /* line 233, ../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_navbar.scss */
 .navbar-nav {
-  margin: 7.5px -15px;
+  margin: 5px -15px;
 }
 /* line 236, ../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_navbar.scss */
 .navbar-nav > li > a {
@@ -5708,8 +5708,8 @@ tbody.collapse.in {
   }
   /* line 273, ../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_navbar.scss */
   .navbar-nav > li > a {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 }
 
@@ -5722,8 +5722,8 @@ tbody.collapse.in {
   border-bottom: 1px solid transparent;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 @media (min-width: 768px) {
   /* line 433, ../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_forms.scss */
@@ -5828,24 +5828,24 @@ tbody.collapse.in {
 
 /* line 344, ../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_navbar.scss */
 .navbar-btn {
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 /* line 347, ../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_navbar.scss */
 .navbar-btn.btn-sm, .btn-group-sm > .navbar-btn.btn {
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 /* line 350, ../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_navbar.scss */
 .navbar-btn.btn-xs, .btn-group-xs > .navbar-btn.btn {
-  margin-top: 14px;
-  margin-bottom: 14px;
+  margin-top: 9px;
+  margin-bottom: 9px;
 }
 
 /* line 360, ../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_navbar.scss */
 .navbar-text {
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 @media (min-width: 768px) {
   /* line 360, ../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_navbar.scss */
@@ -8802,43 +8802,35 @@ password-strength-bar {
   margin-bottom: 0px;
 }
 
-/* line 33, ../../../scss/_custom.scss */
-.navbar-xs {
-  min-height: 40px;
-  height: 40px;
-  margin-bottom: 12px;
-}
-
-/* line 39, ../../../scss/_custom.scss */
+/*
 .navbar-xs .navbar-brand {
-  padding: 6px 12px;
-  font-size: 16px;
-  line-height: 28px;
+    padding: 6px 12px;
+    font-size: 16px;
+    line-height: 28px;
 }
 
-/* line 45, ../../../scss/_custom.scss */
 .navbar-xs .navbar-nav > li > a {
-  padding-top: 6px;
-  padding-bottom: 6px;
-  line-height: 28px;
+    padding-top: 6px; 
+    padding-bottom: 6px; 
+    line-height: 28px;
 }
-
-/* line 51, ../../../scss/_custom.scss */
+*/
+/* line 46, ../../../scss/_custom.scss */
 .text-bold {
   font-weight: bold;
 }
 
-/* line 55, ../../../scss/_custom.scss */
+/* line 50, ../../../scss/_custom.scss */
 .contact-list {
   padding: 8px;
 }
 
-/* line 59, ../../../scss/_custom.scss */
+/* line 54, ../../../scss/_custom.scss */
 .translation-message {
   font-size: 80%;
 }
 
-/* line 63, ../../../scss/_custom.scss */
+/* line 58, ../../../scss/_custom.scss */
 .csrs-logo {
   display: inline-block;
   width: 347px;
@@ -8847,64 +8839,64 @@ password-strength-bar {
   background-size: contain;
 }
 
-/* line 71, ../../../scss/_custom.scss */
+/* line 66, ../../../scss/_custom.scss */
 .well .panel-default > .panel-heading {
   background-color: #e8e8e8;
 }
 
-/* line 75, ../../../scss/_custom.scss */
+/* line 70, ../../../scss/_custom.scss */
 .well .panel-default > .panel-footer {
   background-color: #e8e8e8;
 }
 
-/* line 79, ../../../scss/_custom.scss */
+/* line 74, ../../../scss/_custom.scss */
 .voffset4 {
   margin-top: 4px;
 }
 
-/* line 80, ../../../scss/_custom.scss */
+/* line 75, ../../../scss/_custom.scss */
 .voffset6 {
   margin-top: 6px;
 }
 
-/* line 81, ../../../scss/_custom.scss */
+/* line 76, ../../../scss/_custom.scss */
 .voffset8 {
   margin-top: 8px;
 }
 
-/* line 82, ../../../scss/_custom.scss */
+/* line 77, ../../../scss/_custom.scss */
 .voffset12 {
   margin-top: 12px;
 }
 
-/* line 83, ../../../scss/_custom.scss */
+/* line 78, ../../../scss/_custom.scss */
 .voffset16 {
   margin-top: 16px;
 }
 
-/* line 84, ../../../scss/_custom.scss */
+/* line 79, ../../../scss/_custom.scss */
 .voffset18 {
   margin-top: 18px;
 }
 
-/* line 85, ../../../scss/_custom.scss */
+/* line 80, ../../../scss/_custom.scss */
 .voffset24 {
   margin-top: 24px;
 }
 
-/* line 10, ../../../scss/main.scss */
+/* line 12, ../../../scss/main.scss */
 body {
   background: #fafafa;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #333;
 }
 
-/* line 16, ../../../scss/main.scss */
+/* line 18, ../../../scss/main.scss */
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
 
-/* line 20, ../../../scss/main.scss */
+/* line 22, ../../../scss/main.scss */
 .development {
   position: absolute;
   width: 149px;
@@ -8918,13 +8910,13 @@ body {
   background-repeat: no-repeat;
 }
 
-/* line 33, ../../../scss/main.scss */
+/* line 35, ../../../scss/main.scss */
 .navbar-version {
   font-size: 10px;
   color: #ccc;
 }
 
-/* line 38, ../../../scss/main.scss */
+/* line 40, ../../../scss/main.scss */
 .browserupgrade {
   margin: 0.2em 0;
   background: #ccc;
@@ -8932,7 +8924,7 @@ body {
   padding: 0.2em 0;
 }
 
-/* line 45, ../../../scss/main.scss */
+/* line 47, ../../../scss/main.scss */
 .hero-unit {
   margin: 50px auto 0 auto;
   width: 300px;
@@ -8944,20 +8936,20 @@ body {
   padding: 60px;
 }
 
-/* line 56, ../../../scss/main.scss */
+/* line 58, ../../../scss/main.scss */
 .hero-unit h1 {
   font-size: 60px;
   line-height: 1;
   letter-spacing: -1px;
 }
 
-/* line 62, ../../../scss/main.scss */
+/* line 64, ../../../scss/main.scss */
 .error {
   color: white;
   background-color: red;
 }
 
-/* line 67, ../../../scss/main.scss */
+/* line 69, ../../../scss/main.scss */
 .hipster {
   display: inline-block;
   width: 347px;
@@ -8968,20 +8960,20 @@ body {
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2 / 1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
-  /* line 83, ../../../scss/main.scss */
+  /* line 85, ../../../scss/main.scss */
   .hipster {
     background: url("../images/hipster2x.png") no-repeat center top;
     background-size: contain;
   }
 }
 /* make sure browsers use the pointer cursor for anchors, even with no href */
-/* line 90, ../../../scss/main.scss */
+/* line 92, ../../../scss/main.scss */
 a:hover {
   cursor: pointer;
 }
 
 /* start Password strength bar style */
-/* line 96, ../../../scss/main.scss */
+/* line 98, ../../../scss/main.scss */
 ul#strength {
   display: inline;
   list-style: none;
@@ -8991,12 +8983,12 @@ ul#strength {
   vertical-align: 2px;
 }
 
-/* line 105, ../../../scss/main.scss */
+/* line 107, ../../../scss/main.scss */
 .point:last {
   margin: 0 !important;
 }
 
-/* line 108, ../../../scss/main.scss */
+/* line 110, ../../../scss/main.scss */
 .point {
   background: #DDD;
   border-radius: 2px;
