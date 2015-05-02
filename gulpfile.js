@@ -102,18 +102,28 @@ gulp.task('ts-refs', function () {
 });
 
 gulp.task('ts-compile', ['ts-refs'], function () {
-    var tsResult = gulp.src(yeoman.javascript + '**/*.ts')
-           //          .pipe(sourcemaps.init())
-                       .pipe(tsc({
-                           target: 'ES5',
-                           declarationFiles: false,
-                           noExternalResolve: true
-                       }));
+    var tsResult = gulp.src(
+        yeoman.javascript + '**/*.ts'
+    // ).pipe(
+        // sourcemaps.init()
+    ).pipe(
+        tsc({
+            noImplicitAny: true,                 
+            target: 'ES5',
+            declarationFiles: false,
+            noExternalResolve: true
+        })
+    );
 
-        tsResult.dts.pipe(gulp.dest(yeoman.scripts));
-        return tsResult.js
-//                        .pipe(sourcemaps.write('.'))
-                        .pipe(gulp.dest(yeoman.scripts));
+    tsResult.dts.pipe(
+        gulp.dest(yeoman.javascript + 'types/csrs/')
+    );
+
+    return tsResult.js.pipe(
+        // sourcemaps.write('.')
+    // ).pipe(
+        gulp.dest(yeoman.scripts)
+    );
 });
 
 gulp.task('test', ['wiredep:test', 'ngconstant:dev'], function() {

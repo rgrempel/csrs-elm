@@ -1,6 +1,10 @@
 /// <reference path="stream.d.ts" />
+/// <reference path="jsog.d.ts" />
 
 //{
+
+
+/// <reference path="../components/entities/Template.ts" />
 
 
 /// <reference path="../components/products/price.filter.ts" />
@@ -19,6 +23,9 @@
 
 
 /// <reference path="../components/products/product.variable.picker.ts" />
+
+
+/// <reference path="../app/admin/templates/template-list.ts" />
 
 
 //}
