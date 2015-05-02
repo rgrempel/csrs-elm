@@ -128,31 +128,6 @@
             "lastMember": "Adhérent:"
         }
     },
-    "audits": {
-        "title": "Audits",
-        "filter": {
-            "title": "Filtrer par date",
-            "from": "De",
-            "to": "à",
-            "button": {
-                "weeks": "Semaines",
-                "today": "Aujourd'hui",
-                "clear": "Effacer",
-                "close": "Fermer"
-            }
-        },
-        "table": {
-            "header": {
-                "principal": "Utilisateur",
-                "date": "Date",
-                "status": "Status",
-                "data": "Autres données"
-            },
-            "data": {
-                "remoteAddress": "Adresse Distante:"
-            }
-        }
-    },
     "configuration": {
         "title": "Configuration",
         "filter": "Filtrer (par préfixe)",
@@ -536,6 +511,31 @@
             "subscriptionFormat": {
                 "print": "Imprimée",
                 "electronic": "Electronique"
+            }
+        }
+    },
+    "audits": {
+        "title": "Audits",
+        "filter": {
+            "title": "Filtrer par date",
+            "from": "De",
+            "to": "à",
+            "button": {
+                "weeks": "Semaines",
+                "today": "Aujourd'hui",
+                "clear": "Effacer",
+                "close": "Fermer"
+            }
+        },
+        "table": {
+            "header": {
+                "principal": "Utilisateur",
+                "date": "Date",
+                "status": "Status",
+                "data": "Autres données"
+            },
+            "data": {
+                "remoteAddress": "Adresse Distante:"
             }
         }
     }

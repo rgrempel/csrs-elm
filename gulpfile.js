@@ -31,6 +31,11 @@ var gulp = require('gulp'),
     inject = require('gulp-inject'),
     fs = require('fs'),
     runSequence = require('run-sequence'),
+    yaml = require('js-yaml'),
+    _ = require('lodash'),
+    Stream = require('streamjs'),
+    through2 = require('through2'),
+    Vinyl = require('vinyl'),
     browserSync = require('browser-sync');
 
 var karma = require('gulp-karma')({configFile: 'src/test/javascript/karma.conf.js'});
@@ -411,10 +416,8 @@ gulp.task('jade', function () {
 
 gulp.task('copy:scripts', function () {
     return gulp.src([
-        yeoman.javascript + '**/*',
-        '!**/*.jade',
-        '!**/*.ts',
-        '!**/*.scss'
+        yeoman.javascript + '**/*.js',
+        yeoman.javascript + '**/*.html'
     ]).pipe(
         gulp.dest(yeoman.scripts)
     );
@@ -476,6 +479,118 @@ gulp.task('htmlhint', function () {
 gulp.task('server', ['serve'], function () {
     gutil.log('The `server` task has been deprecated. Use `gulp serve` to start a server');
 });
+    
+gulp.task('messages', function (cb) {
+    var doc = yaml.safeLoad(
+        fs.readFileSync('src/main/i18n/messages.yml', {
+            encoding: 'utf8'
+        })
+    );
+
+    var products = yaml.safeLoad(
+        fs.readFileSync('src/main/i18n/products.yml', {
+            encoding: 'utf8'
+        })
+    );
+
+    _.assign(doc, products);
+
+    var result = {};
+    var keys = [];
+
+    var iterate = function (level) {
+        _.forOwn(level, function (value, key) {
+            if (_.isObject(value)) {
+                keys.push(key);
+                iterate(value);
+                keys.pop(key);
+            } else {
+                if (!_.has(result, key)) result[key] = [];
+                var line = keys.join('.') + '=' + value;
+                result[key].push(line);
+            }
+        });
+    };
+    
+    iterate(doc);
+    
+    _.forOwn(result, function (value, key) {
+        var filename = 'src/main/resources/i18n/messages_' + key + '.properties';
+        var data = value.join("\n") + "\n";
+        fs.writeFileSync(filename, data);
+    });
+
+    cb();
+});
+
+gulp.task('translations', function () {
+    return gulp.src([
+        'src/main/i18n/translations.yml',
+        'src/main/i18n/products.yml',
+        yeoman.javascript + '**/*.language.yml'
+    ]).pipe(
+        translations()
+    ).pipe(
+        gulp.dest(yeoman.app + 'i18n/')
+    );
+});
+
+function translations () {
+    var doc = {};
+
+    return through2.obj(transform, flush);
+
+    function transform (file, encoding, cb) {
+        if (file.isBuffer()) {
+            _.assign(doc, yaml.safeLoad(file.contents.toString()));
+        }
+
+        if (file.isStream()) {
+            this.emit('error', new gutil.PluginError("translations", 'Streams not supported!')); 
+        }
+
+        cb();
+    }
+
+    function flush (cb) {
+        var result = {};
+        var keys = [];
+
+        var iterate = function (level) {
+            _.forOwn(level, function (value, key) {
+                if (_.isObject(value)) {
+                    keys.push(key);
+                    iterate(value);
+                    keys.pop();
+                } else {
+                    if (!_.has(result, key)) result[key] = {};
+                    var base = result[key];
+                    _.forEach(_.initial(keys), function (eachKey) {
+                        if (!_.has(base, eachKey)) base[eachKey] = {};
+                        base = base[eachKey];
+                    });
+                    base[_.last(keys)] = value;
+                }
+            });
+        };
+
+        var self = this;
+        
+        iterate(doc);
+
+        _.forOwn(result, function (value, key) { 
+            var file = new Vinyl({
+                path: key + '.json',
+                contents: new Buffer(JSON.stringify(value, null, 4))
+            });
+
+            self.push(file);
+        });
+
+        this.push(null);
+        cb();
+    }    
+}
 
 gulp.task('default', function() {
     runSequence('test', 'build');
