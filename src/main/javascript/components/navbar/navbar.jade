@@ -1,0 +1,213 @@
+nav(
+    class="navbar navbar-default navbar-xs"
+    role="navigation"
+)
+    .container
+        .navbar-header
+            button.navbar-toggle(
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbar-collapse"
+            )
+                span.sr-only. Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            
+            a.navbar-brand(href="#")
+                span(translate="global.title") jhipster
+                span.navbar-version v{{VERSION}}
+
+        div(
+            class="collapse navbar-collapse"
+            id="navbar-collapse"
+            ng-switch="isAuthenticated()"
+        )
+            ul(
+                class="nav navbar-nav nav-pills navbar-right"
+            )
+                li(ui-sref-active="active")
+                    a(ui-sref="home")
+                        span(class="glyphicon glyphicon-home")
+                        | &#xA0;
+                        span(translate="global.menu.home") Home
+
+                li(
+                    class="dropdown pointer"
+                    ui-sref-active="active"
+                    ng-switch-when="true"
+                    ng-show="isInRole('ROLE_ADMIN')"
+                )
+                    a.dropdown-toggle(
+                        data-toggle="dropdown"
+                        href=""
+                    )
+                        span
+                            span(class="glyphicon glyphicon-tower")
+                            | &#xA0;
+                            span(
+                                class="hidden-tablet"
+                                translate="global.menu.tasks.main"
+                            ) Tasks
+                            | &#xA0;
+                            span(class="text-bold caret")
+
+                    ul.dropdown-menu
+                        li(ui-sref-active="active")
+                            a(ui-sref="processForms")
+                                span(class="glyphicon glyphicon-dashboard")
+                                | &#xA0;
+                                span(translate="global.menu.tasks.processForms") Process Forms
+
+                li(
+                    class="dropdown pointer"
+                    ng-class="{active: $state.includes('account')}"
+                )
+                    a.dropdown-toggle(
+                        data-toggle="dropdown"
+                        href=""
+                    )
+                        span
+                            span(class="glyphicon glyphicon-user")
+                            | &#xA0;
+                            span.hidden-tablet(translate="global.menu.account.main") Account
+                            | &#xA0;
+                            span(class="text-bold caret")
+
+                    ul.dropdown-menu
+                        li(
+                            ui-sref-active="active"
+                            ng-switch-when="true"
+                        )
+                            a(ui-sref="settings")
+                                span(class="glyphicon glyphicon-wrench")
+                                | &#xA0;
+                                span(translate="global.menu.account.settings") Settings
+                        
+                        li(
+                            ui-sref-active="active"
+                            ng-switch-when="true"
+                        )
+                            a(ui-sref="password")
+                                span(class="glyphicon glyphicon-lock")
+                                | &#xA0;
+                                span(translate="global.menu.account.password") Password
+
+                        li(
+                            ui-sref-active="active"
+                            ng-switch-when="true"
+                        )
+                            a(ui-sref="sessions")
+                                span(class="glyphicon glyphicon-cloud")
+                                | &#xA0;
+                                span(translate="global.menu.account.sessions") Sessions
+
+                        li(
+                            ui-sref-active="active"
+                            ng-switch-when="true"
+                        )
+                            a(
+                                href=""
+                                ng-click="logout()"
+                            )
+                                span(class="glyphicon glyphicon-log-out")
+                                | &#xA0;
+                                span(translate="global.menu.account.logout") Log out
+
+                        li(
+                            ui-sref-active="active"
+                            ng-switch-when="false"
+                        )
+                            a(ui-sref="login")
+                                span(class="glyphicon glyphicon-log-in")
+                                | &#xA0;
+                                span(translate="global.menu.account.login") Authenticate
+
+                        li(
+                            ui-sref-active="active"
+                            ng-switch-when="false"
+                        )
+                            a(ui-sref="createAccount")
+                                span(class="glyphicon glyphicon-plus-sign")
+                                | &#xA0; 
+                                span(translate="global.menu.account.register") Register
+
+                li(
+                    ng-class="{active: $state.includes('admin')}"
+                    ng-switch-when="true"
+                    ng-show="isInRole('ROLE_ADMIN')"
+                    class="dropdown pointer"
+                )
+                    a.dropdown-toggle(
+                        data-toggle="dropdown"
+                        href=""
+                    )
+                        span
+                            span(class="glyphicon glyphicon-tower")
+                            | &#xA0;
+                            span.hidden-tablet(translate="global.menu.admin.main") Admin
+                            | &#xA0;
+                            span(class="text-bold caret")
+
+                    ul.dropdown-menu
+                        li(ui-sref-active="active")
+                            a(ui-sref="metrics")
+                                span(class="glyphicon glyphicon-dashboard")
+                                | &#xA0;
+                                span(translate="global.menu.admin.metrics") Metrics
+                        
+                        li(ui-sref-active="active")
+                            a(ui-sref="health")
+                                span(class="glyphicon glyphicon-heart")
+                                | &#xA0;
+                                span(translate="global.menu.admin.health") Health
+                        
+                        li(ui-sref-active="active")
+                            a(ui-sref="configuration")
+                                span(class="glyphicon glyphicon-list-alt")
+                                | &#xA0;
+                                span(translate="global.menu.admin.configuration") Configuration
+                        
+                        li(ui-sref-active="active")
+                            a(ui-sref="audits")
+                                span(class="glyphicon glyphicon-bell")
+                                | &#xA0;
+                                span(translate="global.menu.admin.audits") Audits
+                        
+                        li(ui-sref-active="active")
+                            a(ui-sref="logs")
+                                span(class="glyphicon glyphicon-tasks")
+                                | &#xA0;
+                                span(translate="global.menu.admin.logs") Logs
+                        
+                        li(ui-sref-active="active")
+                            a(ui-sref="docs")
+                                span(class="glyphicon glyphicon-book")
+                                | &#xA0;
+                                span(translate="global.menu.admin.apidocs") API Docs
+
+                li(
+                    ui-sref-active="active"
+                    class="dropdown pointer"
+                    ng-controller="LanguageController"
+                )
+                    a.dropdown-toggle(
+                        data-toggle="dropdown"
+                        href=""
+                    )
+                        span
+                            span(class="glyphicon glyphicon-flag")
+                            | &#xA0;
+                            span.hidden-tablet(translate="global.menu.language") Language
+                            | &#xA0;
+                            span(class="text-bold caret")
+                    
+                    ul.dropdown-menu
+                        li(
+                            active-menu="{{language}}"
+                            ng-repeat="language in languages"
+                        )
+                            a(
+                                href=""
+                                ng-click="changeLanguage(language)"
+                            ) {{'language.' + language | translate}}
