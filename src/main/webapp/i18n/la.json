@@ -1,11 +1,4 @@
 {
-    "activate": {
-        "title": "Activation",
-        "messages": {
-            "success": "<strong>Usoris est aguntur.</strong>  Placere <a href=\"#!/login\">cosigno</a>.",
-            "error": "<strong>Usoris non aguntur.</strong>  Commodo subcribo sursum adnotatione formam."
-        }
-    },
     "csrsApp": {
         "annual": {
             "home": {
@@ -128,18 +121,6 @@
             "lastMember": "Sodalis:"
         }
     },
-    "configuration": {
-        "title": "Configuration",
-        "filter": "Filter (by prefix)",
-        "table": {
-            "prefix": "Prefix",
-            "properties": "Properties"
-        }
-    },
-    "errors": {
-        "403": "Qui nequeant pervenire paginam.",
-        "title": "Paginam erratam!"
-    },
     "global": {
         "title": "Sodalitas SCSR",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please  <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
@@ -240,22 +221,57 @@
         }
     },
     "footer": "This is your footer",
-    "health": {
-        "title": "Salutem compescit",
-        "refresh.button": "Recreo",
-        "stacktrace": "Narratus",
-        "indicator": {
-            "diskSpace": "Disk space",
-            "mail": "Cursorium",
-            "db": "Database"
+    "language": {
+        "en": "Anglicus",
+        "fr": "Gallicus",
+        "la": "Latina"
+    },
+    "product": {
+        "base": {
+            "membership": "Sodalitas",
+            "iter": "ITER",
+            "rr": "Renaissance et Reformationem"
         },
-        "table": {
-            "service": "Nomen servitii",
-            "status": "Status"
+        "variable": {
+            "membershipType": "Genus sodales",
+            "subscriptionType": "Genus subscriptionis",
+            "subscriptionFormat": "Forma subscriptionis"
         },
-        "status": {
-            "UP": "SURSUM",
-            "DOWN": "PESSUM"
+        "value": {
+            "membershipType": {
+                "patron": "Patronum",
+                "regular": "Membrum Ordinarius",
+                "unemployed": "Cessatura",
+                "retired": "Reductus",
+                "student": "Pupula"
+            },
+            "subscriptionType": {
+                "allMembers": "Sodales omnes",
+                "studentsAndRetirees": "Tantum pro pupula et reducta"
+            },
+            "subscriptionFormat": {
+                "print": "Vestigium",
+                "electronic": "Transcursorium"
+            }
+        }
+    },
+    "errors": {
+        "403": "Qui nequeant pervenire paginam.",
+        "title": "Paginam erratam!"
+    },
+    "main": {
+        "title": "Scolaris de renaissance, exspectata!",
+        "subtitle": "Hic situs sociari de Societate Canadian Studiorum Renascerentur.",
+        "logged": {
+            "message": "Te \"{{username}}\" videntur esse."
+        },
+        "question": "Pro magis notitia de Societate Canadian Studiorum Renascerentur, ite situm principale ad:"
+    },
+    "activate": {
+        "title": "Activation",
+        "messages": {
+            "success": "<strong>Usoris est aguntur.</strong>  Placere <a href=\"#!/login\">cosigno</a>.",
+            "error": "<strong>Usoris non aguntur.</strong>  Commodo subcribo sursum adnotatione formam."
         }
     },
     "invitation": {
@@ -281,11 +297,6 @@
             "passwordReset": "Iam si tesseram, sed obliti usoris aut signo, tum istoc  <a href=\"#!/password-reset\">signum retexere</a>."
         }
     },
-    "language": {
-        "en": "Anglicus",
-        "fr": "Gallicus",
-        "la": "Latina"
-    },
     "login": {
         "title": "Authenticas",
         "form": {
@@ -300,6 +311,110 @@
             }
         }
     },
+    "password": {
+        "title": "Signum pro [<b>{{username}}</b>]",
+        "form": {
+            "button": "Servo"
+        },
+        "messages": {
+            "error": "<strong>Quasi per errorem inciderunt!</strong> Signum non potuit mutari.",
+            "success": "<strong>Signum mutatum!</strong>"
+        }
+    },
+    "sessions": {
+        "title": "Active sessions for [<b>{{username}}</b>]",
+        "table": {
+            "ipaddress": "IP address",
+            "useragent": "User Agent",
+            "date": "Date",
+            "button": "Invalidate"
+        },
+        "messages": {
+            "success": "<strong>Session invalidated!</strong>",
+            "error": "<strong>An error has occurred!</strong> The session could not be invalidated."
+        }
+    },
+    "settings": {
+        "contactInformation": "Notitia contactus tuum",
+        "title": "User settings for [<b>{{username}}</b>]",
+        "form": {
+            "firstname": "Praenomen",
+            "firstname.placeholder": "Praenome tuum",
+            "lastname": "Cognomen",
+            "lastname.placeholder": "Cognomen tuum",
+            "button": "Servo"
+        },
+        "messages": {
+            "error": {
+                "fail": "<strong>An error has occurred!</strong> Settings could not be saved.",
+                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
+            },
+            "success": "<strong>Settings saved!</strong>",
+            "validate": {
+                "firstname": {
+                    "required": "Your first name is required.",
+                    "minlength": "Your first name is required to be at least 1 character",
+                    "maxlength": "Your first name cannot be longer than 50 characters"
+                },
+                "lastname": {
+                    "required": "Your last name is required.",
+                    "minlength": "Your last name is required to be at least 1 character",
+                    "maxlength": "Your last name cannot be longer than 50 characters"
+                }
+            }
+        }
+    },
+    "audits": {
+        "title": "Audits",
+        "filter": {
+            "title": "Filter per date",
+            "from": "from",
+            "to": "to",
+            "button": {
+                "weeks": "Weeks",
+                "today": "today",
+                "clear": "clear",
+                "close": "close"
+            }
+        },
+        "table": {
+            "header": {
+                "principal": "User",
+                "date": "Date",
+                "status": "State",
+                "data": "Extra data"
+            },
+            "data": {
+                "remoteAddress": "Remote Address:"
+            }
+        }
+    },
+    "configuration": {
+        "title": "Configuration",
+        "filter": "Filter (by prefix)",
+        "table": {
+            "prefix": "Prefix",
+            "properties": "Properties"
+        }
+    },
+    "health": {
+        "title": "Salutem compescit",
+        "refresh.button": "Recreo",
+        "stacktrace": "Narratus",
+        "indicator": {
+            "diskSpace": "Disk space",
+            "mail": "Cursorium",
+            "db": "Database"
+        },
+        "table": {
+            "service": "Nomen servitii",
+            "status": "Status"
+        },
+        "status": {
+            "UP": "SURSUM",
+            "DOWN": "PESSUM"
+        }
+    },
     "logs": {
         "title": "Logs",
         "nbloggers": "There are {{ total }} loggers.",
@@ -308,14 +423,6 @@
             "name": "Name",
             "level": "Level"
         }
-    },
-    "main": {
-        "title": "Scolaris de renaissance, exspectata!",
-        "subtitle": "Hic situs sociari de Societate Canadian Studiorum Renascerentur.",
-        "logged": {
-            "message": "Te \"{{username}}\" videntur esse."
-        },
-        "question": "Pro magis notitia de Societate Canadian Studiorum Renascerentur, ite situm principale ad:"
     },
     "metrics": {
         "title": "Application Metrics",
@@ -408,135 +515,6 @@
             "p75": "p75",
             "p95": "p95",
             "p99": "p99"
-        }
-    },
-    "password": {
-        "title": "Signum pro [<b>{{username}}</b>]",
-        "form": {
-            "button": "Servo"
-        },
-        "messages": {
-            "error": "<strong>Quasi per errorem inciderunt!</strong> Signum non potuit mutari.",
-            "success": "<strong>Signum mutatum!</strong>"
-        }
-    },
-    "register": {
-        "title": "Registration",
-        "form": {
-            "button": "Register"
-        },
-        "messages": {
-            "validate": {
-                "login": {
-                    "required": "Your login is required.",
-                    "minlength": "Your login is required to be at least 1 character",
-                    "maxlength": "Your login cannot be longer than 50 characters",
-                    "pattern": "Your login can only contain lower-case letters and digits"
-                }
-            },
-            "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
-            "error": {
-                "fail": "<strong>Registration failed!</strong> Please try again later.",
-                "userexists": "<strong>Login name already registered!</strong> Please choose another one.",
-                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
-            }
-        }
-    },
-    "sessions": {
-        "title": "Active sessions for [<b>{{username}}</b>]",
-        "table": {
-            "ipaddress": "IP address",
-            "useragent": "User Agent",
-            "date": "Date",
-            "button": "Invalidate"
-        },
-        "messages": {
-            "success": "<strong>Session invalidated!</strong>",
-            "error": "<strong>An error has occurred!</strong> The session could not be invalidated."
-        }
-    },
-    "settings": {
-        "contactInformation": "Notitia contactus tuum",
-        "title": "User settings for [<b>{{username}}</b>]",
-        "form": {
-            "firstname": "Praenomen",
-            "firstname.placeholder": "Praenome tuum",
-            "lastname": "Cognomen",
-            "lastname.placeholder": "Cognomen tuum",
-            "button": "Servo"
-        },
-        "messages": {
-            "error": {
-                "fail": "<strong>An error has occurred!</strong> Settings could not be saved.",
-                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
-            },
-            "success": "<strong>Settings saved!</strong>",
-            "validate": {
-                "firstname": {
-                    "required": "Your first name is required.",
-                    "minlength": "Your first name is required to be at least 1 character",
-                    "maxlength": "Your first name cannot be longer than 50 characters"
-                },
-                "lastname": {
-                    "required": "Your last name is required.",
-                    "minlength": "Your last name is required to be at least 1 character",
-                    "maxlength": "Your last name cannot be longer than 50 characters"
-                }
-            }
-        }
-    },
-    "product": {
-        "base": {
-            "membership": "Sodalitas",
-            "iter": "ITER",
-            "rr": "Renaissance et Reformationem"
-        },
-        "variable": {
-            "membershipType": "Genus sodales",
-            "subscriptionType": "Genus subscriptionis",
-            "subscriptionFormat": "Forma subscriptionis"
-        },
-        "value": {
-            "membershipType": {
-                "patron": "Patronum",
-                "regular": "Membrum Ordinarius",
-                "unemployed": "Cessatura",
-                "retired": "Reductus",
-                "student": "Pupula"
-            },
-            "subscriptionType": {
-                "allMembers": "Sodales omnes",
-                "studentsAndRetirees": "Tantum pro pupula et reducta"
-            },
-            "subscriptionFormat": {
-                "print": "Vestigium",
-                "electronic": "Transcursorium"
-            }
-        }
-    },
-    "audits": {
-        "title": "Audits",
-        "filter": {
-            "title": "Filter per date",
-            "from": "from",
-            "to": "to",
-            "button": {
-                "weeks": "Weeks",
-                "today": "today",
-                "clear": "clear",
-                "close": "close"
-            }
-        },
-        "table": {
-            "header": {
-                "principal": "User",
-                "date": "Date",
-                "status": "State",
-                "data": "Extra data"
-            },
-            "data": {
-                "remoteAddress": "Remote Address:"
-            }
         }
     }
 }

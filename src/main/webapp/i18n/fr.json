@@ -1,11 +1,4 @@
 {
-    "activate": {
-        "title": "Activation",
-        "messages": {
-            "success": "<strong>Votre compte utilisateur a été activé.</strong>  Merci de vous <a href=\"#!/login\">authentifier</a>.",
-            "error": "<strong>Votre compte utilisateur n'a pas pu être activé.</strong>  Utilisez le formulaire d'enregistrement pour en créer un nouveau."
-        }
-    },
     "csrsApp": {
         "annual": {
             "home": {
@@ -128,18 +121,6 @@
             "lastMember": "Adhérent:"
         }
     },
-    "configuration": {
-        "title": "Configuration",
-        "filter": "Filtrer (par préfixe)",
-        "table": {
-            "prefix": "Préfixe",
-            "properties": "Propriétés"
-        }
-    },
-    "errors": {
-        "403": "Vous n'avez pas les droits pour accéder à cette page.",
-        "title": "Page d'erreur!"
-    },
     "global": {
         "title": "SCÉR adhésion",
         "browsehappy": "Vous utilisez un <strong>ancien</strong> navigateur. Veuillez  <a href=\"http://browsehappy.com/?locale=fr\">mettre à jour votre navigateur</a>  pour une meilleure expérience.",
@@ -240,22 +221,57 @@
         }
     },
     "footer": "Ceci est votre pied de page",
-    "health": {
-        "title": "Diagnostics",
-        "refresh.button": "Rafraichir",
-        "stacktrace": "Stacktrace",
-        "indicator": {
-            "diskSpace": "Espace disque",
-            "mail": "Email",
-            "db": "Base de données"
+    "language": {
+        "en": "Anglais",
+        "fr": "Français",
+        "la": "Latin"
+    },
+    "product": {
+        "base": {
+            "membership": "Adhésion",
+            "iter": "ITER",
+            "rr": "Renaissance et Réforme"
         },
-        "table": {
-            "service": "Nom du service",
-            "status": "Etat"
+        "variable": {
+            "membershipType": "Type d'adhésion",
+            "subscriptionType": "Type d'abonnement",
+            "subscriptionFormat": "Format de abonnement"
         },
-        "status": {
-            "UP": "DISPONIBLE",
-            "DOWN": "HORS SERVICE"
+        "value": {
+            "membershipType": {
+                "patron": "Membre bienfaiteur",
+                "regular": "Membre régulier",
+                "unemployed": "Ph.D. sans emploi à temps plein",
+                "retired": "Professeur à la retraite",
+                "student": "Étudiant(e)"
+            },
+            "subscriptionType": {
+                "allMembers": "Tous les membres (sauf les étudiants et retraités)",
+                "studentsAndRetirees": "Pour étudiants et retraités seulement"
+            },
+            "subscriptionFormat": {
+                "print": "Imprimée",
+                "electronic": "Electronique"
+            }
+        }
+    },
+    "errors": {
+        "403": "Vous n'avez pas les droits pour accéder à cette page.",
+        "title": "Page d'erreur!"
+    },
+    "main": {
+        "title": "Bienvenue, érudit de la Renaissance!",
+        "subtitle": "Ce est le site d'adhésion de la Société canadienne d'études de la Renaissance.",
+        "logged": {
+            "message": "Vous êtes connecté en tant que \"{{username}}\"."
+        },
+        "question": "Pour plus d'informations sur le Société canadienne d'études de la Renaissance, consultez notre site Web principal, au:"
+    },
+    "activate": {
+        "title": "Activation",
+        "messages": {
+            "success": "<strong>Votre compte utilisateur a été activé.</strong>  Merci de vous <a href=\"#!/login\">authentifier</a>.",
+            "error": "<strong>Votre compte utilisateur n'a pas pu être activé.</strong>  Utilisez le formulaire d'enregistrement pour en créer un nouveau."
         }
     },
     "invitation": {
@@ -281,11 +297,6 @@
             "passwordReset": "Si vous avez déjà un compte, mais vous avez oublié le nom d'utilisateur ou mot de passe, puis essayez le mot de <a href=\"#!/password-reset\">passe réinitialiser</a>."
         }
     },
-    "language": {
-        "en": "Anglais",
-        "fr": "Français",
-        "la": "Latin"
-    },
     "login": {
         "title": "Authentification",
         "form": {
@@ -300,6 +311,110 @@
             }
         }
     },
+    "password": {
+        "title": "Changer le mot de passe pour [<b>{{username}}</b>]",
+        "form": {
+            "button": "Sauvegarder"
+        },
+        "messages": {
+            "error": "<strong>Une erreur est survenue!</strong> Le mot de passe n'a pas pu être modifié.",
+            "success": "<strong>La mot de passe a été modifié!</strong>"
+        }
+    },
+    "sessions": {
+        "title": "Sessions actives de [<b>{{username}}</b>]",
+        "table": {
+            "ipaddress": "Adresse IP",
+            "useragent": "User Agent",
+            "date": "Date",
+            "button": "Invalider"
+        },
+        "messages": {
+            "success": "<strong>Session a été invalidée!</strong>",
+            "error": "<strong>Une erreur est survenue!</strong> La session ne peut pas être invalidée."
+        }
+    },
+    "settings": {
+        "contactInformation": "Vos informations de contact",
+        "title": "Profil de l'utilisateur [{{username}}]",
+        "form": {
+            "firstname": "Prénom",
+            "firstname.placeholder": "Votre prénom",
+            "lastname": "Nom",
+            "lastname.placeholder": "Votre nom",
+            "button": "Sauvegarder"
+        },
+        "messages": {
+            "error": {
+                "fail": "<strong>Une erreur est survenue!</strong> Votre profil n'a pas été sauvegardé.",
+                "emailexists": "<strong>Cet E-mail est déjà utilisé!</strong> Veuillez en choisir un autre."
+            },
+            "success": "<strong>Votre profil a été sauvegardé!</strong>",
+            "validate": {
+                "firstname": {
+                    "required": "Votre prénom est requis.",
+                    "minlength": "Votre prénom doit comporter au moins un caractère",
+                    "maxlength": "Votre prénom ne doit pas comporter plus de 50 caractères"
+                },
+                "lastname": {
+                    "required": "Votre nom est requis.",
+                    "minlength": "Votre nom doit comporter au moins un caractère",
+                    "maxlength": "Votre nom ne doit pas comporter plus de 50 caractères"
+                }
+            }
+        }
+    },
+    "audits": {
+        "title": "Audits",
+        "filter": {
+            "title": "Filtrer par date",
+            "from": "De",
+            "to": "à",
+            "button": {
+                "weeks": "Semaines",
+                "today": "Aujourd'hui",
+                "clear": "Effacer",
+                "close": "Fermer"
+            }
+        },
+        "table": {
+            "header": {
+                "principal": "Utilisateur",
+                "date": "Date",
+                "status": "Status",
+                "data": "Autres données"
+            },
+            "data": {
+                "remoteAddress": "Adresse Distante:"
+            }
+        }
+    },
+    "configuration": {
+        "title": "Configuration",
+        "filter": "Filtrer (par préfixe)",
+        "table": {
+            "prefix": "Préfixe",
+            "properties": "Propriétés"
+        }
+    },
+    "health": {
+        "title": "Diagnostics",
+        "refresh.button": "Rafraichir",
+        "stacktrace": "Stacktrace",
+        "indicator": {
+            "diskSpace": "Espace disque",
+            "mail": "Email",
+            "db": "Base de données"
+        },
+        "table": {
+            "service": "Nom du service",
+            "status": "Etat"
+        },
+        "status": {
+            "UP": "DISPONIBLE",
+            "DOWN": "HORS SERVICE"
+        }
+    },
     "logs": {
         "title": "Logs",
         "nbloggers": "Total de {{ total }} \"loggers\".",
@@ -308,14 +423,6 @@
             "name": "Nom",
             "level": "Niveau"
         }
-    },
-    "main": {
-        "title": "Bienvenue, érudit de la Renaissance!",
-        "subtitle": "Ce est le site d'adhésion de la Société canadienne d'études de la Renaissance.",
-        "logged": {
-            "message": "Vous êtes connecté en tant que \"{{username}}\"."
-        },
-        "question": "Pour plus d'informations sur le Société canadienne d'études de la Renaissance, consultez notre site Web principal, au:"
     },
     "metrics": {
         "title": "Métriques de l'application",
@@ -408,135 +515,6 @@
             "p75": "p75",
             "p95": "p95",
             "p99": "p99"
-        }
-    },
-    "password": {
-        "title": "Changer le mot de passe pour [<b>{{username}}</b>]",
-        "form": {
-            "button": "Sauvegarder"
-        },
-        "messages": {
-            "error": "<strong>Une erreur est survenue!</strong> Le mot de passe n'a pas pu être modifié.",
-            "success": "<strong>La mot de passe a été modifié!</strong>"
-        }
-    },
-    "register": {
-        "title": "Création de compte utilisateur",
-        "form": {
-            "button": "Enregistrement"
-        },
-        "messages": {
-            "validate": {
-                "login": {
-                    "required": "Votre nom d'utilisateur est obligatoire.",
-                    "minlength": "Votre nom d'utilisateur doit contenir plus d'un caractère",
-                    "maxlength": "Votre nom d'utilisateur ne peut pas contenir plus de 50 caractères",
-                    "pattern": "Votre nom d'utilisateur ne peut contenir que des lettres minuscules ou des nombres"
-                }
-            },
-            "success": "<strong>Compte enregistré !</strong> Merci de vérifier votre e-mail de confirmation.",
-            "error": {
-                "fail": "<strong>Compte non créé!</strong> Merci d'essayer à nouveau plus tard.",
-                "userexists": "<strong>Ce compte utilisateur existe déjà !</strong> Veuillez en choisir un autre.",
-                "emailexists": "<strong>Cet E-mail est déjà utilisé!</strong> Veuillez en choisir un autre."
-            }
-        }
-    },
-    "sessions": {
-        "title": "Sessions actives de [<b>{{username}}</b>]",
-        "table": {
-            "ipaddress": "Adresse IP",
-            "useragent": "User Agent",
-            "date": "Date",
-            "button": "Invalider"
-        },
-        "messages": {
-            "success": "<strong>Session a été invalidée!</strong>",
-            "error": "<strong>Une erreur est survenue!</strong> La session ne peut pas être invalidée."
-        }
-    },
-    "settings": {
-        "contactInformation": "Vos informations de contact",
-        "title": "Profil de l'utilisateur [{{username}}]",
-        "form": {
-            "firstname": "Prénom",
-            "firstname.placeholder": "Votre prénom",
-            "lastname": "Nom",
-            "lastname.placeholder": "Votre nom",
-            "button": "Sauvegarder"
-        },
-        "messages": {
-            "error": {
-                "fail": "<strong>Une erreur est survenue!</strong> Votre profil n'a pas été sauvegardé.",
-                "emailexists": "<strong>Cet E-mail est déjà utilisé!</strong> Veuillez en choisir un autre."
-            },
-            "success": "<strong>Votre profil a été sauvegardé!</strong>",
-            "validate": {
-                "firstname": {
-                    "required": "Votre prénom est requis.",
-                    "minlength": "Votre prénom doit comporter au moins un caractère",
-                    "maxlength": "Votre prénom ne doit pas comporter plus de 50 caractères"
-                },
-                "lastname": {
-                    "required": "Votre nom est requis.",
-                    "minlength": "Votre nom doit comporter au moins un caractère",
-                    "maxlength": "Votre nom ne doit pas comporter plus de 50 caractères"
-                }
-            }
-        }
-    },
-    "product": {
-        "base": {
-            "membership": "Adhésion",
-            "iter": "ITER",
-            "rr": "Renaissance et Réforme"
-        },
-        "variable": {
-            "membershipType": "Type d'adhésion",
-            "subscriptionType": "Type d'abonnement",
-            "subscriptionFormat": "Format de abonnement"
-        },
-        "value": {
-            "membershipType": {
-                "patron": "Membre bienfaiteur",
-                "regular": "Membre régulier",
-                "unemployed": "Ph.D. sans emploi à temps plein",
-                "retired": "Professeur à la retraite",
-                "student": "Étudiant(e)"
-            },
-            "subscriptionType": {
-                "allMembers": "Tous les membres (sauf les étudiants et retraités)",
-                "studentsAndRetirees": "Pour étudiants et retraités seulement"
-            },
-            "subscriptionFormat": {
-                "print": "Imprimée",
-                "electronic": "Electronique"
-            }
-        }
-    },
-    "audits": {
-        "title": "Audits",
-        "filter": {
-            "title": "Filtrer par date",
-            "from": "De",
-            "to": "à",
-            "button": {
-                "weeks": "Semaines",
-                "today": "Aujourd'hui",
-                "clear": "Effacer",
-                "close": "Fermer"
-            }
-        },
-        "table": {
-            "header": {
-                "principal": "Utilisateur",
-                "date": "Date",
-                "status": "Status",
-                "data": "Autres données"
-            },
-            "data": {
-                "remoteAddress": "Adresse Distante:"
-            }
         }
     }
 }

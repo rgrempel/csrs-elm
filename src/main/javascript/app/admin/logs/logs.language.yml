@@ -1,0 +1,26 @@
+logs: 
+    title:
+        en: "Logs"
+        fr: "Logs"
+        la: "Logs"
+
+    nbloggers:
+        en: "There are {{ total }} loggers."
+        fr: "Total de {{ total }} \"loggers\"."
+        la: "There are {{ total }} loggers."
+
+    filter:
+        en: "Filter"
+        fr: "Filtrer"
+        la: "Filter"
+
+    table: 
+        name:
+            en: "Name"
+            fr: "Nom"
+            la: "Name"
+
+        level:
+            en: "Level"
+            fr: "Niveau"
+            la: "Level"

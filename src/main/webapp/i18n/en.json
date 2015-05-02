@@ -1,11 +1,4 @@
 {
-    "activate": {
-        "title": "Activation",
-        "messages": {
-            "success": "<strong>Your user has been activated.</strong>  Please <a href=\"#!/login\">authenticate</a>.",
-            "error": "<strong>Your user could not be activated.</strong>  Please use the registration form to sign up."
-        }
-    },
     "csrsApp": {
         "annual": {
             "home": {
@@ -128,18 +121,6 @@
             "lastMember": "Member:"
         }
     },
-    "configuration": {
-        "title": "Configuration",
-        "filter": "Filter (by prefix)",
-        "table": {
-            "prefix": "Prefix",
-            "properties": "Properties"
-        }
-    },
-    "errors": {
-        "403": "You are not authorized to access the page.",
-        "title": "Error page!"
-    },
     "global": {
         "title": "CSRS Membership",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please  <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a>  to improve your experience.",
@@ -240,22 +221,57 @@
         }
     },
     "footer": "This is your footer",
-    "health": {
-        "title": "Health checks",
-        "refresh.button": "Refresh",
-        "stacktrace": "Stacktrace",
-        "indicator": {
-            "diskSpace": "Disk space",
-            "mail": "Email",
-            "db": "Database"
+    "language": {
+        "en": "English",
+        "fr": "French",
+        "la": "Latin"
+    },
+    "product": {
+        "base": {
+            "membership": "Membership",
+            "iter": "ITER",
+            "rr": "Renaissance and Reformation"
         },
-        "table": {
-            "service": "Service name",
-            "status": "Status"
+        "variable": {
+            "membershipType": "Membership type",
+            "subscriptionType": "Subscription type",
+            "subscriptionFormat": "Subscription format"
         },
-        "status": {
-            "UP": "UP",
-            "DOWN": "DOWN"
+        "value": {
+            "membershipType": {
+                "patron": "Patron",
+                "regular": "Regular Member",
+                "unemployed": "Ph.D. without full-time employment",
+                "retired": "Retired",
+                "student": "Student"
+            },
+            "subscriptionType": {
+                "allMembers": "All Members",
+                "studentsAndRetirees": "For Students and Retirees only"
+            },
+            "subscriptionFormat": {
+                "print": "Print",
+                "electronic": "Electronic"
+            }
+        }
+    },
+    "errors": {
+        "403": "You are not authorized to access the page.",
+        "title": "Error page!"
+    },
+    "main": {
+        "title": "Welcome, Renaissance Scholar!",
+        "subtitle": "This is the Canadian Society for Renaissance Studies membership site.",
+        "logged": {
+            "message": "You are logged in as user \"{{username}}\"."
+        },
+        "question": "For more information about the Canadian Society for Renaissance Studies, see our main website, at:"
+    },
+    "activate": {
+        "title": "Activation",
+        "messages": {
+            "success": "<strong>Your user has been activated.</strong>  Please <a href=\"#!/login\">authenticate</a>.",
+            "error": "<strong>Your user could not be activated.</strong>  Please use the registration form to sign up."
         }
     },
     "invitation": {
@@ -281,11 +297,6 @@
             "passwordReset": "If you already have an account, but have forgotten the username or password,  then try the <a href=\"#!/password-reset\">password reset</a> page."
         }
     },
-    "language": {
-        "en": "English",
-        "fr": "French",
-        "la": "Latin"
-    },
     "login": {
         "title": "Authentication",
         "form": {
@@ -300,6 +311,110 @@
             }
         }
     },
+    "password": {
+        "title": "Password for [<b>{{username}}</b>]",
+        "form": {
+            "button": "Save"
+        },
+        "messages": {
+            "error": "<strong>An error has occurred!</strong> The password could not be changed.",
+            "success": "<strong>Password changed!</strong>"
+        }
+    },
+    "sessions": {
+        "title": "Active sessions for [<b>{{username}}</b>]",
+        "table": {
+            "ipaddress": "IP address",
+            "useragent": "User Agent",
+            "date": "Date",
+            "button": "Invalidate"
+        },
+        "messages": {
+            "success": "<strong>Session invalidated!</strong>",
+            "error": "<strong>An error has occurred!</strong> The session could not be invalidated."
+        }
+    },
+    "settings": {
+        "contactInformation": "Your Contact Information",
+        "title": "User settings for [<b>{{username}}</b>]",
+        "form": {
+            "firstname": "First Name",
+            "firstname.placeholder": "Your first name",
+            "lastname": "Last Name",
+            "lastname.placeholder": "Your last name",
+            "button": "Save"
+        },
+        "messages": {
+            "error": {
+                "fail": "<strong>An error has occurred!</strong> Settings could not be saved.",
+                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
+            },
+            "success": "<strong>Settings saved!</strong>",
+            "validate": {
+                "firstname": {
+                    "required": "Your first name is required.",
+                    "minlength": "Your first name is required to be at least 1 character",
+                    "maxlength": "Your first name cannot be longer than 50 characters"
+                },
+                "lastname": {
+                    "required": "Your last name is required.",
+                    "minlength": "Your last name is required to be at least 1 character",
+                    "maxlength": "Your last name cannot be longer than 50 characters"
+                }
+            }
+        }
+    },
+    "audits": {
+        "title": "Audits",
+        "filter": {
+            "title": "Filter per date",
+            "from": "from",
+            "to": "to",
+            "button": {
+                "weeks": "Weeks",
+                "today": "today",
+                "clear": "clear",
+                "close": "close"
+            }
+        },
+        "table": {
+            "header": {
+                "principal": "User",
+                "date": "Date",
+                "status": "State",
+                "data": "Extra data"
+            },
+            "data": {
+                "remoteAddress": "Remote Address:"
+            }
+        }
+    },
+    "configuration": {
+        "title": "Configuration",
+        "filter": "Filter (by prefix)",
+        "table": {
+            "prefix": "Prefix",
+            "properties": "Properties"
+        }
+    },
+    "health": {
+        "title": "Health checks",
+        "refresh.button": "Refresh",
+        "stacktrace": "Stacktrace",
+        "indicator": {
+            "diskSpace": "Disk space",
+            "mail": "Email",
+            "db": "Database"
+        },
+        "table": {
+            "service": "Service name",
+            "status": "Status"
+        },
+        "status": {
+            "UP": "UP",
+            "DOWN": "DOWN"
+        }
+    },
     "logs": {
         "title": "Logs",
         "nbloggers": "There are {{ total }} loggers.",
@@ -308,14 +423,6 @@
             "name": "Name",
             "level": "Level"
         }
-    },
-    "main": {
-        "title": "Welcome, Renaissance Scholar!",
-        "subtitle": "This is the Canadian Society for Renaissance Studies membership site.",
-        "logged": {
-            "message": "You are logged in as user \"{{username}}\"."
-        },
-        "question": "For more information about the Canadian Society for Renaissance Studies, see our main website, at:"
     },
     "metrics": {
         "title": "Application Metrics",
@@ -408,135 +515,6 @@
             "p75": "p75",
             "p95": "p95",
             "p99": "p99"
-        }
-    },
-    "password": {
-        "title": "Password for [<b>{{username}}</b>]",
-        "form": {
-            "button": "Save"
-        },
-        "messages": {
-            "error": "<strong>An error has occurred!</strong> The password could not be changed.",
-            "success": "<strong>Password changed!</strong>"
-        }
-    },
-    "register": {
-        "title": "Registration",
-        "form": {
-            "button": "Register"
-        },
-        "messages": {
-            "validate": {
-                "login": {
-                    "required": "Your login is required.",
-                    "minlength": "Your login is required to be at least 1 character",
-                    "maxlength": "Your login cannot be longer than 50 characters",
-                    "pattern": "Your login can only contain lower-case letters and digits"
-                }
-            },
-            "success": "<strong>Registration saved!</strong> Please check your email for confirmation.",
-            "error": {
-                "fail": "<strong>Registration failed!</strong> Please try again later.",
-                "userexists": "<strong>Login name already registered!</strong> Please choose another one.",
-                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
-            }
-        }
-    },
-    "sessions": {
-        "title": "Active sessions for [<b>{{username}}</b>]",
-        "table": {
-            "ipaddress": "IP address",
-            "useragent": "User Agent",
-            "date": "Date",
-            "button": "Invalidate"
-        },
-        "messages": {
-            "success": "<strong>Session invalidated!</strong>",
-            "error": "<strong>An error has occurred!</strong> The session could not be invalidated."
-        }
-    },
-    "settings": {
-        "contactInformation": "Your Contact Information",
-        "title": "User settings for [<b>{{username}}</b>]",
-        "form": {
-            "firstname": "First Name",
-            "firstname.placeholder": "Your first name",
-            "lastname": "Last Name",
-            "lastname.placeholder": "Your last name",
-            "button": "Save"
-        },
-        "messages": {
-            "error": {
-                "fail": "<strong>An error has occurred!</strong> Settings could not be saved.",
-                "emailexists": "<strong>E-mail is already in use!</strong> Please choose another one."
-            },
-            "success": "<strong>Settings saved!</strong>",
-            "validate": {
-                "firstname": {
-                    "required": "Your first name is required.",
-                    "minlength": "Your first name is required to be at least 1 character",
-                    "maxlength": "Your first name cannot be longer than 50 characters"
-                },
-                "lastname": {
-                    "required": "Your last name is required.",
-                    "minlength": "Your last name is required to be at least 1 character",
-                    "maxlength": "Your last name cannot be longer than 50 characters"
-                }
-            }
-        }
-    },
-    "product": {
-        "base": {
-            "membership": "Membership",
-            "iter": "ITER",
-            "rr": "Renaissance and Reformation"
-        },
-        "variable": {
-            "membershipType": "Membership type",
-            "subscriptionType": "Subscription type",
-            "subscriptionFormat": "Subscription format"
-        },
-        "value": {
-            "membershipType": {
-                "patron": "Patron",
-                "regular": "Regular Member",
-                "unemployed": "Ph.D. without full-time employment",
-                "retired": "Retired",
-                "student": "Student"
-            },
-            "subscriptionType": {
-                "allMembers": "All Members",
-                "studentsAndRetirees": "For Students and Retirees only"
-            },
-            "subscriptionFormat": {
-                "print": "Print",
-                "electronic": "Electronic"
-            }
-        }
-    },
-    "audits": {
-        "title": "Audits",
-        "filter": {
-            "title": "Filter per date",
-            "from": "from",
-            "to": "to",
-            "button": {
-                "weeks": "Weeks",
-                "today": "today",
-                "clear": "clear",
-                "close": "close"
-            }
-        },
-        "table": {
-            "header": {
-                "principal": "User",
-                "date": "Date",
-                "status": "State",
-                "data": "Extra data"
-            },
-            "data": {
-                "remoteAddress": "Remote Address:"
-            }
         }
     }
 }

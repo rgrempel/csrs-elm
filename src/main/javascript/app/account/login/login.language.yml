@@ -1,0 +1,33 @@
+login: 
+    title:
+        en: "Authentication"
+        fr: "Authentification"
+        la: "Authenticas"
+
+    form: 
+        password:
+            en: "Password"
+            fr: "Mot de passe"
+            la: "Signum"
+
+        password.placeholder:
+            en: "Your password"
+            fr: "Votre mot de passe"
+            la: "Signum tuum"
+
+        rememberme:
+            en: "Automatic Login"
+            fr: "Garder la session ouverte"
+            la: "Cosignum automatic"
+
+        button:
+            en: "Authenticate"
+            fr: "Connexion"
+            la: "Cosignum"
+    
+    messages: 
+        error: 
+            authentication:
+                en: "<strong>Authentication failed!</strong> Please check your credentials and try again."
+                fr: "<strong>Erreur d'authentification!</strong> Veuillez vérifier vos identifiants de connexion."
+                la: "<strong>Defecit authenticitate!</strong> Probā signum atque iterum cosignio."

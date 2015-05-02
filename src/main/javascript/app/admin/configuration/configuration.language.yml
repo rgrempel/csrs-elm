@@ -1,0 +1,21 @@
+configuration: 
+    title:
+        en: "Configuration"
+        fr: "Configuration"
+        la: "Configuration"
+
+    filter:
+        en: "Filter (by prefix)"
+        fr: "Filtrer (par préfixe)"
+        la: "Filter (by prefix)"
+
+    table: 
+        prefix:
+            en: "Prefix"
+            fr: "Préfixe"
+            la: "Prefix"
+
+        properties:
+            en: "Properties"
+            fr: "Propriétés"
+            la: "Properties"

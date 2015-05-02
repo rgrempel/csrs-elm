@@ -1,0 +1,37 @@
+sessions: 
+    title:
+        en: "Active sessions for [<b>{{username}}</b>]"
+        fr: "Sessions actives de [<b>{{username}}</b>]"
+        la: "Active sessions for [<b>{{username}}</b>]"
+
+    table: 
+        ipaddress:
+            en: "IP address"
+            fr: "Adresse IP"
+            la: "IP address"
+
+        useragent:
+            en: "User Agent"
+            fr: "User Agent"
+            la: "User Agent"
+
+        date:
+            en: "Date"
+            fr: "Date"
+            la: "Date"
+
+        button:
+            en: "Invalidate"
+            fr: "Invalider"
+            la: "Invalidate"
+    
+    messages: 
+        success:
+            en: "<strong>Session invalidated!</strong>"
+            fr: "<strong>Session a été invalidée!</strong>"
+            la: "<strong>Session invalidated!</strong>"
+
+        error:
+            en: "<strong>An error has occurred!</strong> The session could not be invalidated."
+            fr: "<strong>Une erreur est survenue!</strong> La session ne peut pas être invalidée."
+            la: "<strong>An error has occurred!</strong> The session could not be invalidated."
