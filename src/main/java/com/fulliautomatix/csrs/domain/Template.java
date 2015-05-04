@@ -29,7 +29,7 @@ public class Template implements Serializable {
     // For JsonView
     public interface Scalar {};
 
-    public interface WithTemplateLanguages extends Scalar, TemplateLanguage.Scalar {};
+    public interface WithText extends Scalar {};
     
     @Id
     @SequenceGenerator(name="t_template_id_seq", sequenceName="t_template_id_seq", allocationSize=1)
@@ -44,11 +44,10 @@ public class Template implements Serializable {
     @JsonView(Scalar.class)
     private String code;
     
-    @OneToMany(mappedBy="template")
-    @OnDelete(action=OnDeleteAction.CASCADE)
+    @Column(name="text", nullable=false)
+    @NotNull
     @lombok.Getter @lombok.Setter
-    @BatchSize(size=50)
-    @JsonView(WithTemplateLanguages.class)
-    private Set<TemplateLanguage> templateLanguages = new HashSet<>();
+    @JsonView(WithText.class)
+    private String text;
     
 }

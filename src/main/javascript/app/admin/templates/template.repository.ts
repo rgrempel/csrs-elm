@@ -6,6 +6,7 @@ module CSRS {
     export interface Template {
         id?: number;
         code?: string;
+        text?: string;
     }
 
     angular.module('csrsApp').factory('templateRepository', templateRepositoryProvider);

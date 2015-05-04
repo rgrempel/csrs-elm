@@ -18,7 +18,9 @@ module CSRS {
             'ngInject';
 
             this.serverError = null;
-            this.template = {};
+            this.template = {
+                text: ""
+            };
             this.templateRepository = templateRepository;
             this.scope = $scope;
 
@@ -35,7 +37,9 @@ module CSRS {
             if (!this.scope.editForm.$valid) {return;}
 
             this.templateRepository.create(this.template).then(() => {
-                this.template = {};
+                this.template = {
+                    text: ""
+                };
                 this.scope.editForm.$setPristine();
                 this.serverError = null;
             }, (error: any) => {

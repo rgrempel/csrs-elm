@@ -58,4 +58,40 @@
                                  onUpdate="CASCADE" />
 
     </changeSet>
+
+    <changeSet id="createLanguage" author="ryan">
+        <createTable tableName="T_LANGUAGE">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="code" type="varchar">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createIndex tableName="T_LANGUAGE" indexName="idx_language_code" unique="true">
+            <column name="code" />
+        </createIndex>
+
+        <insert tableName="T_LANGUAGE">
+            <column name="code" value="en" />
+        </insert>
+
+        <insert tableName="T_LANGUAGE">
+            <column name="code" value="fr" />
+        </insert>
+
+        <insert tableName="T_LANGUAGE">
+            <column name="code" value="la" />
+        </insert>
+
+        <dropTable tableName="T_TEMPLATE_LANGUAGE" />
+        
+        <addColumn tableName="T_TEMPLATE">
+            <column name="text" type="varchar" defaultValue="" value="">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

@@ -4,7 +4,6 @@ import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.annotation.*;
 
 import com.fulliautomatix.csrs.domain.Template;
-import com.fulliautomatix.csrs.domain.TemplateLanguage;
 import com.fulliautomatix.csrs.repository.TemplateRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.service.LazyService;
@@ -116,13 +115,13 @@ public class TemplateResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
-    @JsonView(Template.WithTemplateLanguages.class)
+    @JsonView(Template.WithText.class)
     @Transactional(readOnly = true)
     public ResponseEntity<Template> get (@PathVariable Long id) {
         log.debug("REST request to get Template : {}", id);
 
         return templateRepository.findOneById(id).map((template) -> {
-            lazyService.initializeForJsonView(template, Template.WithTemplateLanguages.class);
+            lazyService.initializeForJsonView(template, Template.WithText.class);
             return new ResponseEntity<>(template, HttpStatus.OK);
         }).orElse(
             new ResponseEntity<>(HttpStatus.NOT_FOUND)
