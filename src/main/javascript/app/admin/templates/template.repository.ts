@@ -4,9 +4,9 @@ module CSRS {
     'use strict';
 
     export interface Template {
-        id?: number;
-        code?: string;
-        text?: string;
+        id: number;
+        code: string;
+        text: string;
     }
 
     angular.module('csrsApp').factory('templateRepository', templateRepositoryProvider);
@@ -14,7 +14,7 @@ module CSRS {
     function templateRepositoryProvider (DS: JSData.DS) : JSData.DSResourceDefinition<Template> {
         'ngInject';
 
-        return DS.defineResource({
+        return DS.defineResource<Template>({
             name: 'Template',
             endpoint: 'templates'        
         }); 

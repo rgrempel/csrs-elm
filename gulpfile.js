@@ -317,7 +317,7 @@ gulp.task('wiredep:test', function () {
     );
 });
 
-gulp.task('inject', ['scripts'], function () {
+gulp.task('inject', ['scripts', 'translations'], function () {
     return gulp.src(
         'src/main/webapp/index.html'
     ).pipe(

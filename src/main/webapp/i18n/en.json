@@ -519,6 +519,10 @@
     },
     "templates": {
         "title": "Templates",
-        "code": "Code"
+        "code": "Code",
+        "text": "Template",
+        "detail": {
+            "title": "Template"
+        }
     }
 }

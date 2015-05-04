@@ -19,6 +19,8 @@ module CSRS {
 
             this.serverError = null;
             this.template = {
+                id: null,
+                code: null,
                 text: ""
             };
             this.templateRepository = templateRepository;
@@ -38,6 +40,8 @@ module CSRS {
 
             this.templateRepository.create(this.template).then(() => {
                 this.template = {
+                    id: null,
+                    code: null,
                     text: ""
                 };
                 this.scope.editForm.$setPristine();

@@ -519,6 +519,10 @@
     },
     "templates": {
         "title": "Exemplaria",
-        "code": "Codice"
+        "code": "Codice",
+        "text": "Exemplar",
+        "detail": {
+            "title": "Exemplar"
+        }
     }
 }

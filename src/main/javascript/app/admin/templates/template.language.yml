@@ -9,4 +9,14 @@ templates:
         fr: Code
         la: Codice
 
+    text:
+        en: Template
+        fr: Gabarit
+        la: Exemplar
+    
+    detail:
+        title:
+            en: Template
+            fr: Gabarit
+            la: Exemplar
 

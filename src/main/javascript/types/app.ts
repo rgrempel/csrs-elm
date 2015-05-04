@@ -24,6 +24,9 @@
 /// <reference path="../components/products/product.variable.picker.ts" />
 
 
+/// <reference path="../app/admin/templates/template.detail.ts" />
+
+
 /// <reference path="../app/admin/templates/template.list.ts" />
 
 

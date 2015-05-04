@@ -519,6 +519,10 @@
     },
     "templates": {
         "title": "Gabarit",
-        "code": "Code"
+        "code": "Code",
+        "text": "Gabarit",
+        "detail": {
+            "title": "Gabarit"
+        }
     }
 }

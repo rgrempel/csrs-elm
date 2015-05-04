@@ -70,19 +70,17 @@ public class TemplateResource {
      * PUT  /templates - Updates an existing template.
      */
     @RequestMapping(
-        value = "/templates",
+        value = "/templates/{id}",
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
     @Transactional
     @JsonView(Template.Scalar.class)
-    public ResponseEntity<Template> update (@RequestBody Template template) throws URISyntaxException {
+    public ResponseEntity<Template> update (@RequestBody Template template, @PathVariable Long id) throws URISyntaxException {
         log.debug("REST request to update Template : {}", template);
 
-        if (template.getId() == null) {
-            throw new MustHaveIdException();
-        }
+        template.setId(id);
 
         template = templateRepository.save(template);
         return new ResponseEntity<>(template, HttpStatus.OK);

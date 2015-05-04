@@ -156,8 +156,8 @@ declare module JSData {
         digest():void;
         eject<T>(id:string | number, options?:DSConfiguration):T;
         ejectAll<T>(params:DSFilterParams, options?:DSConfiguration):Array<T>;
-        filter<T>(params:DSFilterParams, options?:DSConfiguration):Array<T>;
-        get<T>(id:string | number, options?:DSConfiguration):T;
+        filter(params:DSFilterParams, options?:DSConfiguration):Array<T>;
+        get(id:string | number, options?:DSConfiguration):T;
         getAll<T>(ids?:Array<string | number>):Array<T>;
         hasChanges(id:string | number):boolean;
         inject<T>(attrs:T, options?:DSConfiguration):T;
