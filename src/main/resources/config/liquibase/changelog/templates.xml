@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <changeSet id="createTemplates" author="ryan">
+        <createTable tableName="T_TEMPLATE">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="code" type="varchar">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createIndex tableName="T_TEMPLATE" indexName="idx_template_code" unique="true">
+            <column name="code" />
+        </createIndex>
+
+        <createTable tableName="T_TEMPLATE_LANGUAGE">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="template_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="language" type="varchar">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="text" type="varchar">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createIndex tableName="T_TEMPLATE_LANGUAGE" indexName="idx_template_language_template">
+            <column name="template_id" />
+        </createIndex>
+
+        <createIndex tableName="T_TEMPLATE_LANGUAGE" indexName="idx_template_language_combined" unique="true">
+            <column name="template_id" />
+            <column name="language" />
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="template_id"
+                                 baseTableName="T_TEMPLATE_LANGUAGE"
+                                 constraintName="fk_template_language_template"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_TEMPLATE"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+
+    </changeSet>
+</databaseChangeLog>

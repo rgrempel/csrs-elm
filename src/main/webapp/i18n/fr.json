@@ -516,5 +516,9 @@
             "p95": "p95",
             "p99": "p99"
         }
+    },
+    "templates": {
+        "title": "Gabarit",
+        "code": "Code"
     }
 }
