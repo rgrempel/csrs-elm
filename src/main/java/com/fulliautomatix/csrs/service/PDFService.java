@@ -11,6 +11,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.apache.fop.apps.*;
 import org.xml.sax.helpers.DefaultHandler;
+import com.fulliautomatix.csrs.thymeleaf.DatabaseURIResolver;
 
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.*;
@@ -26,6 +27,9 @@ import java.io.*;
 @Service
 public class PDFService {
     private final Logger log = LoggerFactory.getLogger(PDFService.class);
+
+    @Inject
+    DatabaseURIResolver databaseURIResolver;
 
     /**
      * Inner class for Async purposes
@@ -58,8 +62,11 @@ public class PDFService {
     private TransformerFactory transformerFactory;
 
     public void createPDF (OutputStream output, Context context, String template) throws Exception {
-        Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, output);
-        
+        FOUserAgent ua = fopFactory.newFOUserAgent();
+        ua.setURIResolver(databaseURIResolver);
+
+        Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, ua, output);
+
         PipedReader reader = new PipedReader();
         PipedWriter writer = new PipedWriter(reader);
     

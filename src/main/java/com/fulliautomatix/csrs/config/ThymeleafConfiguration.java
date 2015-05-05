@@ -78,6 +78,8 @@ public class ThymeleafConfiguration {
 
     @Bean
     public DatabaseTemplateResolver databaseTemplateResolver () {
-        return new DatabaseTemplateResolver(databaseResourceResolver());
+        DatabaseTemplateResolver resolver = new DatabaseTemplateResolver(databaseResourceResolver());
+        resolver.setCacheable(false);
+        return resolver;
     }
 }
