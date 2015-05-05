@@ -1,13 +1,18 @@
 package com.fulliautomatix.csrs.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.fulliautomatix.csrs.domain.Template;
+import com.fulliautomatix.csrs.domain.Operation;
+import com.fulliautomatix.csrs.repository.OperationRepository;
 import com.fulliautomatix.csrs.repository.TemplateRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.service.LazyService;
-import com.fulliautomatix.csrs.web.rest.util.MustHaveIdException;
+
+import com.fulliautomatix.csrs.web.rest.util.ResourceNotFoundException;
 import com.fulliautomatix.csrs.web.rest.util.MustNotHaveIdException;
 
 import org.slf4j.Logger;
@@ -36,7 +41,13 @@ public class TemplateResource {
     private final Logger log = LoggerFactory.getLogger(TemplateResource.class);
 
     @Inject
+    private ObjectMapper mapper;
+
+    @Inject
     private TemplateRepository templateRepository;
+
+    @Inject
+    private OperationRepository operationRepository;
 
     @Inject
     private LazyService lazyService;
@@ -51,15 +62,28 @@ public class TemplateResource {
     )
     @Timed
     @Transactional
-    @JsonView(Template.Scalar.class)
-    public ResponseEntity<Template> create (@Valid @RequestBody Template template) throws URISyntaxException {
+    @JsonView(Template.WithText.class)
+    public ResponseEntity<Template> create (@Valid @RequestBody Template template) throws URISyntaxException, JsonProcessingException {
         log.debug("REST request to save Template : {}", template);
 
         if (template.getId() != null) {
             throw new MustNotHaveIdException();
         }
 
+        Operation operation = new Operation();
+        operation.setOperationType("POST");
+        operation.setOperationUrl("/api/templates");
+        operation.setOperationBody(
+            mapper.writerWithView(
+                Template.WithText.class
+            ).writeValueAsString(template)
+        );
+        
         template = templateRepository.save(template);
+
+        operation.setRollbackType("DELETE");
+        operation.setRollbackUrl("/api/templates/" + template.getId().toString());
+        operationRepository.save(operation);
 
         // Note that this won't deal with any database-updated stuff aside from
         // the id. So, in some cases, we might have to do something different.
@@ -76,13 +100,43 @@ public class TemplateResource {
     )
     @Timed
     @Transactional
-    @JsonView(Template.Scalar.class)
-    public ResponseEntity<Template> update (@RequestBody Template template, @PathVariable Long id) throws URISyntaxException {
+    @JsonView(Template.WithText.class)
+    public ResponseEntity<Template> update (@RequestBody Template template, @PathVariable Long id) throws URISyntaxException, JsonProcessingException {
         log.debug("REST request to update Template : {}", template);
 
         template.setId(id);
 
+        Operation operation = new Operation();
+        operation.setOperationType("PUT");
+        operation.setOperationUrl("/api/templates/" + id.toString());
+        operation.setOperationBody(
+            mapper.writerWithView(
+                Template.WithText.class
+            ).writeValueAsString(template)
+        );
+        
+        Optional.ofNullable(templateRepository.findOne(id)).map((old) -> {
+            lazyService.initializeForJsonView(old, Template.WithText.class);
+            
+            operation.setRollbackType("PUT");
+            operation.setRollbackUrl("/api/templates/" + id.toString());
+            try {
+                operation.setRollbackBody(
+                    mapper.writerWithView(
+                        Template.WithText.class
+                    ).writeValueAsString(old)
+                );
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+
+            operationRepository.save(operation);
+
+            return operation;
+        }).orElseThrow(() -> new ResourceNotFoundException("template not found"));
+
         template = templateRepository.save(template);
+         
         return new ResponseEntity<>(template, HttpStatus.OK);
     }
 

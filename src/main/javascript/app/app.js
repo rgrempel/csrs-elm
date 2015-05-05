@@ -13,6 +13,7 @@
         'focusOn',
         'angularLodash',
         'ngAnimate',
-        'js-data'
+        'js-data',
+        'ui.codemirror'
     ]);
 })();

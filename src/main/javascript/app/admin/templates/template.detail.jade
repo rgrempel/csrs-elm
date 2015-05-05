@@ -17,15 +17,10 @@ form(
                 required
             )
 
-    div(csrs-form-group)
-        label
-            span(translate="templates.text") Template
-            textarea(
-                csrs-form-control
-                name="text"
-                ng-model="templateDetail.template.text"
-                required
-            )
+    div(
+        ui-codemirror = "templateDetail.codemirrorOptions"
+        ng-model = "templateDetail.template.text"
+    )
 
     button(
         type="submit"

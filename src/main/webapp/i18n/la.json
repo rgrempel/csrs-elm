@@ -255,10 +255,6 @@
             }
         }
     },
-    "errors": {
-        "403": "Qui nequeant pervenire paginam.",
-        "title": "Paginam erratam!"
-    },
     "main": {
         "title": "Scolaris de renaissance, exspectata!",
         "subtitle": "Hic situs sociari de Societate Canadian Studiorum Renascerentur.",
@@ -267,34 +263,15 @@
         },
         "question": "Pro magis notitia de Societate Canadian Studiorum Renascerentur, ite situm principale ad:"
     },
+    "errors": {
+        "403": "Qui nequeant pervenire paginam.",
+        "title": "Paginam erratam!"
+    },
     "activate": {
         "title": "Activation",
         "messages": {
             "success": "<strong>Usoris est aguntur.</strong>  Placere <a href=\"#!/login\">cosigno</a>.",
             "error": "<strong>Usoris non aguntur.</strong>  Commodo subcribo sursum adnotatione formam."
-        }
-    },
-    "invitation": {
-        "use": {
-            "pageTitle": "Invitatio utuntur",
-            "useThisInvitation": "Invitatio utuntur",
-            "key": "Clavem invitatio",
-            "notFound": "Invitatio non inveni",
-            "tryAgain": "Quae clavem invitatio non est inventus, aut iam redemptis. Probā clavem ac aliquam.",
-            "blurb": "Si invitationem tesserae creant, crustulum clavem infra. Clavem debet esse numerus longum."
-        },
-        "request": {
-            "title": "Obtinere invitatio"
-        },
-        "createAccount": {
-            "title": "Tesseram creare",
-            "blurb": "Tesseram creare, praestate inscriptio electronica sequitur. Mittemus vobis inuitavit -- intra minuta pervenerit. Si non venit, si hæc ita se ut spamma. Etiam si opus mittere hinc invitationem alius.",
-            "loginBlurb": "Tesseram creare, provideat nomine usoris et signum vos amo utor.",
-            "email": "Inscriptio electronica",
-            "sendInvitation": "Mittentes vocabant",
-            "invitationSent": "Invitatio missum",
-            "invitationMessage": "Invitatio missus est, et mox advenient.",
-            "passwordReset": "Iam si tesseram, sed obliti usoris aut signo, tum istoc  <a href=\"#!/password-reset\">signum retexere</a>."
         }
     },
     "login": {
@@ -319,6 +296,29 @@
         "messages": {
             "error": "<strong>Quasi per errorem inciderunt!</strong> Signum non potuit mutari.",
             "success": "<strong>Signum mutatum!</strong>"
+        }
+    },
+    "invitation": {
+        "use": {
+            "pageTitle": "Invitatio utuntur",
+            "useThisInvitation": "Invitatio utuntur",
+            "key": "Clavem invitatio",
+            "notFound": "Invitatio non inveni",
+            "tryAgain": "Quae clavem invitatio non est inventus, aut iam redemptis. Probā clavem ac aliquam.",
+            "blurb": "Si invitationem tesserae creant, crustulum clavem infra. Clavem debet esse numerus longum."
+        },
+        "request": {
+            "title": "Obtinere invitatio"
+        },
+        "createAccount": {
+            "title": "Tesseram creare",
+            "blurb": "Tesseram creare, praestate inscriptio electronica sequitur. Mittemus vobis inuitavit -- intra minuta pervenerit. Si non venit, si hæc ita se ut spamma. Etiam si opus mittere hinc invitationem alius.",
+            "loginBlurb": "Tesseram creare, provideat nomine usoris et signum vos amo utor.",
+            "email": "Inscriptio electronica",
+            "sendInvitation": "Mittentes vocabant",
+            "invitationSent": "Invitatio missum",
+            "invitationMessage": "Invitatio missus est, et mox advenient.",
+            "passwordReset": "Iam si tesseram, sed obliti usoris aut signo, tum istoc  <a href=\"#!/password-reset\">signum retexere</a>."
         }
     },
     "sessions": {
@@ -415,15 +415,6 @@
             "DOWN": "PESSUM"
         }
     },
-    "logs": {
-        "title": "Logs",
-        "nbloggers": "There are {{ total }} loggers.",
-        "filter": "Filter",
-        "table": {
-            "name": "Name",
-            "level": "Level"
-        }
-    },
     "metrics": {
         "title": "Application Metrics",
         "refresh.button": "Refresh",
@@ -515,6 +506,15 @@
             "p75": "p75",
             "p95": "p95",
             "p99": "p99"
+        }
+    },
+    "logs": {
+        "title": "Logs",
+        "nbloggers": "There are {{ total }} loggers.",
+        "filter": "Filter",
+        "table": {
+            "name": "Name",
+            "level": "Level"
         }
     },
     "templates": {

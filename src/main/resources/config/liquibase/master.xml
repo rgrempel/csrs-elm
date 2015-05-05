@@ -11,5 +11,6 @@
     <include file="classpath:config/liquibase/changelog/registration.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/renewal.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/unaccented_search.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/versions.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/templates.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <changeSet id="createVersions" author="ryan">
+        <createTable tableName="T_OPERATION">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+
+            <column name="created_by" type="varchar">
+                <constraints nullable="false" />
+            </column>
+            
+            <column name="created_date" type="timestamp with time zone" defaultValueDate="${now}">
+                <constraints nullable="false" />
+            </column>
+            
+            <column name="last_modified_by" type="varchar" />
+            
+            <column name="last_modified_date" type="timestamp with time zome" />
+            
+            <column name="operation_type" type="varchar">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="operation_url" type="varchar">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="operation_body" type="varchar" />
+
+            <column name="rollback_type" type="varchar">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="rollback_url" type="varchar">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="rollback_body" type="varchar" />
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

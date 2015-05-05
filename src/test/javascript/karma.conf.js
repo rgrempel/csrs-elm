@@ -40,6 +40,8 @@ module.exports = function (config) {
             'main/webapp/bower_components/streamjs/stream.js',
             'main/webapp/bower_components/js-data/dist/js-data.js',
             'main/webapp/bower_components/js-data-angular/dist/js-data-angular.js',
+            'main/webapp/bower_components/codemirror/lib/codemirror.js',
+            'main/webapp/bower_components/angular-ui-codemirror/ui-codemirror.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

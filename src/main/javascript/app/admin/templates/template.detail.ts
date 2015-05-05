@@ -14,6 +14,7 @@ module CSRS {
         scope: TemplateDetailScope;
         state: angular.ui.IStateService;
         templateId: number;
+        codemirrorOptions: any;
 
         constructor (templateRepository: JSData.DSResourceDefinition<Template>, $scope: TemplateDetailScope, $state: angular.ui.IStateService) {
             'ngInject';
@@ -24,6 +25,11 @@ module CSRS {
             this.templateId = $state.params['id'];
             this.state = $state;
 
+            this.codemirrorOptions = {
+                mode: 'xml',
+                indentUnit: 4
+            };
+
             $scope.$watch(() => {
                 return templateRepository.lastModified(this.templateId);
             }, () => {
@@ -31,7 +37,7 @@ module CSRS {
             });
 
             templateRepository.find(this.templateId).then((template: Template) => {
-                if (template.text === null) {
+                if (template.text == null) {
                     // Must have got it from the cache, so bypass the cache ...
                     templateRepository.find(this.templateId, {
                         bypassCache: true

@@ -66,7 +66,7 @@ public class InvoiceController {
     @Timed
     @RolesAllowed(AuthoritiesConstants.USER)
     @Transactional(readOnly = true)
-    public void getInvoice (@PathVariable Long id, OutputStream output) {
+    public void getInvoice (@PathVariable Long id, OutputStream output) throws Exception {
         log.debug("REST request to get invoice for Renewal : {}", id);
 
         Renewal renewal = ownerService.findOneForLogin(renewalRepository, id).get();

@@ -13,4 +13,6 @@ import java.util.*;
  */
 public interface TemplateRepository extends JpaRepository<Template, Long> {
     Optional<Template> findOneById (Long id);
+
+    Optional<Template> findByCode (String code);
 }
