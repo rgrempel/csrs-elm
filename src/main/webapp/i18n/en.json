@@ -255,6 +255,10 @@
             }
         }
     },
+    "errors": {
+        "403": "You are not authorized to access the page.",
+        "title": "Error page!"
+    },
     "main": {
         "title": "Welcome, Renaissance Scholar!",
         "subtitle": "This is the Canadian Society for Renaissance Studies membership site.",
@@ -263,15 +267,34 @@
         },
         "question": "For more information about the Canadian Society for Renaissance Studies, see our main website, at:"
     },
-    "errors": {
-        "403": "You are not authorized to access the page.",
-        "title": "Error page!"
-    },
     "activate": {
         "title": "Activation",
         "messages": {
             "success": "<strong>Your user has been activated.</strong>  Please <a href=\"#!/login\">authenticate</a>.",
             "error": "<strong>Your user could not be activated.</strong>  Please use the registration form to sign up."
+        }
+    },
+    "invitation": {
+        "use": {
+            "pageTitle": "Use an Invitation",
+            "useThisInvitation": "Use Invitation",
+            "key": "Invitation key",
+            "notFound": "Invitation not found",
+            "tryAgain": "This invitation key was not found, or has already been used. Please check the key and try again.",
+            "blurb": "If you have an invitation to create an account, paste the key below. The key should be a long number."
+        },
+        "request": {
+            "title": "Get an Invitation"
+        },
+        "createAccount": {
+            "title": "Create Account",
+            "blurb": "To create an account, provide your email address below. We will send you an email invitation -- it should arrive within minutes. If it does not arrive, check whether it was marked as spam. You can also send another invitation from here if needed.",
+            "loginBlurb": "To create your account, provide whatever username and password you would like to use.",
+            "email": "Email Address",
+            "sendInvitation": "Send Invitation",
+            "invitationSent": "Invitation Sent",
+            "invitationMessage": "Your invitation has been sent, and should arrive soon.",
+            "passwordReset": "If you already have an account, but have forgotten the username or password,  then try the <a href=\"#!/password-reset\">password reset</a> page."
         }
     },
     "login": {
@@ -296,29 +319,6 @@
         "messages": {
             "error": "<strong>An error has occurred!</strong> The password could not be changed.",
             "success": "<strong>Password changed!</strong>"
-        }
-    },
-    "invitation": {
-        "use": {
-            "pageTitle": "Use an Invitation",
-            "useThisInvitation": "Use Invitation",
-            "key": "Invitation key",
-            "notFound": "Invitation not found",
-            "tryAgain": "This invitation key was not found, or has already been used. Please check the key and try again.",
-            "blurb": "If you have an invitation to create an account, paste the key below. The key should be a long number."
-        },
-        "request": {
-            "title": "Get an Invitation"
-        },
-        "createAccount": {
-            "title": "Create Account",
-            "blurb": "To create an account, provide your email address below. We will send you an email invitation -- it should arrive within minutes. If it does not arrive, check whether it was marked as spam. You can also send another invitation from here if needed.",
-            "loginBlurb": "To create your account, provide whatever username and password you would like to use.",
-            "email": "Email Address",
-            "sendInvitation": "Send Invitation",
-            "invitationSent": "Invitation Sent",
-            "invitationMessage": "Your invitation has been sent, and should arrive soon.",
-            "passwordReset": "If you already have an account, but have forgotten the username or password,  then try the <a href=\"#!/password-reset\">password reset</a> page."
         }
     },
     "sessions": {
@@ -397,6 +397,17 @@
             "properties": "Properties"
         }
     },
+    "files": {
+        "title": "Images",
+        "code": "Code",
+        "action": {
+            "upload": "Upload",
+            "select": "Select file"
+        },
+        "detail": {
+            "title": "Image"
+        }
+    },
     "health": {
         "title": "Health checks",
         "refresh.button": "Refresh",
@@ -413,6 +424,15 @@
         "status": {
             "UP": "UP",
             "DOWN": "DOWN"
+        }
+    },
+    "logs": {
+        "title": "Logs",
+        "nbloggers": "There are {{ total }} loggers.",
+        "filter": "Filter",
+        "table": {
+            "name": "Name",
+            "level": "Level"
         }
     },
     "metrics": {
@@ -506,15 +526,6 @@
             "p75": "p75",
             "p95": "p95",
             "p99": "p99"
-        }
-    },
-    "logs": {
-        "title": "Logs",
-        "nbloggers": "There are {{ total }} loggers.",
-        "filter": "Filter",
-        "table": {
-            "name": "Name",
-            "level": "Level"
         }
     },
     "templates": {

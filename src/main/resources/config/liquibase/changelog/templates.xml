@@ -94,4 +94,64 @@
             </column>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="createFiles" author="ryan">
+        <createTable tableName="T_FILE">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="path" type="varchar">
+                <constraints nullable="false" />
+            </column>
+            
+            <column name="content_type" type="varchar">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="size" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        
+        <createIndex tableName="T_FILE" indexName="idx_file_path" unique="true">
+            <column name="path" />
+        </createIndex>
+
+        <createTable tableName="T_FILE_BYTES">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="bytes" type="bytea">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="content_type" type="varchar">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="size" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="original_filename" type="varchar" />
+
+            <column name="file_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createIndex tableName="T_FILE_BYTES" indexName="idx_file_bytes_file">
+            <column name="file_id" />
+        </createIndex>
+        
+        <addForeignKeyConstraint baseColumnNames="file_id"
+                                 baseTableName="T_FILE_BYTES"
+                                 constraintName="fk_file_bytes_file"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_TEMPLATE"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+    </changeSet>
 </databaseChangeLog>

@@ -6,3 +6,4 @@
 /// <reference path="lodash/lodash.d.ts" />
 /// <reference path="js-data/js-data.d.ts" />
 /// <reference path="js-data-angular/js-data-angular.d.ts" />
+/// <reference path="angular-file-upload/angular-file-upload.d.ts" />

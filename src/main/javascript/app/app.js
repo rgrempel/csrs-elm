@@ -14,6 +14,7 @@
         'angularLodash',
         'ngAnimate',
         'js-data',
-        'ui.codemirror'
+        'ui.codemirror',
+        'ngFileUpload'
     ]);
 })();

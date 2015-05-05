@@ -42,6 +42,7 @@ module.exports = function (config) {
             'main/webapp/bower_components/js-data-angular/dist/js-data-angular.js',
             'main/webapp/bower_components/codemirror/lib/codemirror.js',
             'main/webapp/bower_components/angular-ui-codemirror/ui-codemirror.js',
+            'main/webapp/bower_components/ng-file-upload/ng-file-upload.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

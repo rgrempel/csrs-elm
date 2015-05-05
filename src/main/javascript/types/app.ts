@@ -24,6 +24,12 @@
 /// <reference path="../components/products/product.variable.picker.ts" />
 
 
+/// <reference path="../app/admin/dataFiles/file.list.ts" />
+
+
+/// <reference path="../app/admin/dataFiles/file.repository.ts" />
+
+
 /// <reference path="../app/admin/templates/template.detail.ts" />
 
 
