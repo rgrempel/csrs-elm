@@ -123,6 +123,7 @@
     },
     "global": {
         "title": "Sodalitas SCSR",
+        "total": "Totum",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please  <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Domus",
@@ -255,10 +256,6 @@
             }
         }
     },
-    "errors": {
-        "403": "Qui nequeant pervenire paginam.",
-        "title": "Paginam erratam!"
-    },
     "main": {
         "title": "Scolaris de renaissance, exspectata!",
         "subtitle": "Hic situs sociari de Societate Canadian Studiorum Renascerentur.",
@@ -267,11 +264,29 @@
         },
         "question": "Pro magis notitia de Societate Canadian Studiorum Renascerentur, ite situm principale ad:"
     },
+    "errors": {
+        "403": "Qui nequeant pervenire paginam.",
+        "title": "Paginam erratam!"
+    },
     "activate": {
         "title": "Activation",
         "messages": {
             "success": "<strong>Usoris est aguntur.</strong>  Placere <a href=\"#!/login\">cosigno</a>.",
             "error": "<strong>Usoris non aguntur.</strong>  Commodo subcribo sursum adnotatione formam."
+        }
+    },
+    "login": {
+        "title": "Authenticas",
+        "form": {
+            "password": "Signum",
+            "password.placeholder": "Signum tuum",
+            "rememberme": "Cosignum automatic",
+            "button": "Cosignum"
+        },
+        "messages": {
+            "error": {
+                "authentication": "<strong>Defecit authenticitate!</strong> Probā signum atque iterum cosignio."
+            }
         }
     },
     "invitation": {
@@ -297,20 +312,6 @@
             "passwordReset": "Iam si tesseram, sed obliti usoris aut signo, tum istoc  <a href=\"#!/password-reset\">signum retexere</a>."
         }
     },
-    "login": {
-        "title": "Authenticas",
-        "form": {
-            "password": "Signum",
-            "password.placeholder": "Signum tuum",
-            "rememberme": "Cosignum automatic",
-            "button": "Cosignum"
-        },
-        "messages": {
-            "error": {
-                "authentication": "<strong>Defecit authenticitate!</strong> Probā signum atque iterum cosignio."
-            }
-        }
-    },
     "password": {
         "title": "Signum pro [<b>{{username}}</b>]",
         "form": {
@@ -319,19 +320,6 @@
         "messages": {
             "error": "<strong>Quasi per errorem inciderunt!</strong> Signum non potuit mutari.",
             "success": "<strong>Signum mutatum!</strong>"
-        }
-    },
-    "sessions": {
-        "title": "Active sessions for [<b>{{username}}</b>]",
-        "table": {
-            "ipaddress": "IP address",
-            "useragent": "User Agent",
-            "date": "Date",
-            "button": "Invalidate"
-        },
-        "messages": {
-            "success": "<strong>Session invalidated!</strong>",
-            "error": "<strong>An error has occurred!</strong> The session could not be invalidated."
         }
     },
     "settings": {
@@ -364,6 +352,27 @@
             }
         }
     },
+    "configuration": {
+        "title": "Configuration",
+        "filter": "Filter (by prefix)",
+        "table": {
+            "prefix": "Prefix",
+            "properties": "Properties"
+        }
+    },
+    "sessions": {
+        "title": "Active sessions for [<b>{{username}}</b>]",
+        "table": {
+            "ipaddress": "IP address",
+            "useragent": "User Agent",
+            "date": "Date",
+            "button": "Invalidate"
+        },
+        "messages": {
+            "success": "<strong>Session invalidated!</strong>",
+            "error": "<strong>An error has occurred!</strong> The session could not be invalidated."
+        }
+    },
     "audits": {
         "title": "Audits",
         "filter": {
@@ -389,25 +398,6 @@
             }
         }
     },
-    "configuration": {
-        "title": "Configuration",
-        "filter": "Filter (by prefix)",
-        "table": {
-            "prefix": "Prefix",
-            "properties": "Properties"
-        }
-    },
-    "files": {
-        "title": "Imago",
-        "code": "Codice",
-        "action": {
-            "upload": "Transfero",
-            "select": "Select file"
-        },
-        "detail": {
-            "title": "Imago"
-        }
-    },
     "health": {
         "title": "Salutem compescit",
         "refresh.button": "Recreo",
@@ -424,6 +414,17 @@
         "status": {
             "UP": "SURSUM",
             "DOWN": "PESSUM"
+        }
+    },
+    "files": {
+        "title": "Imago",
+        "code": "Codice",
+        "action": {
+            "upload": "Transfero",
+            "select": "Select file"
+        },
+        "detail": {
+            "title": "Imago"
         }
     },
     "logs": {

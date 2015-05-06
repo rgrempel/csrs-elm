@@ -123,6 +123,7 @@
     },
     "global": {
         "title": "CSRS Membership",
+        "total": "Total",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please  <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a>  to improve your experience.",
         "menu": {
             "home": "Home",
@@ -255,10 +256,6 @@
             }
         }
     },
-    "errors": {
-        "403": "You are not authorized to access the page.",
-        "title": "Error page!"
-    },
     "main": {
         "title": "Welcome, Renaissance Scholar!",
         "subtitle": "This is the Canadian Society for Renaissance Studies membership site.",
@@ -267,11 +264,29 @@
         },
         "question": "For more information about the Canadian Society for Renaissance Studies, see our main website, at:"
     },
+    "errors": {
+        "403": "You are not authorized to access the page.",
+        "title": "Error page!"
+    },
     "activate": {
         "title": "Activation",
         "messages": {
             "success": "<strong>Your user has been activated.</strong>  Please <a href=\"#!/login\">authenticate</a>.",
             "error": "<strong>Your user could not be activated.</strong>  Please use the registration form to sign up."
+        }
+    },
+    "login": {
+        "title": "Authentication",
+        "form": {
+            "password": "Password",
+            "password.placeholder": "Your password",
+            "rememberme": "Automatic Login",
+            "button": "Authenticate"
+        },
+        "messages": {
+            "error": {
+                "authentication": "<strong>Authentication failed!</strong> Please check your credentials and try again."
+            }
         }
     },
     "invitation": {
@@ -297,20 +312,6 @@
             "passwordReset": "If you already have an account, but have forgotten the username or password,  then try the <a href=\"#!/password-reset\">password reset</a> page."
         }
     },
-    "login": {
-        "title": "Authentication",
-        "form": {
-            "password": "Password",
-            "password.placeholder": "Your password",
-            "rememberme": "Automatic Login",
-            "button": "Authenticate"
-        },
-        "messages": {
-            "error": {
-                "authentication": "<strong>Authentication failed!</strong> Please check your credentials and try again."
-            }
-        }
-    },
     "password": {
         "title": "Password for [<b>{{username}}</b>]",
         "form": {
@@ -319,19 +320,6 @@
         "messages": {
             "error": "<strong>An error has occurred!</strong> The password could not be changed.",
             "success": "<strong>Password changed!</strong>"
-        }
-    },
-    "sessions": {
-        "title": "Active sessions for [<b>{{username}}</b>]",
-        "table": {
-            "ipaddress": "IP address",
-            "useragent": "User Agent",
-            "date": "Date",
-            "button": "Invalidate"
-        },
-        "messages": {
-            "success": "<strong>Session invalidated!</strong>",
-            "error": "<strong>An error has occurred!</strong> The session could not be invalidated."
         }
     },
     "settings": {
@@ -364,6 +352,27 @@
             }
         }
     },
+    "configuration": {
+        "title": "Configuration",
+        "filter": "Filter (by prefix)",
+        "table": {
+            "prefix": "Prefix",
+            "properties": "Properties"
+        }
+    },
+    "sessions": {
+        "title": "Active sessions for [<b>{{username}}</b>]",
+        "table": {
+            "ipaddress": "IP address",
+            "useragent": "User Agent",
+            "date": "Date",
+            "button": "Invalidate"
+        },
+        "messages": {
+            "success": "<strong>Session invalidated!</strong>",
+            "error": "<strong>An error has occurred!</strong> The session could not be invalidated."
+        }
+    },
     "audits": {
         "title": "Audits",
         "filter": {
@@ -389,25 +398,6 @@
             }
         }
     },
-    "configuration": {
-        "title": "Configuration",
-        "filter": "Filter (by prefix)",
-        "table": {
-            "prefix": "Prefix",
-            "properties": "Properties"
-        }
-    },
-    "files": {
-        "title": "Images",
-        "code": "Code",
-        "action": {
-            "upload": "Upload",
-            "select": "Select file"
-        },
-        "detail": {
-            "title": "Image"
-        }
-    },
     "health": {
         "title": "Health checks",
         "refresh.button": "Refresh",
@@ -424,6 +414,17 @@
         "status": {
             "UP": "UP",
             "DOWN": "DOWN"
+        }
+    },
+    "files": {
+        "title": "Images",
+        "code": "Code",
+        "action": {
+            "upload": "Upload",
+            "select": "Select file"
+        },
+        "detail": {
+            "title": "Image"
         }
     },
     "logs": {

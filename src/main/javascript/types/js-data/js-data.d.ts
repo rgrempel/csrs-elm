@@ -110,7 +110,7 @@ declare module JSData {
         resetHistoryOnInject?: boolean;
         strategy?: string;
         upsert?: boolean;
-        useClass?: boolean;
+        useClass?: boolean | Function;
         useFilter?: boolean;
     }
 

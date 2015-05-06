@@ -426,6 +426,11 @@ global:
         fr: "SCÉR adhésion"
         la: "Sodalitas SCSR"
 
+    total:
+        en: "Total"
+        fr: "Total"
+        la: "Totum"
+
     browsehappy:
         en: >-
             You are using an <strong>outdated</strong> browser. Please 

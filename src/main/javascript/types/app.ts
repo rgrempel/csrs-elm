@@ -39,4 +39,10 @@
 /// <reference path="../app/admin/templates/template.repository.ts" />
 
 
+/// <reference path="../app/tasks/contacts/contact.list.ts" />
+
+
+/// <reference path="../app/tasks/contacts/contact.repository.ts" />
+
+
 //}

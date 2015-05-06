@@ -8645,6 +8645,17 @@ button.close {
   font-weight: bold;
 }
 
+/* line 2, ../../../javascript/app/tasks/contacts/_contact.scss */
+.contact-list td, .contact-list th {
+  padding-left: 6px;
+  padding-right: 6px;
+  text-align: right;
+}
+/* line 8, ../../../javascript/app/tasks/contacts/_contact.scss */
+.contact-list td.year {
+  cursor: pointer;
+}
+
 /* line 1, ../../../javascript/app/tasks/processForms/_process-forms.scss */
 .process-forms-search-box {
   padding-left: 12px;

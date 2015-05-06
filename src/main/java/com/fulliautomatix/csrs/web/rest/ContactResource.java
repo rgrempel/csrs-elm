@@ -159,7 +159,7 @@ public class ContactResource {
     }
 
     /**
-     * GET  /contacts -> get all the contacts.
+     * GET  /contacts get all the contacts.
      */
     @RequestMapping(
         value = "/contacts",
@@ -167,13 +167,13 @@ public class ContactResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
-    @JsonView(Contact.Scalar.class)
-    public ResponseEntity<List<Contact>> getAll(@RequestParam(value = "page" , required = false) Integer offset,
-                                  @RequestParam(value = "per_page", required = false) Integer limit)
-        throws URISyntaxException {
-        Page<Contact> page = contactRepository.findAll(PaginationUtil.generatePageRequest(offset, limit));
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/contacts", offset, limit);
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    @JsonView(Contact.WithAnnuals.class)
+    @RolesAllowed(AuthoritiesConstants.ADMIN)
+    @Transactional(readOnly=true)
+    public ResponseEntity<Collection<Contact>> getAll () throws URISyntaxException {
+        Collection<Contact> contacts = contactRepository.findAll();
+        lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class);
+        return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
 
     /**
