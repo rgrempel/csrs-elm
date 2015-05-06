@@ -32,16 +32,21 @@ module CSRS {
         scope: angular.IScope;
         contactRepository: JSData.DSResourceDefinition<Contact>;
         stream: streamjs.Stream;
+        location: angular.ILocationService;
 
         constructor (
             contactRepository: JSData.DSResourceDefinition<Contact>,
             $scope: angular.IScope,
-            Stream: streamjs.Stream
+            Stream: streamjs.Stream,
+            $state: angular.ui.IStateService,
+            $location: angular.ILocationService
         ) {
             'ngInject';
 
             this.serverError = null;
             this.contactRepository = contactRepository;
+            this.location = $location;
+
             this.scope = $scope;
             this.contacts = [];
             this.filtered = [];
@@ -49,6 +54,18 @@ module CSRS {
             this.yearsRequired = {};
             this.yearsForbidden = {};
             this.membershipTypes = [1, 2, 3, 4, 5];
+
+            var param = $state.params['yr'];
+            if (param && !angular.isArray(param)) param = [param];
+            angular.forEach(param, (yr: number) => {
+                this.yearsRequired[yr] = true;
+            });
+            
+            var param = $state.params['yf'];
+            if (param && !angular.isArray(param)) param = [param];
+            angular.forEach(param, (yf: number) => {
+                this.yearsForbidden[yf] = true;
+            });
 
             $scope.$watch(() => {
                 return contactRepository.lastModified();
@@ -138,6 +155,14 @@ module CSRS {
                 this.sortContactsByName
             ).toArray();
         }
+
+        getYearsRequiredArray () : Array<string> {
+            return _.keys(this.yearsRequired);
+        }
+
+        getYearsForbiddenArray () : Array<string> {
+            return _.keys(this.yearsForbidden);
+        }
         
         isRequired (year: number) : boolean {
             return this.yearsRequired[year];
@@ -149,17 +174,17 @@ module CSRS {
 
         setRequired (year: number) : void {
             this.yearsRequired[year] = true;
-            this.yearsForbidden[year] = false;
+            delete this.yearsForbidden[year];
         }
 
         setForbidden (year: number) : void {
-            this.yearsRequired[year] = false;
+            delete this.yearsRequired[year];
             this.yearsForbidden[year] = true;
         }
 
         setIndifferent (year: number) : void {
-            this.yearsRequired[year] = false;
-            this.yearsForbidden[year] = false;
+            delete this.yearsRequired[year];
+            delete this.yearsForbidden[year];
         }
 
         cycleRequired (year: number) : void {
@@ -174,6 +199,13 @@ module CSRS {
                 this.setRequired(year);
             }
 
+            this.location.search({
+                yr: this.getYearsRequiredArray(),
+                yf: this.getYearsForbiddenArray()
+            });
+
+            this.location.replace();
+
             this.updateFilter();
         }
     }
@@ -185,7 +217,8 @@ module CSRS {
 
         $stateProvider.state('contact-list', {
             parent: 'admin',
-            url: '/contacts',
+            url: '/contacts?yr&yf',
+            reloadOnSearch: false,
             data: {
                 roles: ['ROLE_ADMIN'],
                 pageTitle: 'contacts.title'

@@ -32,6 +32,7 @@
     div(
         ng-repeat = "contact in contactList.filtered track by contact.id"
     )
-        span(
+        a(
+            ui-sref = "processFormsDetail({id: contact.id})"
             ng-bind = "::contact.fullName()"
         )

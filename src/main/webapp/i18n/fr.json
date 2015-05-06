@@ -256,6 +256,10 @@
             }
         }
     },
+    "errors": {
+        "403": "Vous n'avez pas les droits pour accéder à cette page.",
+        "title": "Page d'erreur!"
+    },
     "main": {
         "title": "Bienvenue, érudit de la Renaissance!",
         "subtitle": "Ce est le site d'adhésion de la Société canadienne d'études de la Renaissance.",
@@ -264,29 +268,11 @@
         },
         "question": "Pour plus d'informations sur le Société canadienne d'études de la Renaissance, consultez notre site Web principal, au:"
     },
-    "errors": {
-        "403": "Vous n'avez pas les droits pour accéder à cette page.",
-        "title": "Page d'erreur!"
-    },
     "activate": {
         "title": "Activation",
         "messages": {
             "success": "<strong>Votre compte utilisateur a été activé.</strong>  Merci de vous <a href=\"#!/login\">authentifier</a>.",
             "error": "<strong>Votre compte utilisateur n'a pas pu être activé.</strong>  Utilisez le formulaire d'enregistrement pour en créer un nouveau."
-        }
-    },
-    "login": {
-        "title": "Authentification",
-        "form": {
-            "password": "Mot de passe",
-            "password.placeholder": "Votre mot de passe",
-            "rememberme": "Garder la session ouverte",
-            "button": "Connexion"
-        },
-        "messages": {
-            "error": {
-                "authentication": "<strong>Erreur d'authentification!</strong> Veuillez vérifier vos identifiants de connexion."
-            }
         }
     },
     "invitation": {
@@ -312,6 +298,20 @@
             "passwordReset": "Si vous avez déjà un compte, mais vous avez oublié le nom d'utilisateur ou mot de passe, puis essayez le mot de <a href=\"#!/password-reset\">passe réinitialiser</a>."
         }
     },
+    "login": {
+        "title": "Authentification",
+        "form": {
+            "password": "Mot de passe",
+            "password.placeholder": "Votre mot de passe",
+            "rememberme": "Garder la session ouverte",
+            "button": "Connexion"
+        },
+        "messages": {
+            "error": {
+                "authentication": "<strong>Erreur d'authentification!</strong> Veuillez vérifier vos identifiants de connexion."
+            }
+        }
+    },
     "password": {
         "title": "Changer le mot de passe pour [<b>{{username}}</b>]",
         "form": {
@@ -320,6 +320,19 @@
         "messages": {
             "error": "<strong>Une erreur est survenue!</strong> Le mot de passe n'a pas pu être modifié.",
             "success": "<strong>La mot de passe a été modifié!</strong>"
+        }
+    },
+    "sessions": {
+        "title": "Sessions actives de [<b>{{username}}</b>]",
+        "table": {
+            "ipaddress": "Adresse IP",
+            "useragent": "User Agent",
+            "date": "Date",
+            "button": "Invalider"
+        },
+        "messages": {
+            "success": "<strong>Session a été invalidée!</strong>",
+            "error": "<strong>Une erreur est survenue!</strong> La session ne peut pas être invalidée."
         }
     },
     "settings": {
@@ -352,27 +365,6 @@
             }
         }
     },
-    "configuration": {
-        "title": "Configuration",
-        "filter": "Filtrer (par préfixe)",
-        "table": {
-            "prefix": "Préfixe",
-            "properties": "Propriétés"
-        }
-    },
-    "sessions": {
-        "title": "Sessions actives de [<b>{{username}}</b>]",
-        "table": {
-            "ipaddress": "Adresse IP",
-            "useragent": "User Agent",
-            "date": "Date",
-            "button": "Invalider"
-        },
-        "messages": {
-            "success": "<strong>Session a été invalidée!</strong>",
-            "error": "<strong>Une erreur est survenue!</strong> La session ne peut pas être invalidée."
-        }
-    },
     "audits": {
         "title": "Audits",
         "filter": {
@@ -398,6 +390,25 @@
             }
         }
     },
+    "configuration": {
+        "title": "Configuration",
+        "filter": "Filtrer (par préfixe)",
+        "table": {
+            "prefix": "Préfixe",
+            "properties": "Propriétés"
+        }
+    },
+    "files": {
+        "title": "Images",
+        "code": "Code",
+        "action": {
+            "upload": "Transférer",
+            "select": "Select file"
+        },
+        "detail": {
+            "title": "Image"
+        }
+    },
     "health": {
         "title": "Diagnostics",
         "refresh.button": "Rafraichir",
@@ -414,17 +425,6 @@
         "status": {
             "UP": "DISPONIBLE",
             "DOWN": "HORS SERVICE"
-        }
-    },
-    "files": {
-        "title": "Images",
-        "code": "Code",
-        "action": {
-            "upload": "Transférer",
-            "select": "Select file"
-        },
-        "detail": {
-            "title": "Image"
         }
     },
     "logs": {
