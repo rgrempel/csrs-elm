@@ -206,6 +206,8 @@
     },
     "entity": {
         "action": {
+            "action": "Actio",
+            "merge": "Transfere",
             "back": "Recedo",
             "cancel": "Rescindo",
             "delete": "Erado",
@@ -275,6 +277,33 @@
             "error": "<strong>Usoris non aguntur.</strong>  Commodo subcribo sursum adnotatione formam."
         }
     },
+    "login": {
+        "title": "Authenticas",
+        "form": {
+            "password": "Signum",
+            "password.placeholder": "Signum tuum",
+            "rememberme": "Cosignum automatic",
+            "button": "Cosignum"
+        },
+        "messages": {
+            "error": {
+                "authentication": "<strong>Defecit authenticitate!</strong> Probā signum atque iterum cosignio."
+            }
+        }
+    },
+    "sessions": {
+        "title": "Active sessions for [<b>{{username}}</b>]",
+        "table": {
+            "ipaddress": "IP address",
+            "useragent": "User Agent",
+            "date": "Date",
+            "button": "Invalidate"
+        },
+        "messages": {
+            "success": "<strong>Session invalidated!</strong>",
+            "error": "<strong>An error has occurred!</strong> The session could not be invalidated."
+        }
+    },
     "invitation": {
         "use": {
             "pageTitle": "Invitatio utuntur",
@@ -298,20 +327,6 @@
             "passwordReset": "Iam si tesseram, sed obliti usoris aut signo, tum istoc  <a href=\"#!/password-reset\">signum retexere</a>."
         }
     },
-    "login": {
-        "title": "Authenticas",
-        "form": {
-            "password": "Signum",
-            "password.placeholder": "Signum tuum",
-            "rememberme": "Cosignum automatic",
-            "button": "Cosignum"
-        },
-        "messages": {
-            "error": {
-                "authentication": "<strong>Defecit authenticitate!</strong> Probā signum atque iterum cosignio."
-            }
-        }
-    },
     "password": {
         "title": "Signum pro [<b>{{username}}</b>]",
         "form": {
@@ -320,19 +335,6 @@
         "messages": {
             "error": "<strong>Quasi per errorem inciderunt!</strong> Signum non potuit mutari.",
             "success": "<strong>Signum mutatum!</strong>"
-        }
-    },
-    "sessions": {
-        "title": "Active sessions for [<b>{{username}}</b>]",
-        "table": {
-            "ipaddress": "IP address",
-            "useragent": "User Agent",
-            "date": "Date",
-            "button": "Invalidate"
-        },
-        "messages": {
-            "success": "<strong>Session invalidated!</strong>",
-            "error": "<strong>An error has occurred!</strong> The session could not be invalidated."
         }
     },
     "settings": {
@@ -365,6 +367,14 @@
             }
         }
     },
+    "configuration": {
+        "title": "Configuration",
+        "filter": "Filter (by prefix)",
+        "table": {
+            "prefix": "Prefix",
+            "properties": "Properties"
+        }
+    },
     "audits": {
         "title": "Audits",
         "filter": {
@@ -390,25 +400,6 @@
             }
         }
     },
-    "configuration": {
-        "title": "Configuration",
-        "filter": "Filter (by prefix)",
-        "table": {
-            "prefix": "Prefix",
-            "properties": "Properties"
-        }
-    },
-    "files": {
-        "title": "Imago",
-        "code": "Codice",
-        "action": {
-            "upload": "Transfero",
-            "select": "Select file"
-        },
-        "detail": {
-            "title": "Imago"
-        }
-    },
     "health": {
         "title": "Salutem compescit",
         "refresh.button": "Recreo",
@@ -425,6 +416,17 @@
         "status": {
             "UP": "SURSUM",
             "DOWN": "PESSUM"
+        }
+    },
+    "files": {
+        "title": "Imago",
+        "code": "Codice",
+        "action": {
+            "upload": "Transfero",
+            "select": "Select file"
+        },
+        "detail": {
+            "title": "Imago"
         }
     },
     "logs": {
@@ -545,7 +547,8 @@
                 "1": "Qui erant in enumera finire annum, quo anno latet insiste uireret. Debet intelligi quod multiplex lectio senos sodalem fuisse anno.",
                 "2": "Qui erant in annum excludere insiste ut anno iterum intumuit latet.",
                 "3": "Ita novum membrum determinet quisnam insiste ut anni vertentis carbasini ac superioribus annis ad torcular rubras aliquam.",
-                "4": "Aut qui renouatur determinare insiste vertentis anni red ut adeat superioribus annis facere aliquid viridis."
+                "4": "Aut qui renouatur determinare insiste vertentis anni red ut adeat superioribus annis facere aliquid viridis.",
+                "5": "Ut transfere examplar PDF cum toto membra ostendit, unum eligam infra."
             }
         }
     }

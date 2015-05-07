@@ -20,6 +20,8 @@ module CSRS {
     class ContactListController {
         contacts: Array<Contact>;
         filtered: Array<Contact>;
+        templates: Array<Template>;
+        selectedTemplate: Template;
 
         years: Array<Year>;
         yearIndex: YearIndex;
@@ -30,22 +32,30 @@ module CSRS {
         
         serverError: string;
         scope: angular.IScope;
+        
         contactRepository: JSData.DSResourceDefinition<Contact>;
+        templateRepository: JSData.DSResourceDefinition<Template>;
+        window: angular.IWindowService;
+
         stream: streamjs.Stream;
         location: angular.ILocationService;
 
         constructor (
             contactRepository: JSData.DSResourceDefinition<Contact>,
+            templateRepository: JSData.DSResourceDefinition<Template>,
             $scope: angular.IScope,
             Stream: streamjs.Stream,
             $state: angular.ui.IStateService,
-            $location: angular.ILocationService
+            $location: angular.ILocationService,
+            $window: angular.IWindowService
         ) {
             'ngInject';
 
             this.serverError = null;
             this.contactRepository = contactRepository;
+            this.templateRepository = templateRepository;
             this.location = $location;
+            this.window = $window;
 
             this.scope = $scope;
             this.contacts = [];
@@ -74,6 +84,16 @@ module CSRS {
             });
 
             contactRepository.findAll();
+
+            $scope.$watch(() => {
+                return templateRepository.lastModified();
+            }, () => {
+                this.templates = Stream(
+                    this.templateRepository.filter({})
+                ).sorted('code').toArray();
+            });
+
+            templateRepository.findAll();
         }
 
         handleContactsChanged () : void {
@@ -157,6 +177,23 @@ module CSRS {
             }).sorted(
                 this.sortContactsByName
             ).toArray();
+        }
+
+        merge () {
+            var loc = "/letters/" + this.selectedTemplate.code + ".pdf?";
+
+            var yr = this.getYearsRequiredArray();
+            var yf = this.getYearsForbiddenArray();
+
+            loc += "yr=";
+            loc += yr.join("&yr=");
+
+            if (yf.length > 0) {
+                loc += '&yf=';
+                loc += yf.join("&yf=");
+            }
+
+            this.window.open(loc, "pdf");
         }
 
         getYearsRequiredArray () : Array<string> {

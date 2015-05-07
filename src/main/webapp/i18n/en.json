@@ -206,6 +206,8 @@
     },
     "entity": {
         "action": {
+            "action": "Action",
+            "merge": "Merge",
             "back": "Back",
             "cancel": "Cancel",
             "delete": "Delete",
@@ -275,6 +277,33 @@
             "error": "<strong>Your user could not be activated.</strong>  Please use the registration form to sign up."
         }
     },
+    "login": {
+        "title": "Authentication",
+        "form": {
+            "password": "Password",
+            "password.placeholder": "Your password",
+            "rememberme": "Automatic Login",
+            "button": "Authenticate"
+        },
+        "messages": {
+            "error": {
+                "authentication": "<strong>Authentication failed!</strong> Please check your credentials and try again."
+            }
+        }
+    },
+    "sessions": {
+        "title": "Active sessions for [<b>{{username}}</b>]",
+        "table": {
+            "ipaddress": "IP address",
+            "useragent": "User Agent",
+            "date": "Date",
+            "button": "Invalidate"
+        },
+        "messages": {
+            "success": "<strong>Session invalidated!</strong>",
+            "error": "<strong>An error has occurred!</strong> The session could not be invalidated."
+        }
+    },
     "invitation": {
         "use": {
             "pageTitle": "Use an Invitation",
@@ -298,20 +327,6 @@
             "passwordReset": "If you already have an account, but have forgotten the username or password,  then try the <a href=\"#!/password-reset\">password reset</a> page."
         }
     },
-    "login": {
-        "title": "Authentication",
-        "form": {
-            "password": "Password",
-            "password.placeholder": "Your password",
-            "rememberme": "Automatic Login",
-            "button": "Authenticate"
-        },
-        "messages": {
-            "error": {
-                "authentication": "<strong>Authentication failed!</strong> Please check your credentials and try again."
-            }
-        }
-    },
     "password": {
         "title": "Password for [<b>{{username}}</b>]",
         "form": {
@@ -320,19 +335,6 @@
         "messages": {
             "error": "<strong>An error has occurred!</strong> The password could not be changed.",
             "success": "<strong>Password changed!</strong>"
-        }
-    },
-    "sessions": {
-        "title": "Active sessions for [<b>{{username}}</b>]",
-        "table": {
-            "ipaddress": "IP address",
-            "useragent": "User Agent",
-            "date": "Date",
-            "button": "Invalidate"
-        },
-        "messages": {
-            "success": "<strong>Session invalidated!</strong>",
-            "error": "<strong>An error has occurred!</strong> The session could not be invalidated."
         }
     },
     "settings": {
@@ -365,6 +367,14 @@
             }
         }
     },
+    "configuration": {
+        "title": "Configuration",
+        "filter": "Filter (by prefix)",
+        "table": {
+            "prefix": "Prefix",
+            "properties": "Properties"
+        }
+    },
     "audits": {
         "title": "Audits",
         "filter": {
@@ -390,25 +400,6 @@
             }
         }
     },
-    "configuration": {
-        "title": "Configuration",
-        "filter": "Filter (by prefix)",
-        "table": {
-            "prefix": "Prefix",
-            "properties": "Properties"
-        }
-    },
-    "files": {
-        "title": "Images",
-        "code": "Code",
-        "action": {
-            "upload": "Upload",
-            "select": "Select file"
-        },
-        "detail": {
-            "title": "Image"
-        }
-    },
     "health": {
         "title": "Health checks",
         "refresh.button": "Refresh",
@@ -425,6 +416,17 @@
         "status": {
             "UP": "UP",
             "DOWN": "DOWN"
+        }
+    },
+    "files": {
+        "title": "Images",
+        "code": "Code",
+        "action": {
+            "upload": "Upload",
+            "select": "Select file"
+        },
+        "detail": {
+            "title": "Image"
         }
     },
     "logs": {
@@ -545,7 +547,8 @@
                 "1": "To limit the list to people who were members in a particular year, click on the year so that its background is green. Multiple selections mean that the person must have been a member in each selected year.",
                 "2": "To exclude people who were members in a particular year, click on the year again so that its background is red.",
                 "3": "So, to find out who is a new member, click on the current year to make it green, and click on some previous years to make them red.",
-                "4": "Or, to find out who has not renewed, click on the current year to make it red, and click on some previous years to make them green."
+                "4": "Or, to find out who has not renewed, click on the current year to make it red, and click on some previous years to make them green.",
+                "5": "To merge a PDF template with all of the displayed members, select one below."
             }
         }
     }

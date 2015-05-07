@@ -1,5 +1,5 @@
 .contact-list
-    h2(translate = "membership.byYear.title") Membership by Year 
+    h3(translate = "membership.byYear.title") Membership by Year 
 
     .row
         div(class = "col-xs-12 col-sm-12 col-md-9 col-lg-8")
@@ -54,6 +54,43 @@
                     | year to make it red, and click on some number of previous
                     | years to make them green.
 
+                p(translate = "membership.byYear.instructions.5")
+                    | To merge a PDF template with all of the displayed contacts,
+                    | select one below.
+
+            .templates
+                form.form-inline
+                    select.form-control(
+                        ng-options="template.code for template in contactList.templates track by template.id"
+                        ng-model="contactList.selectedTemplate"
+                    )
+
+                    button(
+                        type="button"
+                        class="btn btn-default dropdown-toggle"
+                        data-toggle="dropdown"
+                        aria-expanded="false"
+                        ng-disabled="!contactList.selectedTemplate"
+                    ) 
+                        span(translate = "entity.action.action") Action 
+                        span.caret
+
+                    ul.dropdown-menu(role="menu")
+                        li
+                            a(
+                                href="#"
+                                ng-click="contactList.merge()"
+                                translate="entity.action.merge"
+                                _target="pdf"
+                            ) Merge
+                        
+                        li
+                            a(
+                                href="#"
+                                ui-sref="template-detail({id: contactList.selectedTemplate.id})"
+                                translate="entity.action.edit"
+                            ) Edit
+            
     p(
         translate = "membership.byYear.showingMembers"
         translate-values = "{number: '{{contactList.filtered.length}}'}"

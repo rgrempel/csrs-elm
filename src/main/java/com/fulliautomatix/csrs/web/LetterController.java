@@ -7,7 +7,7 @@ import com.fulliautomatix.csrs.repository.ContactRepository;
 import com.fulliautomatix.csrs.web.rest.util.ResourceNotFoundException;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.security.OwnerService;
-import com.fulliautomatix.csrs.service.PriceService;
+import com.fulliautomatix.csrs.service.LazyService;
 import com.fulliautomatix.csrs.service.PDFService;
 import com.fulliautomatix.csrs.service.UserService;
 
@@ -42,6 +42,12 @@ public class LetterController {
     @Inject
     private PDFService pdfService;
 
+    @Inject
+    private ContactRepository contactRepository;
+
+    @Inject
+    private LazyService lazyService;
+
     /**
      * GET  /letters/{template}.pdf 
      */
@@ -52,12 +58,21 @@ public class LetterController {
     )
     @Timed
     @Transactional(readOnly = true)
-    public void getLetter (@PathVariable String template, OutputStream output) throws Exception {
+    public void getLetter (
+        @PathVariable String template,
+//        @RequestParam(value = "yr") Set<Integer> yearsRequired,
+//        @RequestParam(value = "yf") Set<Integer> yearsForbidden,
+        OutputStream output
+    ) throws Exception {
         log.debug("Request to produce PDF letter for  : {}", template);
+
+        Collection<Contact> contacts = contactRepository.findAll();
+        lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class);
 
         Locale locale = Locale.forLanguageTag("en");
         Context context = new Context();
-        
+        context.setVariable("contacts", contacts); 
+
         pdfService.createPDF(output, context, template);
     }
 }

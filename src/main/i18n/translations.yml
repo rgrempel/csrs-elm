@@ -722,7 +722,17 @@ global:
             la: "Idcirco Latina est opus in progressionem. Suadentur gratum foret."
 
 entity: 
-    action: 
+    action:
+        action:
+            en: "Action"
+            fr: "Action"
+            la: "Actio"
+
+        merge:
+            en: "Merge"
+            fr: "Fusionner"
+            la: "Transfere"
+
         back:
             en: "Back"
             fr: "Retour"
