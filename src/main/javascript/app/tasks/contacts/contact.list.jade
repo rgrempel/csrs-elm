@@ -1,38 +1,67 @@
 .contact-list
-    h2(translate = "csrsApp.contact.home.title") Contacts
+    h2(translate = "membership.byYear.title") Membership by Year 
 
-    table(class = "table table-striped table-bordered")
-        tr
-            th(translate = "csrsApp.annual.year") Year
-            th(
-                ng-repeat = "membership in contactList.membershipTypes"
-                translate = "csrsApp.annual.data.membership.{{membership}}"
-            )
-            th(translate = "global.total") Total
+    .row
+        div(class = "col-xs-12 col-sm-12 col-md-9 col-lg-8")
+            table(class = "table table-striped table-bordered")
+                tr
+                    th(translate = "csrsApp.annual.year") Year
+                    th(
+                        ng-repeat = "membership in contactList.membershipTypes"
+                        translate = "csrsApp.annual.data.membership.{{membership}}"
+                    )
+                    th(translate = "global.total") Total
 
-        tr(
-            ng-repeat = "year in contactList.years" 
-        )
-            td.year(
-                ng-bind = "year.year"
-                ng-click = "contactList.cycleRequired(year.year)"
-                ng-class = [
-                    "{",
-                        "'success': contactList.isRequired(year.year),",
-                        "'danger':  contactList.isForbidden(year.year)",
-                    "}"
-                ].join("")
-            )
-            td(
-                ng-repeat = "membership in contactList.membershipTypes"
-                ng-bind = "year.memberships[membership].length"
-            )
-            td(ng-bind = "year.total")
+                tr(
+                    ng-repeat = "year in contactList.years" 
+                )
+                    td.year(
+                        ng-bind = "year.year"
+                        ng-click = "contactList.cycleRequired(year.year)"
+                        ng-class = [
+                            "{",
+                                    "'success': contactList.isRequired(year.year),",
+                                "'danger':  contactList.isForbidden(year.year)",
+                            "}"
+                        ].join("")
+                    )
+                    td(
+                        ng-repeat = "membership in contactList.membershipTypes"
+                        ng-bind = "year.memberships[membership].length"
+                    )
+                    td(ng-bind = "year.total")
 
-    div(
-        ng-repeat = "contact in contactList.filtered track by contact.id"
+
+        div(class = "col-xs-12 col-sm-12 col-md-3 col-lg-4")
+            .instructions
+                p(translate = "membership.byYear.instructions.1")
+                    | To limit the list to people who were members in a particular
+                    | year, click on the year so that its background is green.
+                    | Multiple selections mean that the person must have been a
+                    | member in each selected year.
+
+                p(translate = "membership.byYear.instructions.2")
+                    | To exclude people who were members in a particular year,
+                    | click on the year again so that its background is red.
+
+                p(translate = "membership.byYear.instructions.3")
+                    | So, to find out who is a new member, click on the current
+                    | year to make it green, and click on some number of previous
+                    | years to make them red.
+
+                p(translate = "membership.byYear.instructions.4")
+                    | Or, to find out who has not renewed, click on the current
+                    | year to make it red, and click on some number of previous
+                    | years to make them green.
+
+    p(
+        translate = "membership.byYear.showingMembers"
+        translate-values = "{number: '{{contactList.filtered.length}}'}"
     )
-        a(
-            ui-sref = "processFormsDetail({id: contact.id})"
-            ng-bind = "::contact.fullName()"
-        )
+
+    .multi-list
+        div(ng-repeat = "contact in contactList.filtered track by contact.id")
+            a(
+                ui-sref = "processFormsDetail({id: contact.id})"
+                ng-bind = "::contact.fullName()"
+            )

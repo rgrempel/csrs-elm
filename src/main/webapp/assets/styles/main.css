@@ -8655,7 +8655,46 @@ button.close {
 .contact-list td.year {
   cursor: pointer;
 }
+/* line 12, ../../../javascript/app/tasks/contacts/_contact.scss */
+.contact-list .instructions {
+  font-size: 90%;
+}
 
+@media (min-width: 768px) {
+  /* line 25, ../../../javascript/app/tasks/contacts/_contact.scss */
+  .contact-list .multi-list {
+    -moz-column-gap: 18px;
+    -webkit-column-gap: 18px;
+    column-gap: 18px;
+    -moz-column-rule: 1px dotted #888;
+    -webkit-column-rule: 1px dotted #888;
+    column-rule: 1px dotted #888;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  /* line 35, ../../../javascript/app/tasks/contacts/_contact.scss */
+  .contact-list .multi-list {
+    -moz-column-count: 2;
+    -webkit-column-count: 2;
+    column-count: 2;
+  }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+  /* line 48, ../../../javascript/app/tasks/contacts/_contact.scss */
+  .contact-list .multi-list {
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+    column-count: 3;
+  }
+}
+@media (min-width: 1200px) {
+  /* line 57, ../../../javascript/app/tasks/contacts/_contact.scss */
+  .contact-list .multi-list {
+    -moz-column-count: 4;
+    -webkit-column-count: 4;
+    column-count: 4;
+  }
+}
 /* line 1, ../../../javascript/app/tasks/processForms/_process-forms.scss */
 .process-forms-search-box {
   padding-left: 12px;

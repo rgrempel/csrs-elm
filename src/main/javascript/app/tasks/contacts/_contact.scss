@@ -8,4 +8,54 @@
     td.year {
         cursor: pointer;
     }
+
+    .instructions {
+        font-size: 90%;
+    }
+}
+
+// xs only
+@media(max-width: $screen-xs-max) {
+
+}
+
+// small and up
+@media(min-width: $screen-sm-min) {
+    .contact-list {
+        .multi-list {
+            @include column-gap(18px);
+            @include column-rule(1px, dotted, #888)
+        }
+    }
+}
+
+// sm only
+@media(min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+    .contact-list {
+        .multi-list {
+            @include column-count(2);
+        }
+    }
+}
+
+// md and up
+@media(min-width: $screen-md-min) {
+}
+
+// md only
+@media(min-width: $screen-md-min) and (max-width: $screen-md-max) {
+    .contact-list {
+        .multi-list {
+            @include column-count(3);
+        }
+    }
+}
+
+// lg and up
+@media(min-width: $screen-lg-min) {
+    .contact-list {
+        .multi-list {
+            @include column-count(4);
+        }
+    }
 }

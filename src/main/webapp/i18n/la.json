@@ -536,5 +536,17 @@
         "detail": {
             "title": "Exemplar"
         }
+    },
+    "membership": {
+        "byYear": {
+            "title": "Sodalitas per annos",
+            "showingMembers": "Ostendens {{number}} membra.",
+            "instructions": {
+                "1": "Qui erant in enumera finire annum, quo anno latet insiste uireret. Debet intelligi quod multiplex lectio senos sodalem fuisse anno.",
+                "2": "Qui erant in annum excludere insiste ut anno iterum intumuit latet.",
+                "3": "Ita novum membrum determinet quisnam insiste ut anni vertentis carbasini ac superioribus annis ad torcular rubras aliquam.",
+                "4": "Aut qui renouatur determinare insiste vertentis anni red ut adeat superioribus annis facere aliquid viridis."
+            }
+        }
     }
 }

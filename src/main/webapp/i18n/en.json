@@ -536,5 +536,17 @@
         "detail": {
             "title": "Template"
         }
+    },
+    "membership": {
+        "byYear": {
+            "title": "Membership by Year",
+            "showingMembers": "Showing {{number}} members",
+            "instructions": {
+                "1": "To limit the list to people who were members in a particular year, click on the year so that its background is green. Multiple selections mean that the person must have been a member in each selected year.",
+                "2": "To exclude people who were members in a particular year, click on the year again so that its background is red.",
+                "3": "So, to find out who is a new member, click on the current year to make it green, and click on some previous years to make them red.",
+                "4": "Or, to find out who has not renewed, click on the current year to make it red, and click on some previous years to make them green."
+            }
+        }
     }
 }

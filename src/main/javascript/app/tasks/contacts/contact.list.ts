@@ -136,6 +136,9 @@ module CSRS {
 
             this.filtered = Stream(this.contacts).filter((contact) => {
                 var requiredCount = 0;
+
+                // If there are no annuals, then they were never a member, so false
+                if (contact.annuals.length === 0) return false;
                 
                 var foundForbidden = Stream(contact.annuals).anyMatch((annual) => {
                     // Also count the requireds ...

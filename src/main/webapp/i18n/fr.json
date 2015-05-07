@@ -536,5 +536,17 @@
         "detail": {
             "title": "Gabarit"
         }
+    },
+    "membership": {
+        "byYear": {
+            "title": "Adhésion par année",
+            "showingMembers": "Affichage {{number}} membres.",
+            "instructions": {
+                "1": "Pour limiter la liste à des gens qui étaient membres dans un particulier année, cliquez sur l'année de sorte que son fond est vert. Sélections multiples signifient que la personne doit avoir été un membre de chaque année sélectionnée.",
+                "2": "Pour exclure les personnes qui étaient membres d'une année donnée, appuyez sur l'année à nouveau de sorte que son fond est rouge.",
+                "3": "Donc, pour savoir qui est un nouveau membre, cliquez sur l'année en cours pour faire le vert, et cliquez sur quelques années précédentes pour les rendre rouge.",
+                "4": "Ou, pour déterminer qui n'a pas renouvelé, appuyez sur l'année en cours pour la rendre rouge, et appuyez sur certaines années précédentes pour les rendre vert."
+            }
+        }
     }
 }

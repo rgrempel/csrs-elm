@@ -1,1 +1,68 @@
+membership:
+    byYear:
+        title:
+            en: Membership by Year
+            fr: Adhésion par année
+            la: Sodalitas per annos
 
+        showingMembers:
+            en: Showing {{number}} members
+            fr: Affichage {{number}} membres.
+            la: Ostendens {{number}} membra.
+
+        instructions:
+            1:
+                en: >-
+                    To limit the list to people who were members in a particular
+                    year, click on the year so that its background is green.
+                    Multiple selections mean that the person must have been a
+                    member in each selected year.
+                fr: >-
+                    Pour limiter la liste à des gens qui étaient membres dans
+                    un particulier année, cliquez sur l'année de sorte que son
+                    fond est vert. Sélections multiples signifient que la
+                    personne doit avoir été un membre de chaque année
+                    sélectionnée.
+                la: >-
+                    Qui erant in enumera finire annum, quo anno latet insiste
+                    uireret. Debet intelligi quod multiplex lectio senos
+                    sodalem fuisse anno.
+
+            2:
+                en: >-
+                    To exclude people who were members in a particular year,
+                    click on the year again so that its background is red.
+                fr: >-
+                    Pour exclure les personnes qui étaient membres d'une année
+                    donnée, appuyez sur l'année à nouveau de sorte que son fond
+                    est rouge.
+                la: >-
+                    Qui erant in annum excludere insiste ut anno iterum
+                    intumuit latet.
+
+            3:
+                en: >-
+                    So, to find out who is a new member, click on the current
+                    year to make it green, and click on some previous years to
+                    make them red.
+                fr: >-
+                    Donc, pour savoir qui est un nouveau membre, cliquez sur
+                    l'année en cours pour faire le vert, et cliquez sur
+                    quelques années précédentes pour les rendre rouge.
+                la: >-
+                    Ita novum membrum determinet quisnam insiste ut anni
+                    vertentis carbasini ac superioribus annis ad torcular
+                    rubras aliquam.
+
+            4:
+                en: >-
+                    Or, to find out who has not renewed, click on the current
+                    year to make it red, and click on some previous years to
+                    make them green.
+                fr: >-
+                    Ou, pour déterminer qui n'a pas renouvelé, appuyez sur
+                    l'année en cours pour la rendre rouge, et appuyez sur
+                    certaines années précédentes pour les rendre vert.
+                la: >-
+                    Aut qui renouatur determinare insiste vertentis anni red ut
+                    adeat superioribus annis facere aliquid viridis.
