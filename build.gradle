@@ -20,6 +20,9 @@ apply from: 'yeoman.gradle'
 apply from: 'liquibase.gradle'
 apply from: 'gatling.gradle'
 
+apply from: 'querydsl.gradle'
+apply from: 'jpa_meta_model.gradle'
+
 group = 'com.fulliautomatix.csrs'
 version = '0.3b1'
 description = ''

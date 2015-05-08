@@ -10,6 +10,7 @@ node_modules
 .merge_file*
 .sass-cache
 .DS_Store
+src/main/generated
 src/main/webapp/dist
 src/main/webapp/scripts
 .gradle

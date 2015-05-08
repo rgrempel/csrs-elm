@@ -1,0 +1,39 @@
+sourceSets {
+    generated {
+        java {
+            srcDirs = ['src/main/generated']
+        }
+    }
+}
+ 
+configurations {
+    jpametamodel
+}
+ 
+dependencies {
+    jpametamodel "org.hibernate:hibernate-jpamodelgen:$hibernate_entitymanager_version"    
+}
+
+task generateMetaModel (type: JavaCompile, group: 'build', description: 'Generate JPA MetaModels') {
+    source = sourceSets.main.java
+    classpath = configurations.compile + configurations.jpametamodel
+    options.compilerArgs = [
+        "-proc:only"
+    ]
+    destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
+}
+ 
+compileJava {
+    dependsOn generateMetaModel 
+    source generateMetaModel.destinationDir
+}
+ 
+compileGeneratedJava {
+    dependsOn generateMetaModel
+    options.warnings = false
+    classpath += sourceSets.main.runtimeClasspath
+}
+ 
+clean {
+    delete sourceSets.generated.java.srcDirs
+}
