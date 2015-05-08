@@ -567,7 +567,9 @@ function translations () {
         var keys = [];
 
         var iterate = function (level) {
-            _.forOwn(level, function (value, key) {
+            _.forEach(_.sortBy(_.keys(level)), function (key) {
+                var value = level[key];
+            
                 if (_.isObject(value)) {
                     keys.push(key);
                     iterate(value);
