@@ -179,7 +179,7 @@ module CSRS {
             ).toArray();
         }
 
-        merge () {
+        getMergeURL () {
             var loc = "/letters/" + this.selectedTemplate.code + ".pdf?";
 
             var yr = this.getYearsRequiredArray();
@@ -193,7 +193,7 @@ module CSRS {
                 loc += yf.join("&yf=");
             }
 
-            this.window.open(loc, "pdf");
+            return loc;
         }
 
         getYearsRequiredArray () : Array<string> {

@@ -72,16 +72,16 @@
                         aria-expanded="false"
                         ng-disabled="!contactList.selectedTemplate"
                     ) 
-                        span(translate = "entity.action.action") Action 
+                        span(translate = "entity.action.action") Action
+                        | &nbsp;
                         span.caret
 
                     ul.dropdown-menu(role="menu")
                         li
                             a(
-                                href="#"
-                                ng-click="contactList.merge()"
+                                ng-href="{{contactList.getMergeURL()}}"
                                 translate="entity.action.merge"
-                                _target="pdf"
+                                target="_self"
                             ) Merge
                         
                         li
