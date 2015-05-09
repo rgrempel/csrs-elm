@@ -1,5 +1,6 @@
 package com.fulliautomatix.csrs.domain;
 
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OnDelete;
@@ -41,12 +42,14 @@ public class ContactEmail implements Serializable, HasOwner {
 
     @lombok.Getter @lombok.Setter
     @ManyToOne
+    @BatchSize(size=50)
     @NotNull
     @JsonView(WithEmail.class)
     private Email email;
 
     @lombok.Getter @lombok.Setter
     @ManyToOne
+    @BatchSize(size=50)
     @NotNull
     @JsonView(WithContact.class)
     private Contact contact;
