@@ -3,8 +3,14 @@
 module CSRS {
     'use strict';
 
+    interface MemberCount {
+        year: number;
+        membership: number;
+        count: number;
+    }
+
     interface Memberships {
-        [membership: number]: Array<Annual>;
+        [membership: number]: MemberCount;
     }
 
     interface Year {
@@ -35,14 +41,16 @@ module CSRS {
         
         contactRepository: JSData.DSResourceDefinition<Contact>;
         templateRepository: JSData.DSResourceDefinition<Template>;
-        window: angular.IWindowService;
 
+        window: angular.IWindowService;
         stream: streamjs.Stream;
         location: angular.ILocationService;
 
         constructor (
             contactRepository: JSData.DSResourceDefinition<Contact>,
             templateRepository: JSData.DSResourceDefinition<Template>,
+
+            $http: angular.IHttpService,
             $scope: angular.IScope,
             Stream: streamjs.Stream,
             $state: angular.ui.IStateService,
@@ -51,13 +59,15 @@ module CSRS {
         ) {
             'ngInject';
 
-            this.serverError = null;
             this.contactRepository = contactRepository;
             this.templateRepository = templateRepository;
+
             this.location = $location;
             this.window = $window;
 
+            this.serverError = null;
             this.scope = $scope;
+
             this.contacts = [];
             this.filtered = [];
             
@@ -75,6 +85,14 @@ module CSRS {
             if (param && !angular.isArray(param)) param = [param];
             angular.forEach(param, (yf: number) => {
                 this.yearsForbidden[yf] = true;
+            });
+
+            $http.get(
+                '/api/annuals/count'
+            ).success((data: Array<MemberCount>) => {
+                this.handleMemberCount(data);
+            }).error((data, status, headers, config) => {
+                this.serverError = angular.toJson(data);
             });
 
             $scope.$watch(() => {
@@ -96,39 +114,29 @@ module CSRS {
             templateRepository.findAll();
         }
 
-        handleContactsChanged () : void {
-            this.contacts = this.contactRepository.filter({});
-
+        handleMemberCount (input: Array<MemberCount>) : void {
             // Partition according to membership type and year
             this.years = [];
             this.yearIndex = {};
             
-            Stream(
-                this.contacts
-            ).flatMap((contact) => {
-                return contact.annuals;
-            }).filter((annual) => {
-                return annual.membership !== 0;
-            }).forEach((annual) => {
-                if (!this.yearIndex[annual.year]) {
+            Stream(input).filter((count) => {
+                return count.membership != 0;
+            }).forEach((memberCount) => {
+                if (!this.yearIndex[memberCount.year]) {
                     var newYear = {
-                        year: annual.year,
+                        year: memberCount.year,
                         total: 0,
                         memberships: <Memberships> {}
                     };
 
-                    this.yearIndex[annual.year] = newYear;
+                    this.yearIndex[memberCount.year] = newYear;
                     this.years.push(newYear);
                 }
 
-                var year = this.yearIndex[annual.year];
-                year.total += 1;
+                var year = this.yearIndex[memberCount.year];
+                year.total += memberCount.count;
 
-                if (year.memberships[annual.membership] == null) {
-                    year.memberships[annual.membership] = [];
-                }
-
-                year.memberships[annual.membership].push(annual);
+                year.memberships[memberCount.membership] = memberCount;
             });
 
             this.years = Stream(this.years).sorted((a, b) => {
@@ -136,7 +144,10 @@ module CSRS {
                 if (a.year < b.year) return 1;
                 return 0;
             }).toArray();
+        }
 
+        handleContactsChanged () : void {
+            this.contacts = this.contactRepository.filter({});
             this.updateFilter();
         }
 
@@ -180,6 +191,8 @@ module CSRS {
         }
 
         getMergeURL () {
+            if (!this.selectedTemplate) return "";
+
             var loc = "/letters/" + this.selectedTemplate.code + ".pdf?";
 
             var yr = this.getYearsRequiredArray();
