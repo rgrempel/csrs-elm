@@ -14,7 +14,7 @@ import java.util.*;
 @lombok.Data
 @lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-class ContactWasMember implements Specification<Contact> {
+public class ContactWasMember implements Specification<Contact> {
     @lombok.Getter @lombok.Setter
     private Set<Integer> yearsRequired;
 
@@ -45,7 +45,7 @@ class ContactWasMember implements Specification<Contact> {
         } else {
             return cb.and(
                 positive,
-                new ContactWasMemberInNone(yearsForbidden).toPredicate(contact, query, cb).not()
+                new ContactWasMemberInNone(yearsForbidden).toPredicate(contact, query, cb)
             );
         }
     }

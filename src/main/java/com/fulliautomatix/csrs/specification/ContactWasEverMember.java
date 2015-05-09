@@ -15,7 +15,7 @@ import java.util.*;
 
 @lombok.ToString
 @lombok.EqualsAndHashCode
-class ContactWasEverMember implements Specification<Contact> {
+public class ContactWasEverMember implements Specification<Contact> {
     @Override
     public Predicate toPredicate (Root<Contact> contact, CriteriaQuery<?> query, CriteriaBuilder cb) {
         query.distinct(true);

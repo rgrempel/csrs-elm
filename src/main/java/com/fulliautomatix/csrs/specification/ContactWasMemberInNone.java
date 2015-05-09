@@ -17,7 +17,7 @@ import java.util.stream.*;
 @lombok.Data
 @lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-class ContactWasMemberInNone implements Specification<Contact> {
+public class ContactWasMemberInNone implements Specification<Contact> {
     @lombok.NonNull
     private Set<Integer> yearsForbidden;
 
@@ -43,6 +43,6 @@ class ContactWasMemberInNone implements Specification<Contact> {
             )
         );
 
-        return cb.not(cb.exists(sq));
+        return cb.exists(sq).not();
     }
 }

@@ -49,7 +49,7 @@ public class LoggingAspect {
                 joinPoint.getSignature().getDeclaringTypeName(),
                 joinPoint.getSignature().getName(),
                 Stream.of(joinPoint.getArgs()).map((arg) ->
-                    StringUtils.abbreviate(arg.toString(), 250)
+                    StringUtils.abbreviate(arg == null ? "null" : arg.toString(), 250)
                 ).collect(
                     Collectors.joining(", ", "[", "]")
                 )

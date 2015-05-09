@@ -17,7 +17,7 @@ import java.util.stream.*;
 @lombok.Data
 @lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-class ContactWasMemberInAll implements Specification<Contact> {
+public class ContactWasMemberInAll implements Specification<Contact> {
     @lombok.NonNull
     private Set<Integer> yearsRequired;
 

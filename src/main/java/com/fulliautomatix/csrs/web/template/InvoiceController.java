@@ -1,4 +1,4 @@
-package com.fulliautomatix.csrs.web;
+package com.fulliautomatix.csrs.web.template;
 
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.annotation.*;

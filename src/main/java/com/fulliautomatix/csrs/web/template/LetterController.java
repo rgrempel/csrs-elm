@@ -1,8 +1,9 @@
-package com.fulliautomatix.csrs.web;
+package com.fulliautomatix.csrs.web.template;
 
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.annotation.*;
 import com.fulliautomatix.csrs.domain.Contact;
+import com.fulliautomatix.csrs.specification.ContactWasMember;
 import com.fulliautomatix.csrs.repository.ContactRepository;
 import com.fulliautomatix.csrs.web.rest.util.ResourceNotFoundException;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
@@ -60,13 +61,15 @@ public class LetterController {
     @Transactional(readOnly = true)
     public void getLetter (
         @PathVariable String template,
-//        @RequestParam(value = "yr") Set<Integer> yearsRequired,
-//        @RequestParam(value = "yf") Set<Integer> yearsForbidden,
+        @RequestParam(value = "yr", required = false) Set<Integer> yearsRequired,
+        @RequestParam(value = "yf", required = false) Set<Integer> yearsForbidden,
         OutputStream output
     ) throws Exception {
-        log.debug("Request to produce PDF letter for  : {}", template);
+        log.debug("Request to produce PDF letter for : {} with yr = {} and yf = {}", template, yearsRequired, yearsForbidden);
 
-        Collection<Contact> contacts = contactRepository.findAll();
+        Collection<Contact> contacts = contactRepository.findAll(
+            new ContactWasMember(yearsRequired, yearsForbidden)
+        );
         lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class);
 
         Locale locale = Locale.forLanguageTag("en");
