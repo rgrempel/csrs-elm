@@ -14,7 +14,9 @@ module CSRS {
         scope: TemplateDetailScope;
         state: angular.ui.IStateService;
         templateId: number;
-        codemirrorOptions: any;
+        codeMirror: CodeMirror.Editor;
+        codemirrorOptions: CodeMirror.EditorConfiguration;
+        useVim: boolean;
 
         constructor (templateRepository: JSData.DSResourceDefinition<Template>, $scope: TemplateDetailScope, $state: angular.ui.IStateService) {
             'ngInject';
@@ -25,10 +27,23 @@ module CSRS {
             this.templateId = $state.params['id'];
             this.state = $state;
 
+            this.useVim = false;
             this.codemirrorOptions = {
                 mode: 'xml',
-                indentUnit: 4
+                indentUnit: 4,
+                keyMap: this.useVim ? 'vim' : 'default',
+                onLoad: (codeMirror: CodeMirror.Editor) => {
+                    this.codeMirror = codeMirror;
+                }
             };
+
+            $scope.$watch(() => {
+                return this.useVim;
+            }, (newValue, oldValue) => {
+                if (this.codeMirror) {
+                    this.codeMirror.setOption('keyMap', newValue ? 'vim' : 'default');
+                }
+            });
 
             $scope.$watch(() => {
                 return templateRepository.lastModified(this.templateId);

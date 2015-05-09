@@ -8582,6 +8582,15 @@ button.close {
   font-weight: bold;
 }
 
+/* line 2, ../../../javascript/app/admin/templates/_templates.scss */
+.template-detail .template-editor {
+  height: 480px;
+}
+/* line 6, ../../../javascript/app/admin/templates/_templates.scss */
+.template-detail .CodeMirror {
+  height: 100%;
+}
+
 /* line 2, ../../../javascript/app/tasks/contacts/_contact.scss */
 .contact-list td, .contact-list th {
   padding-left: 6px;

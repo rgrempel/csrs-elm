@@ -1,0 +1,30 @@
+{
+  "name": "angular-resizable",
+  "homepage": "https://github.com/Reklino/angular-resizable",
+  "authors": [
+    "Reklino <yakub89@gmail.com>"
+  ],
+  "description": "A lightweight directive for creating resizable containers in angularjs",
+  "main": "src/angular-resizable.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.15"
+  },
+  "_release": "1ceaad6be9",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "1ceaad6be944b9b93e99221e9f68826ae4d44b14"
+  },
+  "_source": "git://github.com/Reklino/angular-resizable.git",
+  "_target": "*",
+  "_originalSource": "angular-resizable",
+  "_direct": true
+}

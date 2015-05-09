@@ -550,6 +550,7 @@
             "title": "Template"
         },
         "text": "Template",
-        "title": "Templates"
+        "title": "Templates",
+        "vim": "Vim bindings"
     }
 }

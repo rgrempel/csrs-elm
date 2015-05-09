@@ -4,6 +4,11 @@ templates:
         fr: Gabarit
         la: Exemplaria
 
+    vim:
+        en: Vim bindings
+        fr: Fixations Vim
+        la: Alligatura Vim
+
     code:
         en: Code
         fr: Code

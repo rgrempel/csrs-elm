@@ -16,6 +16,7 @@
         'js-data',
         'ui.codemirror',
         'infinite-scroll',
-        'ngFileUpload'
+        'ngFileUpload',
+        'angularResizable'
     ]);
 })();
