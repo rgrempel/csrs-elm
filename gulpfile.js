@@ -180,7 +180,17 @@ gulp.task('compass', function() {
     );
 });
 
-gulp.task('styles', ['compass'], function() {
+gulp.task('prefix', ['compass'], function() {
+    return gulp.src(
+        yeoman.app + 'assets/styles/**/*.css'
+    ).pipe(
+        prefix()
+    ).pipe(
+        gulp.dest(yeoman.app + 'assets/styles')
+    );
+});
+
+gulp.task('styles', ['prefix'], function() {
     return gulp.src(
         yeoman.app + 'assets/styles/**/*.css'
     ).pipe(
@@ -433,7 +443,7 @@ gulp.task('copy:scripts', function () {
     );
 });
 
-gulp.task('scripts', ['copy:scripts', 'jade', 'ts-compile', 'compass']); 
+gulp.task('scripts', ['copy:scripts', 'jade', 'ts-compile', 'styles']); 
 
 gulp.task('copy', function() {
     return es.merge(
