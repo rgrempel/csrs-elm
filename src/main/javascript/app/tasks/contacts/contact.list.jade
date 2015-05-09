@@ -100,5 +100,7 @@
         div(ng-repeat = "contact in contactList.filtered track by contact.id")
             a(
                 ui-sref = "processFormsDetail({id: contact.id})"
-                ng-bind = "::contact.fullName()"
             )
+                span(ng-bind="::contact.firstName")
+                | &nbsp;
+                span(ng-bind="::contact.lastName")

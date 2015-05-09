@@ -7,7 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.fulliautomatix.csrs.domain.Contact;
 import com.fulliautomatix.csrs.domain.ContactEmail;
-import com.fulliautomatix.csrs.domain.Email;
+import com.fulliautomatix.csrs.domain.ContactEmail;
+import com.fulliautomatix.csrs.specification.ContactWasMember;
 import com.fulliautomatix.csrs.repository.ContactRepository;
 import com.fulliautomatix.csrs.repository.EmailRepository;
 import com.fulliautomatix.csrs.repository.ContactEmailRepository;
@@ -170,8 +171,15 @@ public class ContactResource {
     @JsonView(Contact.WithAnnuals.class)
     @RolesAllowed(AuthoritiesConstants.ADMIN)
     @Transactional(readOnly=true)
-    public ResponseEntity<Collection<Contact>> getAll () throws URISyntaxException {
-        Collection<Contact> contacts = contactRepository.findAll();
+    public ResponseEntity<Collection<Contact>> getAll ( 
+        @RequestParam(value = "yr", required = false) Set<Integer> yearsRequired,
+        @RequestParam(value = "yf", required = false) Set<Integer> yearsForbidden
+    ) throws URISyntaxException {
+        // TODO: This is actually now really members ...
+        Collection<Contact> contacts = contacts = contactRepository.findAll(
+            new ContactWasMember(yearsRequired, yearsForbidden)
+        );
+
         lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class);
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }

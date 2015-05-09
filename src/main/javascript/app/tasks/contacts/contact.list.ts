@@ -24,7 +24,7 @@ module CSRS {
     }
 
     class ContactListController {
-        contacts: Array<Contact>;
+//        contacts: Array<Contact>;
         filtered: Array<Contact>;
         templates: Array<Template>;
         selectedTemplate: Template;
@@ -42,6 +42,7 @@ module CSRS {
         contactRepository: JSData.DSResourceDefinition<Contact>;
         templateRepository: JSData.DSResourceDefinition<Template>;
 
+        http: angular.IHttpService;
         window: angular.IWindowService;
         stream: streamjs.Stream;
         location: angular.ILocationService;
@@ -64,11 +65,12 @@ module CSRS {
 
             this.location = $location;
             this.window = $window;
+            this.http = $http;
 
             this.serverError = null;
             this.scope = $scope;
 
-            this.contacts = [];
+//            this.contacts = [];
             this.filtered = [];
             
             this.yearsRequired = {};
@@ -90,11 +92,13 @@ module CSRS {
             $http.get(
                 '/api/annuals/count'
             ).success((data: Array<MemberCount>) => {
+                this.serverError = null;
                 this.handleMemberCount(data);
             }).error((data, status, headers, config) => {
                 this.serverError = angular.toJson(data);
             });
 
+/*            
             $scope.$watch(() => {
                 return contactRepository.lastModified();
             }, () => {
@@ -102,6 +106,8 @@ module CSRS {
             });
 
             contactRepository.findAll();
+*/
+            this.updateFilter();
 
             $scope.$watch(() => {
                 return templateRepository.lastModified();
@@ -145,12 +151,12 @@ module CSRS {
                 return 0;
             }).toArray();
         }
-
+/*
         handleContactsChanged () : void {
             this.contacts = this.contactRepository.filter({});
             this.updateFilter();
         }
-
+*/
         sortContactsByName (a: Contact, b: Contact) {
             if (a.lastName > b.lastName) return 1;
             if (a.lastName < b.lastName) return -1;
@@ -160,32 +166,21 @@ module CSRS {
         }
 
         updateFilter () : void {
-            var totalRequired = 0;
-            angular.forEach(this.yearsRequired, (required, year) => {
-                if (required) totalRequired += 1;
+            this.http.get("/api/contacts", {
+                params: {
+                    yr: this.getYearsRequiredArray(),
+                    yf: this.getYearsForbiddenArray()
+                }
+            }).success((data: Array<Contact>) => {
+                this.serverError = null;
+                this.handleContacts(data);
+            }).error((data, status, headers, config) => {
+                this.serverError = angular.toJson(data);
             });
+        }
 
-            this.filtered = Stream(this.contacts).filter((contact) => {
-                var requiredCount = 0;
-
-                // If there are no annuals, then they were never a member, so false
-                if (contact.annuals.length === 0) return false;
-                
-                var foundForbidden = Stream(contact.annuals).anyMatch((annual) => {
-                    // Also count the requireds ...
-                    if (this.isRequired(annual.year)) {
-                        requiredCount += 1;
-                    }
-
-                    return this.isForbidden(annual.year);
-                });
-
-                // If any were forbidden, return false
-                if (foundForbidden) return false;
-
-                // Otherwise, return whether we found everything that was required
-                return requiredCount === totalRequired;
-            }).sorted(
+        handleContacts (input: Array<Contact>) {
+            this.filtered = Stream(input).sorted(
                 this.sortContactsByName
             ).toArray();
         }
