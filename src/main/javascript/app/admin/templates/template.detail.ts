@@ -31,6 +31,7 @@ module CSRS {
             this.codemirrorOptions = {
                 mode: 'xml',
                 indentUnit: 4,
+                lineWrapping: true,
                 keyMap: this.useVim ? 'vim' : 'default',
                 onLoad: (codeMirror: CodeMirror.Editor) => {
                     this.codeMirror = codeMirror;

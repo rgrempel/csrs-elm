@@ -8585,8 +8585,9 @@ button.close {
 /* line 2, ../../../javascript/app/admin/templates/_templates.scss */
 .template-detail .template-editor {
   height: 480px;
+  font-size: 12pt;
 }
-/* line 6, ../../../javascript/app/admin/templates/_templates.scss */
+/* line 7, ../../../javascript/app/admin/templates/_templates.scss */
 .template-detail .CodeMirror {
   height: 100%;
 }

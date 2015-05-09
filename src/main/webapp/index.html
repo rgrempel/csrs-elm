@@ -21,30 +21,11 @@
         <!-- endbower -->
         
         <link rel="stylesheet" href="bower_components/angular-resizable/src/angular-resizable.css" />
-        
+        <link rel="stylesheet" href="bower_components/codemirror/addon/dialog/dialog.css" />
+
         <link rel="stylesheet" href="assets/styles/main.css">
         <!-- endbuild -->
-    </head>
-
-    <body ng-app="csrsApp">
-        <!--[if lt IE 10]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
-        <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
         
-        <div ui-view="navbar" ng-cloak=""></div>
-        
-        <div class="container">
-            <div class="well well-sm" ui-view="content"></div>
-
-            <div class="footer translation-message">
-                <em translate="global.messages.translation" translate-compile ng-controller="LanguageController">The French translation is a work-in-progress -- suggestions for improvements would be welcome.</em>
-            </div>
-        </div>
-
-        <div ui-view="modal"></div>
-
         <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
@@ -94,6 +75,8 @@
         <!-- Manually add some optional CodeMirror stuff -->
         <script src="bower_components/codemirror/mode/xml/xml.js"></script>
         <script src="bower_components/codemirror/keymap/vim.js"></script>
+        <script src="bower_components/codemirror/addon/dialog/dialog.js"></script>
+        <script src="bower_components/codemirror/addon/search/searchcursor.js"></script>
         <!-- endbuild -->
 
         <!-- build:js({.tmp,src/main/webapp}) scripts/app.js --> 
@@ -205,5 +188,25 @@
         <script src="scripts/app/account/account.js"></script>
         <!-- endinject -->
         <!-- endbuild -->
+    </head>
+
+    <body ng-app="csrsApp">
+        <!--[if lt IE 10]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div ng-show="{{ENV === 'dev'}}" class="development" ng-cloak=""></div>
+        
+        <div ui-view="navbar" ng-cloak=""></div>
+        
+        <div class="container">
+            <div class="well well-sm" ui-view="content"></div>
+
+            <div class="footer translation-message">
+                <em translate="global.messages.translation" translate-compile ng-controller="LanguageController">The French translation is a work-in-progress -- suggestions for improvements would be welcome.</em>
+            </div>
+        </div>
+
+        <div ui-view="modal"></div>
     </body>
 </html>
