@@ -15,7 +15,7 @@ dependencies {
 }
 
 task generateMetaModel (type: JavaCompile, group: 'build', description: 'Generate JPA MetaModels') {
-    source = sourceSets.main.java
+    source = 'src/main/java/com/fulliautomatix/csrs/domain' 
     classpath = configurations.compile + configurations.jpametamodel
     options.compilerArgs = [
         "-proc:only"

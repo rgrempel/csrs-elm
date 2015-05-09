@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.*;
 import com.fulliautomatix.csrs.domain.Annual;
 import com.fulliautomatix.csrs.repository.AnnualRepository;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
+import com.fulliautomatix.csrs.web.rest.dto.MemberByYearDTO;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,6 +88,20 @@ public class AnnualResource {
         Page<Annual> page = annualRepository.findAll(PaginationUtil.generatePageRequest(offset, limit));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/annuals", offset, limit);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /annuals/count
+     */
+    @RequestMapping(
+        value = "/annuals/count",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Timed
+    public ResponseEntity<List<MemberByYearDTO>> count () throws URISyntaxException {
+        List<MemberByYearDTO> count = annualRepository.countByYearAndMembership();
+        return new ResponseEntity<>(count, HttpStatus.OK);
     }
 
     /**
