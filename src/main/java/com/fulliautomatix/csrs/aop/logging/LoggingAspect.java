@@ -10,9 +10,11 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.apache.commons.lang.StringUtils;
 
 import javax.inject.Inject;
-import java.util.Arrays;
+import java.util.*;
+import java.util.stream.*;
 
 /**
  * Aspect for logging execution of service and repository Spring components.
@@ -25,7 +27,7 @@ public class LoggingAspect {
     @Inject
     private Environment env;
 
-    @Pointcut("within(com.fulliautomatix.csrs.repository..*) || within(com.fulliautomatix.csrs.service..*) || within(com.fulliautomatix.csrs.web.rest..*)")
+    @Pointcut("within(com.fulliautomatix.csrs.service..*) || within(com.fulliautomatix.csrs.web.rest..*) || within(com.fulliautomatix.csrs.web.template..*)")
     public void loggingPointcut() {}
 
     @AfterThrowing(pointcut = "loggingPointcut()", throwing = "e")
@@ -42,14 +44,29 @@ public class LoggingAspect {
     @Around("loggingPointcut()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         if (log.isDebugEnabled()) {
-            log.debug("Enter: {}.{}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
-                    joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+            log.debug(
+                "Enter: {}.{}() with argument[s] = {}",
+                joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName(),
+                Stream.of(joinPoint.getArgs()).map((arg) ->
+                    StringUtils.abbreviate(arg.toString(), 250)
+                ).collect(
+                    Collectors.joining(", ", "[", "]")
+                )
+            );
         }
+
         try {
             Object result = joinPoint.proceed();
             if (log.isDebugEnabled()) {
-                log.debug("Exit: {}.{}() with result = {}", joinPoint.getSignature().getDeclaringTypeName(),
-                        joinPoint.getSignature().getName(), result);
+                log.debug(
+                    "Exit: {}.{}() with result = {}",
+                    joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName(),
+                    Optional.ofNullable(result).map((r) -> 
+                        StringUtils.abbreviate(r.toString(), 250)
+                    ).orElse("null")
+                );
             }
             return result;
         } catch (IllegalArgumentException e) {
