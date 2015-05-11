@@ -19,13 +19,18 @@ import java.util.*;
     property = "@type"
 )
 @JsonSubTypes({
-    @JsonSubTypes.Type(ContactWasEverMember.class),
-    @JsonSubTypes.Type(ContactWasMember.class),
-    @JsonSubTypes.Type(ContactWasMemberInAll.class),
-    @JsonSubTypes.Type(ContactWasMemberInNone.class)
+    @JsonSubTypes.Type(AnnualSpec.WasMember.class),
+    @JsonSubTypes.Type(ContactSpec.WasEverMember.class),
+    @JsonSubTypes.Type(ContactSpec.WasMember.class),
+    @JsonSubTypes.Type(ContactSpec.WasMemberInAll.class),
+    @JsonSubTypes.Type(ContactSpec.WasMemberInNone.class)
 })
 public abstract class Spec<T> implements Specification<T> {
     
     @Override
-    public abstract Predicate toPredicate (Root<T> contact, CriteriaQuery<?> query, CriteriaBuilder cb);
+    public Predicate toPredicate (Root<T> contact, CriteriaQuery<?> query, CriteriaBuilder cb) {
+        return toPredicateFrom(contact, query, cb);
+    }
+
+    public abstract Predicate toPredicateFrom (From<?,T> from, CriteriaQuery<?> query, CriteriaBuilder cb);
 }

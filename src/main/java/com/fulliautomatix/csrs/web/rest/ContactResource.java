@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fulliautomatix.csrs.domain.Contact;
 import com.fulliautomatix.csrs.domain.ContactEmail;
 import com.fulliautomatix.csrs.domain.ContactEmail;
-import com.fulliautomatix.csrs.specification.ContactWasMember;
+import com.fulliautomatix.csrs.specification.ContactSpec;
 import com.fulliautomatix.csrs.specification.Spec;
 import com.fulliautomatix.csrs.repository.ContactRepository;
 import com.fulliautomatix.csrs.repository.EmailRepository;
@@ -178,7 +178,7 @@ public class ContactResource {
     ) throws URISyntaxException {
         // TODO: This is actually now really members ...
         Collection<Contact> contacts = contacts = contactRepository.findAll(
-            new ContactWasMember(yearsRequired, yearsForbidden)
+            new ContactSpec.WasMember(yearsRequired, yearsForbidden)
         );
 
         lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class);

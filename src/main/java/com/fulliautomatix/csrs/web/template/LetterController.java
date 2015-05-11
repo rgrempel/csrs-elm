@@ -3,7 +3,7 @@ package com.fulliautomatix.csrs.web.template;
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.annotation.*;
 import com.fulliautomatix.csrs.domain.Contact;
-import com.fulliautomatix.csrs.specification.ContactWasMember;
+import com.fulliautomatix.csrs.specification.ContactSpec;
 import com.fulliautomatix.csrs.repository.ContactRepository;
 import com.fulliautomatix.csrs.web.rest.util.ResourceNotFoundException;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
@@ -68,7 +68,7 @@ public class LetterController {
         log.debug("Request to produce PDF letter for : {} with yr = {} and yf = {}", template, yearsRequired, yearsForbidden);
 
         Collection<Contact> contacts = contactRepository.findAll(
-            new ContactWasMember(yearsRequired, yearsForbidden)
+            new ContactSpec.WasMember(yearsRequired, yearsForbidden)
         );
         lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class);
 
