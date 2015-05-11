@@ -1,5 +1,7 @@
 package com.fulliautomatix.csrs.domain;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -194,23 +196,66 @@ public class Contact implements Serializable, HasOwner {
         return Stream.of(this).collect(Collectors.toSet());
     }
 
-    public boolean empty (String s) {
-        return (s == null) || (s.length() == 0);
-    }
-
     public String fullName () {
         return Stream.of(salutation, firstName, lastName).filter(o -> 
-            !empty(o)
+            !StringUtils.isBlank(o)
         ).collect(Collectors.joining(" "));
+    }
+
+    public String abbreviatedStreet () {
+        // If more than 2 lines, replace first LF with a comma
+        if (StringUtils.countMatches(street, "\n") > 1) {
+            return StringUtils.replace(street, "\n", ", ", 1);
+        } else {
+            return street;
+        }
+    }
+
+    public String abbreviatedAddress () {
+        StringBuilder sb = new StringBuilder();
+       
+        String street = abbreviatedStreet();
+        if (!StringUtils.isBlank(street)) {
+            sb.append(street);
+            sb.append("\n");
+        }
+
+        String cityState = Stream.of(city, region).filter(o ->
+            !StringUtils.isBlank(o)
+        ).collect(Collectors.joining(", "));
+
+        if (!StringUtils.isBlank(cityState)) {
+            sb.append(cityState);
+        }
+
+        if (!StringUtils.isBlank(country)) {
+            // If country is not blank, then start a new line with it
+            sb.append("\n");
+            sb.append(country);
+        }
+
+        String delim = "    ";
+        if (StringUtils.countMatches(sb.toString(), "\n") < 2) {
+            // If we don't have 4 lines already, then put postalCode on own line
+            delim = "\n";
+        }
+
+        if (!StringUtils.isBlank(postalCode)) {
+            // In either event, if the postalCode is present, add it with some spaces
+            sb.append(delim);
+            sb.append(postalCode);
+        }
+
+        return sb.toString();
     }
 
     public String fullAddress () {
         String cityState = Stream.of(city, region).filter(o ->
-            !empty(o)
+            !StringUtils.isBlank(o)
         ).collect(Collectors.joining(", "));
 
         return Stream.of(street, cityState, country, postalCode).filter(o ->
-            !empty(o)
+            !StringUtils.isBlank(o)
         ).collect(Collectors.joining("\n"));
     }
 
