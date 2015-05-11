@@ -24,12 +24,12 @@ apply from: 'gatling.gradle'
 apply from: 'jpa_meta_model.gradle'
 
 group = 'com.fulliautomatix.csrs'
-version = '0.3b1'
+version = '0.3b2'
 description = ''
 
 war {
     baseName = 'csrs'
-    version =  '0.3b1'
+    version =  '0.3b2'
 }
 
 if (project.hasProperty('prod')) {
