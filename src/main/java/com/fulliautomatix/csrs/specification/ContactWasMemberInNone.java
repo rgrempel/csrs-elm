@@ -15,9 +15,10 @@ import java.util.*;
 import java.util.stream.*;
 
 @lombok.Data
-@lombok.NoArgsConstructor
-@lombok.AllArgsConstructor
-public class ContactWasMemberInNone implements Specification<Contact> {
+@lombok.NoArgsConstructor @lombok.AllArgsConstructor
+@lombok.EqualsAndHashCode(callSuper=false)
+@JsonTypeName("ContactWasMemberInNone")
+public class ContactWasMemberInNone extends Spec<Contact> {
     @lombok.NonNull
     private Set<Integer> yearsForbidden;
 

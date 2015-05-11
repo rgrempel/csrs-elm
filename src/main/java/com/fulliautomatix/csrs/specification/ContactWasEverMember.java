@@ -13,9 +13,10 @@ import com.fulliautomatix.csrs.domain.Annual_;
 import javax.persistence.criteria.*;
 import java.util.*;
 
-@lombok.ToString
-@lombok.EqualsAndHashCode
-public class ContactWasEverMember implements Specification<Contact> {
+@lombok.Data
+@lombok.EqualsAndHashCode(callSuper=false)
+@JsonTypeName("ContactWasEverMember")
+public class ContactWasEverMember extends Spec<Contact> {
     @Override
     public Predicate toPredicate (Root<Contact> contact, CriteriaQuery<?> query, CriteriaBuilder cb) {
         query.distinct(true);

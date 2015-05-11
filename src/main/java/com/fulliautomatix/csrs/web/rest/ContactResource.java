@@ -9,6 +9,7 @@ import com.fulliautomatix.csrs.domain.Contact;
 import com.fulliautomatix.csrs.domain.ContactEmail;
 import com.fulliautomatix.csrs.domain.ContactEmail;
 import com.fulliautomatix.csrs.specification.ContactWasMember;
+import com.fulliautomatix.csrs.specification.Spec;
 import com.fulliautomatix.csrs.repository.ContactRepository;
 import com.fulliautomatix.csrs.repository.EmailRepository;
 import com.fulliautomatix.csrs.repository.ContactEmailRepository;
@@ -30,9 +31,9 @@ import org.springframework.validation.Errors;
 import javax.validation.Valid;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.*;
 import java.util.*;
+import java.io.*;
 
 /**
  * REST controller for managing Contact.
@@ -180,6 +181,26 @@ public class ContactResource {
             new ContactWasMember(yearsRequired, yearsForbidden)
         );
 
+        lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class);
+        return new ResponseEntity<>(contacts, HttpStatus.OK);
+    }
+
+    /**
+     * Filter ...
+     */
+    @RequestMapping(
+        value = "/contacts/filter",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Timed
+    @JsonView(Contact.WithAnnuals.class)
+    @RolesAllowed(AuthoritiesConstants.ADMIN)
+    @Transactional(readOnly=true)
+    public ResponseEntity<Collection<Contact>> filter (@RequestBody Spec spec) throws URISyntaxException {
+        log.debug("REST filter request");
+        
+        Collection<Contact> contacts = contactRepository.findAll(spec);
         lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class);
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }

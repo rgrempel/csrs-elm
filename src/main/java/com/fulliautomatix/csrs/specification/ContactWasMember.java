@@ -12,9 +12,10 @@ import javax.persistence.criteria.*;
 import java.util.*;
 
 @lombok.Data
-@lombok.NoArgsConstructor
-@lombok.AllArgsConstructor
-public class ContactWasMember implements Specification<Contact> {
+@lombok.NoArgsConstructor @lombok.AllArgsConstructor
+@lombok.EqualsAndHashCode(callSuper=false)
+@JsonTypeName("ContactWasMember")
+public class ContactWasMember extends Spec<Contact> {
     @lombok.Getter @lombok.Setter
     private Set<Integer> yearsRequired;
 

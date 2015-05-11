@@ -37,38 +37,22 @@ module CSRS {
         yearsForbidden: {[year: number]: boolean};
         
         serverError: string;
-        scope: angular.IScope;
         
-        contactRepository: JSData.DSResourceDefinition<Contact>;
-        templateRepository: JSData.DSResourceDefinition<Template>;
-
-        http: angular.IHttpService;
-        window: angular.IWindowService;
-        stream: streamjs.Stream;
-        location: angular.ILocationService;
-
         constructor (
-            contactRepository: JSData.DSResourceDefinition<Contact>,
-            templateRepository: JSData.DSResourceDefinition<Template>,
+            private contactRepository: JSData.DSResourceDefinition<Contact>,
+            private templateRepository: JSData.DSResourceDefinition<Template>,
+            private ContactWasMember: typeof CSRS.ContactWasMember,
 
-            $http: angular.IHttpService,
-            $scope: angular.IScope,
-            Stream: streamjs.Stream,
-            $state: angular.ui.IStateService,
-            $location: angular.ILocationService,
-            $window: angular.IWindowService
+            private $http: angular.IHttpService,
+            private $scope: angular.IScope,
+            private Stream: streamjs.Stream,
+            private $state: angular.ui.IStateService,
+            private $location: angular.ILocationService,
+            private $window: angular.IWindowService
         ) {
             'ngInject';
 
-            this.contactRepository = contactRepository;
-            this.templateRepository = templateRepository;
-
-            this.location = $location;
-            this.window = $window;
-            this.http = $http;
-
             this.serverError = null;
-            this.scope = $scope;
 
 //            this.contacts = [];
             this.filtered = [];
@@ -166,12 +150,10 @@ module CSRS {
         }
 
         updateFilter () : void {
-            this.http.get("/api/contacts", {
-                params: {
-                    yr: this.getYearsRequiredArray(),
-                    yf: this.getYearsForbiddenArray()
-                }
-            }).success((data: Array<Contact>) => {
+            this.$http.post("/api/contacts/filter", new this.ContactWasMember(
+                this.getYearsRequiredArray(),
+                this.getYearsForbiddenArray()
+            )).success((data: Array<Contact>) => {
                 this.serverError = null;
                 this.handleContacts(data);
             }).error((data, status, headers, config) => {
@@ -247,12 +229,12 @@ module CSRS {
                 this.setRequired(year);
             }
 
-            this.location.search({
+            this.$location.search({
                 yr: this.getYearsRequiredArray(),
                 yf: this.getYearsForbiddenArray()
             });
 
-            this.location.replace();
+            this.$location.replace();
 
             this.updateFilter();
         }
