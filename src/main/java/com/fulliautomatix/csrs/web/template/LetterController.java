@@ -1,36 +1,30 @@
 package com.fulliautomatix.csrs.web.template;
 
-import com.codahale.metrics.annotation.Timed;
-import com.fasterxml.jackson.annotation.*;
-import com.fulliautomatix.csrs.domain.Contact;
-import com.fulliautomatix.csrs.specification.ContactSpec;
-import com.fulliautomatix.csrs.repository.ContactRepository;
-import com.fulliautomatix.csrs.web.rest.util.ResourceNotFoundException;
-import com.fulliautomatix.csrs.security.AuthoritiesConstants;
-import com.fulliautomatix.csrs.security.OwnerService;
-import com.fulliautomatix.csrs.service.LazyService;
-import com.fulliautomatix.csrs.service.PDFService;
-import com.fulliautomatix.csrs.service.UserService;
+import java.io.OutputStream;
+import java.util.Collection;
+import java.util.Locale;
+
+import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.hibernate.Hibernate;
-import org.springframework.data.domain.Page;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.spring4.SpringTemplateEngine;
 
-import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.annotation.security.RolesAllowed;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.io.*;
+import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fulliautomatix.csrs.domain.Contact;
+import com.fulliautomatix.csrs.repository.ContactRepository;
+import com.fulliautomatix.csrs.security.AuthoritiesConstants;
+import com.fulliautomatix.csrs.service.LazyService;
+import com.fulliautomatix.csrs.service.PDFService;
+import com.fulliautomatix.csrs.specification.Filter;
 
 /**
  * Letters
@@ -49,6 +43,9 @@ public class LetterController {
     @Inject
     private LazyService lazyService;
 
+    @Inject
+    private ObjectMapper objectMapper;
+
     /**
      * GET  /letters/{template}.pdf 
      */
@@ -61,14 +58,11 @@ public class LetterController {
     @Transactional(readOnly = true)
     public void getLetter (
         @PathVariable String template,
-        @RequestParam(value = "yr", required = false) Set<Integer> yearsRequired,
-        @RequestParam(value = "yf", required = false) Set<Integer> yearsForbidden,
+        @RequestParam(value = "filter", required = false) String filterString,
         OutputStream output
     ) throws Exception {
-        log.debug("Request to produce PDF letter for : {} with yr = {} and yf = {}", template, yearsRequired, yearsForbidden);
-
         Collection<Contact> contacts = contactRepository.findAll(
-            new ContactSpec.WasMember(yearsRequired, yearsForbidden)
+            objectMapper.readValue(filterString, Filter.class).getSpec()
         );
         lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class);
 

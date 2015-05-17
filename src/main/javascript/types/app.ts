@@ -6,6 +6,15 @@
 //{
 
 
+/// <reference path="../components/specifications/ContactSpec.ts" />
+
+
+/// <reference path="../components/specifications/Filter.ts" />
+
+
+/// <reference path="../components/specifications/Specification.ts" />
+
+
 /// <reference path="../components/products/price.filter.ts" />
 
 
@@ -22,12 +31,6 @@
 
 
 /// <reference path="../components/products/product.variable.picker.ts" />
-
-
-/// <reference path="../components/specifications/ContactWasMember.ts" />
-
-
-/// <reference path="../components/specifications/Specification.ts" />
 
 
 /// <reference path="../app/admin/dataFiles/file.list.ts" />

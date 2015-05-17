@@ -39,4 +39,21 @@ public class AnnualSpec {
             );
         }
     }
+    
+    @lombok.Data
+    @lombok.NoArgsConstructor @lombok.AllArgsConstructor
+    @lombok.EqualsAndHashCode(callSuper=false)
+    @JsonTypeName("AnnualHadMembershipTypeInYear")
+    public static class HadMembershipTypeInYear extends Spec<Annual> {
+        @lombok.NonNull private Integer membershipType;
+        @lombok.NonNull private Integer year;
+
+        @Override
+        public Predicate toPredicateFrom (From<?, Annual> annual, CriteriaQuery<?> query, CriteriaBuilder cb) {
+            return cb.and(
+                cb.equal(annual.get(Annual_.membership), membershipType), 
+                cb.equal(annual.get(Annual_.year), year)
+            );
+        }
+    }
 }

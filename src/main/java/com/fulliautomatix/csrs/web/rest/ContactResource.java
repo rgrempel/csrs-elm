@@ -1,39 +1,42 @@
 package com.fulliautomatix.csrs.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.fulliautomatix.csrs.domain.Contact;
-import com.fulliautomatix.csrs.domain.ContactEmail;
-import com.fulliautomatix.csrs.domain.ContactEmail;
-import com.fulliautomatix.csrs.specification.ContactSpec;
-import com.fulliautomatix.csrs.specification.Spec;
-import com.fulliautomatix.csrs.repository.ContactRepository;
-import com.fulliautomatix.csrs.repository.EmailRepository;
-import com.fulliautomatix.csrs.repository.ContactEmailRepository;
-import com.fulliautomatix.csrs.security.AuthoritiesConstants;
-import com.fulliautomatix.csrs.security.OwnerService;
-import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
-import com.fulliautomatix.csrs.security.SecurityUtils;
-import com.fulliautomatix.csrs.service.LazyService;
+import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.domain.Page;
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
-import java.net.*;
-import java.util.*;
-import java.io.*;
+import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fulliautomatix.csrs.domain.Contact;
+import com.fulliautomatix.csrs.domain.ContactEmail;
+import com.fulliautomatix.csrs.repository.ContactEmailRepository;
+import com.fulliautomatix.csrs.repository.ContactRepository;
+import com.fulliautomatix.csrs.repository.EmailRepository;
+import com.fulliautomatix.csrs.security.AuthoritiesConstants;
+import com.fulliautomatix.csrs.security.OwnerService;
+import com.fulliautomatix.csrs.security.SecurityUtils;
+import com.fulliautomatix.csrs.service.LazyService;
+import com.fulliautomatix.csrs.specification.ContactSpec;
+import com.fulliautomatix.csrs.specification.Filter;
 
 /**
  * REST controller for managing Contact.
@@ -147,7 +150,7 @@ public class ContactResource {
     @RolesAllowed(AuthoritiesConstants.USER)
     public ResponseEntity<Void> updateForUser (@Valid @RequestBody Contact contact) throws URISyntaxException {
         log.debug("REST request to update Contact : {}", contact);
-        
+
         if (contact.getId() == null) {
             return ResponseEntity.badRequest().header("Failure", "An existing must already have an ID").build();
         }
@@ -177,7 +180,7 @@ public class ContactResource {
         @RequestParam(value = "yf", required = false) Set<Integer> yearsForbidden
     ) throws URISyntaxException {
         // TODO: This is actually now really members ...
-        Collection<Contact> contacts = contacts = contactRepository.findAll(
+        Collection<Contact> contacts = contactRepository.findAll(
             new ContactSpec.WasMember(yearsRequired, yearsForbidden)
         );
 
@@ -197,10 +200,10 @@ public class ContactResource {
     @JsonView(Contact.WithAnnuals.class)
     @RolesAllowed(AuthoritiesConstants.ADMIN)
     @Transactional(readOnly=true)
-    public ResponseEntity<Collection<Contact>> filter (@RequestBody Spec spec) throws URISyntaxException {
+    public ResponseEntity<Collection<Contact>> filter (@RequestBody Filter<Contact> filter) throws URISyntaxException {
         log.debug("REST filter request");
         
-        Collection<Contact> contacts = contactRepository.findAll(spec);
+        Collection<Contact> contacts = contactRepository.findAll(filter.getSpec());
         lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class);
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }

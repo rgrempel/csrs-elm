@@ -8599,7 +8599,7 @@ button.close {
   text-align: right;
 }
 /* line 8, ../../../javascript/app/tasks/contacts/_contact.scss */
-.contact-list td.year {
+.contact-list td.year, .contact-list td.membership-count {
   cursor: pointer;
 }
 /* line 12, ../../../javascript/app/tasks/contacts/_contact.scss */

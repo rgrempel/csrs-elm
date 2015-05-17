@@ -23,8 +23,49 @@ module CSRS {
         [year: number]: Year;
     }
 
+    interface MemberSelections {
+        [membership: number]: number;
+    }
+
+    interface YearSelection {
+        memberships: MemberSelections;
+        allStatus: number;
+    }
+
+    interface Selections {
+        [year: number]: YearSelection;
+    }
+    
+    var simplify = function (item : Selections) : string {
+        var simplified: Selections = {};
+
+        angular.forEach(item, (yearSelection: YearSelection, year: number) => {
+            if (yearSelection.allStatus) {
+                // If we have a status, that's all we need to record
+                simplified[year] = {
+                    allStatus: yearSelection.allStatus,
+                    memberships: []
+                }
+            } else {
+                angular.forEach(yearSelection.memberships, (required: number, membershipType: number) => {
+                    if (required) {
+                        if (!simplified[year]) {
+                            simplified[year] = {
+                                allStatus: 0,
+                                memberships: []
+                            };
+                        }
+
+                        simplified[year].memberships[membershipType] = required;
+                    }
+                });
+            }
+        });
+
+        return angular.toJson(simplified);
+    };
+
     class ContactListController {
-//        contacts: Array<Contact>;
         filtered: Array<Contact>;
         templates: Array<Template>;
         selectedTemplate: Template;
@@ -33,15 +74,14 @@ module CSRS {
         yearIndex: YearIndex;
         membershipTypes: Array<number>;
 
-        yearsRequired: {[year: number]: boolean};
-        yearsForbidden: {[year: number]: boolean};
+        selections: Selections;
+        filterString: string;
         
         serverError: string;
         
         constructor (
             private contactRepository: JSData.DSResourceDefinition<Contact>,
             private templateRepository: JSData.DSResourceDefinition<Template>,
-            private ContactWasMember: typeof CSRS.ContactWasMember,
 
             private $http: angular.IHttpService,
             private $scope: angular.IScope,
@@ -53,25 +93,11 @@ module CSRS {
             'ngInject';
 
             this.serverError = null;
-
-//            this.contacts = [];
             this.filtered = [];
-            
-            this.yearsRequired = {};
-            this.yearsForbidden = {};
+            this.filterString = "";
+           
+            this.selections = $state.params['selections'] || {};
             this.membershipTypes = [1, 2, 3, 4, 5];
-
-            var param = $state.params['yr'];
-            if (param && !angular.isArray(param)) param = [param];
-            angular.forEach(param, (yr: number) => {
-                this.yearsRequired[yr] = true;
-            });
-            
-            var param = $state.params['yf'];
-            if (param && !angular.isArray(param)) param = [param];
-            angular.forEach(param, (yf: number) => {
-                this.yearsForbidden[yf] = true;
-            });
 
             $http.get(
                 '/api/annuals/count'
@@ -82,15 +108,6 @@ module CSRS {
                 this.serverError = angular.toJson(data);
             });
 
-/*            
-            $scope.$watch(() => {
-                return contactRepository.lastModified();
-            }, () => {
-                this.handleContactsChanged();
-            });
-
-            contactRepository.findAll();
-*/
             this.updateFilter();
 
             $scope.$watch(() => {
@@ -135,12 +152,7 @@ module CSRS {
                 return 0;
             }).toArray();
         }
-/*
-        handleContactsChanged () : void {
-            this.contacts = this.contactRepository.filter({});
-            this.updateFilter();
-        }
-*/
+        
         sortContactsByName (a: Contact, b: Contact) {
             if (a.lastName > b.lastName) return 1;
             if (a.lastName < b.lastName) return -1;
@@ -149,11 +161,77 @@ module CSRS {
             return 0;
         }
 
+        updateLocation () : void {
+            this.$location.search({
+                selections: simplify(this.selections)
+            });
+
+            this.$location.replace();
+        }
+
         updateFilter () : void {
-            this.$http.post("/api/contacts/filter", new this.ContactWasMember(
-                this.getYearsRequiredArray(),
-                this.getYearsForbiddenArray()
-            )).success((data: Array<Contact>) => {
+            // Default the filter to anyone who has been a member
+            var specs: Array<Specification<Contact>> = [];
+            var hadPositive = false;
+
+            angular.forEach(this.selections, (yearSelection: YearSelection, year: number) => {
+                if (yearSelection.allStatus) {
+                    // We're requiring the year as a whole
+                    var spec : Specification<Contact> = new ContactWasMemberInYear(year);
+                    
+                    if (yearSelection.allStatus < 0) {
+                        spec = spec.not(); 
+                    } else {
+                        hadPositive = true;
+                    }
+
+                    specs.push(spec);
+                } else {
+                    angular.forEach(yearSelection.memberships, (required, membership) => {
+                        if (required) {
+                            var spec : Specification<Contact> = new ContactHadMembershipTypeInYear(membership, year);
+                            
+                            if (required < 0) {
+                                spec = spec.not();
+                            } else {
+                                hadPositive = true;
+                            }
+
+                            specs.push(spec);
+                        }
+                    });
+                }
+            });
+
+            if (!hadPositive) {
+                // If no positive specs, then limit to members
+                specs.push(new ContactWasEverMember());
+            }
+
+            var filter : Filter<Contact>;
+
+            if (specs.length == 0) {
+                // If there are no specs, then use ContactWasEverMember
+                filter = {
+                    spec: new ContactWasEverMember()
+                }
+            } else if (specs.length == 1) {
+                // If just one, then use it directly
+                filter = {
+                    spec: specs[0]
+                }
+            } else {
+                // If more than one, then and them
+                filter = {
+                    spec: new AndSpec(specs)
+                }
+            }
+
+            this.filterString = angular.toJson(filter);
+
+            this.$http.post(
+                "/api/contacts/filter", filter    
+            ).success((data: Array<Contact>) => {
                 this.serverError = null;
                 this.handleContacts(data);
             }).error((data, status, headers, config) => {
@@ -168,86 +246,135 @@ module CSRS {
         }
 
         getMergeURL () {
-            if (!this.selectedTemplate) return "";
-
-            var loc = "/letters/" + this.selectedTemplate.code + ".pdf?";
-
-            var yr = this.getYearsRequiredArray();
-            var yf = this.getYearsForbiddenArray();
-
-            loc += "yr=";
-            loc += yr.join("&yr=");
-
-            if (yf.length > 0) {
-                loc += '&yf=';
-                loc += yf.join("&yf=");
+            if (!this.selectedTemplate || !this.filterString) {
+                return "#";
             }
 
-            return loc;
+            return "/letters/" + this.selectedTemplate.code + ".pdf?filter=" + this.filterString;
         }
 
-        getYearsRequiredArray () : Array<string> {
-            return _.keys(this.yearsRequired);
+        initYearSelection (year: number) : void {
+            if (!this.selections[year]) this.selections[year] = {
+                allStatus: 0,
+                memberships: {}
+            };
         }
 
-        getYearsForbiddenArray () : Array<string> {
-            return _.keys(this.yearsForbidden);
+        isYearRequired (year: number) : boolean {
+            this.initYearSelection(year);
+            return this.selections[year].allStatus > 0;
+        }
+
+        isRequired (year: number, membershipType: number) : boolean {
+            this.initYearSelection(year);
+            let membership = this.selections[year].memberships[membershipType];
+            return membership > 0;
+        }
+
+        isYearForbidden (year: number) : boolean {
+            this.initYearSelection(year);
+            return this.selections[year].allStatus < 0;
         }
         
-        isRequired (year: number) : boolean {
-            return this.yearsRequired[year];
+        isForbidden (year: number, membershipType: number) : boolean {
+            this.initYearSelection(year);
+            let membership = this.selections[year].memberships[membershipType];
+            return membership < 0;
         }
 
-        isForbidden (year: number) : boolean {
-            return this.yearsForbidden[year];
+        setYearRequired (year: number) : void {
+            this.initYearSelection(year);
+            this.selections[year].allStatus = 1;
+            this.selections[year].memberships = {};
         }
 
-        setRequired (year: number) : void {
-            this.yearsRequired[year] = true;
-            delete this.yearsForbidden[year];
+        setRequired (year: number, membershipType: number) : void {
+            this.initYearSelection(year);
+            this.selections[year].allStatus = 0;
+            this.selections[year].memberships[membershipType] = 1;
         }
 
-        setForbidden (year: number) : void {
-            delete this.yearsRequired[year];
-            this.yearsForbidden[year] = true;
+        setYearForbidden (year: number) : void {
+            this.initYearSelection(year);
+            this.selections[year].allStatus = -1;
+            this.selections[year].memberships = {};
+        }
+        
+        setForbidden (year: number, membershipType: number) : void {
+            this.initYearSelection(year);
+            this.selections[year].allStatus = 0;
+            this.selections[year].memberships[membershipType] = -1;
         }
 
-        setIndifferent (year: number) : void {
-            delete this.yearsRequired[year];
-            delete this.yearsForbidden[year];
+        setYearIndifferent (year: number) : void {
+            this.initYearSelection(year);
+            this.selections[year].allStatus = 0;
+        }
+        
+        setIndifferent (year: number, membershipType: number) : void {
+            this.initYearSelection(year);
+            this.selections[year].memberships[membershipType] = 0;
         }
 
-        cycleRequired (year: number) : void {
-            if (this.isRequired(year))
+        cycleYearRequired (year: number) : void {
+            if (this.isYearRequired(year))
                 // Cycle from required to forbidden
-                this.setForbidden(year);
-            else if (this.isForbidden(year)) {
+                this.setYearForbidden(year);
+            else if (this.isYearForbidden(year)) {
                 // Cycle from forbidden to indifferent
-                this.setIndifferent(year);
+                this.setYearIndifferent(year);
             } else {
                 // Cycle from indifferent to required
-                this.setRequired(year);
+                this.setYearRequired(year);
+            }
+            
+            this.updateLocation();
+            this.updateFilter();
+        }
+ 
+        cycleRequired (year: number, membershipType: number) : void {
+            if (this.isRequired(year, membershipType)) {
+                this.setForbidden(year, membershipType);
+            } else if (this.isForbidden(year, membershipType)) {
+                this.setIndifferent(year, membershipType);
+            } else {
+                this.setRequired(year, membershipType);
             }
 
-            this.$location.search({
-                yr: this.getYearsRequiredArray(),
-                yf: this.getYearsForbiddenArray()
-            });
-
-            this.$location.replace();
-
+            this.updateLocation();
             this.updateFilter();
         }
     }
 
     angular.module('csrsApp').controller('ContactListController', ContactListController);
 
-    angular.module('csrsApp').config(function ($stateProvider: angular.ui.IStateProvider) {
+    angular.module('csrsApp').config(function (
+        $stateProvider: angular.ui.IStateProvider,
+        $urlMatcherFactoryProvider: angular.ui.IUrlMatcherFactory
+    ) {
         'ngInject';
+
+        $urlMatcherFactoryProvider.type('selection', {
+            encode: function (item: any) {
+                return simplify(item);
+            },
+            
+            decode: function (item: string) {
+                return angular.fromJson(item);
+            },
+            
+            is: function (val: any, key: string) {
+                return angular.isObject(val);
+            },
+
+            equals: function (a: any, b: any) {
+                return simplify(a) == simplify(b);
+            }
+        });
 
         $stateProvider.state('contact-list', {
             parent: 'admin',
-            url: '/contacts?yr&yf',
+            url: '/contacts?{selections:selection}',
             reloadOnSearch: false,
             data: {
                 roles: ['ROLE_ADMIN'],

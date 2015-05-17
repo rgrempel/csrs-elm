@@ -23,13 +23,15 @@ apply from: 'gatling.gradle'
 // apply from: 'querydsl.gradle'
 apply from: 'jpa_meta_model.gradle'
 
+apply plugin: 'eclipse'
+
 group = 'com.fulliautomatix.csrs'
-version = '0.3b2'
+version = '0.3b5'
 description = ''
 
 war {
     baseName = 'csrs'
-    version =  '0.3b2'
+    version =  '0.3b5'
 }
 
 if (project.hasProperty('prod')) {
@@ -77,7 +79,7 @@ repositories {
 }
 
 dependencies {
-    providedCompile group: 'org.projectlombok', name: 'lombok', version: '1.16.2'
+    providedCompile group: 'org.projectlombok', name: 'lombok', version: '1.16.4'
 
     compile group: 'com.voodoodyne.jackson.jsog', name: 'jackson-jsog', version: '1.1'
     

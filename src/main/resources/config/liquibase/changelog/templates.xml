@@ -154,4 +154,17 @@
                                  onDelete="CASCADE"
                                  onUpdate="CASCADE" />
     </changeSet>
+
+    <changeSet id="correctFileBytesForeignKey" author="ryan">
+        <dropForeignKeyConstraint baseTableName="T_FILE_BYTES" constraintName="fk_file_bytes_file" />
+
+        <addForeignKeyConstraint baseColumnNames="file_id"
+                                 baseTableName="T_FILE_BYTES"
+                                 constraintName="fk_file_bytes_file"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_FILE"
+                                 onDelete="CASCADE"
+                                 onUpdate="CASCADE" />
+
+    </changeSet>
 </databaseChangeLog>

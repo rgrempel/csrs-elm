@@ -19,6 +19,7 @@ var gulp = require('gulp'),
     sort = require('gulp-sort'),
     tslint = require('gulp-tslint'),
     tsc = require('gulp-typescript'),
+    typescript = require('typescript'),
     proxy = require('proxy-middleware'),
     es = require('event-stream'),
     flatten = require('gulp-flatten'),
@@ -108,8 +109,10 @@ gulp.task('ts-compile', ['ts-refs'], function () {
         // sourcemaps.init()
     ).pipe(
         tsc({
+            typescript: typescript,
             noImplicitAny: true,                 
             target: 'ES5',
+            module: 'amd',
             declarationFiles: false,
             noExternalResolve: true
         })

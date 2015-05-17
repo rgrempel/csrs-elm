@@ -17,15 +17,22 @@
                 )
                     td.year(
                         ng-bind = "year.year"
-                        ng-click = "contactList.cycleRequired(year.year)"
+                        ng-click = "contactList.cycleYearRequired(year.year)"
                         ng-class = [
                             "{",
-                                "'success': contactList.isRequired(year.year),",
-                                "'danger':  contactList.isForbidden(year.year)",
+                                "'success': contactList.isYearRequired(year.year),",
+                                "'danger':  contactList.isYearForbidden(year.year)",
                             "}"
                         ].join("")
                     )
-                    td(
+                    td.membership-count(
+                        ng-click = "contactList.cycleRequired(year.year, membership)"
+                        ng-class = [
+                            "{",
+                                "'success': contactList.isRequired(year.year, membership),",
+                                "'danger':  contactList.isForbidden(year.year, membership)",
+                            "}"
+                        ].join("")
                         ng-repeat = "membership in contactList.membershipTypes"
                         ng-bind = "year.memberships[membership].count"
                     )
