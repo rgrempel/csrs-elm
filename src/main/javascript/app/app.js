@@ -15,7 +15,6 @@
         'ngAnimate',
         'js-data',
         'ui.codemirror',
-        'infinite-scroll',
         'ngFileUpload',
         'angularResizable'
     ]);

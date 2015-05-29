@@ -28,7 +28,6 @@ module.exports = function (config) {
             'main/webapp/bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js',
             'main/webapp/bower_components/angular-local-storage/dist/angular-local-storage.js',
             'main/webapp/bower_components/angular-cache-buster/angular-cache-buster.js',
-            'main/webapp/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
             'main/webapp/bower_components/angular-auto-focus/angular-auto-focus.js',
             'main/webapp/bower_components/angular-filter/dist/angular-filter.js',
             'main/webapp/bower_components/angular-lodash-loader/src/min/nglodash.min.js',
