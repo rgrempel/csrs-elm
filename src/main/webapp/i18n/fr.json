@@ -546,6 +546,9 @@
                 }
             }
         },
+        "renewals": {
+            "comingSoon": "Renouvellements d'adhésion en ligne à venir"
+        },
         "title": "Profil de l'utilisateur [{{username}}]"
     },
     "templates": {

@@ -546,6 +546,9 @@
                 }
             }
         },
+        "renewals": {
+            "comingSoon": "Online membership renewals coming soon"
+        },
         "title": "User settings for [<b>{{username}}</b>]"
     },
     "templates": {

@@ -4,6 +4,12 @@ settings:
         fr: "Vos informations de contact"
         la: "Notitia contactus tuum"
 
+    renewals:
+        comingSoon:
+            en: "Online membership renewals coming soon"
+            fr: "Renouvellements d'adhésion en ligne à venir"
+            la: "Renovatio sodalitas veniet cito"
+
     title:
         en: "User settings for [<b>{{username}}</b>]"
         fr: "Profil de l'utilisateur [{{username}}]"

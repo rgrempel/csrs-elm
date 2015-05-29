@@ -546,6 +546,9 @@
                 }
             }
         },
+        "renewals": {
+            "comingSoon": "Renovatio sodalitas veniet cito"
+        },
         "title": "User settings for [<b>{{username}}</b>]"
     },
     "templates": {
