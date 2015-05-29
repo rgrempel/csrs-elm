@@ -13,8 +13,36 @@ angular.module('csrsApp')
                 views: {
                     'content@': {
                         templateUrl: 'scripts/app/account/password/password.html',
-                        controller: 'PasswordController'
+                        controller: 'PasswordController',
+                        controllerAs: 'passwordController'
                     }
                 }
             });
+    });
+
+angular.module('csrsApp')
+    .controller('PasswordController', function ($scope, Auth, Principal) {
+        var self = this;
+
+        Principal.identity().then(function (account) {
+            self.account = account;
+        });
+
+        this.changePassword = function () {
+            if (!$scope.changePasswordForm.$valid) return;
+            
+            this.showSuccess = false;
+            this.passwordFailed = false;
+            this.serverError = null;
+
+            Auth.changePassword(this.currentPassword, this.newPassword).then(function () {
+                self.showSuccess = true;
+            }, function (error) {
+                if (error.status === 403) {
+                    self.passwordFailed = true;
+                } else {
+                    self.serverError = angular.toJson(error);
+                }
+            });
+        };
     });

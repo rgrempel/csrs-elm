@@ -94,13 +94,10 @@ angular.module('csrsApp')
                     }.bind(this)).$promise;
             },
 
-            changePassword: function (newPassword, callback) {
-                var cb = callback || angular.noop;
-
-                return Password.save(newPassword, function () {
-                    return cb();
-                }, function (err) {
-                    return cb(err);
+            changePassword: function (oldPassword, newPassword) {
+                return Password.save(null, {
+                    oldPassword: oldPassword,
+                    newPassword: newPassword
                 }).$promise;
             }
         };

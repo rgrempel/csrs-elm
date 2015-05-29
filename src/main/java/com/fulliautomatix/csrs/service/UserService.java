@@ -100,6 +100,14 @@ public class UserService {
         });
     }
 
+    public boolean checkPassword (String password) {
+        return getUser().map(user -> {
+            return this.passwordEncoder.matches(password, user.getPassword());
+        }).orElseThrow(() -> 
+            new RuntimeException("Could not find user")
+        );
+    }
+
     public Optional<User> getUser () {
         return userRepository.findOneByLogin(securityUtils.getCurrentLogin());
     }

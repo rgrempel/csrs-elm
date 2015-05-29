@@ -463,6 +463,10 @@
         "updating": "Mise à jour..."
     },
     "password": {
+        "changePassword": "Changer le mot de passe",
+        "current": "Mot de passe courant",
+        "failed": "Le mot de passe que vous avez saisi ne correspond pas votre mot de passe courant.",
+        "forgotten": "Si vous avez oublié le mot de passe, puis essayez le <a href=\"#!/password-reset\">mot de passe réinitialiser</a>.",
         "form": {
             "button": "Sauvegarder"
         },
@@ -470,7 +474,7 @@
             "error": "<strong>Une erreur est survenue!</strong> Le mot de passe n'a pas pu être modifié.",
             "success": "<strong>La mot de passe a été modifié!</strong>"
         },
-        "title": "Changer le mot de passe pour [<b>{{username}}</b>]"
+        "title": "Changer le mot de passe pour <b>{{username}}</b>"
     },
     "product": {
         "base": {

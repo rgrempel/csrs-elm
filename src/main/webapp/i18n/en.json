@@ -463,6 +463,10 @@
         "updating": "Updating..."
     },
     "password": {
+        "changePassword": "Change Password",
+        "current": "Current password",
+        "failed": "The password you entered did not match your current password.",
+        "forgotten": "If  have forgotten your password, then try the <a href=\"#!/password-reset\">password reset</a> page.",
         "form": {
             "button": "Save"
         },
@@ -470,7 +474,7 @@
             "error": "<strong>An error has occurred!</strong> The password could not be changed.",
             "success": "<strong>Password changed!</strong>"
         },
-        "title": "Password for [<b>{{username}}</b>]"
+        "title": "Change Password for <b>{{username}}</b>"
     },
     "product": {
         "base": {

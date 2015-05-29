@@ -463,6 +463,10 @@
         "updating": "Updating..."
     },
     "password": {
+        "changePassword": "Signum mutatio",
+        "current": "Signum praesens",
+        "failed": "Non signum compositus vestri signum praesens.",
+        "forgotten": "Iam signum sed obliti, tum istoc  <a href=\"#!/password-reset\">signum retexere</a>.",
         "form": {
             "button": "Servo"
         },
@@ -470,7 +474,7 @@
             "error": "<strong>Quasi per errorem inciderunt!</strong> Signum non potuit mutari.",
             "success": "<strong>Signum mutatum!</strong>"
         },
-        "title": "Signum pro [<b>{{username}}</b>]"
+        "title": "Signum mutatio pro <b>{{username}}</b>"
     },
     "product": {
         "base": {

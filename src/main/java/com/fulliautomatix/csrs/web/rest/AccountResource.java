@@ -15,6 +15,7 @@ import com.fulliautomatix.csrs.security.SecurityUtils;
 import com.fulliautomatix.csrs.service.MailService;
 import com.fulliautomatix.csrs.service.UserService;
 import com.fulliautomatix.csrs.web.rest.dto.UserDTO;
+import com.fulliautomatix.csrs.web.rest.dto.PasswordChangeDTO;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -169,13 +170,17 @@ public class AccountResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
-    public ResponseEntity<?> changePassword(@RequestBody String password) {
-        if (StringUtils.isEmpty(password)) {
+    public ResponseEntity<?> changePassword(@RequestBody PasswordChangeDTO passwordChange) {
+        if (StringUtils.isEmpty(passwordChange.getNewPassword()) || StringUtils.isEmpty(passwordChange.getOldPassword())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        userService.changePassword(password);
-        return new ResponseEntity<>(HttpStatus.OK);
+        if (userService.checkPassword(passwordChange.getOldPassword())) {
+            userService.changePassword(passwordChange.getNewPassword());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 
     /**
