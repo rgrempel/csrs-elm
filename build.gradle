@@ -26,12 +26,12 @@ apply from: 'jpa_meta_model.gradle'
 apply plugin: 'eclipse'
 
 group = 'com.fulliautomatix.csrs'
-version = '0.3b5'
+version = '0.3b6'
 description = ''
 
 war {
     baseName = 'csrs'
-    version =  '0.3b5'
+    version =  '0.3b6'
 }
 
 if (project.hasProperty('prod')) {
