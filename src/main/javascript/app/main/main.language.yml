@@ -9,6 +9,11 @@ main:
         fr: "Ce est le site d'adhésion de la Société canadienne d'études de la Renaissance."
         la: "Hic situs sociari de Societate Canadian Studiorum Renascerentur."
 
+    checkMembershipInformation:
+        en: "Check your membership information"
+        fr: "Vérifiez les informations d'adhésion"
+        la: "Reprehendo vestri notitia sodalitas"
+
     logged: 
         message:
             en: "You are logged in as user \"{{username}}\"."

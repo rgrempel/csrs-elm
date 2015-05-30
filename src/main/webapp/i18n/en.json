@@ -361,6 +361,7 @@
         "title": "Logs"
     },
     "main": {
+        "checkMembershipInformation": "Check your membership information",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
         },

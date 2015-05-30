@@ -361,6 +361,7 @@
         "title": "Logs"
     },
     "main": {
+        "checkMembershipInformation": "Vérifiez les informations d'adhésion",
         "logged": {
             "message": "Vous êtes connecté en tant que \"{{username}}\"."
         },

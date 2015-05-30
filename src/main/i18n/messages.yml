@@ -131,9 +131,9 @@ email:
             la: "Cura ut valeas,"
 
         toCreateAccountFollowLink: 
-            en: "To create a new account, follow <a href=\"{0}\">this link</a>."
-            fr: "Pour créer un nouveau compte, suivez <a href=\"{0}\">ce lien</a>."
-            la: "Ad novum tesseram, propter hoc sequitur <a href=\"{0}\">hunc nexum</a>."
+            en: "To create a new account, follow <a href=\"{0}\" mc:disable-tracking>this link</a>."
+            fr: "Pour créer un nouveau compte, suivez <a href=\"{0}\" mc:disable-tracking>ce lien</a>."
+            la: "Ad novum tesseram, propter hoc sequitur <a href=\"{0}\" mc:disable-tracking>hunc nexum</a>."
                 
         hateLinks:
             en: >-
@@ -167,9 +167,9 @@ email:
                 Renascerentur.
 
         toResetPasswordFollowLink: 
-            en: "To reset your password for account ''<b>{0}</b>'', follow <a href=\"{1}\">this link</a>."
-            fr: "Pour réinitialiser votre mot de passe pour compte «<b>{0}</b>», suivez <a href=\"{1}\">ce lien</a>."
-            la: "Ad signum retexere pro tesseram ''<b>{0}</b>'', propter hoc sequitur <a href=\"{1}\">hunc nexum</a>."
+            en: "To reset your password for account ''<b>{0}</b>'', follow <a href=\"{1}\" mc:disable-tracking>this link</a>."
+            fr: "Pour réinitialiser votre mot de passe pour compte «<b>{0}</b>», suivez <a href=\"{1}\" mc:disable-tracking>ce lien</a>."
+            la: "Ad signum retexere pro tesseram ''<b>{0}</b>'', propter hoc sequitur <a href=\"{1}\" mc:disable-tracking>hunc nexum</a>."
         
         hateLinks:
             en: >-

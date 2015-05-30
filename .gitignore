@@ -15,6 +15,7 @@ src/main/generated
 src/main/webapp/dist
 src/main/webapp/scripts
 .gradle
+run
 workbench.xmi
 *.swp
 build

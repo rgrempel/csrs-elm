@@ -12,6 +12,14 @@
                     You are logged in as user "Admin".
                 </div>
 
+                <ul ng-switch-when="true">
+                    <li>
+                        <a ui-sref="settings" translate="main.checkMembershipInformation">
+                            Check your membership information.
+                        </a>
+                    </li>
+                </ul>
+
                 <div class="alert alert-warning" ng-switch-when="false" translate="global.messages.info.authenticated">
                     Been here before? <a href="#!/login">login</a> with your account.
                 </div>
