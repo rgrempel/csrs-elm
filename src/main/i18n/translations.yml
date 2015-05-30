@@ -494,7 +494,7 @@ global:
                 la: "Sessiones"
 
             login:
-                en: "Authenticate"
+                en: "Login"
                 fr: "S'authentifier"
                 la: "Cosigno"
 

@@ -99,4 +99,18 @@ public class MailService {
         String subject = messageSource.getMessage("email.accountCreation.title", null, locale);
         sendEmail(email.getEmailAddress(), subject, content, false, true);
     }
+    
+    @Async
+    public void sendPasswordResetEmail (Email email, String langKey, String baseUrl) {
+        log.debug("Sending password reset email to '{}'", email.getEmailAddress());
+
+        Locale locale = Locale.forLanguageTag(langKey);
+        Context context = new Context(locale);
+        context.setVariable("email", email);
+        context.setVariable("baseUrl", baseUrl);
+
+        String content = templateEngine.process("passwordResetEmail", context);
+        String subject = messageSource.getMessage("email.passwordReset.title", null, locale);
+        sendEmail(email.getEmailAddress(), subject, content, false, true);
+    }
 }

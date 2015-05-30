@@ -86,7 +86,11 @@ public class InvitationResource {
     )
     @Timed
     @Transactional
-    public ResponseEntity<Void> sendCreateAccountInvitation (@RequestBody @Valid AccountCreationDTO request, HttpServletRequest servletRequest) throws URISyntaxException {
+    public ResponseEntity<Void> sendCreateAccountInvitation (
+        @RequestParam(value="passwordReset") boolean passwordReset,
+        @RequestBody @Valid AccountCreationDTO request,
+        HttpServletRequest servletRequest
+    ) throws URISyntaxException {
         log.debug("REST request to send account creation invitation : {}", request);
 
         // Get the existing email address, or create a new one
@@ -98,15 +102,22 @@ public class InvitationResource {
 
         // Get the existing UserEmail addresses for this email (possibly none)
         Set<UserEmail> userEmails = email.getUserEmails();
+
+        // Make sure the user is fetched, so the template can use it.
+        userEmails.stream().forEach(userEmail -> userEmail.getUser());
        
         // See if there is a null one, for a new user ... if not, add it
-        userEmails.stream().filter((userEmail) -> userEmail.getUser() == null).findFirst().orElseGet(() -> {
-            UserEmail created = new UserEmail();
-            created.setEmail(email);
-            created = userEmailRepository.save(created);
-            userEmails.add(created);
-            return created;
-        });
+        // We do this only if we were *asked* to create a new account, or, if asked for
+        // passwordReset, we didn't find an existing account to reset
+        if (!passwordReset || userEmails.size() == 0) {
+            userEmails.stream().filter((userEmail) -> userEmail.getUser() == null).findFirst().orElseGet(() -> {
+                UserEmail created = new UserEmail();
+                created.setEmail(email);
+                created = userEmailRepository.save(created);
+                userEmails.add(created);
+                return created;
+            });
+        }
 
         // Now, create activations for *all* the user emails, unless they have one already ... in that case,
         // just update the dateSent.
@@ -132,7 +143,11 @@ public class InvitationResource {
         servletRequest.getServerPort();               // "80"
         
         // OK, now we've done all the work ... time to send the email!
-        mailService.sendAccountCreationEmail(email, request.getLangKey(), baseUrl);
+        if (passwordReset) {
+            mailService.sendPasswordResetEmail(email, request.getLangKey(), baseUrl);
+        } else {
+            mailService.sendAccountCreationEmail(email, request.getLangKey(), baseUrl);
+        }
 
         // And, if we had no exceptions, we'll get here and just return OK
         return ResponseEntity.ok().build();

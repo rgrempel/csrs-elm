@@ -2,7 +2,7 @@
     "activate": {
         "messages": {
             "error": "<strong>Your user could not be activated.</strong>  Please use the registration form to sign up.",
-            "success": "<strong>Your user has been activated.</strong>  Please <a href=\"#!/login\">authenticate</a>."
+            "success": "<strong>Your user has been activated.</strong>  Please <a href=\"#!/login\">login</a>."
         },
         "title": "Activation"
     },
@@ -211,7 +211,7 @@
         },
         "menu": {
             "account": {
-                "login": "Authenticate",
+                "login": "Login",
                 "logout": "Log out",
                 "main": "Account",
                 "password": "Password",
@@ -311,6 +311,17 @@
         "request": {
             "title": "Get an Invitation"
         },
+        "resetPassword": {
+            "blurb": "To reset your password, provide your email address below. We will send you a token via email -- it should arrive within minutes. If it does not arrive, check whether it was marked as spam. You can also send another token from here if needed.",
+            "createAccount": "If you need to create a new account, then you can  <a href=\"#!/account/create\">request an invitation</a>.",
+            "sendToken": "Send Token",
+            "title": "Reset Password",
+            "token": "Token",
+            "tokenMessage": "Your token has been sent, and should arrive soon.",
+            "tokenSent": "Token Sent",
+            "useToken": "Use Token",
+            "useTokenBlurb": "If you already have a token to reset your password, paste it below. The token should be a long number."
+        },
         "use": {
             "blurb": "If you have an invitation to create an account, paste the key below. The key should be a long number.",
             "key": "Invitation key",
@@ -326,15 +337,16 @@
         "la": "Latin"
     },
     "login": {
+        "forgotPassword": "If have forgotten your username or password,  then try the <a href=\"#!/password-reset\">password reset</a> page.",
         "form": {
-            "button": "Authenticate",
+            "button": "Login",
             "password": "Password",
             "password.placeholder": "Your password",
-            "rememberme": "Automatic Login"
+            "rememberme": "Login automatically from this computer"
         },
         "messages": {
             "error": {
-                "authentication": "<strong>Authentication failed!</strong> Please check your credentials and try again."
+                "authentication": "<strong>Login failed!</strong> Please check your credentials and try again."
             }
         },
         "title": "Authentication"

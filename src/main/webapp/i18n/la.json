@@ -299,7 +299,7 @@
     },
     "invitation": {
         "createAccount": {
-            "blurb": "Tesseram creare, praestate inscriptio electronica sequitur. Mittemus vobis inuitavit -- intra minuta pervenerit. Si non venit, si hæc ita se ut spamma. Etiam si opus mittere hinc invitationem alius.",
+            "blurb": "Tesseram creare, praestate inscriptio electronica infra. Mittemus vobis inuitavit -- intra minuta pervenerit. Si non venit, si hæc ita se ut spamma. Etiam si opus mittere hinc invitationem alius.",
             "email": "Inscriptio electronica",
             "invitationMessage": "Invitatio missus est, et mox advenient.",
             "invitationSent": "Invitatio missum",
@@ -310,6 +310,17 @@
         },
         "request": {
             "title": "Obtinere invitatio"
+        },
+        "resetPassword": {
+            "blurb": "Signum retexere, praestate inscriptio electronica infra. Mittimus vobis indicium - intra minuta pervenerit. Si non venit, si hæc ita se ut spamma. Alium hinc indicium potes si opus fuerit.",
+            "createAccount": "Si opus tesseram novum, <a href=\"#!/account/create\">invitationem petere</a> igitur.",
+            "sendToken": "Indicium mittere",
+            "title": "Signum retexere",
+            "token": "Indicium",
+            "tokenMessage": "Indicium missus est, et mox advenient.",
+            "tokenSent": "Indicium missum",
+            "useToken": "Indicium utuntur",
+            "useTokenBlurb": "Iam si indicium signum retexere, crustulum infra. Indicium debet esse numerus longum."
         },
         "use": {
             "blurb": "Si invitationem tesserae creant, crustulum clavem infra. Clavem debet esse numerus longum.",
@@ -326,6 +337,7 @@
         "la": "Latina"
     },
     "login": {
+        "forgotPassword": "Iam si obliti usoris aut signo, tum istoc  <a href=\"#!/password-reset\">signum retexere</a>.",
         "form": {
             "button": "Cosignum",
             "password": "Signum",

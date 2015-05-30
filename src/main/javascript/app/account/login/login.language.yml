@@ -16,18 +16,31 @@ login:
             la: "Signum tuum"
 
         rememberme:
-            en: "Automatic Login"
+            en: "Login automatically from this computer"
             fr: "Garder la session ouverte"
             la: "Cosignum automatic"
 
         button:
-            en: "Authenticate"
+            en: "Login"
             fr: "Connexion"
             la: "Cosignum"
-    
+   
+
+    forgotPassword:
+        en: >-
+            If have forgotten your username or password, 
+            then try the <a href="#!/password-reset">password reset</a> page.
+        fr: >-
+            Si vous avez oublié le nom d'utilisateur ou mot de passe, puis
+            essayez le <a href="#!/password-reset">mot de passe
+            réinitialiser</a>.
+        la: >-
+            Iam si obliti usoris aut signo, tum istoc 
+            <a href="#!/password-reset">signum retexere</a>.
+
     messages: 
         error: 
             authentication:
-                en: "<strong>Authentication failed!</strong> Please check your credentials and try again."
+                en: "<strong>Login failed!</strong> Please check your credentials and try again."
                 fr: "<strong>Erreur d'authentification!</strong> Veuillez vérifier vos identifiants de connexion."
                 la: "<strong>Defecit authenticitate!</strong> Probā signum atque iterum cosignio."

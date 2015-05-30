@@ -145,5 +145,51 @@ email:
             la: >-
                 Si non placet instare nexus epistola transcursorium, quo vadant ad paginam
                 rogavit invitantis codice et utuntur:
+        
+    passwordReset:
+        title:
+            en: "CSRS Password Reset"
+            fr: "Réinitialisation de mot de passe à SCÉR"
+            la: "Signum retexere ad SCSR"
 
+        text1: 
+            en: >-
+                This is the token which someone (hopefully you) requested to
+                reset your password at the membership web-site for the Canadian
+                Society for Renaissance Studies.
+            fr: >-
+                Ceci est le jeton que quelqu'un (probablement vous) a demandé
+                pour réinitialiser votre mot de passe sur le site Web des
+                membres de la Société canadienne d'études de la Renaissance.
+            la: >-
+                Hoc indicium dirigit aliquis (vos utinam) requiritur ad
+                signum retexere ad situs sociari de Societate Canadian Studiorum
+                Renascerentur.
 
+        toResetPasswordFollowLink: 
+            en: "To reset your password for account ''<b>{0}</b>'', follow <a href=\"{1}\">this link</a>."
+            fr: "Pour réinitialiser votre mot de passe pour compte «<b>{0}</b>», suivez <a href=\"{1}\">ce lien</a>."
+            la: "Ad signum retexere pro tesseram ''<b>{0}</b>'', propter hoc sequitur <a href=\"{1}\">hunc nexum</a>."
+        
+        hateLinks:
+            en: >-
+                If you don't like clicking on links in emails, then go back to the page where
+                you requested the token, and use the following code:
+            fr: >-
+                Si vous ne aimez pas cliquer sur des liens dans des e-mails, puis revenir à la
+                page où vous avez demandé le jeton, et utiliser le code suivant:
+            la: >-
+                Si non placet instare nexus epistola transcursorium, quo vadant ad paginam
+                rogavit indicium codice et utuntur:
+
+        noUserFound:
+            en: >-
+                We didn't find an existing account linked to this email address.
+                However, you can create a new account if you like.
+            fr: >-
+                Nous ne trouvons pas un compte existant lié à cette adresse
+                e-mail. Cependant, vous pouvez créer un nouveau compte si vous
+                le souhaitez.
+            la: >-
+                Non inuenimus tesseram existente cum hac inscriptio
+                electronica. Tamen tessera novum potes, si placet.

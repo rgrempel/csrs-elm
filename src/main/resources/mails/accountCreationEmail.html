@@ -29,6 +29,23 @@
             </p>
         </th:block>
 
+        <th:block th:each="userEmail : ${email.userEmails.?[user != null]}"> 
+            <p> 
+                <span th:utext="#{email.passwordReset.toResetPasswordFollowLink(${userEmail.user.login}, @{|${baseUrl}/#!/invitation/${userEmail.userEmailActivations[0].activationKey}|})}">
+                    To reset your password for account 'rgrempel', follow <a href="/invitation/2348272">this link</a>.
+                </span>
+            </p>
+            
+            <p>
+                <span th:text="#{email.passwordReset.hateLinks}">
+                    If you don't like clicking on links in emails, then go back to the page where you
+                    requested the token, and use the following code:
+                </span>
+
+                <span th:text="${userEmail.userEmailActivations[0].activationKey}">2348272</span>
+            </p>
+        </th:block>
+
         <p>
             <span th:text="#{email.accountCreation.text2}">Sincerely yours, </span>
         </p>
