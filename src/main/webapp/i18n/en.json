@@ -323,7 +323,7 @@
             "useTokenBlurb": "If you already have a token to reset your password, paste it below. The token should be a long number."
         },
         "use": {
-            "blurb": "If you have an invitation to create an account, paste the key below. The key should be a long number.",
+            "blurb": "If you have an invitation to create an account or reset your password, paste the key below. The key should be a long number.",
             "key": "Invitation key",
             "notFound": "Invitation not found",
             "pageTitle": "Use an Invitation",

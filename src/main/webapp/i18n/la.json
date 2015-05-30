@@ -323,7 +323,7 @@
             "useTokenBlurb": "Iam si indicium signum retexere, crustulum infra. Indicium debet esse numerus longum."
         },
         "use": {
-            "blurb": "Si invitationem tesserae creant, crustulum clavem infra. Clavem debet esse numerus longum.",
+            "blurb": "Si invitationem tesserae creant aut signum retexeret, crustulum clavem infra. Clavem debet esse numerus longum.",
             "key": "Clavem invitatio",
             "notFound": "Invitatio non inveni",
             "pageTitle": "Invitatio utuntur",

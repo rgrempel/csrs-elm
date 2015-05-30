@@ -7,3 +7,7 @@ task deploy(type: Exec) {
     commandLine('/usr/bin/rsync', '-v', '--ignore-existing', "build/libs/${war.baseName}-${version}.war", 'csrs@frodo.fulliautomatix.com:')
 }
 
+task eclim(type: Exec) {
+    commandLine('/usr/local/bin/eclimd', '-b');
+}
+

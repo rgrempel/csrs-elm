@@ -323,7 +323,7 @@
             "useTokenBlurb": "Si vous avez un jeton pour réinitialiser votre mot de passe, collez-le ci-dessous. Le jeton doit être un long numéro."
         },
         "use": {
-            "blurb": "Si vous avez une invitation à créer un compte, collez la clé ci-dessous. La clé doit être un long numéro.",
+            "blurb": "Si vous avez une invitation à créer un compte ou réinitialiser votre mot de passe, collez la clé ci-dessous. La clé doit être un long numéro.",
             "key": "Clé d'invitation",
             "notFound": "Invitation introuvable",
             "pageTitle": "Utiliser une invitation",

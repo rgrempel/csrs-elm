@@ -1,14 +1,11 @@
 package com.fulliautomatix.csrs.service;
 
-import com.fulliautomatix.csrs.domain.Authority;
-import com.fulliautomatix.csrs.domain.PersistentToken;
-import com.fulliautomatix.csrs.domain.User;
-import com.fulliautomatix.csrs.repository.AuthorityRepository;
-import com.fulliautomatix.csrs.repository.PersistentTokenRepository;
-import com.fulliautomatix.csrs.repository.UserRepository;
-import com.fulliautomatix.csrs.security.SecurityUtils;
-import com.fulliautomatix.csrs.service.util.RandomUtil;
-import org.joda.time.DateTime;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.inject.Inject;
+
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import com.fulliautomatix.csrs.domain.Authority;
+import com.fulliautomatix.csrs.domain.User;
+import com.fulliautomatix.csrs.repository.AuthorityRepository;
+import com.fulliautomatix.csrs.repository.PersistentTokenRepository;
+import com.fulliautomatix.csrs.repository.UserRepository;
+import com.fulliautomatix.csrs.security.SecurityUtils;
 
 /**
  * Service class for managing users.
@@ -84,20 +82,24 @@ public class UserService {
     }
 
     public void updateUserInformation (String languageKey) {
-        userRepository.findOneByLogin(securityUtils.getCurrentLogin()).ifPresent(u -> {
+        getUser().ifPresent(u -> {
             u.setLangKey(languageKey);
             u = userRepository.save(u);
             log.debug("Changed Information for User: {}", u);
         });
     }
 
-    public void changePassword(String password) {
-        userRepository.findOneByLogin(securityUtils.getCurrentLogin()).ifPresent(u-> {
-            String encryptedPassword = passwordEncoder.encode(password);
-            u.setPassword(encryptedPassword);
-            u = userRepository.save(u);
-            log.debug("Changed password for User: {}", u);
+    public void changePassword (String password) {
+        getUser().ifPresent(u -> {
+            changePassword(u, password);
         });
+    }
+    
+    public void changePassword (User user, String password) {
+        String encryptedPassword = passwordEncoder.encode(password);
+        user.setPassword(encryptedPassword);
+        userRepository.save(user);
+        log.debug("Changed password for User: {}", user);
     }
 
     public boolean checkPassword (String password) {
@@ -114,7 +116,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User getUserWithAuthorities() {
-        User currentUser = userRepository.findOneByLogin(securityUtils.getCurrentLogin()).get();
+        User currentUser = getUser().get();
         currentUser.getAuthorities().size(); // eagerly load the association
         return currentUser;
     }

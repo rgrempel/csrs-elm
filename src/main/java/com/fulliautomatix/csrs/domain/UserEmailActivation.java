@@ -30,6 +30,7 @@ public class UserEmailActivation implements Serializable, HasOwner {
     public interface Scalar {};
 
     public interface WithUserEmail extends Scalar, UserEmail.WithEmail {};
+    public interface WithUser extends WithUserEmail, UserEmail.WithUser {};
 
     @Id
     @SequenceGenerator(name="t_user_email_activation_id_seq", sequenceName="t_user_email_activation_id_seq", allocationSize=1)

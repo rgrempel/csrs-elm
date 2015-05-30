@@ -1,37 +1,43 @@
 package com.fulliautomatix.csrs.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.fasterxml.jackson.annotation.*;
-import com.fulliautomatix.csrs.domain.Authority;
-import com.fulliautomatix.csrs.domain.PersistentToken;
-import com.fulliautomatix.csrs.domain.User;
-import com.fulliautomatix.csrs.domain.UserEmail;
-import com.fulliautomatix.csrs.domain.UserEmailActivation;
-import com.fulliautomatix.csrs.repository.PersistentTokenRepository;
-import com.fulliautomatix.csrs.repository.UserEmailRepository;
-import com.fulliautomatix.csrs.repository.UserEmailActivationRepository;
-import com.fulliautomatix.csrs.repository.UserRepository;
-import com.fulliautomatix.csrs.security.SecurityUtils;
-import com.fulliautomatix.csrs.service.MailService;
-import com.fulliautomatix.csrs.service.UserService;
-import com.fulliautomatix.csrs.web.rest.dto.UserDTO;
-import com.fulliautomatix.csrs.web.rest.dto.PasswordChangeDTO;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.codahale.metrics.annotation.Timed;
+import com.fulliautomatix.csrs.domain.Authority;
+import com.fulliautomatix.csrs.domain.PersistentToken;
+import com.fulliautomatix.csrs.domain.User;
+import com.fulliautomatix.csrs.domain.UserEmail;
+import com.fulliautomatix.csrs.repository.PersistentTokenRepository;
+import com.fulliautomatix.csrs.repository.UserEmailActivationRepository;
+import com.fulliautomatix.csrs.repository.UserEmailRepository;
+import com.fulliautomatix.csrs.repository.UserRepository;
+import com.fulliautomatix.csrs.security.SecurityUtils;
+import com.fulliautomatix.csrs.service.UserService;
+import com.fulliautomatix.csrs.web.rest.dto.PasswordChangeDTO;
+import com.fulliautomatix.csrs.web.rest.dto.PasswordResetDTO;
+import com.fulliautomatix.csrs.web.rest.dto.UserDTO;
 
 /**
  * REST controller for managing the current user's account.
@@ -50,9 +56,6 @@ public class AccountResource {
 
     @Inject
     private PersistentTokenRepository persistentTokenRepository;
-
-    @Inject
-    private MailService mailService;
 
     @Inject 
     private UserEmailActivationRepository userEmailActivationRepository;
@@ -97,6 +100,41 @@ public class AccountResource {
                     return new ResponseEntity<>(HttpStatus.CREATED);
                 });
             }
+        }).orElseGet(() -> { 
+            log.debug("Activation key not found");
+            return new ResponseEntity<>("Activation key not found", HttpStatus.BAD_REQUEST);
+        });
+    }
+    
+    /**
+     * POST  /reset_password -> changes the current user's password
+     */
+    @RequestMapping(
+        value = "/reset_password",
+        method = RequestMethod.POST,
+        produces = MediaType.TEXT_PLAIN_VALUE
+    )
+    @Timed
+    @Transactional
+    public ResponseEntity<?> changePassword (@RequestBody PasswordResetDTO passwordReset) {
+        log.debug("REST request to reset password");
+
+        if (StringUtils.isEmpty(passwordReset.getNewPassword()) || StringUtils.isEmpty(passwordReset.getKey())) {
+            return new ResponseEntity<>("Missing parameters", HttpStatus.BAD_REQUEST);
+        }
+        
+        // First retrieve the key ...
+        return userEmailActivationRepository.findByActivationKey(passwordReset.getKey()).map((activation) -> {
+            return Optional.ofNullable(activation.getUserEmail().getUser()).map((user) -> {
+                userService.changePassword(user, passwordReset.getNewPassword());
+
+                // And delete the activation key, since it's now been used
+                userEmailActivationRepository.delete(activation);
+
+                return new ResponseEntity<>(HttpStatus.OK);
+            }).orElse(
+                new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST)
+            );
         }).orElseGet(() -> { 
             log.debug("Activation key not found");
             return new ResponseEntity<>("Activation key not found", HttpStatus.BAD_REQUEST);

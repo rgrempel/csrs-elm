@@ -65,7 +65,7 @@ public class InvitationResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
-    @JsonView(UserEmailActivation.WithUserEmail.class)
+    @JsonView(UserEmailActivation.WithUser.class)
     @Transactional(readOnly = true)
     public ResponseEntity<UserEmailActivation> getInvitation (@PathVariable String key) throws URISyntaxException {
         return userEmailActivationRepository.findByActivationKey(key).map((activation) -> {
