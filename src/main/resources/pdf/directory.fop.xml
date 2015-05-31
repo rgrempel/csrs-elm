@@ -67,7 +67,7 @@
                     </fo:block>
                 </fo:block>
 
-                <fo:block margin-left="0.2in" th:each="interest : ${contact.interests}" th:text="${interest.interest}" />
+                <fo:block margin-left="0.2in" font-size="10pt" th:each="interest : ${contact.interests}" th:text="${interest.interest}" />
             </fo:block>
         </fo:flow>
     </fo:page-sequence>
