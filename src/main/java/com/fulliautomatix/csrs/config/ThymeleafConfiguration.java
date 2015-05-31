@@ -1,27 +1,22 @@
 package com.fulliautomatix.csrs.config;
 
-import org.apache.commons.lang.CharEncoding;
+import javax.inject.Inject;
 
+import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafProperties;
-
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
-
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-import org.thymeleaf.templatemode.StandardTemplateModeHandlers;
 
 import com.fulliautomatix.csrs.repository.TemplateRepository;
 import com.fulliautomatix.csrs.thymeleaf.DatabaseResourceResolver;
 import com.fulliautomatix.csrs.thymeleaf.DatabaseTemplateResolver;
-
-import javax.inject.Inject;
 
 @Configuration
 @EnableConfigurationProperties(ThymeleafProperties.class)

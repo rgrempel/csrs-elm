@@ -97,6 +97,23 @@ public class ContactSpec {
             return cb.exists(sq);
         }
     }
+    
+    @lombok.Data
+    @lombok.NoArgsConstructor
+    @lombok.EqualsAndHashCode(callSuper=true)
+    @JsonTypeName("ContactInDirectoryForYear")
+    public static class InDirectoryForYear extends WasMemberInYear {
+        public InDirectoryForYear (Integer year) {
+            super(year);
+        }
+
+        @Override
+        public Predicate toPredicateFrom (From<?, Contact> contact, CriteriaQuery<?> query, CriteriaBuilder cb) {    
+            Predicate pred = super.toPredicateFrom(contact, query, cb);
+
+            return cb.and(pred, cb.isFalse(contact.get(Contact_.omitNameFromDirectory)));
+        }
+    }
 
     @lombok.Data
     @lombok.NoArgsConstructor @lombok.AllArgsConstructor

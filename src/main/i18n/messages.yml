@@ -19,6 +19,17 @@ error:
         fr: "Message:"
         la: "Nuntius:"
 
+directory:
+    name:
+        en: "Canadian Society for Renaissance Studies"
+        fr: "Société canadienne d'études de la Renaissance"
+        la: "Societate Canadian Studiorum Renascerentur"
+
+    directory:
+        en: "Membership Directory"
+        fr: "Répetoire des membres"
+        la: "Index sodalitas" 
+
 invoice:
     name:
         en: "Canadian Society for Renaissance Studies"

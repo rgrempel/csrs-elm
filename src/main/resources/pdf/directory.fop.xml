@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format"
+         xmlns:th="http://www.thymeleaf.org">
+
+    <fo:layout-master-set>
+        <fo:simple-page-master master-name="letter" page-height="11in" page-width="8.5in"
+                               margin-top="1in" margin-left="1in" margin-right="1in" margin-bottom="0in">
+            <fo:region-body column-count="2" margin-bottom="1in" />
+            <fo:region-after region-name="xsl-region-after" extent="0.75in" />
+        </fo:simple-page-master>
+    </fo:layout-master-set>
+    
+    <fo:page-sequence master-reference="letter">
+        <fo:static-content flow-name="xsl-region-after">
+            <fo:block font-size="9pt">
+                <fo:table>
+                    <fo:table-column column-width="1.0in" />
+                    <fo:table-column column-width="4.5in" />
+                    <fo:table-column column-width="1.0in" />
+
+                    <fo:table-body>
+                        <fo:table-row>
+                            <fo:table-cell>
+                                <fo:block th:text="${#dates.format(now, 'yyyy-MM-dd')}" />
+                            </fo:table-cell>
+                            
+                            <fo:table-cell>
+                                <fo:block text-align="center">
+                                    <fo:block th:text="#{directory.name}" />
+                                    <fo:block>
+                                        <fo:inline th:text="${year}" />
+                                        <fo:inline th:text="#{directory.directory}" />
+                                    </fo:block>
+                                </fo:block>
+                            </fo:table-cell>
+                            
+                            <fo:table-cell>
+                                <fo:block text-align="right">
+                                    <fo:page-number />
+                                </fo:block>
+                            </fo:table-cell>
+                        </fo:table-row>
+                    </fo:table-body>
+                </fo:table> 
+            </fo:block>
+        </fo:static-content>
+            
+        <fo:flow font-size="11pt" flow-name="xsl-region-body">
+            <fo:block span="all" margin-bottom="12pt">
+                <fo:block font-size="16pt" text-align="center" th:text="#{directory.name}">Canadian Society for Renaissance Studies</fo:block>
+                
+                <fo:block font-size="16pt" text-align="center">
+                    <fo:inline th:text="${year}">2015</fo:inline>
+                    <fo:inline th:text="#{directory.directory}">Membership Directory</fo:inline>
+                </fo:block>
+                
+                <fo:block font-size="12pt" text-align="center" font-style="italic">http://csrs-scer.ca/</fo:block>
+            </fo:block>
+
+            <fo:block th:each="contact : ${contacts}" margin-top="6pt" keep-together="always">
+                <fo:block font-weight="bold" th:text="${contact.fullName()}" />
+                <fo:block th:if="${contact.affiliation}" th:text="${contact.affiliation}" />
+                
+                <fo:block th:unless="${contact.omitEmailFromDirectory}">
+                    <fo:block th:each="ce : ${contact.contactEmails}">
+                        <fo:inline th:text="${ce.email.emailAddress}" />
+                    </fo:block>
+                </fo:block>
+
+                <fo:block margin-left="0.2in" th:each="interest : ${contact.interests}" th:text="${interest.interest}" />
+            </fo:block>
+        </fo:flow>
+    </fo:page-sequence>
+</fo:root>

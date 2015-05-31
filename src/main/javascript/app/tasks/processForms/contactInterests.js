@@ -12,7 +12,7 @@ angular.module('csrsApp').directive('csrsContactInterests', function () {
     };
 });
 
-angular.module('csrsApp').controller('ContactInterestsCtrl', function (Interest, _, $http) {
+angular.module('csrsApp').controller('ContactInterestsCtrl', function (Interest, _, $http, focus) {
     this.error = null;
     
     this.create = function () {
@@ -25,6 +25,7 @@ angular.module('csrsApp').controller('ContactInterestsCtrl', function (Interest,
         };
 
         this.contact.interests.push(newInterest);
+        focus('editInterest');
     };
 
     this.remove = function (interest) {
@@ -74,5 +75,19 @@ angular.module('csrsApp').controller('ContactInterestsCtrl', function (Interest,
     this.cancel = function (interest) {
         _.pull(this.contact.interests, interest);
         this.error = null;
+    };
+});
+
+angular.module('csrsApp').directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if (event.which === 13) {
+                scope.$apply(function () {
+                    scope.$eval(attrs.ngEnter);
+                });
+ 
+                event.preventDefault();
+            }
+        });
     };
 });

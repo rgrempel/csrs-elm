@@ -366,6 +366,7 @@
             "message": "Vous êtes connecté en tant que \"{{username}}\"."
         },
         "question": "Pour plus d'informations sur le Société canadienne d'études de la Renaissance, consultez notre site Web principal, au:",
+        "seeDirectory": "Obtenez le répertoire des membres",
         "subtitle": "Ce est le site d'adhésion de la Société canadienne d'études de la Renaissance.",
         "title": "Bienvenue, érudit de la Renaissance!"
     },

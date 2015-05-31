@@ -1,22 +1,39 @@
 package com.fulliautomatix.csrs.domain;
 
-import org.apache.commons.lang.StringUtils;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.voodoodyne.jackson.jsog.JSOGGenerator;
-
-import org.hibernate.validator.constraints.*;
-import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.*;
-import java.util.stream.*;
 
 /**
  * A Contact.
@@ -51,12 +68,15 @@ import java.util.stream.*;
 })
 @lombok.ToString(of={"id", "salutation", "firstName", "lastName", "department", "affiliation"})
 public class Contact implements Serializable, HasOwner {
+    private static final long serialVersionUID = 1L;
+
     // For JsonView
     public interface Scalar {};
 
     public interface WithAnnuals extends Scalar, Annual.Scalar {};
     public interface WithContactEmails extends Scalar, ContactEmail.WithEmail {};
     public interface WithInterests extends Scalar, Interest.Scalar {};
+    public interface WithEmailAndInterests extends WithContactEmails, WithInterests {};
     public interface WithRenewals extends Scalar, Renewal.Scalar {};
 
     public interface WithEverything extends WithAnnuals, WithContactEmails, WithInterests, WithRenewals {};

@@ -5,10 +5,11 @@
     
     <table class="table table-striped">
         <tbody>
-            <tr class="animate-fade" ng-repeat="interest in interestsCtrl.contact.interests">
+            <tr ng-repeat="interest in interestsCtrl.contact.interests">
                 <td class="vertical-align-middle">
                     <span ng-hide="interest.editMode" ng-bind="interest.interest">Interest</span>
-                    <input ng-show="interest.editMode" type="text" ng-model="interest.interest" /> 
+                    <input focus-on="editInterest" ng-show="interest.editMode" style="width: 100%;" 
+                           type="text" ng-model="interest.interest" ng-enter="interestsCtrl.commit(interest)" /> 
                 </td>
 
                 <td class="text-right vertical-align-middle">

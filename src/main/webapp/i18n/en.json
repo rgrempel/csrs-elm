@@ -366,6 +366,7 @@
             "message": "You are logged in as user \"{{username}}\"."
         },
         "question": "For more information about the Canadian Society for Renaissance Studies, see our main website, at:",
+        "seeDirectory": "Download the membership directory",
         "subtitle": "This is the Canadian Society for Renaissance Studies membership site.",
         "title": "Welcome, Renaissance Scholar!"
     },
