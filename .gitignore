@@ -1,5 +1,6 @@
 target
 node
+elm-stuff
 node_modules
 .idea
 *.iml

@@ -1,0 +1,45 @@
+$icon-font-path: "bower_components/bootstrap-sass/assets/fonts/bootstrap/";
+$navbar-height: 40px;
+$navbar-margin-bottom: 10px;
+
+@import "../resources/main/public/bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
+
+// inject:scss 
+// endinject
+
+/* make sure browsers use the pointer cursor for anchors, even with no href */
+a:hover {
+    cursor: pointer;
+}
+
+label input {
+    margin-top: 5px;
+    font-weight: normal;
+}
+
+label textarea {
+    margin-top: 5px;
+    font-weight: normal;
+}
+
+.help-block {
+    margin-bottom: 0px;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.well .panel-default > .panel-heading {
+    background-color: #e8e8e8;
+}
+
+.well .panel-default > .panel-footer {
+    background-color: #e8e8e8;
+}
+
+
