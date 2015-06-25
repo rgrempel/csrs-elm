@@ -1,12 +1,16 @@
 module View.Account.Login where
 
 import Html exposing (..)
-import Html.Events exposing (onClick)
+import Html.Events exposing (onClick, on, targetValue)
 import Html.Attributes exposing (..)
 
 import View.Account.Login.Language as LL
 import Action exposing (Action)
 import Model exposing (Model)
+
+
+mailbox : Signal.Mailbox String
+mailbox = Signal.mailbox ""
 
 
 view : Signal.Address Action -> Model -> Html
@@ -30,6 +34,7 @@ view address model =
                                     , type' "text"
                                     , id "username"
                                     , placeholder <| trans LL.UsernamePlaceholder
+                                    , on "input" targetValue <| \v -> Signal.message mailbox.address v
                                     ] []
                                 ]
                                     
