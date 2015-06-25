@@ -1,5 +1,5 @@
 task upload(type: Exec) {
-    commandLine('/usr/bin/rsync', '-av', '--delete', '.git', 'admin@frodo.fulliautomatix.com:csrs.git')
+    commandLine('/usr/bin/rsync', '-av', '--delete', '.git', 'admin@frodo.fulliautomatix.com:csrs-elm.git')
 }
 
 task deploy(type: Exec) {
