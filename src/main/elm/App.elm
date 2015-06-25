@@ -1,11 +1,11 @@
 module App where
 
-import Action exposing (Action(SwitchFocusFromPath, NoOp))
+import Action exposing (Action(NoOp, SwitchFocusFromPath))
 import History exposing (hash, setPath, replacePath)
 import Html exposing (Html)
 import Model exposing (Model, initialModel)
-import Model.Focus as MF exposing (Focus, UpdateLocation, hash2focus, focus2hash)
-import Signal exposing (Signal, Mailbox, mailbox, map, filterMap, merge, foldp, dropRepeats)
+import Model.Focus as MF exposing (Focus, DesiredLocation, hash2focus, focus2hash)
+import Signal exposing (Signal, Mailbox, filter, mailbox, map, filterMap, merge, foldp, dropRepeats)
 import Update exposing (update)
 import View exposing (view)
 import Task exposing (Task)
@@ -44,18 +44,30 @@ heraclitus =
         foldp' update initialUpdate mergedSignal
 
 
-port hashUpdates : Signal (Task error ())
-port hashUpdates =
+desiredLocations : Signal (Maybe DesiredLocation)
+desiredLocations =
+    map ( \m -> m.desiredLocation ) heraclitus
+
+
+-- Generate a location-changing action if the
+-- desired location is different from the current one                                                    
+locationAction : Maybe DesiredLocation -> String -> Maybe (Task error ())
+locationAction desired current =
+    case desired of
+        Nothing -> Nothing
+        Just (MF.SetPath path) -> if path == current then Nothing else Just <| setPath path
+        Just (MF.ReplacePath path) -> if path == current then Nothing else Just <| replacePath path
+
+
+port locationUpdates : Signal (Task error ())
+port locationUpdates =
     let
-        change2task (focus, updateLocation) =
-            case updateLocation of
-                MF.Ignore -> Task.succeed () 
-                MF.Set -> setPath <| focus2hash focus 
-                MF.Replace -> replacePath <| focus2hash focus
+        taskMap = 
+            Signal.map2 locationAction desiredLocations hash
 
-        focusChanges =
-            dropRepeats <| map (\m -> (,) m.focus m.updateLocation) heraclitus  
-    
+        default =
+            Task.succeed ()
+
     in
-
-        map change2task focusChanges
+        Signal.Extra.filter default taskMap
+    

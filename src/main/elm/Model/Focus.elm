@@ -2,10 +2,9 @@ module Model.Focus where
 
 import String exposing (uncons)
 
-type UpdateLocation
-    = Replace
-    | Set
-    | Ignore
+type DesiredLocation
+    = ReplacePath String
+    | SetPath String
 
 type Focus
     = Home
@@ -21,7 +20,6 @@ type AccountFocus
     | Register
 
 initialFocus = Home
-initialUpdateLocation = Ignore
 
 hashPrefix = "#!/"
 

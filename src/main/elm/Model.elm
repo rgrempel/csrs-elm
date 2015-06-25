@@ -2,17 +2,20 @@ module Model where
 
 import Model.Translation as MT
 import Model.Focus as MF 
+import Model.Login as ML
 
 type alias Model =
     { useLanguage : MT.Language
     , focus : MF.Focus
-    , updateLocation: MF.UpdateLocation
+    , desiredLocation : Maybe MF.DesiredLocation
+    , credentials : Maybe ML.Credentials
     }
 
 initialModel : Model
 initialModel =
     { useLanguage = MT.defaultLanguage
     , focus = MF.initialFocus
-    , updateLocation = MF.initialUpdateLocation
+    , desiredLocation = Nothing
+    , credentials = Nothing
     }
 
