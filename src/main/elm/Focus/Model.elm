@@ -1,23 +1,8 @@
-module Model.Focus where
+module Focus.Model where
 
 import String exposing (uncons)
-
-type DesiredLocation
-    = ReplacePath String
-    | SetPath String
-
-type Focus
-    = Home
-    | Error
-    | Account AccountFocus
-
-type AccountFocus
-    = Settings
-    | Password
-    | Sessions
-    | Logout
-    | Login
-    | Register
+import Focus.Types exposing (..) 
+import Account.Login.Model exposing (defaultCredentials)
 
 initialFocus = Home
 
@@ -45,7 +30,7 @@ hash2focus hash =
         "password" -> Account Password
         "sessions" -> Account Sessions
         "logout" -> Account Logout
-        "login" -> Account Login
+        "login" -> Account <| Login defaultCredentials
         "register" -> Account Register
         _ -> Error 
 
@@ -62,5 +47,5 @@ focus2hash focus =
                 Password -> "password"
                 Sessions -> "sessions"
                 Logout -> "logout"
-                Login -> "login"
+                Login _ -> "login"
                 Register -> "register"

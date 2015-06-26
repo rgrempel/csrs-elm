@@ -1,17 +1,18 @@
-module View.NavBar where
+module NavBar.View where
 
 import Html exposing (Html, Attribute, nav, a, div, button, text, span, h1, p, ul, li)
 import Html.Events exposing (onClick)
 import Html.Attributes exposing (attribute, key, href, id, class, classList, type')
 
-import Action exposing (Action, Action(SwitchLanguage, SwitchFocus))
-import Model exposing (Model)
-import Model.Focus as MF
+import Types exposing (Model, Action(SwitchLanguage, SwitchFocus))
+import Focus.Types as MF
+import Model exposing (extractCredentials)
+import Account.Login.Model as ML
 import Version exposing (version)
 
-import View.NavBar.Language as NL
-import Model.Translation.Language as TL
-import Model.Translation exposing (allLanguages)
+import NavBar.Language as NL
+import Translation.Language as TL
+import Translation.Model exposing (allLanguages)
 
 import String
 import Char
@@ -163,7 +164,7 @@ view address model =
             standardItem "log-out" NL.Logout ( MF.Account MF.Logout )
 
         loginItem =
-            standardItem "log-in" NL.Login ( MF.Account MF.Login )
+            standardItem "log-in" NL.Login (MF.Account (MF.Login (extractCredentials model)))
 
         registerItem =
             standardItem "plus-sign" NL.Register ( MF.Account MF.Register )

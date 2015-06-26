@@ -1,10 +1,11 @@
 module App where
 
-import Action exposing (Action(NoOp, SwitchFocusFromPath))
+import Types exposing (Model, Action(NoOp, SwitchFocusFromPath))
 import History exposing (hash, setPath, replacePath)
 import Html exposing (Html)
-import Model exposing (Model, initialModel)
-import Model.Focus as MF exposing (Focus, DesiredLocation, hash2focus, focus2hash)
+import Model exposing (initialModel)
+import Focus.Types exposing (Focus, DesiredLocation(SetPath, ReplacePath))
+import Focus.Model exposing (hash2focus, focus2hash)
 import Signal exposing (Signal, Mailbox, filter, mailbox, map, filterMap, merge, foldp, dropRepeats)
 import Update exposing (update)
 import View exposing (view)
@@ -55,8 +56,8 @@ locationAction : Maybe DesiredLocation -> String -> Maybe (Task error ())
 locationAction desired current =
     case desired of
         Nothing -> Nothing
-        Just (MF.SetPath path) -> if path == current then Nothing else Just <| setPath path
-        Just (MF.ReplacePath path) -> if path == current then Nothing else Just <| replacePath path
+        Just (SetPath path) -> if path == current then Nothing else Just <| setPath path
+        Just (ReplacePath path) -> if path == current then Nothing else Just <| replacePath path
 
 
 port locationUpdates : Signal (Task error ())

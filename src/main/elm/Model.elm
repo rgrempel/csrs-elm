@@ -1,21 +1,22 @@
 module Model where
 
-import Model.Translation as MT
-import Model.Focus as MF 
-import Model.Login as ML
-
-type alias Model =
-    { useLanguage : MT.Language
-    , focus : MF.Focus
-    , desiredLocation : Maybe MF.DesiredLocation
-    , credentials : Maybe ML.Credentials
-    }
+import Translation.Model as MT
+import Focus.Model as MF 
+import Account.Login.Model as ML
+import Types exposing (Model)
+import Focus.Types as FT 
 
 initialModel : Model
 initialModel =
     { useLanguage = MT.defaultLanguage
     , focus = MF.initialFocus
     , desiredLocation = Nothing
-    , credentials = Nothing
     }
+
+extractCredentials : Model -> ML.Credentials
+extractCredentials model =
+    case model.focus of
+        FT.Account (FT.Login credentials) -> credentials
+        _ -> ML.defaultCredentials
+        
 

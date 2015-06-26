@@ -1,12 +1,12 @@
-module View.Account.Login where
+module Account.Login.View where
 
 import Html exposing (..)
 import Html.Events exposing (onClick, on, targetValue)
 import Html.Attributes exposing (..)
 
-import View.Account.Login.Language as LL
-import Action exposing (Action)
-import Model exposing (Model)
+import Account.Login.Language as LL
+import Types exposing (Action, Model)
+import Model exposing (extractCredentials)
 
 
 mailbox : Signal.Mailbox String
@@ -34,6 +34,7 @@ view address model =
                                     , type' "text"
                                     , id "username"
                                     , placeholder <| trans LL.UsernamePlaceholder
+                                    , value (extractCredentials model).username
                                     , on "input" targetValue <| \v -> Signal.message mailbox.address v
                                     ] []
                                 ]
@@ -44,6 +45,7 @@ view address model =
                                     [ class "form-control"
                                     , type' "password"
                                     , id "password"
+                                    , value (extractCredentials model).password
                                     , placeholder <| trans LL.PasswordPlaceholder
                                     ] []
                                 ]
@@ -52,7 +54,7 @@ view address model =
                                 [ label []
                                     [ input
                                         [ type' "checkbox"
-                                        , checked False
+                                        , checked (extractCredentials model).rememberMe
                                         ] []
                                     , text (" " ++ trans LL.RememberMe)
                                     ]

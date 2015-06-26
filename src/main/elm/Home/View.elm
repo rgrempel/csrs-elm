@@ -1,14 +1,13 @@
-module View.Home where
+module Home.View where
 
 import Html exposing (Html, div, button, text, span, h1, p, ul, li)
 import Html.Events exposing (onClick)
 import Html.Attributes exposing (class, key)
 
-import View.Home.Language as HL
-import Model.Translation 
-import Model.Translation.Language as TL
-import Action exposing (Action)
-import Model exposing (Model)
+import Home.Language as HL
+import Translation.Model 
+import Translation.Language as TL
+import Types exposing (Action, Model)
 
 view : Signal.Address Action -> Model -> Html
 view address model =

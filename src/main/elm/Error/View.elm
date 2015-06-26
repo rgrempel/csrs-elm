@@ -1,12 +1,11 @@
-module View.Error where
+module Error.View where
 
 import Html exposing (Html, div, button, text, span, h1, p, ul, li)
 import Html.Events exposing (onClick)
 import Html.Attributes exposing (class, key)
 
-import View.Error.Language as EL
-import Action exposing (Action)
-import Model exposing (Model)
+import Error.Language as EL
+import Types exposing (Action, Model)
 
 view : Signal.Address Action -> Model -> Html
 view address model =

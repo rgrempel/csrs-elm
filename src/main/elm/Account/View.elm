@@ -1,11 +1,10 @@
-module View.Account where
+module Account.View where
 
 import Html exposing (Html, h1, text, div)
 import Html.Attributes exposing (class)
-import Model.Focus exposing (..)
-import Action exposing (Action)
-import Model exposing (Model)
-import View.Account.Login
+import Focus.Types exposing (..)
+import Types exposing (Action, Model)
+import Account.Login.View
 
 view : AccountFocus -> Signal.Address Action -> Model -> Html
 view focus address model =
@@ -21,5 +20,5 @@ view focus address model =
             Password -> v "Password"
             Sessions -> v "Sessions"
             Logout -> v "Logout"
-            Login -> View.Account.Login.view address model
+            Login _ -> Account.Login.View.view address model
             Register -> v "Register"

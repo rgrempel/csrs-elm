@@ -1,4 +1,4 @@
-module Model.Translation where
+module Translation.Model where
 
 type Language = EN | FR | LA
 

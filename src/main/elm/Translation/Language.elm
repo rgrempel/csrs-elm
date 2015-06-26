@@ -1,6 +1,6 @@
-module Model.Translation.Language where
+module Translation.Language where
 
-import Model.Translation exposing (Language(EN, FR, LA))
+import Translation.Model exposing (Language(EN, FR, LA))
 import Html exposing (Html, text)
 
 type Message

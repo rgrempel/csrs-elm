@@ -2,21 +2,20 @@ module View where
 
 import Html exposing (Html, div)
 import Html.Attributes exposing (key)
-import Action exposing (Action)
-import Model exposing (Model)
-import Model.Focus exposing (Focus(Home, Account))
+import Types exposing (Action, Model)
+import Focus.Types exposing (Focus(Home, Account))
 
-import View.Home
-import View.NavBar
-import View.Account
-import View.Error
+import Home.View
+import NavBar.View
+import Account.View
+import Error.View
 
 view : Signal.Address Action -> Model -> Html
 view address model =
     div []
-    [ View.NavBar.view address model
+    [ NavBar.View.view address model
     , case model.focus of
-        Home -> View.Home.view address model
-        Error -> View.Error.view address model
-        Account accountFocus -> View.Account.view accountFocus address model
+        Home -> Home.View.view address model
+        Error -> Error.View.view address model
+        Account accountFocus -> Account.View.view accountFocus address model
     ]

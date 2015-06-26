@@ -1,32 +1,32 @@
 module Update where
 
-import Action
-import Model exposing (Model)
-import Model.Focus as MF
+import Types exposing (Model)
+import Focus.Types exposing (DesiredLocation(SetPath, ReplacePath))
+import Focus.Model exposing (focus2hash)
 
-update : Action.Action -> Model -> Model
+update : Types.Action -> Model -> Model
 update action model =
     case action of
-        Action.NoOp ->
+        Types.NoOp ->
             model
 
-        Action.SwitchLanguage lang ->
+        Types.SwitchLanguage lang ->
             { model | useLanguage <- lang }
 
-        Action.SwitchFocus focus' ->
+        Types.SwitchFocus focus' ->
             { model |
                 focus <- focus',
-                desiredLocation <- Just <| MF.SetPath ( MF.focus2hash focus' )
+                desiredLocation <- Just <| SetPath ( focus2hash focus' )
             }
 
-        Action.SwitchFocusFromPath focus' ->
+        Types.SwitchFocusFromPath focus' ->
             -- If the focus change is coming from the path, then we set up a
             -- possible ReplacePath action, rather than SetPath. That way,
             -- we'll get our canonical path, but we won't update the history,
             -- since clearly the old path got us here too.
             { model |
                 focus <- focus',
-                desiredLocation <- Just <| MF.ReplacePath ( MF.focus2hash focus' )
+                desiredLocation <- Just <| ReplacePath ( focus2hash focus' )
             }
 
         _ -> model
