@@ -1,23 +1,36 @@
 module Account.Login.View where
 
 import Html exposing (..)
-import Html.Events exposing (onClick, on, targetValue)
+import Html.Events exposing (onClick, onSubmit, on, targetValue, targetChecked)
 import Html.Attributes exposing (..)
 
 import Account.Login.Language as LL
-import Types exposing (Action, Model)
+import Account.Login.Model exposing (Credentials)
+import Types exposing (Action(SwitchFocus, AttemptLogin), Model)
+import Focus.Types exposing (Focus(Account), AccountFocus(Login))
 import Model exposing (extractCredentials)
 
 
-mailbox : Signal.Mailbox String
-mailbox = Signal.mailbox ""
-
-
-view : Signal.Address Action -> Model -> Html
-view address model =
+view : Signal.Address Action -> Credentials -> Model -> Html
+view address credentials model =
     let
-        transHtml = LL.translateHtml model.useLanguage
-        trans = LL.translate model.useLanguage
+        transHtml =
+            LL.translateHtml model.useLanguage
+        
+        trans =
+            LL.translate model.useLanguage
+        
+        updateUserName name =
+            Signal.message address <|
+                SwitchFocus ( Account ( Login { credentials | username <- name } ) )
+
+        updatePassword password =
+            Signal.message address <|
+                SwitchFocus ( Account ( Login { credentials | password <- password } ) )
+        
+        updateRememberMe remember =
+            Signal.message address <|
+                SwitchFocus ( Account ( Login { credentials | rememberMe <- remember } ) )
 
     in
         div [ class "csrs-auth-login container" ]
@@ -26,7 +39,11 @@ view address model =
                     [ div [ class "col-md-4 col-md-offset-4" ]
                         [ h1 [] [ transHtml LL.Title ]
 
-                        , Html.form [ class "form" {-, role "form" -} ]
+                        , Html.form
+                            [ class "form"
+                            , onSubmit address ( AttemptLogin credentials ) 
+                            {-, role "form" -}
+                            ]
                             [ div [ class "form-group" ]
                                 [ label [ for "username" ] [ transHtml LL.Username ]
                                 , input
@@ -35,7 +52,7 @@ view address model =
                                     , id "username"
                                     , placeholder <| trans LL.UsernamePlaceholder
                                     , value (extractCredentials model).username
-                                    , on "input" targetValue <| \v -> Signal.message mailbox.address v
+                                    , on "input" targetValue updateUserName 
                                     ] []
                                 ]
                                     
@@ -47,6 +64,7 @@ view address model =
                                     , id "password"
                                     , value (extractCredentials model).password
                                     , placeholder <| trans LL.PasswordPlaceholder
+                                    , on "input" targetValue updatePassword
                                     ] []
                                 ]
                                     
@@ -55,6 +73,7 @@ view address model =
                                     [ input
                                         [ type' "checkbox"
                                         , checked (extractCredentials model).rememberMe
+                                        , on "input" targetChecked updateRememberMe
                                         ] []
                                     , text (" " ++ trans LL.RememberMe)
                                     ]

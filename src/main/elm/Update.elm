@@ -1,10 +1,10 @@
 module Update where
 
-import Types exposing (Model)
+import Types exposing (Action, Model)
 import Focus.Types exposing (DesiredLocation(SetPath, ReplacePath))
 import Focus.Model exposing (focus2hash)
 
-update : Types.Action -> Model -> Model
+update : Action -> Model -> Model
 update action model =
     case action of
         Types.NoOp ->

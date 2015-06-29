@@ -20,5 +20,5 @@ view focus address model =
             Password -> v "Password"
             Sessions -> v "Sessions"
             Logout -> v "Logout"
-            Login _ -> Account.Login.View.view address model
+            Login credentials -> Account.Login.View.view address credentials model
             Register -> v "Register"

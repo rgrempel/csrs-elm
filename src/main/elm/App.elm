@@ -9,9 +9,15 @@ import Focus.Model exposing (hash2focus, focus2hash)
 import Signal exposing (Signal, Mailbox, filter, mailbox, map, filterMap, merge, foldp, dropRepeats)
 import Update exposing (update)
 import View exposing (view)
-import Task exposing (Task)
+import Task exposing (Task, andThen, onError)
+import List exposing (foldl)
 import Time exposing (delay, inMilliseconds)
 import Signal.Extra exposing (foldp')
+import TaskTutorial exposing (print)
+import Cookies exposing (getCookies)
+import Account.Login.Task exposing (attemptLoginTask)
+import Http
+import Debug
 
 
 main : Signal Html
@@ -58,6 +64,30 @@ locationAction desired current =
         Nothing -> Nothing
         Just (SetPath path) -> if path == current then Nothing else Just <| setPath path
         Just (ReplacePath path) -> if path == current then Nothing else Just <| replacePath path
+
+
+action2http : Action -> Maybe (Task Http.RawError ())
+action2http action =
+    case action of
+        AttemptLogin credentials ->
+            Just <|
+                andThen
+                    ( attemptLoginTask credentials ) -- RawError Response
+                    ( \result -> andThen
+                        getCookies 
+                        print
+                    )
+        
+        _ -> Nothing
+
+
+port httpRequests : Signal (Task Http.RawError ())
+port httpRequests =
+    let default =
+        Task.succeed ()
+        
+    in
+        Signal.Extra.filter default (Signal.map action2http uiActions.signal)
 
 
 port locationUpdates : Signal (Task error ())
