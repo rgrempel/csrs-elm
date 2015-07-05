@@ -4,6 +4,8 @@ import String exposing (split)
 import Home.HomeFocus as HomeFocus
 import Account.AccountFocus as AccountFocus
 import Error.ErrorFocus as ErrorFocus
+import Admin.AdminFocus as AdminFocus
+import Tasks.TasksFocus as TasksFocus
 import Signal exposing (Mailbox, mailbox, Address, forwardTo)
 import String exposing (uncons)
 import Http exposing (uriDecode, uriEncode)
@@ -19,6 +21,8 @@ type DesiredLocation
 type Focus
     = Home HomeFocus.Focus
     | Account AccountFocus.Focus
+    | Admin AdminFocus.Focus
+    | Tasks TasksFocus.Focus
     | Error 
 
 type Action
@@ -26,6 +30,8 @@ type Action
     | SwitchFocusFromPath Focus
     | AccountAction AccountFocus.Action
     | HomeAction HomeFocus.Action
+    | AdminAction AdminFocus.Action
+    | TasksAction TasksFocus.Action
     | NoOp
 
 type alias Hash = String
@@ -59,6 +65,20 @@ accountFocus : Focus -> Maybe AccountFocus.Focus
 accountFocus focus =
     case focus of
         Account af -> Just af
+        _ -> Nothing
+
+
+adminFocus : Focus -> Maybe AdminFocus.Focus
+adminFocus focus =
+    case focus of
+        Admin af -> Just af
+        _ -> Nothing
+
+
+tasksFocus : Focus -> Maybe TasksFocus.Focus
+tasksFocus focus =
+    case focus of
+        Tasks af -> Just af
         _ -> Nothing
 
 
@@ -111,7 +131,13 @@ hash2focus hash =
                         
                         "account" ->
                             Maybe.map Account <| AccountFocus.hash2focus rest
+                        
+                        "admin" ->
+                            Maybe.map Admin <| AdminFocus.hash2focus rest
 
+                        "tasks" ->
+                            Maybe.map Tasks <| TasksFocus.hash2focus rest
+                        
                         _ ->
                             Nothing
 
@@ -132,6 +158,12 @@ focus2hash focus =
 
                 Account accountFocus ->
                     "account" :: AccountFocus.focus2hash accountFocus
+
+                Admin adminFocus ->
+                    "admin" :: AdminFocus.focus2hash adminFocus
+
+                Tasks tasksFocus ->
+                    "tasks" :: TasksFocus.focus2hash tasksFocus
 
     in
         hashPrefix
@@ -169,6 +201,18 @@ update action model =
                 (HomeAction homeAction, _) ->
                     (Maybe.map Home <| HomeFocus.updateFocus homeAction Nothing, SetPath)
 
+                (AdminAction adminAction, Admin adminFocus) ->
+                    (Maybe.map Admin <| AdminFocus.updateFocus adminAction <| Just adminFocus, SetPath)
+                
+                (AdminAction adminAction, _) ->
+                    (Maybe.map Admin <| AdminFocus.updateFocus adminAction Nothing, SetPath)
+                
+                (TasksAction tasksAction, Tasks tasksFocus) ->
+                    (Maybe.map Tasks <| TasksFocus.updateFocus tasksAction <| Just tasksFocus, SetPath)
+                
+                (TasksAction tasksAction, _) ->
+                    (Maybe.map Tasks <| TasksFocus.updateFocus tasksAction Nothing, SetPath)
+                
                 (_, _) ->
                     (Nothing, ReplacePath)
 
@@ -190,6 +234,12 @@ render model language =
         
         Account accountFocus ->
             AccountFocus.renderFocus (forwardTo focusActions.address AccountAction) accountFocus language
+        
+        Admin adminFocus ->
+            AdminFocus.renderFocus (forwardTo focusActions.address AdminAction) adminFocus language
+
+        Tasks tasksFocus ->
+            TasksFocus.renderFocus (forwardTo focusActions.address TasksAction) tasksFocus language
 
 
 renderMenus : Focus -> Language -> List Html
@@ -198,8 +248,16 @@ renderMenus focus language =
         (forwardTo focusActions.address HomeAction)
         (homeFocus focus)
         language
+    , TasksFocus.renderMenu
+        (forwardTo focusActions.address TasksAction)
+        (tasksFocus focus)
+        language
     , AccountFocus.renderMenu
         (forwardTo focusActions.address AccountAction)
         (accountFocus focus)
+        language
+    , AdminFocus.renderMenu
+        (forwardTo focusActions.address AdminAction)
+        (adminFocus focus)
         language
     ]
