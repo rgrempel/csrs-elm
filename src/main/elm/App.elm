@@ -13,10 +13,6 @@ import Signal.Extra exposing (foldp')
 import TaskTutorial exposing (print)
 import Http exposing (RawError, Response)
 
-
--- fix reloading pages ... first update of hash not working
-
-
 type alias Model =
     LanguageService.Model (
     FocusUI.Model (
@@ -42,9 +38,9 @@ type Action
 service : Signal Action
 service =
     Signal.mergeMany
-        [ Signal.map AccountAction <| .signal AccountService.service
+        [ Signal.map FocusAction <| FocusUI.hashSignal
         , Signal.map FocusAction <| .signal FocusUI.focusActions
-        , Signal.map FocusAction <| FocusUI.hashSignal
+        , Signal.map AccountAction <| .signal AccountService.service
         , Signal.map LanguageAction <| .signal LanguageService.service
         ]
 

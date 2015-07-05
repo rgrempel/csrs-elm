@@ -44,7 +44,7 @@ init model =
 
     in
         { model' | 
-            desiredLocation = Just <| ReplacePath <| focus2hash initialFocus
+            desiredLocation = Nothing
         }
 
 
@@ -175,7 +175,7 @@ update action model =
     in
         { model
             | focus <- withDefault model.focus focus'
-            , desiredLocation <- Just <| pathUpdater <| focus2hash <| withDefault model.focus focus'
+            , desiredLocation <- Maybe.map ( pathUpdater << focus2hash ) focus'
         }
 
 
