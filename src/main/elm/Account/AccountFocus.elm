@@ -8,7 +8,6 @@ import Account.Login.LoginFocus as LoginFocus
 import Account.AccountText as AccountText
 import Language.LanguageService exposing (Language)
 import Html.Util exposing (dropdownMenu, dropdownToggle, dropdownPointer, glyphicon, unbreakableSpace)
-import Debug exposing (log)
 
 type Focus
     = Settings
@@ -81,7 +80,6 @@ focus2hash focus =
 
 updateFocus : Action -> Maybe Focus -> Maybe Focus
 updateFocus action focus =
-    log "updating" <|
     case (action, focus) of
         (FocusLogin loginAction, Just (Login loginFocus)) ->
             Maybe.map Login <| LoginFocus.updateFocus loginAction <| Just loginFocus
@@ -117,7 +115,6 @@ renderFocus address focus language =
                 ]
 
     in
-        log "rendering" <|
         case focus of
             Settings -> v "Settings"
             Password -> v "Password"
