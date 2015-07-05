@@ -1,11 +1,39 @@
-module Account.Login.Task where
+module Account.AccountService where
 
-import Task exposing (Task)
-import Http exposing (RawError, Response, url, send, defaultSettings, string, uriEncode)
 import List exposing (foldl)
-import Account.Login.Model exposing (Credentials)
+import Http exposing (uriEncode, url, string, send, defaultSettings, Response, RawError)
+import Signal exposing (Address, Mailbox, mailbox)
+import Task exposing (Task)
+
 import Http.Csrf exposing (withCsrf)
 import Http.CacheBuster exposing (withCacheBuster)
+
+type Action
+    = AttemptLogin Credentials
+    | NoOp
+
+type alias Credentials =
+    { username: String
+    , password: String
+    , rememberMe: Bool
+    }
+
+
+service : Mailbox Action
+service = mailbox NoOp 
+
+
+action2task : Action -> Maybe (Task () ())
+action2task action =
+    case action of
+        AttemptLogin credentials ->
+            Just <| 
+                Task.map (always ()) <|
+                    Task.mapError (always ()) <|
+                        (attemptLoginTask credentials) 
+
+        _ ->
+            Nothing
 
 
 attemptLoginTask : Credentials -> Task RawError Response 
@@ -13,7 +41,7 @@ attemptLoginTask credentials =
     let
         params =
             foldl
-                ( \iter accum -> accum ++ iter ++ "&" )
+                ( \iter accum -> accum ++ if accum == "" then iter else "&" ++ iter )
                 ""
                 [ "j_username=" ++ uriEncode(credentials.username)
                 , "j_password=" ++ uriEncode(credentials.password)
@@ -31,3 +59,5 @@ attemptLoginTask credentials =
 
     in
         (withCacheBuster (withCsrf send)) defaultSettings request
+
+

@@ -1,11 +1,12 @@
-module Home.Language where
+module Home.HomeText where
 
-import Translation.Model exposing (Language(EN, FR, LA))
+import Language.LanguageService exposing (Language(EN, FR, LA))
 import Html exposing (Html, text)
 
 type Message
     = Title 
     | Subtitle
+    | MenuItem
 
 translate : Language -> Message -> Html
 translate language message =
@@ -20,3 +21,9 @@ translate language message =
                 EN -> "This is the Canadian Society for Renaissance Studies membership site."
                 FR -> "Ce est le site d'adhésion de la Société canadienne d'études de la Renaissance."
                 LA -> "Hic situs sociari de Societate Canadian Studiorum Renascerentur."
+            
+            MenuItem -> case language of
+                EN -> "Home"
+                FR -> "Accueil"
+                LA -> "Domus"
+

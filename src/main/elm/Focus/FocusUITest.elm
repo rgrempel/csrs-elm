@@ -1,9 +1,9 @@
-module Focus.ModelTest where
+module Focus.FocusUITest where
 
 import ElmTest.Assertion exposing (..)
 import ElmTest.Test exposing (..)
 
-import Focus.Model exposing (removeInitial, removeAnyInitial)
+import Focus.FocusUI exposing (removeInitial, removeAnyInitial)
 
 tests : Test
 tests =

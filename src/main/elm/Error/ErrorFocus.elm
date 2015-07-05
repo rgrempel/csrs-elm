@@ -1,16 +1,18 @@
-module Error.View where
+module Error.ErrorFocus where
 
 import Html exposing (Html, div, button, text, span, h1, p, ul, li)
 import Html.Events exposing (onClick)
 import Html.Attributes exposing (class, key)
 
-import Error.Language as EL
-import Types exposing (Action, Model)
+import Language.LanguageService exposing (Language)
 
-view : Signal.Address Action -> Model -> Html
-view address model =
+import Error.ErrorText as ErrorText
+
+
+render : Language -> Html
+render language =
     let 
-        trans = EL.translate model.useLanguage
+        trans = ErrorText.translate language
 
     in
         div [ class "error-page container" ]
@@ -20,7 +22,7 @@ view address model =
                         [ span [ class "csrs-logo img-responsive img-rounded" ] []
                         ]
                     , div [ class "col-md-8" ]
-                        [ h1 [] [ trans EL.Title ] -- errors.title
+                        [ h1 [] [ trans ErrorText.Title ] -- errors.title
                     ]
                 ]
             ]

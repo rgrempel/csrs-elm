@@ -1,6 +1,6 @@
-module Error.Language where
+module Error.ErrorText where
 
-import Translation.Model exposing (Language(EN, FR, LA))
+import Language.LanguageService exposing (Language(EN, FR, LA))
 import Html exposing (Html, text)
 
 type Message

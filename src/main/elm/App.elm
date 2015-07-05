@@ -1,59 +1,80 @@
 module App where
 
-import Types exposing (Model, Action(NoOp, SwitchFocusFromPath))
 import History exposing (hash, setPath, replacePath)
-import Html exposing (Html)
-import Model exposing (initialModel)
-import Focus.Types exposing (Focus, DesiredLocation(SetPath, ReplacePath))
-import Focus.Model exposing (hash2focus, focus2hash)
-import Signal exposing (Signal, Mailbox, filter, mailbox, map, filterMap, merge, foldp, dropRepeats)
-import Update exposing (update)
-import View exposing (view)
+import Html exposing (Html, div)
+import Signal exposing (Signal, Mailbox, filter, mailbox, filterMap, merge, foldp, dropRepeats)
 import Task exposing (Task, andThen, onError)
 import List exposing (foldl)
-import Time exposing (delay, inMilliseconds)
+import Focus.FocusUI as FocusUI exposing (DesiredLocation(SetPath, ReplacePath))
+import NavBar.NavBarUI as NavBarUI
+import Account.AccountService as AccountService
+import Language.LanguageService as LanguageService
 import Signal.Extra exposing (foldp')
 import TaskTutorial exposing (print)
-import Cookies exposing (getCookies)
-import Account.Login.Task exposing (attemptLoginTask)
-import Http
-import Debug
+import Http exposing (RawError, Response)
+
+
+-- fix reloading pages ... first update of hash not working
+
+
+type alias Model =
+    LanguageService.Model (
+    FocusUI.Model (
+      {} 
+    ))
+
+
+initialModel : Model
+initialModel =
+    LanguageService.init (
+    FocusUI.init (
+        {}
+    ))
+
+
+type Action
+    = AccountAction AccountService.Action
+    | FocusAction FocusUI.Action
+    | LanguageAction LanguageService.Action
+    | NoOp
+
+
+service : Signal Action
+service =
+    Signal.mergeMany
+        [ Signal.map AccountAction <| .signal AccountService.service
+        , Signal.map FocusAction <| .signal FocusUI.focusActions
+        , Signal.map FocusAction <| FocusUI.hashSignal
+        , Signal.map LanguageAction <| .signal LanguageService.service
+        ]
 
 
 main : Signal Html
 main =
-    let
-        model2html =
-            view uiActions.address
-    
-    in
-        map model2html heraclitus
+    Signal.map render heraclitus
 
 
-uiActions : Mailbox Action
-uiActions =
-    mailbox NoOp 
+render : Model -> Html
+render model =
+    div []
+    [ NavBarUI.render model.focus model.useLanguage
+    , FocusUI.render model model.useLanguage
+    ]
 
 
 heraclitus : Signal Model
 heraclitus =
     let
         initialUpdate = 
-            (flip update) initialModel
+            (flip update) initialModel 
         
-        mergedSignal =
-            merge hashSignal uiActions.signal
-        
-        hashSignal =
-            map ( SwitchFocusFromPath << hash2focus ) hash
-    
     in
-        foldp' update initialUpdate mergedSignal
+        foldp' update initialUpdate service
 
 
 desiredLocations : Signal (Maybe DesiredLocation)
 desiredLocations =
-    map ( \m -> m.desiredLocation ) heraclitus
+    Signal.map .desiredLocation heraclitus
 
 
 -- Generate a location-changing action if the
@@ -64,30 +85,6 @@ locationAction desired current =
         Nothing -> Nothing
         Just (SetPath path) -> if path == current then Nothing else Just <| setPath path
         Just (ReplacePath path) -> if path == current then Nothing else Just <| replacePath path
-
-
-action2http : Action -> Maybe (Task Http.RawError ())
-action2http action =
-    case action of
-        AttemptLogin credentials ->
-            Just <|
-                andThen
-                    ( attemptLoginTask credentials ) -- RawError Response
-                    ( \result -> andThen
-                        getCookies 
-                        print
-                    )
-        
-        _ -> Nothing
-
-
-port httpRequests : Signal (Task Http.RawError ())
-port httpRequests =
-    let default =
-        Task.succeed ()
-        
-    in
-        Signal.Extra.filter default (Signal.map action2http uiActions.signal)
 
 
 port locationUpdates : Signal (Task error ())
@@ -102,3 +99,28 @@ port locationUpdates =
     in
         Signal.Extra.filter default taskMap
     
+
+port tasks : Signal (Task () ())
+port tasks =
+    Signal.Extra.filter
+        (Task.succeed ()) 
+        (Signal.map AccountService.action2task (.signal AccountService.service))
+
+
+update : Action -> Model -> Model
+update action model =
+    case action of
+        -- Doesn't exist at moment ...
+        -- AccountAction accountAction ->
+        --     AccountService.update accountAction model'
+
+        FocusAction focusAction ->
+            FocusUI.update focusAction model
+        
+        LanguageAction languageAction ->
+            LanguageService.update languageAction model
+
+        _ -> model
+
+
+

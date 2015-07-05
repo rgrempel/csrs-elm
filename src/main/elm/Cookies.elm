@@ -1,4 +1,4 @@
-module Cookies where
+module Cookies (getCookies) where
 
 import Native.Cookies
 import Task exposing (Task, andThen)

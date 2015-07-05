@@ -1,26 +1,25 @@
-module Translation.Language where
+module Language.LanguageText where
 
-import Translation.Model exposing (Language(EN, FR, LA))
+import Language.LanguageService exposing (Language(EN, FR, LA))
 import Html exposing (Html, text)
 
-type Message
-    = Want Language
+type alias Message = Language
 
 translate : Language -> Message -> Html
 translate language message =
     text <|
         case message of
-            Want EN -> case language of
+            EN -> case language of
                 EN -> "English"
                 FR -> "Anglais"
                 LA -> "Anglicus"
 
-            Want FR -> case language of
+            FR -> case language of
                 EN -> "French"
                 FR -> "Français"
                 LA -> "Gallicus"
 
-            Want LA -> case language of
+            LA -> case language of
                 EN -> "Latin"
                 FR -> "Latin"
                 LA -> "Latina"

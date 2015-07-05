@@ -1,11 +1,13 @@
-module NavBar.Language where
+module NavBar.NavBarText where
 
-import Translation.Model exposing (Language(EN, FR, LA))
+import Language.LanguageService exposing (Language(EN, FR, LA))
 import Html exposing (Html, text)
 
 type Message
     = ToggleNavigation
     | Title
+
+{-
     | Language
     | Home
     | Account
@@ -15,6 +17,7 @@ type Message
     | Login
     | Logout
     | Register
+-}
 
 translate : Language -> Message -> Html
 translate language message =
@@ -30,6 +33,7 @@ translate language message =
                 FR -> "SCÉR adhésion"
                 LA -> "Sodalitas SCSR"
 
+{-
             Language -> case language of
                 EN -> "Language"
                 FR -> "Langue"
@@ -45,35 +49,12 @@ translate language message =
                 FR -> "Compte"
                 LA -> "Tessera"
 
-            Settings -> case language of
-                EN -> "Settings"
-                FR -> "Profil"
-                LA -> "Optiones"
-
-            Password -> case language of
-                EN -> "Password"
-                FR -> "Mot de passe"
-                LA -> "Signum"
-
-            Sessions -> case language of
-                EN -> "Sessions"
-                FR -> "Sessions"
-                LA -> "Sessiones"
 
             Login -> case language of
                 EN -> "Authenticate"
                 FR -> "S'authentifier"
                 LA -> "Cosigno"
-
-            Logout -> case language of
-                EN -> "Log out"
-                FR -> "Déconnexion"
-                LA -> "Conventum concludere"
-
-            Register -> case language of
-                EN -> "Register"
-                FR -> "Créer un compte"
-                LA -> "Subsigno"
+-}
 
 
 {-
