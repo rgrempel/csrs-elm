@@ -11,6 +11,7 @@ node_modules
 .merge_file*
 .sass-cache
 .DS_Store
+elm.js
 lombok.jar
 src/main/generated
 src/main/webapp/dist
