@@ -1,14 +1,11 @@
 module Cookies (getCookies) where
 
 import Native.Cookies
-import Task exposing (Task, andThen)
+import Task exposing (Task)
 import String exposing (split, trim)
 import List exposing (map, filterMap)
 import Dict exposing (Dict, fromList)
-import Http exposing (uriDecode, send)
-
-
-type alias Cookies = Dict String String
+import Http exposing (uriDecode)
 
 
 getCookieString : Task x String
@@ -16,7 +13,7 @@ getCookieString =
     Native.Cookies.getCookieString
 
 
-getCookies : Task x Cookies
+getCookies : Task x (Dict String String)
 getCookies =
     Task.map cookieString2Dict getCookieString
 
@@ -36,7 +33,7 @@ uriDecodeTuple (a, b) =
     (uriDecode a, uriDecode b)
 
 
-cookieString2Dict : String -> Cookies 
+cookieString2Dict : String -> Dict String String 
 cookieString2Dict cookieString =
     let
         listOfTrimmedCookies =
