@@ -63,17 +63,17 @@ translateHtml language message =
         Failed -> span [] <| case language of 
             EN -> 
                 [ strong [] [ text "Authentication failed!" ]
-                , text "Please check your credentials and try again."
+                , text " Please check your credentials and try again."
                 ]
             
             FR ->
                 [ strong [] [ text "Erreur d'authentification!" ]
-                , text "Veuillez vérifier vos identifiants de connexion."
+                , text " Veuillez vérifier vos identifiants de connexion."
                 ]
 
             LA ->
                 [ strong [] [ text "Defecit authenticitate!" ]
-                , text "Probā signum atque iterum cosignio."
+                , text " Probā signum atque iterum cosignio."
                 ]
 
         Register -> span [] <| case language of

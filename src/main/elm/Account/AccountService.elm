@@ -1,15 +1,25 @@
 module Account.AccountService where
 
-import List exposing (foldl)
-import Http exposing (uriEncode, url, string, send, defaultSettings, Response, RawError)
-import Signal exposing (Address, Mailbox, mailbox)
-import Task exposing (Task)
-
+import List exposing (foldl, foldr, intersperse)
+import Http exposing (uriEncode, url, string, send, defaultSettings, Response, RawError(RawTimeout, RawNetworkError))
+import Signal exposing (Mailbox, Address, mailbox)
+import Task exposing (Task, succeed, fail, onError, andThen, toResult)
 import Http.Csrf exposing (withCsrf)
 import Http.CacheBuster exposing (withCacheBuster)
 
-type Action
-    = AttemptLogin Credentials
+type LoginResult
+    = Success        -- 200
+    | WrongPassword  -- 401
+    | WrongCsrf      -- 403
+    | Other Int String
+    | Timeout
+    | NetworkError
+
+type alias LoginCallback a =
+    Maybe (Address a, LoginResult -> a)
+
+type Action a
+    = AttemptLogin Credentials (LoginCallback a)
     | NoOp
 
 type alias Credentials =
@@ -19,19 +29,41 @@ type alias Credentials =
     }
 
 
-service : Mailbox Action
+service : Mailbox (Action a)
 service = mailbox NoOp 
 
 
-action2task : Action -> Maybe (Task () ())
+handleLoginCallback : LoginCallback a -> Result RawError Response -> Task x ()
+handleLoginCallback callback result =
+    case callback of
+        Just (address, func) ->
+            Signal.send address << func <|
+                case result of
+                    Ok response ->
+                        case response.status of
+                            200 -> Success
+                            401 -> WrongPassword
+                            403 -> WrongCsrf
+                            _ -> Other response.status response.statusText
+
+                    Err error ->
+                        case error of
+                            RawTimeout -> Timeout
+                            RawNetworkError -> NetworkError
+
+        _ ->
+            succeed ()
+
+
+action2task : Action a -> Maybe (Task () ())
 action2task action =
     case action of
-        AttemptLogin credentials ->
-            Just <| 
-                Task.map (always ()) <|
-                    Task.mapError (always ()) <|
-                        (attemptLoginTask credentials) 
-
+        AttemptLogin credentials callback ->
+            Just <|
+                toResult (attemptLoginTask credentials)
+                `andThen`
+                (handleLoginCallback callback)
+ 
         _ ->
             Nothing
 
@@ -40,14 +72,12 @@ attemptLoginTask : Credentials -> Task RawError Response
 attemptLoginTask credentials =
     let
         params =
-            foldl
-                ( \iter accum -> accum ++ if accum == "" then iter else "&" ++ iter )
-                ""
+            foldr (++) "" <| intersperse "&"
                 [ "j_username=" ++ uriEncode(credentials.username)
                 , "j_password=" ++ uriEncode(credentials.password)
                 , "remember-me=" ++ ( if credentials.rememberMe then "true" else "false" )
                 ]
-        
+
         request =
             { verb = "POST"
             , headers =

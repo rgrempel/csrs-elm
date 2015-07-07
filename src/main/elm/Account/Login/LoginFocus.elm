@@ -11,19 +11,24 @@ import Maybe exposing (withDefault)
 import Language.LanguageService exposing (Language)
 
 import Account.Login.LoginText as LoginText
-import Account.AccountService as AccountService exposing (Credentials, Action(AttemptLogin))
+import Account.AccountService as AccountService exposing (Credentials, Action(AttemptLogin), LoginResult(WrongPassword))
 
 type Action
     = FocusUserName String
     | FocusPassword String
     | FocusRememberMe Bool
     | FocusBlank
+    | FocusLoginResult LoginResult
 
-type alias Focus = Credentials
+type alias Focus =
+    { credentials: Credentials
+    , loginResult: Maybe LoginResult
+    }
 
 
 hash2focus : List String -> Maybe Focus
-hash2focus hashList = Just blankCredentials
+hash2focus hashList =
+    Just defaultFocus
 
 
 focus2hash : Focus -> List String
@@ -33,21 +38,38 @@ focus2hash focus = []
 updateFocus : Action -> Maybe Focus -> Maybe Focus
 updateFocus action focus =
     let
-        focus' = withDefault blankCredentials focus
+        focus' =
+            withDefault defaultFocus focus
+        
+        updateFocus c =
+            { focus' | credentials <- c }
 
+        credentials =
+            focus'.credentials
+    
     in
         Just <|
             case action of
                 FocusUserName name ->
-                    { focus' | username <- name }
+                     updateFocus { credentials | username <- name }
 
                 FocusPassword password ->
-                    { focus' | password <- password }
+                    updateFocus { credentials | password <- password }
 
                 FocusRememberMe rememberMe ->
-                    { focus' | rememberMe <- rememberMe }
+                    updateFocus { credentials | rememberMe <- rememberMe }
+
+                FocusLoginResult loginResult ->
+                    { focus' | loginResult <- Just loginResult }
 
                 _ -> focus'
+
+
+defaultFocus : Focus
+defaultFocus =
+    { credentials = blankCredentials
+    , loginResult = Nothing
+    }
 
 
 blankCredentials : Credentials
@@ -71,37 +93,43 @@ renderFocus address focus language =
             LoginText.translateText language
 
         usernameField =
-            div [ class "form-group" ]
+            div [ key "username"
+                , class "form-group"
+                ]
                 [ label [ for "username" ] [ transHtml LoginText.Username ]
                 , input
                     [ class "form-control"
                     , type' "text"
                     , id "username"
                     , placeholder <| trans LoginText.UsernamePlaceholder
-                    , value focus.username
+                    , value focus.credentials.username
                     , on "input" targetValue <| (message address) << FocusUserName
                     ] []
                 ]
        
         passwordField =
-            div [ class "form-group" ]
+            div [ key "password"
+                , class "form-group"
+                ]
                 [ label [ for "password" ] [ transHtml LoginText.Password ]
                 , input
                     [ class "form-control"
                     , type' "password"
                     , id "password"
-                    , value focus.password
+                    , value focus.credentials.password
                     , placeholder <| trans LoginText.PasswordPlaceholder
                     , on "input" targetValue <| (message address) << FocusPassword
                     ] []
                 ]
                  
         rememberMeField =
-            div [ class "form-group" ]
+            div [ key "rememberMe"
+                , class "form-group"
+                ]
                 [ label []
                     [ input
                         [ type' "checkbox"
-                        , checked focus.rememberMe
+                        , checked focus.credentials.rememberMe
                         , on "input" targetChecked <| (message address) << FocusRememberMe
                         ] []
                     , text " "
@@ -112,19 +140,34 @@ renderFocus address focus language =
         submitButton =
             button
                 [ type' "submit"
+                , key "submit"
                 , class "btn btn-primary"
                 ] [ transHtml LoginText.Button ]
+
+        result =
+            case focus.loginResult of
+                Just WrongPassword -> 
+                    div
+                        [ key "result"
+                        , class "alert alert-danger" 
+                        ]
+                        [ transHtml LoginText.Failed ]
+
+                _ ->
+                    div [ key "result" ] []
 
         loginForm =
             Html.form
                 [ class "form"
-                , onSubmit serviceAddress ( AttemptLogin focus ) 
+                , onSubmit serviceAddress
+                    <| AttemptLogin focus.credentials <| Just (address, FocusLoginResult)
                 , role "form"
                 ]
                 [ usernameField
                 , passwordField
                 , rememberMeField
                 , submitButton
+                , result 
                 ]
         
     in

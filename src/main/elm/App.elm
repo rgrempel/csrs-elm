@@ -28,14 +28,14 @@ initialModel =
     ))
 
 
-type Action
-    = AccountAction AccountService.Action
+type Action a
+    = AccountAction (AccountService.Action a)
     | FocusAction FocusUI.Action
     | LanguageAction LanguageService.Action
     | NoOp
 
 
-service : Signal Action
+service : Signal (Action a)
 service =
     Signal.mergeMany
         [ Signal.map FocusAction <| FocusUI.hashSignal
@@ -103,7 +103,7 @@ port tasks =
         (Signal.map AccountService.action2task (.signal AccountService.service))
 
 
-update : Action -> Model -> Model
+update : Action a -> Model -> Model
 update action model =
     case action of
         -- Doesn't exist at moment ...
