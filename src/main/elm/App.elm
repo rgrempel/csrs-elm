@@ -13,19 +13,21 @@ import Signal.Extra exposing (foldp')
 import TaskTutorial exposing (print)
 import Http exposing (RawError, Response)
 
-type alias Model =
+type alias Model m =
     LanguageService.Model (
+    AccountService.Model (
     FocusUI.Model (
       {} 
-    ))
+    )))
 
 
-initialModel : Model
+initialModel : Model m
 initialModel =
-    LanguageService.init (
+    AccountService.init ( 
     FocusUI.init (
+    LanguageService.init (
         {}
-    ))
+    )))
 
 
 type Action a
@@ -50,7 +52,7 @@ main =
     Signal.map render heraclitus
 
 
-render : Model -> Html
+render : Model m -> Html
 render model =
     div []
     [ NavBarUI.render model.focus model.useLanguage
@@ -58,7 +60,7 @@ render model =
     ]
 
 
-heraclitus : Signal Model
+heraclitus : Signal (Model m)
 heraclitus =
     let
         initialUpdate = 
@@ -99,16 +101,21 @@ port locationUpdates =
 port tasks : Signal (Task () ())
 port tasks =
     Signal.Extra.filter
-        (Task.succeed ()) 
+        (Task.map
+            (always ())
+            (Task.sequence
+                [ AccountService.fetchCurrentUserTask 
+                ]
+            )
+        ) 
         (Signal.map AccountService.action2task (.signal AccountService.service))
 
 
-update : Action a -> Model -> Model
+update : Action a -> Model m -> Model m
 update action model =
     case action of
-        -- Doesn't exist at moment ...
-        -- AccountAction accountAction ->
-        --     AccountService.update accountAction model'
+        AccountAction accountAction ->
+            AccountService.update accountAction model
 
         FocusAction focusAction ->
             FocusUI.update focusAction model

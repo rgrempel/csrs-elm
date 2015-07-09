@@ -1,6 +1,8 @@
 module Language.LanguageService where
 
 import Signal exposing (Mailbox, mailbox)
+import Json.Decode exposing (Decoder, string, andThen, succeed, fail)
+import String exposing (toUpper)
 
 type Language = EN | FR | LA
 
@@ -16,9 +18,24 @@ type alias Model m =
 
 init : m -> Model m
 init model =
-    { model
-        | useLanguage = defaultLanguage
-    }
+    Model defaultLanguage model
+
+
+decoder : Decoder Language
+decoder =
+    string `andThen` \s ->
+        case (toUpper s) of
+            "EN" ->
+                succeed EN
+
+            "LA" ->
+                succeed LA
+
+            "FR" ->
+                succeed FR
+
+            _ ->
+                fail <| s ++ " is not a language I recognize"
 
 
 allLanguages : List Language

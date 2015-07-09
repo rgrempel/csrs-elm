@@ -3,13 +3,14 @@ module Focus.FocusUI where
 import String exposing (split)
 import Home.HomeFocus as HomeFocus
 import Account.AccountFocus as AccountFocus
+import Account.AccountService as AccountService
 import Error.ErrorFocus as ErrorFocus
 import Admin.AdminFocus as AdminFocus
 import Tasks.TasksFocus as TasksFocus
 import Signal exposing (Mailbox, mailbox, Address, forwardTo)
 import String exposing (uncons)
 import Http exposing (uriDecode, uriEncode)
-import Language.LanguageService exposing (Language(..))
+import Language.LanguageService exposing (Language)
 import Html exposing (Html)
 import Maybe exposing (withDefault)
 import History exposing (hash, setPath, replacePath)
@@ -36,22 +37,19 @@ type Action
 
 type alias Hash = String
 
-type alias Model a =
-    { a
+type alias Model m =
+    { m
         | focus : Focus
         , desiredLocation : Maybe DesiredLocation
     }
 
+type alias SuperModel m =
+    AccountService.Model (Model {})
+
 
 init : m -> Model m
 init model =
-    let
-        model' = { model | focus = initialFocus }
-
-    in
-        { model' | 
-            desiredLocation = Nothing
-        }
+    Model initialFocus Nothing model
 
 
 homeFocus : Focus -> Maybe HomeFocus.Focus
@@ -223,11 +221,12 @@ update action model =
         }
 
 
-render : Model m -> Language -> Html
+-- For some reason, it's hard to make things work if I state the type for this.
+-- render : SuperModel m -> Language -> Html
 render model language =
     case model.focus of
         Home homeFocus ->
-            HomeFocus.renderFocus language
+            HomeFocus.renderFocus model.currentUser language
         
         Error ->
             ErrorFocus.render language

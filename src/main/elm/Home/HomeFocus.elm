@@ -2,10 +2,11 @@ module Home.HomeFocus where
 
 import Html exposing (Html, div, button, text, span, h1, p, ul, li, a)
 import Html.Events exposing (onClick)
-import Html.Attributes exposing (class, key, classList)
+import Html.Attributes exposing (href, class, key, classList)
 import Html.Util exposing (glyphicon, unbreakableSpace)
 import Signal exposing (Address)
 import Language.LanguageService exposing (Language(..))
+import Account.AccountService as AccountService exposing (User)
 
 import Home.HomeText as HomeText
 
@@ -32,10 +33,46 @@ updateFocus action focus =
         _ -> focus
 
 
-renderFocus : Language -> Html
-renderFocus language =
+renderFocus : Maybe User -> Language -> Html
+renderFocus user language =
     let 
-        trans = HomeText.translate language
+        trans = 
+            HomeText.translate language
+
+        loginHtml =
+            case user of
+                Just u ->
+                    [ div [ class "alert alert-success" ]
+                        [ trans (HomeText.LoggedInAs u.login) ]
+                    ]
+
+                _ ->
+                    []
+   
+        thingsMembersCanDo =
+            case user of
+                Just u ->
+                    [ ul []
+                        [ li []
+                            [ a [ href "#!/account/settings" ]
+                                [ trans HomeText.CheckMembershipInformation ]
+                            ]
+                        ]
+                    ]
+
+                _ ->
+                    []
+
+        thingsToDoIfNotLoggedIn =
+            case user of
+                Nothing ->
+                    [ div [ class "alert alert-warning" ] [ trans HomeText.BeenHereBefore ]
+                    , div [ class "alert alert-warning" ] [ trans HomeText.NoAccount ]
+                    ]
+
+                _ ->
+                    []
+
 
     in
         div [ class "main container" ]
@@ -45,9 +82,16 @@ renderFocus language =
                         [ span [ class "csrs-logo img-responsive img-rounded" ] []
                         ]
                     , div [ class "col-md-8" ]
-                        [ h1 [] [ trans HomeText.Title ]
-                        , p [ class "lead" ] [ trans HomeText.Subtitle ]
-                        ]
+                        (List.concat
+                            [ [ h1 [] [ trans HomeText.Title ]
+                              , p [ class "lead" ] [ trans HomeText.Subtitle ]
+                              ]
+                              , loginHtml
+                              , thingsMembersCanDo
+                              , thingsToDoIfNotLoggedIn
+                              , [trans HomeText.MoreInformation]
+                            ]
+                        )
                     ]
                 ]
             ]

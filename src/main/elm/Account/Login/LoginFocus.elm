@@ -41,26 +41,23 @@ updateFocus action focus =
         focus' =
             withDefault defaultFocus focus
         
-        updateFocus c =
-            { focus' | credentials <- c }
+        updateCredentials func value =
+            @credentials (func value focus'.credentials) focus'
 
-        credentials =
-            focus'.credentials
-    
     in
         Just <|
             case action of
                 FocusUserName name ->
-                     updateFocus { credentials | username <- name }
+                    updateCredentials @username name
 
                 FocusPassword password ->
-                    updateFocus { credentials | password <- password }
+                    updateCredentials @password password
 
                 FocusRememberMe rememberMe ->
-                    updateFocus { credentials | rememberMe <- rememberMe }
+                    updateCredentials @rememberMe rememberMe
 
                 FocusLoginResult loginResult ->
-                    { focus' | loginResult <- Just loginResult }
+                    @loginResult (Just loginResult) focus'
 
                 _ -> focus'
 
