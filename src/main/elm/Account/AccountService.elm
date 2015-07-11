@@ -9,6 +9,7 @@ import Http.Csrf exposing (withCsrf)
 import Http.CacheBuster exposing (withCacheBuster)
 import Json.Decode as JD exposing ((:=))
 
+
 type LoginResult
     = Success        -- 200
     | WrongPassword  -- 401
@@ -38,6 +39,7 @@ type alias User =
     , roles: List String
     }
 
+
 userDecoder : JD.Decoder User
 userDecoder =
     JD.object3 User
@@ -53,13 +55,20 @@ type alias Model m =
 
 
 init : m -> Model m
-init model =
-    Model Nothing model
+init model = Model Nothing model
 
 
-service : Mailbox (Action a)
-service = mailbox NoOp 
+actions : Mailbox (Action a)
+actions = mailbox NoOp 
 
+
+do : Action a -> Task x ()
+do = Signal.send actions.address
+
+
+tasks : Signal (Maybe (Task () ()))
+tasks = Signal.map reaction (.signal actions)
+    
 
 update : Action a -> Model m -> Model m
 update action model =
@@ -71,8 +80,8 @@ update action model =
             model
 
 
-action2task : Action a -> Maybe (Task () ())
-action2task action =
+reaction : Action a -> Maybe (Task () ())
+reaction action =
     case action of
         AttemptLogin credentials callback ->
             Just <| attemptLoginTask credentials callback
@@ -84,9 +93,8 @@ action2task action =
             Nothing
 
 
-send : Settings -> Request -> Task RawError Response
-send =
-    (withCacheBuster (withCsrf Http.send))
+send : Request -> Task RawError Response
+send = (withCacheBuster (withCsrf Http.send)) defaultSettings
 
 
 handleLoginCallback : LoginCallback a -> Result RawError Response -> Task x ()
@@ -131,9 +139,9 @@ attemptLoginTask credentials callback =
             }
 
     in
-        toResult (send defaultSettings request)
+        toResult (send request)
         `andThen` \result ->
-            toResult (Signal.send service.address FetchCurrentUser)
+            toResult (do FetchCurrentUser)
             `andThen`
             always (handleLoginCallback callback result)
 
@@ -141,18 +149,18 @@ attemptLoginTask credentials callback =
 fetchCurrentUserTask : Task () () 
 fetchCurrentUserTask =
     Http.fromJson userDecoder (
-        send defaultSettings
+        send
             { verb = "GET"
             , headers = []
             , url = url "/api/account" []
             , body = Http.empty
             }
     ) `andThen` (\user ->
-        Signal.send service.address (SetCurrentUser (Just user))
+        do <| SetCurrentUser (Just user)
     ) `onError` (\error ->
         case error of
             BadResponse 401 _ ->
-                Signal.send service.address (SetCurrentUser Nothing)
+                do <| SetCurrentUser Nothing
 
             -- Other bad responses?
             -- NetworkError

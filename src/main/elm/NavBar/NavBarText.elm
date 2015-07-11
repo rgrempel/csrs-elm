@@ -3,6 +3,7 @@ module NavBar.NavBarText where
 import Language.LanguageService exposing (Language(EN, FR, LA))
 import Html exposing (Html, text)
 
+
 type Message
     = ToggleNavigation
     | Title

@@ -22,6 +22,7 @@ import Language.LanguageService exposing (Language)
 import Html exposing (Html)
 import Maybe exposing (withDefault)
 import History exposing (hash, setPath, replacePath)
+import Task exposing (Task)
 
 
 type DesiredLocation
@@ -38,8 +39,7 @@ type alias Model m =
 
 
 init : m -> Model m
-init model =
-    Model initialFocus Nothing model
+init model = Model initialFocus Nothing model
 
 
 homeFocus : Focus -> Maybe HomeTypes.Focus
@@ -158,6 +158,20 @@ focus2hash focus =
             hashList
 
 
+tasks : Signal (Maybe (Task () ()))
+tasks = Signal.map reaction (.signal actions)
+    
+
+reaction : Action -> Maybe (Task () ())
+reaction action =
+    case action of
+        FocusAccount action ->
+            AccountFocus.reaction action
+
+        _ ->
+            Nothing
+
+
 update : Action -> Model m -> Model m
 update action model =
     let
@@ -207,6 +221,10 @@ update action model =
         }
 
 
+forward : (a -> Action) -> Address a
+forward = forwardTo actions.address
+
+
 render : { a | currentUser : Maybe AccountService.User, focus : Focus } -> Language -> Html
 render model language =
     case model.focus of
@@ -217,31 +235,19 @@ render model language =
             ErrorFocus.render language
         
         Account accountFocus ->
-            AccountFocus.renderFocus (forwardTo focusActions.address FocusAccount) accountFocus language
+            AccountFocus.renderFocus (forward FocusAccount) accountFocus language
         
         Admin adminFocus ->
-            AdminFocus.renderFocus (forwardTo focusActions.address FocusAdmin) adminFocus language
+            AdminFocus.renderFocus (forward FocusAdmin) adminFocus language
 
         Tasks tasksFocus ->
-            TasksFocus.renderFocus (forwardTo focusActions.address FocusTasks) tasksFocus language
+            TasksFocus.renderFocus (forward FocusTasks) tasksFocus language
 
 
 renderMenus : Focus -> Language -> List Html
 renderMenus focus language =
-    [ HomeFocus.renderMenu 
-        (forwardTo focusActions.address FocusHome)
-        (homeFocus focus)
-        language
-    , TasksFocus.renderMenu
-        (forwardTo focusActions.address FocusTasks)
-        (tasksFocus focus)
-        language
-    , AccountFocus.renderMenu
-        (forwardTo focusActions.address FocusAccount)
-        (accountFocus focus)
-        language
-    , AdminFocus.renderMenu
-        (forwardTo focusActions.address FocusAdmin)
-        (adminFocus focus)
-        language
+    [ HomeFocus.renderMenu (forward FocusHome) (homeFocus focus) language
+    , TasksFocus.renderMenu (forward FocusTasks) (tasksFocus focus) language
+    , AccountFocus.renderMenu (forward FocusAccount) (accountFocus focus) language
+    , AdminFocus.renderMenu (forward FocusAdmin) (adminFocus focus) language
     ]

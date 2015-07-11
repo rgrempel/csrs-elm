@@ -16,8 +16,7 @@ import Home.HomeText as HomeText
 
 
 hash2focus : List String -> Maybe Focus
-hash2focus hashList =
-    Just Home
+hash2focus hashList = Just Home
 
 
 focus2hash : Focus -> List String

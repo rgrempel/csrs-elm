@@ -10,6 +10,7 @@ import Account.Login.LoginTypes as LoginTypes
 import Account.AccountText as AccountText
 import Language.LanguageService exposing (Language)
 import Html.Util exposing (dropdownMenu, dropdownToggle, dropdownPointer, glyphicon, unbreakableSpace)
+import Task exposing (Task)
 
 
 hash2focus : List String -> Maybe Focus
@@ -62,6 +63,16 @@ focus2hash focus =
 
         Register ->
             ["register"]
+
+
+reaction : Action -> Maybe (Task () ())
+reaction action =
+    case action of
+        FocusLogin action ->
+            LoginFocus.reaction action
+
+        _ ->
+            Nothing
 
 
 updateFocus : Action -> Maybe Focus -> Maybe Focus

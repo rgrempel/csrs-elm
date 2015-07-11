@@ -1,6 +1,6 @@
 module Language.LanguageUI where
 
-import Language.LanguageService exposing (Language, allLanguages, service, Action(SwitchLanguage))
+import Language.LanguageService exposing (Language, allLanguages, actions, Action(SwitchLanguage))
 import Language.LanguageText as LanguageText
 import Html.Util exposing (dropdownPointer, dropdownToggle, glyphicon, unbreakableSpace, dropdownMenu)
 import Html exposing (Html, li, a, text, span)
@@ -20,7 +20,7 @@ renderMenu language =
                     [ ( "active", language == lang ) ]
                 ]
                 [ a
-                    [ onClick (.address service) (SwitchLanguage lang) ]
+                    [ onClick actions.address (SwitchLanguage lang) ]
                     [ trans <| LanguageText.TheWordFor lang ]
                 ]
 

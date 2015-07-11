@@ -9,20 +9,31 @@ import Html.Events exposing (..)
 import Html.Util exposing (role, glyphicon, unbreakableSpace)
 import Signal exposing (Address)
 import Maybe exposing (withDefault)
-
+import Task exposing (Task)
 import Language.LanguageService exposing (Language)
-
 import Account.Login.LoginText as LoginText
-import Account.AccountService as AccountService exposing (Credentials, Action(AttemptLogin), LoginResult(WrongPassword))
+import Account.AccountService as AccountService exposing (Credentials, Action(AttemptLogin), LoginResult(WrongPassword, Success))
+import Focus.FocusTypes as FocusTypes
+import Home.HomeTypes as HomeTypes
 
 
 hash2focus : List String -> Maybe Focus
-hash2focus hashList =
-    Just defaultFocus
+hash2focus hashList = Just defaultFocus
 
 
 focus2hash : Focus -> List String
 focus2hash focus = []
+
+
+reaction : LoginTypes.Action -> Maybe (Task () ())
+reaction action =
+    case action of
+        FocusLoginResult Success ->
+            Just <|
+                FocusTypes.do (FocusTypes.FocusHome HomeTypes.FocusHome) 
+
+        _ ->
+            Nothing
 
 
 updateFocus : LoginTypes.Action -> Maybe Focus -> Maybe Focus
@@ -71,7 +82,7 @@ renderFocus : Address LoginTypes.Action -> Focus -> Language -> Html
 renderFocus address focus language =
     let
         serviceAddress =
-            .address AccountService.service
+            .address AccountService.actions
 
         transHtml =
             LoginText.translateHtml language 
@@ -134,11 +145,18 @@ renderFocus address focus language =
         result =
             case focus.loginResult of
                 Just WrongPassword -> 
-                    div
+                    p
                         [ key "result"
                         , class "alert alert-danger" 
                         ]
                         [ transHtml LoginText.Failed ]
+
+                Just Success ->
+                    p 
+                        [ key "result"
+                        , class "alert alert-success"
+                        ]
+                        [ transHtml LoginText.Succeeded ]
 
                 _ ->
                     div [ key "result" ] []

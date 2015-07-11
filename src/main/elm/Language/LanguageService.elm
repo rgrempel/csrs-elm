@@ -4,21 +4,21 @@ import Signal exposing (Mailbox, mailbox)
 import Json.Decode exposing (Decoder, string, andThen, succeed, fail)
 import String exposing (toUpper)
 
-type Language = EN | FR | LA
+
+type Language =
+    EN | FR | LA
 
 type Action
     = SwitchLanguage Language
     | NoOp
 
-type alias Model m =
-    { m
-        | useLanguage : Language
-    }
+type alias Model m = { m
+    | useLanguage : Language
+}
 
 
 init : m -> Model m
-init model =
-    Model defaultLanguage model
+init model = Model defaultLanguage model
 
 
 decoder : Decoder Language
@@ -46,8 +46,8 @@ defaultLanguage : Language
 defaultLanguage = EN
 
 
-service : Mailbox Action
-service = mailbox NoOp
+actions : Mailbox Action
+actions = mailbox NoOp
 
 
 update : Action -> Model m -> Model m

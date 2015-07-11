@@ -4,7 +4,7 @@ import History exposing (hash, setPath, replacePath)
 import Html exposing (Html, div)
 import Signal exposing (Signal, Mailbox, filter, mailbox, filterMap, merge, foldp, dropRepeats)
 import Task exposing (Task, andThen, onError)
-import Focus.FocusTypes as FocusTypes exposing (focusActions)
+import Focus.FocusTypes as FocusTypes 
 import Focus.FocusUI as FocusUI exposing (DesiredLocation(SetPath, ReplacePath))
 import NavBar.NavBarUI as NavBarUI
 import Account.AccountService as AccountService
@@ -36,13 +36,13 @@ type Action a
     | NoOp
 
 
-service : Signal (Action a)
-service =
+actions : Signal (Action a)
+actions =
     Signal.mergeMany
         [ Signal.map FocusAction <| FocusUI.hashSignal
-        , Signal.map FocusAction <| .signal focusActions
-        , Signal.map AccountAction <| .signal AccountService.service
-        , Signal.map LanguageAction <| .signal LanguageService.service
+        , Signal.map FocusAction <| .signal FocusTypes.actions
+        , Signal.map AccountAction <| .signal AccountService.actions
+        , Signal.map LanguageAction <| .signal LanguageService.actions
         ]
 
 
@@ -66,7 +66,7 @@ heraclitus =
             (flip update) initialModel 
         
     in
-        foldp' update initialUpdate service
+        foldp' update initialUpdate actions 
 
 
 desiredLocations : Signal (Maybe DesiredLocation)
@@ -97,17 +97,27 @@ port locationUpdates =
         Signal.Extra.filter default taskMap
     
 
+initialTask : Task () () 
+initialTask =
+    Task.map
+        (always ())
+        (Task.sequence
+            [ AccountService.fetchCurrentUserTask 
+            ]
+        )
+
+
+mergedTasks : Signal (Maybe (Task () () ))    
+mergedTasks =
+    Signal.mergeMany
+        [ AccountService.tasks
+        , FocusUI.tasks
+        ]
+    
+
 port tasks : Signal (Task () ())
 port tasks =
-    Signal.Extra.filter
-        (Task.map
-            (always ())
-            (Task.sequence
-                [ AccountService.fetchCurrentUserTask 
-                ]
-            )
-        ) 
-        (Signal.map AccountService.action2task (.signal AccountService.service))
+    Signal.Extra.filter initialTask mergedTasks
 
 
 update : Action a -> Model m -> Model m

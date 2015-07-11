@@ -12,6 +12,7 @@ type TextMessage
 
 type HtmlMessage
     = Failed
+    | Succeeded
     | Register
     | Title
     | Username
@@ -77,6 +78,11 @@ translateHtml language message =
                 [ strong [] [ text "Defecit authenticitate!" ]
                 , text " Probā signum atque iterum cosignio."
                 ]
+
+        Succeeded -> text <| case language of
+            EN -> "Login succeeded."
+            FR -> "L'authentification réussi."
+            LA -> "Authenticas successit."
 
         Register ->
             let

@@ -4,10 +4,16 @@
 
 var gulp = require('gulp');
 
-gulp.task('clean', function (cb) {
+gulp.task('clean', ['clean:elm'], function (cb) {
     var del = require('del');
     
     del('build/resources/main/public', cb);
+});
+
+gulp.task('clean:elm', function (cb) {
+    var del = require('del');
+    
+    del('elm-stuff/build-artifacts', cb);
 });
 
 gulp.task('web', function (cb) {

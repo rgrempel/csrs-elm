@@ -3,6 +3,7 @@ module Tasks.TasksText where
 import Language.LanguageService exposing (Language(..))
 import Html exposing (Html, text, span, strong, a)
 
+
 type Message
     = Title
     -- Split out eventually

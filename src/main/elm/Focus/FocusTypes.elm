@@ -24,12 +24,12 @@ type Action
     | NoOp
 
 
-focusActions : Mailbox Action
-focusActions = mailbox NoOp
+actions : Mailbox Action
+actions = mailbox NoOp
 
 
 address : Address Action
-address = focusActions.address
+address = actions.address
 
 
 do : Action -> Task x ()

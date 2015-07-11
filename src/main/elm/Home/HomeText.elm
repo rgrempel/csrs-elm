@@ -19,6 +19,7 @@ type Message
     | NoAccount
     | MoreInformation
 
+
 translate : Language -> Message -> Html
 translate language message =
     case message of
