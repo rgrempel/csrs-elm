@@ -1,5 +1,6 @@
 module Admin.AdminFocus where
 
+import Admin.AdminTypes exposing (..)
 import Html exposing (Html, h1, text, div, li, ul, a, span)
 import Html.Attributes exposing (class, classList, href)
 import Html.Events exposing (onClick)
@@ -7,26 +8,6 @@ import Signal exposing (Address, forwardTo)
 import Admin.AdminText as AdminText
 import Language.LanguageService exposing (Language)
 import Html.Util exposing (dropdownMenu, dropdownToggle, dropdownPointer, glyphicon, unbreakableSpace)
-
-type Focus
-    = Metrics 
-    | Health
-    | Configuration
-    | Audits
-    | Logs
-    | ApiDocs
-    | Templates
-    | Images
-
-type Action
-    = FocusMetrics 
-    | FocusHealth
-    | FocusConfiguration
-    | FocusAudits
-    | FocusLogs
-    | FocusApiDocs
-    | FocusTemplates
-    | FocusImages
 
 
 hash2focus : List String -> Maybe Focus

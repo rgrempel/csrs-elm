@@ -3,6 +3,11 @@ module Home.HomeText where
 import Language.LanguageService exposing (Language(EN, FR, LA))
 import Html exposing (Html, text, span, a, strong)
 import Html.Attributes exposing (href, target)
+import Html.Events exposing (onClick)
+import Focus.FocusTypes exposing (address, Action(FocusAccount))
+import Account.AccountTypes exposing (Action(FocusLogin, FocusRegister))
+import Account.Login.LoginTypes exposing (Action(FocusBlank))
+
 
 type Message
     = Title 
@@ -42,70 +47,89 @@ translate language message =
             FR -> "Vérifiez les informations d'adhésion"
             LA -> "Reprehendo vestri notitia sodalitas"
 
-        MoreInformation -> case language of
-            EN ->
-                span []
-                    [ text "For more information about the "
-                    , strong [] [text "Canadian Society for Renaissance Studies"]
-                    , text ", see our main website, at "
-                    , a [ href "http://csrs-scer.ca/", target "_blank" ] [ text "http://csrs-scer.ca/" ]
-                    ]
-            FR ->
-                span []
-                    [ text "Pour plus d'informations sur le "
-                    , strong [] [text "Société canadienne d'études de la Renaissance"]
-                    , text ", consultez notre site Web principal, au "
-                    , a [ href "http://csrs-scer.ca/", target "_blank" ] [ text "http://csrs-scer.ca/" ]
-                    ]
+        MoreInformation ->
+            let
+                link =
+                    a [ href "http://csrs-scer.ca/", target "_blank" ] 
+                      [ text "http://csrs-scer.ca/" ]
 
-            LA ->
-                span []
-                    [ text "Pro magis notitia de "
-                    , strong [] [text "Societate Canadian Studiorum Renascerentur"]
-                    , text ", ite situm principale ad "
-                    , a [ href "http://csrs-scer.ca/", target "_blank" ] [ text "http://csrs-scer.ca/" ]
-                    ]
+            in
+                case language of
+                    EN ->
+                        span []
+                            [ text "For more information about the "
+                            , strong [] [text "Canadian Society for Renaissance Studies"]
+                            , text ", see our main website, at "
+                            , link
+                            ]
+                    FR ->
+                        span []
+                            [ text "Pour plus d'informations sur le "
+                            , strong [] [text "Société canadienne d'études de la Renaissance"]
+                            , text ", consultez notre site Web principal, au "
+                            , link 
+                            ]
 
-        BeenHereBefore -> case language of
-            EN ->
-                span []
-                    [ text "Been here before? "
-                    , a [ href "#!/account/login" ]
-                        [ text "Login with your account." ]
-                    ]
-            FR -> 
-                span []
-                    [ text "Vous connaissez cet endroit? "
-                    , a [ href "#!/account/login" ]
-                        [ text "Connecter avec votre compte." ]
-                    ]
+                    LA ->
+                        span []
+                            [ text "Pro magis notitia de "
+                            , strong [] [text "Societate Canadian Studiorum Renascerentur"]
+                            , text ", ite situm principale ad "
+                            , link
+                            ]
 
-            LA ->
-                span []
-                    [ text "Numquid hie fuerunt prius? "
-                    , a [ href "#!/account/login" ]
-                        [ text "Cosigno in tesseram vestram." ]
-                    ]
+        BeenHereBefore ->
+            let
+                loginLink =
+                    onClick address <| FocusAccount <| FocusLogin FocusBlank 
 
-        NoAccount -> case language of
-            EN ->
-                span []
-                    [ text "Don't have an account yet? "
-                    , a [ href "#!/account/register" ]
-                        [ text "Register a new account." ]
-                    ]
+            in
+                case language of
+                    EN ->    
+                        span []
+                            [ text "Been here before? "
+                            , a [ loginLink ]
+                                [ text "Login with your account." ]
+                            ]
+                    FR -> 
+                        span []
+                            [ text "Vous connaissez cet endroit? "
+                            , a [ loginLink ]
+                                [ text "Connecter avec votre compte." ]
+                            ]
 
-            FR ->
-                span []
-                    [ text "Vous n'avez pas encore de compte? "
-                    , a [ href "#!/account/register" ]
-                        [ text "Créer un compte." ]
-                    ]
+                    LA ->
+                        span []
+                            [ text "Numquid hie fuerunt prius? "
+                            , a [ loginLink ]
+                                [ text "Cosigno in tesseram vestram." ]
+                            ]
 
-            LA ->
-                span []
-                    [ text "Sed non tamen tesseram? "
-                    , a [ href "#!/account/register" ]
-                        [ text "Subsigno tesseram novam." ]
-                    ]
+        NoAccount ->
+            let
+                link =
+                    onClick address <| FocusAccount FocusRegister
+
+            in
+                case language of
+                    EN ->
+                        span []
+                            [ text "Don't have an account yet? "
+                            , a [ link ]
+                                [ text "Register a new account." ]
+                            ]
+
+                    FR ->
+                        span []
+                            [ text "Vous n'avez pas encore de compte? "
+                            , a [ link ]
+                                [ text "Créer un compte." ]
+                            ]
+
+                    LA ->
+                        span []
+                            [ text "Sed non tamen tesseram? "
+                            , a [ link ]
+                                [ text "Subsigno tesseram novam." ]
+                            ]
 

@@ -1,11 +1,8 @@
 module Error.ErrorFocus where
 
 import Html exposing (Html, div, button, text, span, h1, p, ul, li)
-import Html.Events exposing (onClick)
 import Html.Attributes exposing (class, key)
-
 import Language.LanguageService exposing (Language)
-
 import Error.ErrorText as ErrorText
 
 

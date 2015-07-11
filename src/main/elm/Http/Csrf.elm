@@ -6,7 +6,11 @@ import Dict exposing (get)
 import Cookies exposing (getCookies)
 
 
+csrfCookie : String
 csrfCookie = "CSRF-TOKEN"
+
+
+csrfHeader : String
 csrfHeader = "X-CSRF-TOKEN"
 
 

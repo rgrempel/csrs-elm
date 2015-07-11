@@ -4,7 +4,6 @@ import String exposing (fromChar)
 import Char exposing (fromCode)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (..)
 
 
 unbreakableSpace : String
@@ -32,7 +31,7 @@ dropdownToggle =
     a
         [ class "dropdown-toggle"
         , dataToggle "dropdown"
-        , href "#"
+--        , href "#"
         ]
 
 

@@ -2,7 +2,9 @@ module Account.Login.LoginText where
 
 import Language.LanguageService exposing (Language(..))
 import Html exposing (Html, text, span, strong, a)
-import Html.Attributes exposing (href)
+import Html.Events exposing (onClick)
+import Focus.FocusTypes exposing (address, Action(FocusAccount))
+import Account.AccountTypes exposing (Action(FocusRegister))
 
 type TextMessage
     = UsernamePlaceholder
@@ -76,21 +78,27 @@ translateHtml language message =
                 , text " Probā signum atque iterum cosignio."
                 ]
 
-        Register -> span [] <| case language of
-            EN ->
-                [ text "Don't have an account yet?"
-                , a [ href "#!/account/create" ]
-                    [ text "Register a new account." ]
-                ]
+        Register ->
+            let
+                action =
+                    onClick address <| FocusAccount FocusRegister 
+           
+            in
+                span [] <| case language of
+                    EN ->
+                        [ text "Don't have an account yet?"
+                        , a [ action ]
+                            [ text "Register a new account." ]
+                        ]
 
-            FR ->
-                [ text "Vous n'avez pas encore de compte?"
-                , a [ href "#!/account/create" ]
-                    [ text "Créer un compte." ]
-                ]
+                    FR ->
+                        [ text "Vous n'avez pas encore de compte?"
+                        , a [ action ]
+                            [ text "Créer un compte." ]
+                        ]
 
-            LA ->
-                [ text "Sed non tamen tesseram?"
-                , a [ href "#!/account/create" ]
-                    [ text "Subsigno tesseram novam." ]
-                ]
+                    LA ->
+                        [ text "Sed non tamen tesseram?"
+                        , a [ action ]
+                            [ text "Subsigno tesseram novam." ]
+                        ]

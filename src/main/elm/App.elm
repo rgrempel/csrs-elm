@@ -4,14 +4,13 @@ import History exposing (hash, setPath, replacePath)
 import Html exposing (Html, div)
 import Signal exposing (Signal, Mailbox, filter, mailbox, filterMap, merge, foldp, dropRepeats)
 import Task exposing (Task, andThen, onError)
-import List exposing (foldl)
+import Focus.FocusTypes as FocusTypes exposing (focusActions)
 import Focus.FocusUI as FocusUI exposing (DesiredLocation(SetPath, ReplacePath))
 import NavBar.NavBarUI as NavBarUI
 import Account.AccountService as AccountService
 import Language.LanguageService as LanguageService
 import Signal.Extra exposing (foldp')
-import TaskTutorial exposing (print)
-import Http exposing (RawError, Response)
+
 
 type alias Model m =
     LanguageService.Model (
@@ -32,7 +31,7 @@ initialModel =
 
 type Action a
     = AccountAction (AccountService.Action a)
-    | FocusAction FocusUI.Action
+    | FocusAction FocusTypes.Action
     | LanguageAction LanguageService.Action
     | NoOp
 
@@ -41,7 +40,7 @@ service : Signal (Action a)
 service =
     Signal.mergeMany
         [ Signal.map FocusAction <| FocusUI.hashSignal
-        , Signal.map FocusAction <| .signal FocusUI.focusActions
+        , Signal.map FocusAction <| .signal focusActions
         , Signal.map AccountAction <| .signal AccountService.service
         , Signal.map LanguageAction <| .signal LanguageService.service
         ]

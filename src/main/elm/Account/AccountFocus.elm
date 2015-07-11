@@ -1,29 +1,15 @@
 module Account.AccountFocus where
 
+import Account.AccountTypes exposing (..)
 import Html exposing (Html, h1, text, div, li, ul, a, span)
 import Html.Attributes exposing (class, classList, href)
 import Html.Events exposing (onClick)
 import Signal exposing (Address, forwardTo)
 import Account.Login.LoginFocus as LoginFocus
+import Account.Login.LoginTypes as LoginTypes
 import Account.AccountText as AccountText
 import Language.LanguageService exposing (Language)
 import Html.Util exposing (dropdownMenu, dropdownToggle, dropdownPointer, glyphicon, unbreakableSpace)
-
-type Focus
-    = Settings
-    | Password
-    | Sessions
-    | Logout
-    | Login LoginFocus.Focus
-    | Register
-
-type Action
-    = FocusLogin LoginFocus.Action 
-    | FocusSettings
-    | FocusPassword
-    | FocusSessions
-    | FocusLogout
-    | FocusRegister
 
 
 hash2focus : List String -> Maybe Focus
@@ -129,7 +115,7 @@ renderFocus address focus language =
                     language
 
 
-loginFocus : Maybe Focus -> Maybe LoginFocus.Focus
+loginFocus : Maybe Focus -> Maybe LoginTypes.Focus
 loginFocus focus =
     case focus of
         Just (Login loginFocus) -> Just loginFocus

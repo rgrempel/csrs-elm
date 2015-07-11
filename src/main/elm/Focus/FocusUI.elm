@@ -1,12 +1,20 @@
 module Focus.FocusUI where
 
+import Focus.FocusTypes exposing (..)
 import String exposing (split)
+import Account.AccountService as AccountService
+
+import Home.HomeTypes as HomeTypes
+import Account.AccountTypes as AccountTypes
+import Admin.AdminTypes as AdminTypes
+import Tasks.TasksTypes as TasksTypes
+
 import Home.HomeFocus as HomeFocus
 import Account.AccountFocus as AccountFocus
-import Account.AccountService as AccountService
-import Error.ErrorFocus as ErrorFocus
 import Admin.AdminFocus as AdminFocus
 import Tasks.TasksFocus as TasksFocus
+import Error.ErrorFocus as ErrorFocus
+
 import Signal exposing (Mailbox, mailbox, Address, forwardTo)
 import String exposing (uncons)
 import Http exposing (uriDecode, uriEncode)
@@ -15,25 +23,10 @@ import Html exposing (Html)
 import Maybe exposing (withDefault)
 import History exposing (hash, setPath, replacePath)
 
+
 type DesiredLocation
     = ReplacePath String
     | SetPath String
-
-type Focus
-    = Home HomeFocus.Focus
-    | Account AccountFocus.Focus
-    | Admin AdminFocus.Focus
-    | Tasks TasksFocus.Focus
-    | Error 
-
-type Action
-    = SwitchFocus Focus
-    | SwitchFocusFromPath Focus
-    | AccountAction AccountFocus.Action
-    | HomeAction HomeFocus.Action
-    | AdminAction AdminFocus.Action
-    | TasksAction TasksFocus.Action
-    | NoOp
 
 type alias Hash = String
 
@@ -43,49 +36,42 @@ type alias Model m =
         , desiredLocation : Maybe DesiredLocation
     }
 
-type alias SuperModel m =
-    AccountService.Model (Model {})
-
 
 init : m -> Model m
 init model =
     Model initialFocus Nothing model
 
 
-homeFocus : Focus -> Maybe HomeFocus.Focus
+homeFocus : Focus -> Maybe HomeTypes.Focus
 homeFocus focus =
     case focus of
         Home hf -> Just hf
         _ -> Nothing
 
 
-accountFocus : Focus -> Maybe AccountFocus.Focus
+accountFocus : Focus -> Maybe AccountTypes.Focus
 accountFocus focus =
     case focus of
         Account af -> Just af
         _ -> Nothing
 
 
-adminFocus : Focus -> Maybe AdminFocus.Focus
+adminFocus : Focus -> Maybe AdminTypes.Focus
 adminFocus focus =
     case focus of
         Admin af -> Just af
         _ -> Nothing
 
 
-tasksFocus : Focus -> Maybe TasksFocus.Focus
+tasksFocus : Focus -> Maybe TasksTypes.Focus
 tasksFocus focus =
     case focus of
         Tasks af -> Just af
         _ -> Nothing
 
 
-focusActions : Mailbox Action
-focusActions = mailbox NoOp
-
-
 initialFocus : Focus
-initialFocus = Home HomeFocus.Home 
+initialFocus = Home HomeTypes.Home 
 
 
 hashPrefix : String
@@ -187,28 +173,28 @@ update action model =
                 (SwitchFocusFromPath focus, _) ->
                     (Just focus, ReplacePath)
 
-                (AccountAction accountAction, Account accountFocus) ->
+                (FocusAccount accountAction, Account accountFocus) ->
                     (Maybe.map Account <| AccountFocus.updateFocus accountAction <| Just accountFocus, SetPath)
 
-                (AccountAction accountAction, _) ->
+                (FocusAccount accountAction, _) ->
                     (Maybe.map Account <| AccountFocus.updateFocus accountAction Nothing, SetPath)
 
-                (HomeAction homeAction, Home homeFocus) ->
+                (FocusHome homeAction, Home homeFocus) ->
                     (Maybe.map Home <| HomeFocus.updateFocus homeAction <| Just homeFocus, SetPath)
                 
-                (HomeAction homeAction, _) ->
+                (FocusHome homeAction, _) ->
                     (Maybe.map Home <| HomeFocus.updateFocus homeAction Nothing, SetPath)
 
-                (AdminAction adminAction, Admin adminFocus) ->
+                (FocusAdmin adminAction, Admin adminFocus) ->
                     (Maybe.map Admin <| AdminFocus.updateFocus adminAction <| Just adminFocus, SetPath)
                 
-                (AdminAction adminAction, _) ->
+                (FocusAdmin adminAction, _) ->
                     (Maybe.map Admin <| AdminFocus.updateFocus adminAction Nothing, SetPath)
                 
-                (TasksAction tasksAction, Tasks tasksFocus) ->
+                (FocusTasks tasksAction, Tasks tasksFocus) ->
                     (Maybe.map Tasks <| TasksFocus.updateFocus tasksAction <| Just tasksFocus, SetPath)
                 
-                (TasksAction tasksAction, _) ->
+                (FocusTasks tasksAction, _) ->
                     (Maybe.map Tasks <| TasksFocus.updateFocus tasksAction Nothing, SetPath)
                 
                 (_, _) ->
@@ -221,8 +207,7 @@ update action model =
         }
 
 
--- For some reason, it's hard to make things work if I state the type for this.
--- render : SuperModel m -> Language -> Html
+render : { a | currentUser : Maybe AccountService.User, focus : Focus } -> Language -> Html
 render model language =
     case model.focus of
         Home homeFocus ->
@@ -232,31 +217,31 @@ render model language =
             ErrorFocus.render language
         
         Account accountFocus ->
-            AccountFocus.renderFocus (forwardTo focusActions.address AccountAction) accountFocus language
+            AccountFocus.renderFocus (forwardTo focusActions.address FocusAccount) accountFocus language
         
         Admin adminFocus ->
-            AdminFocus.renderFocus (forwardTo focusActions.address AdminAction) adminFocus language
+            AdminFocus.renderFocus (forwardTo focusActions.address FocusAdmin) adminFocus language
 
         Tasks tasksFocus ->
-            TasksFocus.renderFocus (forwardTo focusActions.address TasksAction) tasksFocus language
+            TasksFocus.renderFocus (forwardTo focusActions.address FocusTasks) tasksFocus language
 
 
 renderMenus : Focus -> Language -> List Html
 renderMenus focus language =
     [ HomeFocus.renderMenu 
-        (forwardTo focusActions.address HomeAction)
+        (forwardTo focusActions.address FocusHome)
         (homeFocus focus)
         language
     , TasksFocus.renderMenu
-        (forwardTo focusActions.address TasksAction)
+        (forwardTo focusActions.address FocusTasks)
         (tasksFocus focus)
         language
     , AccountFocus.renderMenu
-        (forwardTo focusActions.address AccountAction)
+        (forwardTo focusActions.address FocusAccount)
         (accountFocus focus)
         language
     , AdminFocus.renderMenu
-        (forwardTo focusActions.address AdminAction)
+        (forwardTo focusActions.address FocusAdmin)
         (adminFocus focus)
         language
     ]

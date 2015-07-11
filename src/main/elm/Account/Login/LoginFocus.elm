@@ -1,5 +1,7 @@
 module Account.Login.LoginFocus where
 
+import Account.Login.LoginTypes as LoginTypes exposing (..)
+
 import Signal exposing (message)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -13,18 +15,6 @@ import Language.LanguageService exposing (Language)
 import Account.Login.LoginText as LoginText
 import Account.AccountService as AccountService exposing (Credentials, Action(AttemptLogin), LoginResult(WrongPassword))
 
-type Action
-    = FocusUserName String
-    | FocusPassword String
-    | FocusRememberMe Bool
-    | FocusBlank
-    | FocusLoginResult LoginResult
-
-type alias Focus =
-    { credentials: Credentials
-    , loginResult: Maybe LoginResult
-    }
-
 
 hash2focus : List String -> Maybe Focus
 hash2focus hashList =
@@ -35,7 +25,7 @@ focus2hash : Focus -> List String
 focus2hash focus = []
 
 
-updateFocus : Action -> Maybe Focus -> Maybe Focus
+updateFocus : LoginTypes.Action -> Maybe Focus -> Maybe Focus
 updateFocus action focus =
     let
         focus' =
@@ -77,7 +67,7 @@ blankCredentials =
     }
 
 
-renderFocus : Address Action -> Focus -> Language -> Html
+renderFocus : Address LoginTypes.Action -> Focus -> Language -> Html
 renderFocus address focus language =
     let
         serviceAddress =
@@ -180,7 +170,7 @@ renderFocus address focus language =
             ]
 
 
-renderMenuItem : Address Action -> Maybe Focus -> Language -> Html
+renderMenuItem : Address LoginTypes.Action -> Maybe Focus -> Language -> Html
 renderMenuItem address focus language =
     li [ classList [ ( "active", focus /= Nothing ) ] ]
         [ a [ onClick address FocusBlank ]

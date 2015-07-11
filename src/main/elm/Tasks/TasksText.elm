@@ -2,7 +2,6 @@ module Tasks.TasksText where
 
 import Language.LanguageService exposing (Language(..))
 import Html exposing (Html, text, span, strong, a)
-import Html.Attributes exposing (href)
 
 type Message
     = Title

@@ -1,5 +1,7 @@
 module Tasks.TasksFocus where
 
+import Tasks.TasksTypes exposing (..)
+
 import Html exposing (Html, h1, text, div, li, ul, a, span)
 import Html.Attributes exposing (class, classList, href)
 import Html.Events exposing (onClick)
@@ -7,14 +9,6 @@ import Signal exposing (Address, forwardTo)
 import Tasks.TasksText as TasksText
 import Language.LanguageService exposing (Language)
 import Html.Util exposing (dropdownMenu, dropdownToggle, dropdownPointer, glyphicon, unbreakableSpace)
-
-type Focus
-    = ProcessForms 
-    | MembershipByYear
-
-type Action
-    = FocusProcessForms
-    | FocusMembershipByYear
 
 
 hash2focus : List String -> Maybe Focus

@@ -21,7 +21,7 @@ renderMenu language =
                 ]
                 [ a
                     [ onClick (.address service) (SwitchLanguage lang) ]
-                    [ trans lang ]
+                    [ trans <| LanguageText.TheWordFor lang ]
                 ]
 
     in
@@ -29,7 +29,7 @@ renderMenu language =
             [ dropdownToggle
                 [ glyphicon "flag"
                 , text unbreakableSpace
-                , span [ class "hidden-tablet" ] [ trans language ]
+                , span [ class "hidden-tablet" ] [ trans LanguageText.TheWordLanguage ]
                 , text unbreakableSpace
                 , span [ class "text-bold caret" ] []
                 ]
