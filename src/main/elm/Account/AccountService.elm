@@ -89,6 +89,11 @@ reaction action =
         FetchCurrentUser ->
             Just fetchCurrentUserTask
 
+        SetCurrentUser user ->
+            Maybe.map
+                (LanguageService.do << LanguageService.SwitchLanguage << .langKey)
+                (user)
+        
         _ ->
             Nothing
 

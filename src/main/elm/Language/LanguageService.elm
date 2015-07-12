@@ -3,6 +3,7 @@ module Language.LanguageService where
 import Signal exposing (Mailbox, mailbox)
 import Json.Decode exposing (Decoder, string, andThen, succeed, fail)
 import String exposing (toUpper)
+import Task exposing (Task)
 
 
 type Language =
@@ -15,6 +16,10 @@ type Action
 type alias Model m = { m
     | useLanguage : Language
 }
+
+
+do : Action -> Task x ()
+do = Signal.send actions.address
 
 
 init : m -> Model m
