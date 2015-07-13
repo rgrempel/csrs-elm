@@ -7,6 +7,8 @@ import Html.Events exposing (onClick)
 import Signal exposing (Address, forwardTo)
 import Account.Login.LoginFocus as LoginFocus
 import Account.Login.LoginTypes as LoginTypes
+import Account.Logout.LogoutFocus as LogoutFocus
+import Account.Logout.LogoutTypes as LogoutTypes
 import Account.AccountText as AccountText
 import Language.LanguageService exposing (Language)
 import Html.Util exposing (dropdownMenu, dropdownToggle, dropdownPointer, glyphicon, unbreakableSpace)
@@ -21,6 +23,9 @@ hash2focus hashList =
                 "login" ->
                     Maybe.map Login <| LoginFocus.hash2focus rest
 
+                "logout" ->
+                    Maybe.map Logout <| LogoutFocus.hash2focus rest
+
                 "settings" ->
                     Just Settings
 
@@ -29,9 +34,6 @@ hash2focus hashList =
 
                 "sessions" ->
                     Just Sessions
-
-                "logout" ->
-                    Just Logout
 
                 "register" ->
                     Just Register
@@ -49,6 +51,9 @@ focus2hash focus =
         Login loginFocus ->
             "login" :: LoginFocus.focus2hash loginFocus
 
+        Logout logoutFocus ->
+            "logout" :: LogoutFocus.focus2hash logoutFocus
+
         Settings ->
             ["settings"]
 
@@ -58,19 +63,19 @@ focus2hash focus =
         Sessions ->
             ["sessions"]
 
-        Logout ->
-            ["logout"]
-
         Register ->
             ["register"]
 
 
-reaction : Action -> Maybe (Task () ())
-reaction action =
+reaction : Address Action -> Action -> Maybe (Task () ())
+reaction address action =
     case action of
         FocusLogin action ->
-            LoginFocus.reaction action
+            LoginFocus.reaction (forwardTo address FocusLogin) action
 
+        FocusLogout action ->
+            LogoutFocus.reaction (forwardTo address FocusLogout) action
+        
         _ ->
             Nothing
 
@@ -84,6 +89,12 @@ updateFocus action focus =
         (FocusLogin loginAction, _) ->
             Maybe.map Login <| LoginFocus.updateFocus loginAction Nothing
         
+        (FocusLogout logoutAction, Just (Logout logoutFocus)) ->
+            Maybe.map Logout <| LogoutFocus.updateFocus logoutAction <| Just logoutFocus
+
+        (FocusLogout logoutAction, _) ->
+            Maybe.map Logout <| LogoutFocus.updateFocus logoutAction Nothing
+        
         (FocusSettings, _) ->
             Just Settings
 
@@ -92,9 +103,6 @@ updateFocus action focus =
 
         (FocusSessions, _) ->
             Just Sessions
-
-        (FocusLogout, _) ->
-            Just Logout
 
         (FocusRegister, _) ->
             Just Register
@@ -116,8 +124,13 @@ renderFocus address focus language =
             Settings -> v "Settings"
             Password -> v "Password"
             Sessions -> v "Sessions"
-            Logout -> v "Logout"
             Register -> v "Register"
+            
+            Logout logoutFocus ->
+                LogoutFocus.renderFocus
+                    (forwardTo address FocusLogout)
+                    logoutFocus
+                    language
             
             Login loginFocus ->
                 LoginFocus.renderFocus
@@ -130,6 +143,13 @@ loginFocus : Maybe Focus -> Maybe LoginTypes.Focus
 loginFocus focus =
     case focus of
         Just (Login loginFocus) -> Just loginFocus
+        _ -> Nothing
+    
+
+logoutFocus : Maybe Focus -> Maybe LogoutTypes.Focus
+logoutFocus focus =
+    case focus of
+        Just (Logout logoutFocus) -> Just logoutFocus
         _ -> Nothing
     
 
@@ -158,9 +178,6 @@ renderMenu address focus language =
         sessionsItem =
             standardMenuItem "cloud" AccountText.Sessions FocusSessions Sessions
 
-        logoutItem =
-            standardMenuItem "log-out" AccountText.Logout FocusLogout Logout
-
         registerItem =
             standardMenuItem "plus-sign" AccountText.Register FocusRegister Register
     
@@ -183,7 +200,11 @@ renderMenu address focus language =
                     (loginFocus focus)
                     language
 
-                , logoutItem
+                , LogoutFocus.renderMenuItem
+                    (forwardTo address FocusLogout)
+                    (logoutFocus focus)
+                    language
+
                 , registerItem
                 ]
             ]

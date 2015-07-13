@@ -12,7 +12,7 @@ import Maybe exposing (withDefault)
 import Task exposing (Task)
 import Language.LanguageService exposing (Language)
 import Account.Login.LoginText as LoginText
-import Account.AccountService as AccountService exposing (Credentials, Action(AttemptLogin), LoginResult(WrongPassword, Success))
+import Account.AccountService as AccountService exposing (Credentials, attemptLogin)
 import Focus.FocusTypes as FocusTypes
 import Home.HomeTypes as HomeTypes
 
@@ -25,12 +25,17 @@ focus2hash : Focus -> List String
 focus2hash focus = []
 
 
-reaction : LoginTypes.Action -> Maybe (Task () ())
-reaction action =
+reaction : Address LoginTypes.Action -> LoginTypes.Action -> Maybe (Task () ())
+reaction address action =
     case action of
-        FocusLoginResult Success ->
+        AttemptLogin credentials ->
             Just <|
-                FocusTypes.do (FocusTypes.FocusHome HomeTypes.FocusHome) 
+                (AccountService.attemptLogin credentials)
+                `Task.andThen` (\user -> 
+                    FocusTypes.do (FocusTypes.FocusHome HomeTypes.FocusHome)
+                ) `Task.onError` (\error ->
+                    Signal.send address (FocusLoginError error)
+                )
 
         _ ->
             Nothing
@@ -57,8 +62,11 @@ updateFocus action focus =
                 FocusRememberMe rememberMe ->
                     updateCredentials @rememberMe rememberMe
 
-                FocusLoginResult loginResult ->
-                    @loginResult (Just loginResult) focus'
+                FocusLoginError loginError ->
+                    @loginStatus (LoginError loginError) focus'
+
+                AttemptLogin credentials ->
+                    @loginStatus LoginInProgress focus'
 
                 _ -> focus'
 
@@ -66,7 +74,7 @@ updateFocus action focus =
 defaultFocus : Focus
 defaultFocus =
     { credentials = blankCredentials
-    , loginResult = Nothing
+    , loginStatus = LoginNotAttempted
     }
 
 
@@ -81,9 +89,6 @@ blankCredentials =
 renderFocus : Address LoginTypes.Action -> Focus -> Language -> Html
 renderFocus address focus language =
     let
-        serviceAddress =
-            .address AccountService.actions
-
         transHtml =
             LoginText.translateHtml language 
         
@@ -137,21 +142,22 @@ renderFocus address focus language =
 
         submitButton =
             button
-                [ type' "submit"
+                [ type' "button"
                 , key "submit"
                 , class "btn btn-primary"
+                , onClick address (AttemptLogin focus.credentials)
                 ] [ transHtml LoginText.Button ]
 
         result =
-            case focus.loginResult of
-                Just WrongPassword -> 
+            case focus.loginStatus of
+                LoginError loginError -> 
                     p
                         [ key "result"
                         , class "alert alert-danger" 
                         ]
                         [ transHtml LoginText.Failed ]
 
-                Just Success ->
+                LoginSuccess ->
                     p 
                         [ key "result"
                         , class "alert alert-success"
@@ -164,8 +170,6 @@ renderFocus address focus language =
         loginForm =
             Html.form
                 [ class "form"
-                , onSubmit serviceAddress
-                    <| AttemptLogin focus.credentials <| Just (address, FocusLoginResult)
                 , role "form"
                 ]
                 [ usernameField

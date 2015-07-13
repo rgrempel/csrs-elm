@@ -166,7 +166,7 @@ reaction : Action -> Maybe (Task () ())
 reaction action =
     case action of
         FocusAccount action ->
-            AccountFocus.reaction action
+            AccountFocus.reaction (forward FocusAccount) action
 
         _ ->
             Nothing

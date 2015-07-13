@@ -3,28 +3,20 @@ module Account.AccountService where
 import List exposing (foldl, foldr, intersperse)
 import Http exposing (uriEncode, url, string, defaultSettings, fromJson, Settings, Request, Response, Error(BadResponse), RawError(RawTimeout, RawNetworkError))
 import Signal exposing (Mailbox, Address, mailbox)
-import Task exposing (Task, succeed, fail, onError, andThen, toResult)
+import Task exposing (Task, map, mapError, succeed, fail, onError, andThen, toResult)
 import Language.LanguageService as LanguageService exposing (Language(..)) 
 import Http.Csrf exposing (withCsrf)
 import Http.CacheBuster exposing (withCacheBuster)
 import Json.Decode as JD exposing ((:=))
 
 
-type LoginResult
-    = Success        -- 200
-    | WrongPassword  -- 401
-    | WrongCsrf      -- 403
-    | Other Int String
-    | Timeout
-    | NetworkError
+type LoginError
+    = LoginWrongPassword  -- 401
+    | LoginWrongCsrf      -- 403
+    | LoginHttpError Http.Error
 
-type alias LoginCallback a =
-    Maybe (Address a, LoginResult -> a)
-
-type Action a
-    = AttemptLogin Credentials (LoginCallback a)
-    | FetchCurrentUser
-    | SetCurrentUser (Maybe User)
+type Action
+    = SetCurrentUser (Maybe User)
     | NoOp
 
 type alias Credentials =
@@ -58,11 +50,11 @@ init : m -> Model m
 init model = Model Nothing model
 
 
-actions : Mailbox (Action a)
+actions : Mailbox Action
 actions = mailbox NoOp 
 
 
-do : Action a -> Task x ()
+do : Action -> Task x ()
 do = Signal.send actions.address
 
 
@@ -70,7 +62,7 @@ tasks : Signal (Maybe (Task () ()))
 tasks = Signal.map reaction (.signal actions)
     
 
-update : Action a -> Model m -> Model m
+update : Action -> Model m -> Model m
 update action model =
     case action of
         SetCurrentUser user ->
@@ -80,15 +72,9 @@ update action model =
             model
 
 
-reaction : Action a -> Maybe (Task () ())
+reaction : Action -> Maybe (Task () ())
 reaction action =
     case action of
-        AttemptLogin credentials callback ->
-            Just <| attemptLoginTask credentials callback
-
-        FetchCurrentUser ->
-            Just fetchCurrentUserTask
-
         SetCurrentUser user ->
             Maybe.map
                 (LanguageService.do << LanguageService.SwitchLanguage << .langKey)
@@ -102,30 +88,8 @@ send : Request -> Task RawError Response
 send = (withCacheBuster (withCsrf Http.send)) defaultSettings
 
 
-handleLoginCallback : LoginCallback a -> Result RawError Response -> Task x ()
-handleLoginCallback callback result =
-    case callback of
-        Just (address, func) ->
-            Signal.send address << func <|
-                case result of
-                    Ok response ->
-                        case response.status of
-                            200 -> Success
-                            401 -> WrongPassword
-                            403 -> WrongCsrf
-                            _ -> Other response.status response.statusText
-
-                    Err error ->
-                        case error of
-                            RawTimeout -> Timeout
-                            RawNetworkError -> NetworkError
-
-        _ ->
-            succeed ()
-
-
-attemptLoginTask : Credentials -> LoginCallback a -> Task x () 
-attemptLoginTask credentials callback =
+attemptLogin : Credentials -> Task LoginError (Maybe User) 
+attemptLogin credentials =
     let
         params =
             foldr (++) "" <| intersperse "&"
@@ -143,16 +107,39 @@ attemptLoginTask credentials callback =
             , body = string params
             }
 
+        handleResponse response =
+            case response.status of
+                200 -> fetchCurrentUser |> mapError LoginHttpError
+                401 -> fail LoginWrongPassword
+                403 -> fail LoginWrongCsrf
+                _ -> fail <| LoginHttpError (Http.BadResponse response.status response.statusText)
+
     in
-        toResult (send request)
-        `andThen` \result ->
-            toResult (do FetchCurrentUser)
-            `andThen`
-            always (handleLoginCallback callback result)
+        (send request |> mapError (promoteError >> LoginHttpError))
+        `andThen` handleResponse
+        
+
+promoteError : RawError -> Error
+promoteError error =
+    case error of
+        Http.RawTimeout -> Http.Timeout
+        Http.RawNetworkError -> Http.NetworkError
 
 
-fetchCurrentUserTask : Task () () 
-fetchCurrentUserTask =
+attemptLogout : Task Error (Maybe User)
+attemptLogout =
+    (send
+        { verb = "POST"
+        , headers = []
+        , url = url "/api/logout" []
+        , body = Http.empty
+        }
+    |> mapError promoteError)
+    `andThen` always (fetchCurrentUser)
+
+
+fetchCurrentUser : Task Http.Error (Maybe User) 
+fetchCurrentUser =
     Http.fromJson userDecoder (
         send
             { verb = "GET"
@@ -161,16 +148,14 @@ fetchCurrentUserTask =
             , body = Http.empty
             }
     ) `andThen` (\user ->
-        do <| SetCurrentUser (Just user)
+        (do <| SetCurrentUser (Just user)) |> map (always (Just user))
     ) `onError` (\error ->
         case error of
             BadResponse 401 _ ->
-                do <| SetCurrentUser Nothing
+                -- This is actually success ... it just means that the user
+                -- is not logged int.
+                (do <| SetCurrentUser Nothing) |> map (always Nothing)
 
-            -- Other bad responses?
-            -- NetworkError
-            -- UnexpectedPayload String
             _ ->
-                -- Should have some facility for 'generic' errors
-                Task.succeed ()
+                fail error
     )

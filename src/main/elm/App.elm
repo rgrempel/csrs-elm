@@ -29,14 +29,14 @@ initialModel =
     )))
 
 
-type Action a
-    = AccountAction (AccountService.Action a)
+type Action
+    = AccountAction (AccountService.Action)
     | FocusAction FocusTypes.Action
     | LanguageAction LanguageService.Action
     | NoOp
 
 
-actions : Signal (Action a)
+actions : Signal (Action)
 actions =
     Signal.mergeMany
         [ Signal.map FocusAction <| FocusUI.hashSignal
@@ -95,16 +95,18 @@ port locationUpdates =
 
     in
         Signal.Extra.filter default taskMap
-    
+
+
+ignoreResult : Task x a -> Task () ()
+ignoreResult =
+    Task.map (always ()) << Task.mapError (always ())
+
 
 initialTask : Task () () 
 initialTask =
-    Task.map
-        (always ())
-        (Task.sequence
-            [ AccountService.fetchCurrentUserTask 
-            ]
-        )
+    ignoreResult <| Task.sequence
+        [ ignoreResult AccountService.fetchCurrentUser
+        ]
 
 
 mergedTasks : Signal (Maybe (Task () () ))    
@@ -120,7 +122,7 @@ port tasks =
     Signal.Extra.filter initialTask mergedTasks
 
 
-update : Action a -> Model m -> Model m
+update : Action -> Model m -> Model m
 update action model =
     case action of
         AccountAction accountAction ->

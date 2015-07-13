@@ -9,7 +9,6 @@ type Message
     | Settings
     | Password
     | Sessions
-    | Logout
     | Register
 
 
@@ -37,11 +36,6 @@ translate language message =
             FR -> "Sessions"
             LA -> "Sessiones"
         
-        Logout -> case language of
-            EN -> "Log out"
-            FR -> "Déconnexion"
-            LA -> "Conventum concludere"
-
         Register -> case language of
             EN -> "Register"
             FR -> "Créer un compte"
