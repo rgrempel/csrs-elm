@@ -8,6 +8,7 @@ import Language.LanguageService as LanguageService exposing (Language(..))
 import Http.Csrf exposing (withCsrf)
 import Http.CacheBuster exposing (withCacheBuster)
 import Json.Decode as JD exposing ((:=))
+import String exposing (toUpper)
 
 
 type LoginError
@@ -25,10 +26,29 @@ type alias Credentials =
     , rememberMe: Bool
     }
 
+type Role
+    = RoleUser
+    | RoleAdmin
+
+
+roleDecoder : JD.Decoder Role
+roleDecoder =
+    JD.string `JD.andThen` \s ->
+        case (toUpper s) of
+            "ROLE_ADMIN" ->
+                JD.succeed RoleAdmin
+
+            "ROLE_USER" ->
+                JD.succeed RoleUser
+
+            _ ->
+                JD.fail <| s ++ " is not a role I recognize"
+
+
 type alias User =
     { login : String
     , langKey: Language
-    , roles: List String
+    , roles: List Role 
     }
 
 
@@ -37,7 +57,7 @@ userDecoder =
     JD.object3 User
         ("login" := JD.string)
         ("langKey" := LanguageService.decoder)
-        ("roles" := JD.list JD.string)
+        ("roles" := JD.list roleDecoder)
 
 
 type alias Model m =
