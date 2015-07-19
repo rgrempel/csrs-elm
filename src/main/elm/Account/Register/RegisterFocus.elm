@@ -127,7 +127,8 @@ renderFocus address focus language =
                             ]
                         ]
                         <|
-                        [ label [ for "email-input" ]
+                        [ label 
+                            [ for "email-input" ]
                             [ trans RegisterText.EmailAddress ]
                         , div [ class "input-group" ]
                             [ input 
@@ -171,9 +172,11 @@ renderFocus address focus language =
                             ]
                         ]
                         <|
-                        [ label [ for "key-input" ]
-                                [ trans RegisterText.InvitationKey ]
-                        , div [ class "input-group" ]
+                        [ label
+                            [ for "key-input" ]
+                            [ trans RegisterText.InvitationKey ]
+                        , div
+                            [ class "input-group" ]
                             [ input
                                 [ id "key-input"
                                 , type' "text"

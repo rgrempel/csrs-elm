@@ -6,11 +6,16 @@ import Account.ResetPassword.ResetPasswordText as ResetPasswordText
 import Signal exposing (message)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onSubmit, on, targetValue)
 import Html.Util exposing (role, glyphicon, unbreakableSpace)
 import Signal exposing (Address)
 import Maybe exposing (withDefault)
-import Task exposing (Task)
+import Task exposing (Task, andThen, onError)
 import Language.LanguageService exposing (Language)
+import Validation.Validation exposing (checkString, helpBlock)
+import Validation.ValidationTypes exposing (StringValidator, Validator(Required, Email))
+import List exposing (all, isEmpty)
+import Account.AccountService as AccountService
 
 
 hash2focus : List String -> Maybe Focus
@@ -24,6 +29,25 @@ focus2hash focus = []
 reaction : Address ResetPasswordTypes.Action -> ResetPasswordTypes.Action -> Maybe (Task () ())
 reaction address action =
     case action of
+        SendToken email language ->
+            if isEmpty (checkEmail email)
+                then Just <|
+                    AccountService.sendInvitationToResetPassword email language
+                    `andThen` (always (Signal.send address FocusTokenSent))
+                    `onError` (Signal.send address << FocusSendTokenError)
+
+                else
+                    Nothing
+
+
+        UseToken token ->
+            if isEmpty (checkToken token)
+                then
+                    Nothing
+
+                else
+                    Nothing
+
         _ ->
             Nothing
 
@@ -37,11 +61,34 @@ updateFocus action focus =
     in
         Just <|
             case action of
+                FocusEmail email ->
+                    @email email focus'
+
+                FocusToken token ->
+                    @token token focus'
+
+                SendToken token language ->
+                    @resetPasswordStatus SendingToken focus'
+
+                UseToken token ->
+                    @resetPasswordStatus UsingToken focus'
+
+                FocusTokenSent ->
+                    @resetPasswordStatus TokenSent focus'
+
                 _ -> focus'
 
 
 defaultFocus : Focus
-defaultFocus = Focus ResetPasswordNotAttempted
+defaultFocus = Focus ResetPasswordStart "" ""
+
+
+checkEmail : String -> List StringValidator
+checkEmail = checkString [Required, Email]
+
+
+checkToken : String -> List StringValidator
+checkToken = checkString [Required]
 
 
 renderFocus : Address ResetPasswordTypes.Action -> Focus -> Language -> Html
@@ -62,57 +109,95 @@ renderFocus address focus language =
                 ]
 
         tokenForm =
-            Html.form [ role "form" ]
-                [ div [ class "form-group" ]
-                    [ label [ for "key-input" ]
-                        [ trans ResetPasswordText.Token ]
-                    , div [ class "input-group" ]
-                        [ input
-                            [ id "key-input"
-                            , type' "text"
-                            , class "form-control"
-                            ] []
-                        , span [ class "input-group-btn" ]
-                            [ button
-                                [ type' "button"
-                                , class "btn btn-primary"
-                                ]
-                                [ glyphicon "tag"
-                                , text unbreakableSpace
-                                , trans ResetPasswordText.UseToken
+            let
+                errors =
+                    if focus.resetPasswordStatus == UsingToken
+                        then checkToken focus.token
+                        else []
+
+            in
+                Html.form
+                    [ role "form"
+                    , onSubmit address (UseToken focus.token)
+                    ]
+                    [ div
+                        [ classList
+                            [ ("form-group", True)
+                            , ("has-error", not <| isEmpty errors)
+                            ]
+                        ]
+                        <|
+                        [ label 
+                            [ for "key-input" ]
+                            [ trans ResetPasswordText.Token ]
+                        , div
+                            [ class "input-group" ]
+                            [ input
+                                [ id "key-input"
+                                , type' "text"
+                                , class "form-control"
+                                , on "input" targetValue <| (message address) << FocusToken
+                                ] []
+                            , span [ class "input-group-btn" ]
+                                [ button
+                                    [ type' "submit"
+                                    , class "btn btn-primary"
+                                    ]
+                                    [ glyphicon "tag"
+                                    , text unbreakableSpace
+                                    , trans ResetPasswordText.UseToken
+                                    ]
                                 ]
                             ]
                         ]
-                    , p [ class "help-block" ] [ text "Required" ]
+                        ++
+                        ( List.map (helpBlock language) errors )
                     ]
-                ]
 
         emailForm =
-            Html.form [ role "form" ]
-                [ div [ class "form-group" ]
-                    [ label [ for "email-input" ]
+            let
+                errors =
+                    if focus.resetPasswordStatus == SendingToken
+                        then checkEmail focus.email
+                        else []
+
+            in
+                Html.form
+                    [ role "form"
+                    , onSubmit address (SendToken focus.email language)
+                    ]
+                    [ div
+                        [ classList
+                            [ ("form-group", True)
+                            , ("has-error", not <| isEmpty errors)
+                            ]
+                        ]
+                        <|
+                        [ label 
+                            [ for "email-input" ]
                             [ trans ResetPasswordText.EmailAddress ]
-                    , div [ class "input-group" ]
-                        [ input 
-                            [ id "email-input"
-                            , type' "email"
-                            , class "form-control"
-                            ] []
-                        , span [ class "input-group-btn" ]
-                            [ button 
-                                [ type' "button"
-                                , class "btn btn-primary"
-                                ]
-                                [ glyphicon "send"
-                                , text unbreakableSpace
-                                , trans ResetPasswordText.SendToken
+                        , div [ class "input-group" ]
+                            [ input 
+                                [ id "email-input"
+                                , type' "email"
+                                , class "form-control"
+                                , on "input" targetValue <| (message address) << FocusEmail
+                                ] []
+                            , span [ class "input-group-btn" ]
+                                [ button 
+                                    [ type' "submit"
+                                    , class "btn btn-primary"
+                                    ]
+                                    [ glyphicon "send"
+                                    , text unbreakableSpace
+                                    , trans ResetPasswordText.SendToken
+                                    ]
                                 ]
                             ]
                         ]
-                    , p [ class "help-block" ] [ text "Invalid" ] 
-                    , p [ class "help-block" ] [ text "Required" ]
+                        ++
+                        ( List.map (helpBlock language) errors )
                     ]
-                ]
 
         tokenSent =
             case focus.resetPasswordStatus of

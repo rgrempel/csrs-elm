@@ -182,8 +182,8 @@ fetchCurrentUser =
     )
 
 
-sendInvitationToCreateAccount : String -> Language -> Task Http.Error ()
-sendInvitationToCreateAccount email language =
+sendInvitation : Bool -> String -> Language -> Task Http.Error ()
+sendInvitation resetPassword email language =
     send
         { verb = "POST"
         , headers =
@@ -192,7 +192,7 @@ sendInvitationToCreateAccount email language =
             ]
         , url =
             url "/api/invitation/account"
-                [ ("passwordReset", "false") 
+                [ ("passwordReset", if resetPassword then "true" else "false")
                 ]
         , body =
             Http.string <|
@@ -205,3 +205,10 @@ sendInvitationToCreateAccount email language =
     |> mapError promoteError
     |> map (always ())
 
+
+sendInvitationToCreateAccount : String -> Language -> Task Http.Error ()
+sendInvitationToCreateAccount = sendInvitation False
+
+
+sendInvitationToResetPassword : String -> Language -> Task Http.Error ()
+sendInvitationToResetPassword = sendInvitation True
