@@ -9,7 +9,12 @@ import Account.Login.LoginFocus as LoginFocus
 import Account.Login.LoginTypes as LoginTypes
 import Account.Logout.LogoutFocus as LogoutFocus
 import Account.Logout.LogoutTypes as LogoutTypes
+import Account.Register.RegisterFocus as RegisterFocus
+import Account.Register.RegisterTypes as RegisterTypes
+import Account.ResetPassword.ResetPasswordFocus as ResetPasswordFocus
+import Account.ResetPassword.ResetPasswordTypes as ResetPasswordTypes
 import Account.AccountText as AccountText
+import Account.AccountService exposing (User)
 import Language.LanguageService exposing (Language)
 import Html.Util exposing (dropdownMenu, dropdownToggle, dropdownPointer, glyphicon, unbreakableSpace)
 import Task exposing (Task)
@@ -26,6 +31,12 @@ hash2focus hashList =
                 "logout" ->
                     Maybe.map Logout <| LogoutFocus.hash2focus rest
 
+                "register" ->
+                    Maybe.map Register <| RegisterFocus.hash2focus rest
+
+                "reset-password" ->
+                    Maybe.map ResetPassword <| ResetPasswordFocus.hash2focus rest
+                
                 "settings" ->
                     Just Settings
 
@@ -34,9 +45,6 @@ hash2focus hashList =
 
                 "sessions" ->
                     Just Sessions
-
-                "register" ->
-                    Just Register
 
                 _ ->
                     Nothing
@@ -48,11 +56,17 @@ hash2focus hashList =
 focus2hash : Focus -> List String
 focus2hash focus =
     case focus of
-        Login loginFocus ->
-            "login" :: LoginFocus.focus2hash loginFocus
+        Login focus ->
+            "login" :: LoginFocus.focus2hash focus
 
-        Logout logoutFocus ->
-            "logout" :: LogoutFocus.focus2hash logoutFocus
+        Logout focus ->
+            "logout" :: LogoutFocus.focus2hash focus
+
+        Register focus ->
+            "register" :: RegisterFocus.focus2hash focus
+
+        ResetPassword focus ->
+            "reset-password" :: ResetPasswordFocus.focus2hash focus
 
         Settings ->
             ["settings"]
@@ -63,9 +77,6 @@ focus2hash focus =
         Sessions ->
             ["sessions"]
 
-        Register ->
-            ["register"]
-
 
 reaction : Address Action -> Action -> Maybe (Task () ())
 reaction address action =
@@ -75,6 +86,12 @@ reaction address action =
 
         FocusLogout action ->
             LogoutFocus.reaction (forwardTo address FocusLogout) action
+        
+        FocusRegister action ->
+            RegisterFocus.reaction (forwardTo address FocusRegister) action
+        
+        FocusResetPassword action ->
+            ResetPasswordFocus.reaction (forwardTo address FocusResetPassword) action
         
         _ ->
             Nothing
@@ -95,6 +112,18 @@ updateFocus action focus =
         (FocusLogout logoutAction, _) ->
             Maybe.map Logout <| LogoutFocus.updateFocus logoutAction Nothing
         
+        (FocusRegister registerAction, Just (Register registerFocus)) ->
+            Maybe.map Register <| RegisterFocus.updateFocus registerAction <| Just registerFocus
+
+        (FocusRegister registerAction, _) ->
+            Maybe.map Register <| RegisterFocus.updateFocus registerAction Nothing
+        
+        (FocusResetPassword resetPasswordAction, Just (ResetPassword resetPasswordFocus)) ->
+            Maybe.map ResetPassword <| ResetPasswordFocus.updateFocus resetPasswordAction <| Just resetPasswordFocus
+
+        (FocusResetPassword resetPasswordAction, _) ->
+            Maybe.map ResetPassword <| ResetPasswordFocus.updateFocus resetPasswordAction Nothing
+        
         (FocusSettings, _) ->
             Just Settings
 
@@ -103,9 +132,6 @@ updateFocus action focus =
 
         (FocusSessions, _) ->
             Just Sessions
-
-        (FocusRegister, _) ->
-            Just Register
 
         _ ->
             Nothing
@@ -124,7 +150,18 @@ renderFocus address focus language =
             Settings -> v "Settings"
             Password -> v "Password"
             Sessions -> v "Sessions"
-            Register -> v "Register"
+            
+            ResetPassword focus ->
+                ResetPasswordFocus.renderFocus
+                    (forwardTo address FocusResetPassword)
+                    focus
+                    language
+            
+            Register registerFocus ->
+                RegisterFocus.renderFocus
+                    (forwardTo address FocusRegister)
+                    registerFocus
+                    language
             
             Logout logoutFocus ->
                 LogoutFocus.renderFocus
@@ -153,8 +190,22 @@ logoutFocus focus =
         _ -> Nothing
     
 
-renderMenu : Address Action -> Maybe Focus -> Language -> Html
-renderMenu address focus language =
+resetPasswordFocus : Maybe Focus -> Maybe ResetPasswordTypes.Focus
+resetPasswordFocus focus =
+    case focus of
+        Just (ResetPassword resetPasswordFocus) -> Just resetPasswordFocus
+        _ -> Nothing
+    
+
+registerFocus : Maybe Focus -> Maybe RegisterTypes.Focus
+registerFocus focus =
+    case focus of
+        Just (Register registerFocus) -> Just registerFocus
+        _ -> Nothing
+    
+
+renderMenu : Address Action -> Maybe User -> Maybe Focus -> Language -> Html
+renderMenu address user focus language =
     let
         trans =
             AccountText.translate language
@@ -178,8 +229,23 @@ renderMenu address focus language =
         sessionsItem =
             standardMenuItem "cloud" AccountText.Sessions FocusSessions Sessions
 
+        loginItem = 
+            LoginFocus.renderMenuItem
+                (forwardTo address FocusLogin)
+                (loginFocus focus)
+                language
+
+        logoutItem =
+            LogoutFocus.renderMenuItem
+                (forwardTo address FocusLogout)
+                (logoutFocus focus)
+                language
+
         registerItem =
-            standardMenuItem "plus-sign" AccountText.Register FocusRegister Register
+            RegisterFocus.renderMenuItem
+                (forwardTo address FocusRegister)
+                (registerFocus focus)
+                language
     
     in
         dropdownPointer [ classList [ ( "active", focus /= Nothing ) ] ]
@@ -190,23 +256,17 @@ renderMenu address focus language =
                 , text unbreakableSpace
                 , span [ class "text-bold caret" ] []
                 ]
-            , dropdownMenu 
-                [ settingsItem
-                , passwordItem
-                , sessionsItem
-
-                , LoginFocus.renderMenuItem
-                    (forwardTo address FocusLogin)
-                    (loginFocus focus)
-                    language
-
-                , LogoutFocus.renderMenuItem
-                    (forwardTo address FocusLogout)
-                    (logoutFocus focus)
-                    language
-
-                , registerItem
-                ]
+            , dropdownMenu <|
+                if user == Nothing then
+                    [ loginItem
+                    , registerItem
+                    ]
+                else
+                    [ logoutItem
+                    , sessionsItem
+                    , passwordItem
+                    , settingsItem
+                    ]
             ]
 
 

@@ -9,7 +9,6 @@ type Message
     | Settings
     | Password
     | Sessions
-    | Register
 
 
 translate : Language -> Message -> Html
@@ -35,8 +34,4 @@ translate language message =
             EN -> "Sessions"
             FR -> "Sessions"
             LA -> "Sessiones"
-        
-        Register -> case language of
-            EN -> "Register"
-            FR -> "Créer un compte"
-            LA -> "Subsigno"
+ 

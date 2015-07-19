@@ -2,6 +2,7 @@ module Language.LanguageService where
 
 import Signal exposing (Mailbox, mailbox)
 import Json.Decode exposing (Decoder, string, andThen, succeed, fail)
+import Json.Encode as JE
 import String exposing (toUpper)
 import Task exposing (Task)
 
@@ -41,6 +42,15 @@ decoder =
 
             _ ->
                 fail <| s ++ " is not a language I recognize"
+
+
+encode : Language -> JE.Value
+encode language =
+    JE.string <|
+        case language of
+            EN -> "en"
+            FR -> "fr"
+            LA -> "la"
 
 
 allLanguages : List Language

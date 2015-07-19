@@ -8,6 +8,7 @@ import Language.LanguageService as LanguageService exposing (Language(..))
 import Http.Csrf exposing (withCsrf)
 import Http.CacheBuster exposing (withCacheBuster)
 import Json.Decode as JD exposing ((:=))
+import Json.Encode as JE
 import String exposing (toUpper)
 
 
@@ -179,3 +180,28 @@ fetchCurrentUser =
             _ ->
                 fail error
     )
+
+
+sendInvitationToCreateAccount : String -> Language -> Task Http.Error ()
+sendInvitationToCreateAccount email language =
+    send
+        { verb = "POST"
+        , headers =
+            [ ("Content-Type", "application/json")
+            , ("Accept", "application/json")
+            ]
+        , url =
+            url "/api/invitation/account"
+                [ ("passwordReset", "false") 
+                ]
+        , body =
+            Http.string <|
+                JE.encode 0 <|
+                    JE.object
+                        [ ("email", JE.string email)
+                        , ("langKey", LanguageService.encode language)
+                        ]
+        }
+    |> mapError promoteError
+    |> map (always ())
+

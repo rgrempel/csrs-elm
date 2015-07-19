@@ -1,6 +1,7 @@
 module Account.Login.LoginFocus where
 
 import Account.Login.LoginTypes as LoginTypes exposing (..)
+import Account.Login.LoginText as LoginText
 
 import Signal exposing (message)
 import Html exposing (..)
@@ -11,10 +12,12 @@ import Signal exposing (Address)
 import Maybe exposing (withDefault)
 import Task exposing (Task)
 import Language.LanguageService exposing (Language)
-import Account.Login.LoginText as LoginText
 import Account.AccountService as AccountService exposing (Credentials, attemptLogin)
 import Focus.FocusTypes as FocusTypes
 import Home.HomeTypes as HomeTypes
+import Validation.Validation exposing (checkString, helpBlock)
+import Validation.ValidationTypes exposing (StringValidator, Validator(Required))
+import List exposing (all, isEmpty)
 
 
 hash2focus : List String -> Maybe Focus
@@ -29,13 +32,17 @@ reaction : Address LoginTypes.Action -> LoginTypes.Action -> Maybe (Task () ())
 reaction address action =
     case action of
         AttemptLogin credentials ->
-            Just <|
-                (AccountService.attemptLogin credentials)
-                `Task.andThen` (\user -> 
-                    FocusTypes.do (FocusTypes.FocusHome HomeTypes.FocusHome)
-                ) `Task.onError` (\error ->
-                    Signal.send address (FocusLoginError error)
-                )
+            if checkCredentials credentials
+                then
+                    Just <|
+                        (AccountService.attemptLogin credentials)
+                        `Task.andThen` (\user -> 
+                            FocusTypes.do (FocusTypes.FocusHome HomeTypes.FocusHome)
+                        ) `Task.onError` (\error ->
+                            Signal.send address (FocusLoginError error)
+                        )
+                else
+                    Nothing
 
         _ ->
             Nothing
@@ -86,6 +93,18 @@ blankCredentials =
     }
 
 
+checkCredentials : Credentials -> Bool
+checkCredentials credentials =
+    List.all (isEmpty << checkRequired)
+        [ credentials.username
+        , credentials.password
+        ]
+
+
+checkRequired : String -> List StringValidator
+checkRequired = checkString [Required]
+    
+
 renderFocus : Address LoginTypes.Action -> Focus -> Language -> Html
 renderFocus address focus language =
     let
@@ -96,35 +115,61 @@ renderFocus address focus language =
             LoginText.translateText language
 
         usernameField =
-            div [ key "username"
-                , class "form-group"
-                ]
-                [ label [ for "username" ] [ transHtml LoginText.Username ]
-                , input
-                    [ class "form-control"
-                    , type' "text"
-                    , id "username"
-                    , placeholder <| trans LoginText.UsernamePlaceholder
-                    , value focus.credentials.username
-                    , on "input" targetValue <| (message address) << FocusUserName
-                    ] []
-                ]
-       
+            let
+                errors =
+                    if focus.loginStatus == LoginNotAttempted
+                        then []
+                        else checkRequired focus.credentials.username
+
+            in
+                div [ key "username"
+                    , classList
+                        [ ("form-group", True)
+                        , ("has-error", not <| isEmpty errors)
+                        ]
+                    ]
+                    <|
+                    [ label [ for "username" ] [ transHtml LoginText.Username ]
+                    , input
+                        [ class "form-control"
+                        , type' "text"
+                        , id "username"
+                        , placeholder <| trans LoginText.UsernamePlaceholder
+                        , value focus.credentials.username
+                        , on "input" targetValue <| (message address) << FocusUserName
+                        ] [] 
+                    ]
+                    ++ 
+                    ( List.map (helpBlock language) errors )
+ 
         passwordField =
-            div [ key "password"
-                , class "form-group"
-                ]
-                [ label [ for "password" ] [ transHtml LoginText.Password ]
-                , input
-                    [ class "form-control"
-                    , type' "password"
-                    , id "password"
-                    , value focus.credentials.password
-                    , placeholder <| trans LoginText.PasswordPlaceholder
-                    , on "input" targetValue <| (message address) << FocusPassword
-                    ] []
-                ]
-                 
+            let
+                errors =
+                    if focus.loginStatus == LoginNotAttempted
+                        then []
+                        else checkRequired focus.credentials.password
+
+            in
+                div [ key "password"
+                    , classList
+                        [ ("form-group", True)
+                        , ("has-error", not <| isEmpty errors)
+                        ]
+                    ]
+                    <|
+                    [ label [ for "password" ] [ transHtml LoginText.Password ]
+                    , input
+                        [ class "form-control"
+                        , type' "password"
+                        , id "password"
+                        , value focus.credentials.password
+                        , placeholder <| trans LoginText.PasswordPlaceholder
+                        , on "input" targetValue <| (message address) << FocusPassword
+                        ] []
+                    ]
+                    ++ 
+                    ( List.map (helpBlock language) errors )
+ 
         rememberMeField =
             div [ key "rememberMe"
                 , class "form-group"
@@ -142,10 +187,9 @@ renderFocus address focus language =
 
         submitButton =
             button
-                [ type' "button"
+                [ type' "submit"
                 , key "submit"
                 , class "btn btn-primary"
-                , onClick address (AttemptLogin focus.credentials)
                 ] [ transHtml LoginText.Button ]
 
         result =
@@ -165,18 +209,19 @@ renderFocus address focus language =
                         [ transHtml LoginText.Succeeded ]
 
                 _ ->
-                    div [ key "result" ] []
+                    p [ key "result" ] []
 
         loginForm =
             Html.form
                 [ class "form"
                 , role "form"
+                , onSubmit address (AttemptLogin focus.credentials)
                 ]
                 [ usernameField
                 , passwordField
                 , rememberMeField
-                , submitButton
-                , result 
+                , div [ class "text-center" ] [ submitButton ]
+                , div [ style [ ("margin-top", "18px") ]] [ result ] 
                 ]
         
     in
@@ -186,6 +231,14 @@ renderFocus address focus language =
                     [ div [ class "col-md-4 col-md-offset-4" ]
                         [ h1 [] [ transHtml LoginText.Title ]
                         , loginForm
+                        , div 
+                            [ class "alert alert-warning"
+                            , style [ ("margin-top", "18px") ]
+                            ] 
+                            [ transHtml LoginText.Register ]
+                        , div
+                            [ class "alert alert-warning" ]
+                            [ transHtml LoginText.ResetPassword ]
                         ]
                     ]
                 ]

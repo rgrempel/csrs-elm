@@ -2,6 +2,8 @@ module Account.AccountTypes where
 
 import Account.Login.LoginTypes as LoginTypes
 import Account.Logout.LogoutTypes as LogoutTypes
+import Account.Register.RegisterTypes as RegisterTypes
+import Account.ResetPassword.ResetPasswordTypes as ResetPasswordTypes
 
 type Focus
     = Settings
@@ -9,7 +11,8 @@ type Focus
     | Sessions
     | Logout LogoutTypes.Focus
     | Login LoginTypes.Focus
-    | Register
+    | Register RegisterTypes.Focus
+    | ResetPassword ResetPasswordTypes.Focus
 
 type Action
     = FocusLogin LoginTypes.Action 
@@ -17,6 +20,7 @@ type Action
     | FocusPassword
     | FocusSessions
     | FocusLogout LogoutTypes.Action
-    | FocusRegister
+    | FocusRegister RegisterTypes.Action
+    | FocusResetPassword ResetPasswordTypes.Action
 
 

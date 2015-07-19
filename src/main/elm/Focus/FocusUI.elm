@@ -15,6 +15,8 @@ import Admin.AdminFocus as AdminFocus
 import Tasks.TasksFocus as TasksFocus
 import Error.ErrorFocus as ErrorFocus
 
+import Account.AccountService exposing (User)
+
 import Signal exposing (Mailbox, mailbox, Address, forwardTo)
 import String exposing (uncons)
 import Http exposing (uriDecode, uriEncode)
@@ -244,10 +246,10 @@ render model language =
             TasksFocus.renderFocus (forward FocusTasks) tasksFocus language
 
 
-renderMenus : Focus -> Language -> List Html
-renderMenus focus language =
+renderMenus : Maybe User -> Focus -> Language -> List Html
+renderMenus user focus language =
     [ HomeFocus.renderMenu (forward FocusHome) (homeFocus focus) language
     , TasksFocus.renderMenu (forward FocusTasks) (tasksFocus focus) language
-    , AccountFocus.renderMenu (forward FocusAccount) (accountFocus focus) language
+    , AccountFocus.renderMenu (forward FocusAccount) user (accountFocus focus) language
     , AdminFocus.renderMenu (forward FocusAdmin) (adminFocus focus) language
     ]

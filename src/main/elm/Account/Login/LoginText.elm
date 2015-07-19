@@ -4,7 +4,9 @@ import Language.LanguageService exposing (Language(..))
 import Html exposing (Html, text, span, strong, a)
 import Html.Events exposing (onClick)
 import Focus.FocusTypes exposing (address, Action(FocusAccount))
-import Account.AccountTypes exposing (Action(FocusRegister))
+import Account.AccountTypes exposing (Action(FocusRegister, FocusResetPassword))
+import Account.Register.RegisterTypes as RegisterTypes
+import Account.ResetPassword.ResetPasswordTypes as ResetPasswordTypes
 
 type TextMessage
     = UsernamePlaceholder
@@ -19,6 +21,7 @@ type HtmlMessage
     | Password
     | RememberMe
     | Button
+    | ResetPassword
 
 
 translateText : Language -> TextMessage -> String
@@ -54,12 +57,12 @@ translateHtml language message =
             LA -> "Signum"
 
         RememberMe -> text <| case language of
-            EN -> "Automatic Login"
+            EN -> "In future, login automatically from this computer"
             FR -> "Garder la session ouverte"
             LA -> "Cosignum automatic"
 
         Button -> text <| case language of
-            EN -> "Authenticate"
+            EN -> "Login"
             FR -> "Connexion"
             LA -> "Cosignum"
 
@@ -87,24 +90,50 @@ translateHtml language message =
         Register ->
             let
                 action =
-                    onClick address <| FocusAccount FocusRegister 
+                    onClick address <| FocusAccount <| FocusRegister RegisterTypes.FocusBlank 
            
             in
                 span [] <| case language of
                     EN ->
-                        [ text "Don't have an account yet?"
+                        [ text "Don't have an account yet? "
                         , a [ action ]
                             [ text "Register a new account." ]
                         ]
 
                     FR ->
-                        [ text "Vous n'avez pas encore de compte?"
+                        [ text "Vous n'avez pas encore de compte? "
                         , a [ action ]
                             [ text "Créer un compte." ]
                         ]
 
                     LA ->
-                        [ text "Sed non tamen tesseram?"
+                        [ text "Sed non tamen tesseram? "
                         , a [ action ]
                             [ text "Subsigno tesseram novam." ]
                         ]
+        
+        ResetPassword ->
+            let
+                action =
+                    onClick address <| FocusAccount <| FocusResetPassword ResetPasswordTypes.FocusBlank
+
+            in
+                span [] <| case language of
+                    EN ->
+                        [ text 
+                            "If you have forgotten your username or password,
+                            then try the "
+                        , a [ action ] [ text "password reset" ]
+                        , text " page."
+                        ]
+                    FR ->
+                        [ text
+                            "Si vous avez oublié le nom d'utilisateur ou mot de
+                            passe, puis essayez le "
+                        , a [ action ] [ text "mot de passe réinitialiser." ]
+                        ]
+                    LA ->
+                        [ text "Iam obliti usoris aut signo, tum istoc " 
+                        , a [ action ] [ text "signum retexere." ]
+                        ]
+

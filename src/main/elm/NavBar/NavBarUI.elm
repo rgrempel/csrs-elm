@@ -9,10 +9,11 @@ import Version exposing (version)
 import NavBar.NavBarText as NavBarText
 import Focus.FocusTypes exposing (Focus)
 import Focus.FocusUI exposing (renderMenus)
+import Account.AccountService exposing (User)
 
 
-render : Focus -> Language -> Html
-render focus language =
+render : Maybe User -> Focus -> Language -> Html
+render user focus language =
     let 
         trans = NavBarText.translate language 
 
@@ -44,7 +45,7 @@ render focus language =
                 , id "navbar-collapse"
                 ]
                 [ ul [ class "nav navbar-nav nav-pills navbar-right" ]
-                    (renderMenus focus language
+                    (renderMenus user focus language
                     ++
                     [ LanguageUI.renderMenu language
                     ])

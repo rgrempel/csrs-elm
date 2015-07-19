@@ -6,7 +6,8 @@ import Html.Attributes exposing (href, target)
 import Html.Events exposing (onClick)
 import Focus.FocusTypes exposing (address, Action(FocusAccount))
 import Account.AccountTypes exposing (Action(FocusLogin, FocusRegister))
-import Account.Login.LoginTypes exposing (Action(FocusBlank))
+import Account.Login.LoginTypes as LoginTypes exposing (Action(FocusBlank))
+import Account.Register.RegisterTypes as RegisterTypes exposing (Action(FocusBlank))
 
 
 type Message
@@ -82,7 +83,7 @@ translate language message =
         BeenHereBefore ->
             let
                 loginLink =
-                    onClick address <| FocusAccount <| FocusLogin FocusBlank 
+                    onClick address <| FocusAccount <| FocusLogin LoginTypes.FocusBlank 
 
             in
                 case language of
@@ -109,7 +110,7 @@ translate language message =
         NoAccount ->
             let
                 link =
-                    onClick address <| FocusAccount FocusRegister
+                    onClick address <| FocusAccount <| FocusRegister RegisterTypes.FocusBlank
 
             in
                 case language of

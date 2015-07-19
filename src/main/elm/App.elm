@@ -54,7 +54,7 @@ main =
 render : Model m -> Html
 render model =
     div []
-    [ NavBarUI.render model.focus model.useLanguage
+    [ NavBarUI.render model.currentUser model.focus model.useLanguage
     , FocusUI.render model model.useLanguage
     ]
 
