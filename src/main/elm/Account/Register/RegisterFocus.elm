@@ -16,6 +16,9 @@ import Validation.Validation exposing (checkString, helpBlock)
 import Validation.ValidationTypes exposing (StringValidator, Validator(Required, Email))
 import List exposing (all, isEmpty)
 import Account.AccountService as AccountService
+import Focus.FocusTypes as FocusTypes
+import Account.AccountTypes as AccountTypes
+import Account.Invitation.InvitationTypes as InvitationTypes
 
 
 hash2focus : List String -> Maybe Focus
@@ -40,12 +43,22 @@ reaction address action =
                     Nothing
 
         UseInvitation invitation ->
-            if isEmpty (checkInvitation invitation)
-                then
-                    Nothing
+            let
+                do =
+                    FocusTypes.do <<
+                        FocusTypes.FocusAccount <<
+                            AccountTypes.FocusInvitation
+            
+            in
+                if isEmpty (checkInvitation invitation)
+                    then
+                        Just <|
+                            (do <| InvitationTypes.FocusKey invitation)
+                            `andThen`
+                            (always <| do <| InvitationTypes.CheckInvitation invitation)
 
-                else
-                    Nothing
+                    else
+                        Nothing
 
         _ ->
             Nothing
@@ -117,6 +130,7 @@ renderFocus address focus language =
             in
                 Html.form
                     [ role "form"
+                    , class "form"
                     , onSubmit address (SendInvitation focus.email language)
                     ]
                     [ div
@@ -162,6 +176,7 @@ renderFocus address focus language =
             in
                 Html.form
                     [ role "form"
+                    , class "form"
                     , onSubmit address (UseInvitation focus.invitation)
                     ]
                     [ div
