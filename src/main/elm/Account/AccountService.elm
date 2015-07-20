@@ -49,16 +49,27 @@ roleDecoder =
 type alias User =
     { login : String
     , langKey: Language
-    , roles: List Role 
+    , roles: Maybe (List Role) 
     }
 
 
 userDecoder : JD.Decoder User
 userDecoder =
-    JD.object3 User
-        ("login" := JD.string)
-        ("langKey" := LanguageService.decoder)
-        ("roles" := JD.list roleDecoder)
+    let
+        withRoles =
+            JD.object3 User
+                ("login" := JD.string)
+                ("langKey" := LanguageService.decoder)
+                ("roles" := JD.maybe (JD.list roleDecoder))
+
+        withoutRoles =
+            JD.object3 User
+                ("login" := JD.string)
+                ("langKey" := LanguageService.decoder)
+                (JD.succeed Nothing)
+
+    in
+        JD.oneOf [withRoles, withoutRoles]
 
 
 type alias Model m =
@@ -212,3 +223,57 @@ sendInvitationToCreateAccount = sendInvitation False
 
 sendInvitationToResetPassword : String -> Language -> Task Http.Error ()
 sendInvitationToResetPassword = sendInvitation True
+
+
+type alias UserEmailActivation =
+    { id : Int
+    , userEmail : UserEmail
+    , activationKey : String
+    }
+
+userEmailActivationDecoder : JD.Decoder UserEmailActivation
+userEmailActivationDecoder =
+    JD.object3 UserEmailActivation
+        ("id" := JD.int)
+        ("userEmail" := userEmailDecoder)
+        ("activationKey" := JD.string)
+
+type alias UserEmail =
+    { id : Int
+    , email : Email
+    , user : Maybe User
+    }
+
+userEmailDecoder : JD.Decoder UserEmail
+userEmailDecoder =
+    JD.object3 UserEmail
+        ("id" := JD.int)
+        ("email" := emailDecoder)
+        ("user" := JD.maybe userDecoder)
+
+type alias Email =
+    { id : Int
+    , emailAddress : String
+    }
+
+emailDecoder : JD.Decoder Email
+emailDecoder =
+    JD.object2 Email
+        ("id" := JD.int)
+        ("emailAddress" := JD.string)
+
+
+fetchInvitation : String -> Task Http.Error UserEmailActivation 
+fetchInvitation key =
+    Http.fromJson userEmailActivationDecoder (
+        send
+            { verb = "GET"
+            , headers =
+                [ ("Accept", "application/json")
+                ]
+            , url = url ("/api/invitation/" ++ key) []
+            , body = Http.empty
+            }
+    )
+
+    

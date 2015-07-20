@@ -39,7 +39,6 @@ reaction address action =
                 else
                     Nothing
 
-
         UseInvitation invitation ->
             if isEmpty (checkInvitation invitation)
                 then

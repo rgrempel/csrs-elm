@@ -25,4 +25,3 @@ type alias Focus =
     , invitation : String
     }
 
-

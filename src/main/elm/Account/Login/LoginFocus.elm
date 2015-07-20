@@ -79,18 +79,11 @@ updateFocus action focus =
 
 
 defaultFocus : Focus
-defaultFocus =
-    { credentials = blankCredentials
-    , loginStatus = LoginNotAttempted
-    }
+defaultFocus = Focus blankCredentials LoginNotAttempted
 
 
 blankCredentials : Credentials
-blankCredentials =
-    { username = ""
-    , password = ""
-    , rememberMe = False
-    }
+blankCredentials = Credentials "" "" False
 
 
 checkCredentials : Credentials -> Bool

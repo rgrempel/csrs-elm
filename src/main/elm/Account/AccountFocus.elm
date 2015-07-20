@@ -13,6 +13,8 @@ import Account.Register.RegisterFocus as RegisterFocus
 import Account.Register.RegisterTypes as RegisterTypes
 import Account.ResetPassword.ResetPasswordFocus as ResetPasswordFocus
 import Account.ResetPassword.ResetPasswordTypes as ResetPasswordTypes
+import Account.Invitation.InvitationFocus as InvitationFocus
+import Account.Invitation.InvitationTypes as InvitationTypes
 import Account.AccountText as AccountText
 import Account.AccountService exposing (User)
 import Language.LanguageService exposing (Language)
@@ -36,7 +38,10 @@ hash2focus hashList =
 
                 "reset-password" ->
                     Maybe.map ResetPassword <| ResetPasswordFocus.hash2focus rest
-                
+               
+                "invitation" ->
+                    Maybe.map Invitation <| InvitationFocus.hash2focus rest
+
                 "settings" ->
                     Just Settings
 
@@ -68,6 +73,9 @@ focus2hash focus =
         ResetPassword focus ->
             "reset-password" :: ResetPasswordFocus.focus2hash focus
 
+        Invitation focus ->
+            "invitation" :: InvitationFocus.focus2hash focus
+
         Settings ->
             ["settings"]
 
@@ -92,6 +100,9 @@ reaction address action =
         
         FocusResetPassword action ->
             ResetPasswordFocus.reaction (forwardTo address FocusResetPassword) action
+        
+        FocusInvitation action ->
+            InvitationFocus.reaction (forwardTo address FocusInvitation) action
         
         _ ->
             Nothing
@@ -124,6 +135,12 @@ updateFocus action focus =
         (FocusResetPassword resetPasswordAction, _) ->
             Maybe.map ResetPassword <| ResetPasswordFocus.updateFocus resetPasswordAction Nothing
         
+        (FocusInvitation action, Just (Invitation focus)) ->
+            Maybe.map Invitation <| InvitationFocus.updateFocus action <| Just focus
+
+        (FocusInvitation action, _) ->
+            Maybe.map Invitation <| InvitationFocus.updateFocus action Nothing
+        
         (FocusSettings, _) ->
             Just Settings
 
@@ -154,6 +171,12 @@ renderFocus address focus language =
             ResetPassword focus ->
                 ResetPasswordFocus.renderFocus
                     (forwardTo address FocusResetPassword)
+                    focus
+                    language
+            
+            Invitation focus ->
+                InvitationFocus.renderFocus
+                    (forwardTo address FocusInvitation)
                     focus
                     language
             
@@ -201,6 +224,13 @@ registerFocus : Maybe Focus -> Maybe RegisterTypes.Focus
 registerFocus focus =
     case focus of
         Just (Register registerFocus) -> Just registerFocus
+        _ -> Nothing
+    
+
+invitationFocus : Maybe Focus -> Maybe InvitationTypes.Focus
+invitationFocus focus =
+    case focus of
+        Just (Invitation focus) -> Just focus
         _ -> Nothing
     
 
@@ -268,5 +298,4 @@ renderMenu address user focus language =
                     , settingsItem
                     ]
             ]
-
 

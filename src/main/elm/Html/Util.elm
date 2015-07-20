@@ -4,6 +4,40 @@ import String exposing (fromChar)
 import Char exposing (fromCode)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Http
+import Html.UtilText as UtilText exposing (translate)
+import Language.LanguageService exposing (Language)
+
+
+showError : Language -> Http.Error -> Html
+showError language error =
+    let
+        trans =
+            translate language
+
+        content =
+            case error of
+                Http.Timeout ->
+                    [ p [] [ trans error ] ]
+
+                Http.NetworkError ->
+                    [ p [] [ trans error ] ]
+
+                Http.UnexpectedPayload err ->
+                    [ p [] [ trans error ]
+                    , p [] [ text err ]
+                    ]
+
+                Http.BadResponse err errText ->
+                    [ p [] [ trans error ]
+                    , p [] [ text (toString err) ]
+                    , p [] [ text errText ]
+                    ]
+
+    in
+        div
+            [ class "alert alert-danger" ]
+            content
 
 
 unbreakableSpace : String
