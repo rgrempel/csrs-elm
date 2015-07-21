@@ -6,6 +6,9 @@ type Validator a
     | Email
     | GreaterThan a
     | Between a a
+    | MinLength Int
+    | MaxLength Int
+    | Matches a 
 
 
 type alias StringValidator = Validator String

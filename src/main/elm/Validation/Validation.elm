@@ -36,12 +36,20 @@ checkString validators value =
                 Email ->
                     value == "" || validEmail value
 
+                MinLength min ->
+                    String.length (String.trim value) >= min
+
+                MaxLength max ->
+                    String.length (String.trim value) <= max
+
+                Matches other ->
+                    value == other
 
     in
         filter (not << check) validators
 
 
-helpBlock : Language -> Validator a -> Html
+helpBlock : Language -> StringValidator -> Html
 helpBlock language validator =
     p
         [ class "help-block" ] 
