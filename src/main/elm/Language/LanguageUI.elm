@@ -1,6 +1,7 @@
 module Language.LanguageUI where
 
-import Language.LanguageService exposing (Language, allLanguages, actions, Action(SwitchLanguage))
+import AppTypes exposing (..)
+import Language.LanguageTypes exposing (..)
 import Language.LanguageText as LanguageText
 import Html.Util exposing (dropdownPointer, dropdownToggle, glyphicon, unbreakableSpace, dropdownMenu)
 import Html exposing (Html, li, a, text, span)
@@ -8,19 +9,19 @@ import Html.Attributes exposing (class, classList)
 import Html.Events exposing (onClick)
 
 
-renderMenu : Language -> Html
-renderMenu language =
+menu : Model -> Html
+menu model =
     let
         trans =
-            LanguageText.translate language
+            LanguageText.translate model.useLanguage
 
         languageItem lang =
             li
                 [ classList
-                    [ ( "active", language == lang ) ]
+                    [ ( "active", model.useLanguage == lang ) ]
                 ]
                 [ a
-                    [ onClick actions.address (SwitchLanguage lang) ]
+                    [ onClick actions.address <| SwitchLanguage lang ]
                     [ trans <| LanguageText.TheWordFor lang ]
                 ]
 
@@ -33,6 +34,5 @@ renderMenu language =
                 , text unbreakableSpace
                 , span [ class "text-bold caret" ] []
                 ]
-            , dropdownMenu
-                ( List.map languageItem allLanguages )
+            , dropdownMenu <| List.map languageItem allLanguages
             ]

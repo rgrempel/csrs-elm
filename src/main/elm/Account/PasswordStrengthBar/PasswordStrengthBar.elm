@@ -1,7 +1,7 @@
 module Account.PasswordStrengthBar.PasswordStrengthBar where
 
 import Account.PasswordStrengthBar.PasswordStrengthBarText as PSBText
-import Language.LanguageService exposing (Language)
+import Language.LanguageTypes exposing (Language)
 import Html exposing (..)
 import Html.Attributes exposing (class, style)
 import List exposing (repeat, filter, foldl, map)

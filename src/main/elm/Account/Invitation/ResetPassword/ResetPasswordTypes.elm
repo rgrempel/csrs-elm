@@ -1,8 +1,6 @@
 module Account.Invitation.ResetPassword.ResetPasswordTypes where
 
-import Language.LanguageService exposing (Language)
-import Http
-import Account.AccountService exposing (UserEmailActivation)
+import Account.AccountServiceTypes exposing (UserEmailActivation)
 
 type Action
     = FocusActivation UserEmailActivation

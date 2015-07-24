@@ -1,9 +1,14 @@
 module Account.Invitation.InvitationFocus where
 
+import AppTypes exposing (..)
 import Account.Invitation.InvitationTypes as InvitationTypes exposing (..)
 import Account.Invitation.InvitationText as InvitationText
 import Account.Invitation.Register.RegisterFocus as RegisterFocus
 import Account.Invitation.ResetPassword.ResetPasswordFocus as ResetPasswordFocus
+import Validation.Validation exposing (checkString, helpBlock)
+import Validation.ValidationTypes exposing (StringValidator, Validator(Required, Email))
+import Account.AccountService as AccountService
+import Route.RouteService exposing (PathAction (..))
 
 import Signal exposing (message, forwardTo)
 import Html exposing (..)
@@ -13,33 +18,37 @@ import Html.Util exposing (role, glyphicon, unbreakableSpace, showError)
 import Signal exposing (Address)
 import Maybe exposing (withDefault)
 import Task exposing (Task, andThen, onError)
-import Language.LanguageService exposing (Language)
-import Validation.Validation exposing (checkString, helpBlock)
-import Validation.ValidationTypes exposing (StringValidator, Validator(Required, Email))
 import List exposing (all, isEmpty)
-import Account.AccountService as AccountService
 import Http
 
 
-hash2focus : List String -> Maybe Focus
-hash2focus hashList = 
+route : List String -> Maybe Action
+route hashList = 
     case hashList of
         first :: rest ->
-            Just <| Invitation <| @key first defaultFocus
+            Just <| FocusKey first
 
         _ ->
-            Just <| Invitation <| defaultFocus
+            Just <| FocusBlank
 
 
-focus2hash : Focus -> List String
-focus2hash focus = 
-    case focus of
-        Invitation subfocus ->
-            case subfocus.key of
-                "" -> []
-                other -> [other]
+path : Maybe Focus -> Focus -> Maybe PathAction 
+path focus focus' =
+    let
+        operation =
+            if focus == Nothing
+                then Just << SetPath
+                else Just << ReplacePath
 
-        _ -> []
+    in
+        case focus' of
+            Invitation subfocus ->
+                case subfocus.key of
+                    "" -> operation []
+                    other -> operation [other]
+
+            _ ->
+                Nothing
 
 
 reaction : Address InvitationTypes.Action -> InvitationTypes.Action -> Maybe (Task () ())
@@ -73,8 +82,8 @@ reaction address action =
             Nothing
 
 
-updateFocus : InvitationTypes.Action -> Maybe Focus -> Maybe Focus
-updateFocus action focus =
+update : InvitationTypes.Action -> Maybe Focus -> Maybe Focus
+update action focus =
     let
         invitation =
             case focus of
@@ -82,35 +91,30 @@ updateFocus action focus =
                 _ -> defaultFocus
  
     in
-        case (action, focus) of
-            (FocusRegister subaction, Just (Register subfocus)) ->
-                Maybe.map Register <| RegisterFocus.updateFocus subaction <| Just subfocus
+        case action of
+            FocusRegister subaction ->
+                Maybe.map Register <| RegisterFocus.update subaction <| focus `Maybe.andThen` registerFocus
 
-            (FocusRegister subaction, _) ->
-                Maybe.map Register <| RegisterFocus.updateFocus subaction <| Nothing
+            FocusResetPassword subaction ->
+                Maybe.map ResetPassword <| ResetPasswordFocus.update subaction <| focus `Maybe.andThen` resetPasswordFocus 
 
-            (FocusResetPassword subaction, Just (ResetPassword subfocus)) ->
-                Maybe.map ResetPassword <| ResetPasswordFocus.updateFocus subaction <| Just subfocus
-
-            (FocusResetPassword subaction, _) ->
-                Maybe.map ResetPassword <| ResetPasswordFocus.updateFocus subaction <| Nothing
-
-            (FocusKey key, _) ->
+            FocusKey key ->
                 Just <| Invitation <| @key key invitation
 
-            (CheckInvitation key, _) ->
+            CheckInvitation key ->
                 Just <| Invitation <| @status CheckingInvitation invitation
 
-            (FocusInvitationNotFound, _) ->
+            FocusInvitationNotFound ->
                 Just <| Invitation <| @status InvitationNotFound invitation
 
-            (FocusInvitationFound activation, _) ->
+            FocusInvitationFound activation ->
                 Just <| Invitation <| @status (InvitationFound activation) invitation
 
-            (FocusError error, _) ->
+            FocusError error ->
                 Just <| Invitation <| @status (Error error) invitation
 
-            _ -> Just <| Invitation invitation
+            _ ->
+                Just <| Invitation invitation
 
 
 defaultFocus : InvitationFocus
@@ -121,28 +125,29 @@ checkRequired : String -> List StringValidator
 checkRequired = checkString [Required]
 
 
-renderFocus : Address InvitationTypes.Action -> Focus -> Language -> Html
-renderFocus address focus language =
-    case focus of
-        Register subfocus ->
-            RegisterFocus.renderFocus
-                (forwardTo address FocusRegister)
-                subfocus
-                language
-
-        ResetPassword subfocus ->
-            ResetPasswordFocus.renderFocus
-                (forwardTo address FocusResetPassword)
-                subfocus
-                language
-
-        Invitation subfocus ->
-            renderInvitation address subfocus language
-
-
-renderInvitation : Address InvitationTypes.Action -> InvitationFocus -> Language -> Html
-renderInvitation address focus language =
+view : Address InvitationTypes.Action -> Model -> Focus -> Html
+view address model focus =
     let
+        forward = forwardTo address
+
+    in
+        case focus of
+            Register subfocus ->
+                RegisterFocus.view (forward FocusRegister) model subfocus
+
+            ResetPassword subfocus ->
+                ResetPasswordFocus.view (forward FocusResetPassword) model subfocus
+
+            Invitation subfocus ->
+                viewInvitation address model subfocus
+
+
+viewInvitation : Address InvitationTypes.Action -> Model -> InvitationFocus -> Html
+viewInvitation address model focus =
+    let
+        language =
+            model.useLanguage
+    
         trans =
             InvitationText.translate language
 

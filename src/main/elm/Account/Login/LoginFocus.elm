@@ -1,7 +1,15 @@
 module Account.Login.LoginFocus where
 
+import AppTypes exposing (..)
 import Account.Login.LoginTypes as LoginTypes exposing (..)
 import Account.Login.LoginText as LoginText
+import Account.AccountServiceTypes exposing (Credentials)
+import Account.AccountService as AccountService exposing (attemptLogin)
+import Focus.FocusTypes as FocusTypes
+import Home.HomeTypes as HomeTypes
+import Validation.Validation exposing (checkString, helpBlock)
+import Validation.ValidationTypes exposing (StringValidator, Validator(Required))
+import Route.RouteService exposing (PathAction(..))
 
 import Signal exposing (message)
 import Html exposing (..)
@@ -11,21 +19,18 @@ import Html.Util exposing (role, glyphicon, unbreakableSpace)
 import Signal exposing (Address)
 import Maybe exposing (withDefault)
 import Task exposing (Task)
-import Language.LanguageService exposing (Language)
-import Account.AccountService as AccountService exposing (Credentials, attemptLogin)
-import Focus.FocusTypes as FocusTypes
-import Home.HomeTypes as HomeTypes
-import Validation.Validation exposing (checkString, helpBlock)
-import Validation.ValidationTypes exposing (StringValidator, Validator(Required))
 import List exposing (all, isEmpty)
 
 
-hash2focus : List String -> Maybe Focus
-hash2focus hashList = Just defaultFocus
+route : List String -> Maybe Action
+route hashList = Just FocusBlank
 
 
-focus2hash : Focus -> List String
-focus2hash focus = []
+path : Maybe Focus -> Focus -> Maybe PathAction
+path focus focus' =
+    if focus == Nothing
+        then Just <| SetPath []
+        else Nothing
 
 
 reaction : Address LoginTypes.Action -> LoginTypes.Action -> Maybe (Task () ())
@@ -48,8 +53,8 @@ reaction address action =
             Nothing
 
 
-updateFocus : LoginTypes.Action -> Maybe Focus -> Maybe Focus
-updateFocus action focus =
+update : LoginTypes.Action -> Maybe Focus -> Maybe Focus
+update action focus =
     let
         focus' =
             withDefault defaultFocus focus
@@ -98,9 +103,12 @@ checkRequired : String -> List StringValidator
 checkRequired = checkString [Required]
     
 
-renderFocus : Address LoginTypes.Action -> Focus -> Language -> Html
-renderFocus address focus language =
+view : Address LoginTypes.Action -> Model -> Focus -> Html
+view address model focus =
     let
+        language =
+            model.useLanguage
+
         transHtml =
             LoginText.translateHtml language 
         
@@ -238,13 +246,13 @@ renderFocus address focus language =
             ]
 
 
-renderMenuItem : Address LoginTypes.Action -> Maybe Focus -> Language -> Html
-renderMenuItem address focus language =
+menuItem : Address LoginTypes.Action -> Model -> Maybe Focus -> Html
+menuItem address model focus =
     li [ classList [ ( "active", focus /= Nothing ) ] ]
         [ a [ onClick address FocusBlank ]
             [ glyphicon "log-in" 
             , text unbreakableSpace
-            , LoginText.translateHtml language LoginText.Title 
+            , LoginText.translateHtml model.useLanguage LoginText.Title 
             ]
         ]
 

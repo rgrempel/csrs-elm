@@ -1,6 +1,12 @@
 module Account.Logout.LogoutFocus where
 
+import AppTypes exposing (..)
 import Account.Logout.LogoutTypes as LogoutTypes exposing (..)
+import Account.Logout.LogoutText as LogoutText
+import Account.AccountService as AccountService
+import Focus.FocusTypes as FocusTypes
+import Home.HomeTypes as HomeTypes
+import Route.RouteService exposing (PathAction(..))
 
 import Signal exposing (message)
 import Html exposing (..)
@@ -10,19 +16,17 @@ import Html.Util exposing (role, glyphicon, unbreakableSpace)
 import Signal exposing (Address)
 import Maybe exposing (withDefault)
 import Task exposing (Task)
-import Language.LanguageService exposing (Language)
-import Account.Logout.LogoutText as LogoutText
-import Account.AccountService as AccountService
-import Focus.FocusTypes as FocusTypes
-import Home.HomeTypes as HomeTypes
 
 
-hash2focus : List String -> Maybe Focus
-hash2focus hashList = Just defaultFocus
+route : List String -> Maybe Action
+route hashList = Just FocusBlank
 
 
-focus2hash : Focus -> List String
-focus2hash focus = []
+path : Maybe Focus -> Focus -> Maybe PathAction
+path focus focus' =
+    if focus == Nothing
+        then Just <| SetPath []
+        else Nothing
 
 
 reaction : Address LogoutTypes.Action -> LogoutTypes.Action -> Maybe (Task () ())
@@ -46,8 +50,8 @@ reaction address action =
             Nothing
 
 
-updateFocus : LogoutTypes.Action -> Maybe Focus -> Maybe Focus
-updateFocus action focus =
+update : LogoutTypes.Action -> Maybe Focus -> Maybe Focus
+update action focus =
     let
         focus' =
             withDefault defaultFocus focus 
@@ -70,11 +74,11 @@ defaultFocus =
     }
 
 
-renderFocus : Address LogoutTypes.Action -> Focus -> Language -> Html
-renderFocus address focus language =
+view : Address LogoutTypes.Action -> Model -> Focus -> Html
+view address model focus =
     let
         trans =
-            LogoutText.translate language
+            LogoutText.translate model.useLanguage
  
     in
         div [ class "csrs-auth-logout container" ]
@@ -88,13 +92,13 @@ renderFocus address focus language =
             ]
 
 
-renderMenuItem : Address LogoutTypes.Action -> Maybe Focus -> Language -> Html
-renderMenuItem address focus language =
+menuItem : Address LogoutTypes.Action -> Model -> Maybe Focus -> Html
+menuItem address model focus =
     li [ classList [ ( "active", focus /= Nothing ) ] ]
         [ a [ onClick address AttemptLogout ]
             [ glyphicon "log-out" 
             , text unbreakableSpace
-            , LogoutText.translate language LogoutText.Title 
+            , LogoutText.translate model.useLanguage LogoutText.Title 
             ]
         ]
 

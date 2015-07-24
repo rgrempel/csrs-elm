@@ -1,32 +1,35 @@
 module Account.Register.RegisterFocus where
 
+import AppTypes exposing (..)
 import Account.Register.RegisterTypes as RegisterTypes exposing (..)
 import Account.Register.RegisterText as RegisterText
-
-import Signal exposing (message)
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
-import Html.Util exposing (role, glyphicon, unbreakableSpace)
-import Signal exposing (Address)
-import Maybe exposing (withDefault)
-import Task exposing (Task, andThen, onError)
-import Language.LanguageService exposing (Language)
 import Validation.Validation exposing (checkString, helpBlock)
 import Validation.ValidationTypes exposing (StringValidator, Validator(Required, Email))
-import List exposing (all, isEmpty)
 import Account.AccountService as AccountService
 import Focus.FocusTypes as FocusTypes
 import Account.AccountTypes as AccountTypes
 import Account.Invitation.InvitationTypes as InvitationTypes
+import Route.RouteService exposing (PathAction(..))
+
+import Signal exposing (Address, message)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (..)
+import Html.Util exposing (role, glyphicon, unbreakableSpace)
+import Maybe exposing (withDefault)
+import Task exposing (Task, andThen, onError)
+import List exposing (all, isEmpty)
 
 
-hash2focus : List String -> Maybe Focus
-hash2focus hashList = Just defaultFocus
+route : List String -> Maybe Action
+route hashList = Just FocusBlank 
 
 
-focus2hash : Focus -> List String
-focus2hash focus = []
+path : Maybe Focus -> Focus -> Maybe PathAction
+path focus focus' =
+    if focus == Nothing
+        then Just <| SetPath []
+        else Nothing
 
 
 reaction : Address RegisterTypes.Action -> RegisterTypes.Action -> Maybe (Task () ())
@@ -64,8 +67,8 @@ reaction address action =
             Nothing
 
 
-updateFocus : RegisterTypes.Action -> Maybe Focus -> Maybe Focus
-updateFocus action focus =
+update : RegisterTypes.Action -> Maybe Focus -> Maybe Focus
+update action focus =
     let
         focus' =
             withDefault defaultFocus focus
@@ -103,9 +106,12 @@ checkInvitation : String -> List StringValidator
 checkInvitation = checkString [Required]
 
 
-renderFocus : Address RegisterTypes.Action -> Focus -> Language -> Html
-renderFocus address focus language =
+view : Address RegisterTypes.Action -> Model -> Focus -> Html
+view address model focus =
     let
+        language =
+            model.useLanguage
+
         trans =
             RegisterText.translateHtml language
 
@@ -241,13 +247,13 @@ renderFocus address focus language =
             ]
 
 
-renderMenuItem : Address RegisterTypes.Action -> Maybe Focus -> Language -> Html
-renderMenuItem address focus language =
+menuItem : Address RegisterTypes.Action -> Model -> Maybe Focus -> Html
+menuItem address model focus =
     li [ classList [ ( "active", focus /= Nothing ) ] ]
         [ a [ onClick address FocusBlank ]
             [ glyphicon "plus-sign" 
             , text unbreakableSpace
-            , RegisterText.translateHtml language RegisterText.CreateNewAccount 
+            , RegisterText.translateHtml model.useLanguage RegisterText.CreateNewAccount 
             ]
         ]
 

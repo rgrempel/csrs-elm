@@ -1,26 +1,27 @@
 module Tasks.TasksFocus where
 
+import AppTypes exposing (..)
 import Tasks.TasksTypes exposing (..)
+import Route.RouteService exposing (PathAction(..))
 
 import Html exposing (Html, h1, text, div, li, ul, a, span)
 import Html.Attributes exposing (class, classList, href)
 import Html.Events exposing (onClick)
 import Signal exposing (Address, forwardTo)
 import Tasks.TasksText as TasksText
-import Language.LanguageService exposing (Language)
 import Html.Util exposing (dropdownMenu, dropdownToggle, dropdownPointer, glyphicon, unbreakableSpace)
 
 
-hash2focus : List String -> Maybe Focus
-hash2focus hashList =
-    case hashList of
+route : List String -> Maybe Action
+route list =
+    case list of
         first :: rest ->
             case first of
                 "process-forms" ->
-                    Just ProcessForms
+                    Just FocusProcessForms
 
                 "membership-by-year" ->
-                    Just MembershipByYear
+                    Just FocusMembershipByYear
 
                 _ ->
                     Nothing
@@ -29,31 +30,33 @@ hash2focus hashList =
             Nothing
 
 
-focus2hash : Focus -> List String
-focus2hash focus =
-    case focus of
-        ProcessForms ->
-            ["process-forms"]
+path : Maybe Focus -> Focus -> Maybe PathAction
+path focus focus' =
+    if focus == Just focus'
+        then Nothing
+        else case focus' of
+            ProcessForms ->
+                Just <| SetPath ["process-forms"]
 
-        MembershipByYear ->
-            ["membership-by-year"]
+            MembershipByYear ->
+                Just <| SetPath ["membership-by-year"]
 
 
-updateFocus : Action -> Maybe Focus -> Maybe Focus
-updateFocus action focus =
-    case (action, focus) of 
-        (FocusProcessForms, _) ->
+update : Action -> Maybe Focus -> Maybe Focus
+update action focus =
+    case action of 
+        FocusProcessForms ->
             Just ProcessForms
 
-        (FocusMembershipByYear, _) ->
+        FocusMembershipByYear ->
             Just MembershipByYear
 
         _ ->
             Nothing
 
 
-renderFocus : Address Action -> Focus -> Language -> Html
-renderFocus address focus language =
+view : Address Action -> Model -> Focus -> Html
+view address model focus =
     let 
         v s =
             div [ class "container" ]
@@ -67,11 +70,11 @@ renderFocus address focus language =
 
 
 -- TODO: ONly show to admins
-renderMenu : Address Action -> Maybe Focus -> Language -> Html
-renderMenu address focus language =
+menu : Address Action -> Model -> Maybe Focus -> Html
+menu address model focus =
     let
         trans =
-            TasksText.translate language
+            TasksText.translate model.useLanguage
 
         standardMenuItem icon message action newFocus =
             li [ classList [ ( "active", focus == Just newFocus ) ] ]

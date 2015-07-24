@@ -1,6 +1,6 @@
 module Home.HomeText where
 
-import Language.LanguageService exposing (Language(EN, FR, LA))
+import Language.LanguageTypes exposing (Language(EN, FR, LA))
 import Html exposing (Html, text, span, a, strong)
 import Html.Attributes exposing (href, target)
 import Html.Events exposing (onClick)

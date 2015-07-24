@@ -1,6 +1,6 @@
 module Validation.ValidationText where
 
-import Language.LanguageService exposing (Language(..))
+import Language.LanguageTypes exposing (Language(..))
 import Validation.ValidationTypes exposing (..)
 import Html exposing (Html, text)
 

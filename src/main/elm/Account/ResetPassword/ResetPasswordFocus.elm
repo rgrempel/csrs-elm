@@ -1,32 +1,37 @@
 module Account.ResetPassword.ResetPasswordFocus where
 
+import AppTypes exposing (..)
 import Account.ResetPassword.ResetPasswordTypes as ResetPasswordTypes exposing (..)
 import Account.ResetPassword.ResetPasswordText as ResetPasswordText
-
-import Signal exposing (message)
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (onSubmit, on, targetValue)
-import Html.Util exposing (role, glyphicon, unbreakableSpace)
-import Signal exposing (Address)
-import Maybe exposing (withDefault)
-import Task exposing (Task, andThen, onError)
-import Language.LanguageService exposing (Language)
 import Validation.Validation exposing (checkString, helpBlock)
 import Validation.ValidationTypes exposing (StringValidator, Validator(Required, Email))
-import List exposing (all, isEmpty)
 import Account.AccountService as AccountService
 import Focus.FocusTypes as FocusTypes
 import Account.AccountTypes as AccountTypes
 import Account.Invitation.InvitationTypes as InvitationTypes
+import Route.RouteService exposing (PathAction(..))
+
+import Signal exposing (Address, message)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (onSubmit, on, targetValue)
+import Html.Util exposing (role, glyphicon, unbreakableSpace)
+import Maybe exposing (withDefault)
+import Task exposing (Task, andThen, onError)
+import List exposing (all, isEmpty)
 
 
-hash2focus : List String -> Maybe Focus
-hash2focus hashList = Just defaultFocus
+route : List String -> Maybe Action
+route hashList = Just FocusBlank
 
 
-focus2hash : Focus -> List String
-focus2hash focus = []
+-- If we came from elsewhere ... i.e. focus was nothing ...
+-- then set the path, otherwise not
+path : Maybe Focus -> Focus -> Maybe PathAction
+path focus focus' =
+    if focus == Nothing
+        then Just <| SetPath []
+        else Nothing
 
 
 reaction : Address ResetPasswordTypes.Action -> ResetPasswordTypes.Action -> Maybe (Task () ())
@@ -65,8 +70,8 @@ reaction address action =
             Nothing
 
 
-updateFocus : ResetPasswordTypes.Action -> Maybe Focus -> Maybe Focus
-updateFocus action focus =
+update : ResetPasswordTypes.Action -> Maybe Focus -> Maybe Focus
+update action focus =
     let
         focus' =
             withDefault defaultFocus focus
@@ -104,11 +109,11 @@ checkToken : String -> List StringValidator
 checkToken = checkString [Required]
 
 
-renderFocus : Address ResetPasswordTypes.Action -> Focus -> Language -> Html
-renderFocus address focus language =
+view : Address ResetPasswordTypes.Action -> Model -> Focus -> Html
+view address model focus =
     let
         trans =
-            ResetPasswordText.translateHtml language
+            ResetPasswordText.translateHtml model.useLanguage
 
         wrap contents =
             div [ class "csrs-resetPassword container" ]
@@ -165,7 +170,7 @@ renderFocus address focus language =
                             ]
                         ]
                         ++
-                        ( List.map (helpBlock language) errors )
+                        ( List.map (helpBlock model.useLanguage) errors )
                     ]
 
         emailForm =
@@ -179,7 +184,7 @@ renderFocus address focus language =
                 Html.form
                     [ role "form"
                     , class "form"
-                    , onSubmit address (SendToken focus.email language)
+                    , onSubmit address (SendToken focus.email model.useLanguage)
                     ]
                     [ div
                         [ classList
@@ -211,7 +216,7 @@ renderFocus address focus language =
                             ]
                         ]
                         ++
-                        ( List.map (helpBlock language) errors )
+                        ( List.map (helpBlock model.useLanguage) errors )
                     ]
 
         tokenSent =

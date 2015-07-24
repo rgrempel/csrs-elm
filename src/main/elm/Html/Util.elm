@@ -6,7 +6,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Http
 import Html.UtilText as UtilText exposing (translate)
-import Language.LanguageService exposing (Language)
+import Language.LanguageTypes exposing (Language)
 
 
 showError : Language -> Http.Error -> Html

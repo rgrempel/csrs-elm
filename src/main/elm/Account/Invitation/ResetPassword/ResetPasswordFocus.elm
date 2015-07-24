@@ -1,33 +1,31 @@
 module Account.Invitation.ResetPassword.ResetPasswordFocus where
 
+import AppTypes exposing (..)
 import Account.Invitation.ResetPassword.ResetPasswordTypes as ResetPasswordTypes exposing (..)
 import Account.Invitation.ResetPassword.ResetPasswordText as ResetPasswordText
+import Validation.Validation exposing (checkString, helpBlock)
+import Validation.ValidationTypes exposing (StringValidator, Validator(..))
+import Account.AccountServiceTypes as AccountServiceTypes exposing (UserEmailActivation)
+import Account.PasswordStrengthBar.PasswordStrengthBar as PasswordStrengthBar
+import Route.RouteService exposing (PathAction(..))
 
-import Signal exposing (message)
+import Signal exposing (Address, message)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Html.Util exposing (role, glyphicon, unbreakableSpace)
-import Signal exposing (Address)
 import Maybe exposing (withDefault)
 import Task exposing (Task, andThen, onError)
-import Language.LanguageService exposing (Language)
-import Validation.Validation exposing (checkString, helpBlock)
-import Validation.ValidationTypes exposing (StringValidator, Validator(..))
 import List exposing (all, isEmpty)
-import Account.AccountService as AccountService exposing (UserEmailActivation)
-import Focus.FocusTypes as FocusTypes
-import Account.AccountTypes as AccountTypes
-import Account.PasswordStrengthBar.PasswordStrengthBar as PasswordStrengthBar
 
 
 -- You can't get here via hash ... 
-hash2focus : List String -> Maybe Focus
-hash2focus hashList = Nothing
+route : List String -> Maybe Action
+route hashList = Nothing
 
 
-focus2hash : Focus -> List String
-focus2hash focus = []
+path : Maybe Focus -> Focus -> Maybe PathAction
+path focus focus' = Nothing
 
 
 reaction : Address ResetPasswordTypes.Action -> ResetPasswordTypes.Action -> Maybe (Task () ())
@@ -66,8 +64,8 @@ reaction address action =
 -}
 
 
-updateFocus : ResetPasswordTypes.Action -> Maybe Focus -> Maybe Focus
-updateFocus action focus =
+update : ResetPasswordTypes.Action -> Maybe Focus -> Maybe Focus
+update action focus =
     case (action, focus) of
         (FocusActivation activation, Nothing) ->
             Just <| defaultFocus activation
@@ -103,9 +101,12 @@ checkConfirmPassword : String -> String -> List StringValidator
 checkConfirmPassword password = checkString [Matches password]
 
 
-renderFocus : Address ResetPasswordTypes.Action -> Focus -> Language -> Html
-renderFocus address focus language =
+view : Address ResetPasswordTypes.Action -> Model -> Focus -> Html
+view address model focus =
     let
+        language =
+            model.useLanguage
+
         trans =
             ResetPasswordText.translateText language
 

@@ -1,168 +1,28 @@
 module Focus.FocusUI where
 
 import Focus.FocusTypes exposing (..)
-import String exposing (split)
-import Account.AccountService as AccountService
+import AppTypes exposing (..)
 
 import Home.HomeTypes as HomeTypes
-import Account.AccountTypes as AccountTypes
-import Admin.AdminTypes as AdminTypes
-import Tasks.TasksTypes as TasksTypes
-
 import Home.HomeFocus as HomeFocus
 import Account.AccountFocus as AccountFocus
 import Admin.AdminFocus as AdminFocus
 import Tasks.TasksFocus as TasksFocus
+import Error.ErrorTypes as ErrorTypes
 import Error.ErrorFocus as ErrorFocus
-
-import Account.AccountService exposing (User)
+import NavBar.NavBarUI as NavBarUI
+import Language.LanguageUI as LanguageUI
+import Route.RouteService as RouteService exposing (PathAction(..))
 
 import Signal exposing (Mailbox, mailbox, Address, forwardTo)
-import String exposing (uncons)
-import Http exposing (uriDecode, uriEncode)
-import Language.LanguageService exposing (Language)
-import Html exposing (Html)
+import Html exposing (Html, div)
 import Maybe exposing (withDefault)
-import History exposing (hash, setPath, replacePath)
 import Task exposing (Task)
 
 
-type DesiredLocation
-    = ReplacePath String
-    | SetPath String
+initialModel : m -> FocusModel m
+initialModel model = FocusModel (Home HomeTypes.Home) model
 
-type alias Hash = String
-
-type alias Model m =
-    { m
-        | focus : Focus
-        , desiredLocation : Maybe DesiredLocation
-    }
-
-
-init : m -> Model m
-init model = Model initialFocus Nothing model
-
-
-homeFocus : Focus -> Maybe HomeTypes.Focus
-homeFocus focus =
-    case focus of
-        Home hf -> Just hf
-        _ -> Nothing
-
-
-accountFocus : Focus -> Maybe AccountTypes.Focus
-accountFocus focus =
-    case focus of
-        Account af -> Just af
-        _ -> Nothing
-
-
-adminFocus : Focus -> Maybe AdminTypes.Focus
-adminFocus focus =
-    case focus of
-        Admin af -> Just af
-        _ -> Nothing
-
-
-tasksFocus : Focus -> Maybe TasksTypes.Focus
-tasksFocus focus =
-    case focus of
-        Tasks af -> Just af
-        _ -> Nothing
-
-
-initialFocus : Focus
-initialFocus = Home HomeTypes.Home 
-
-
-hashPrefix : String
-hashPrefix = "#!/"
-
-
-hashSignal : Signal Action
-hashSignal =
-    Signal.map ( SwitchFocusFromPath << hash2focus ) hash
-
-
--- Remove initial characters from the string, as many as there are.
--- So, for "#!/", remove # if is first, then ! if it is next, etc.
-removeAnyInitial : String -> String -> String
-removeAnyInitial initial original =
-    String.foldl removeInitial original initial
-
-
-removeInitial : Char -> String -> String
-removeInitial initial original =
-    case uncons original of
-        Just (first, rest) -> if first == initial then rest else original
-        _ -> original
-
-
-hash2focus : String -> Focus
-hash2focus hash =
-    let
-        hashList =
-            List.map uriDecode
-                <| split "/"
-                <| removeAnyInitial hashPrefix hash
-
-    in
-        withDefault Error <|
-            case hashList of
-                first :: rest ->
-                    case first of
-                        "" ->
-                            Maybe.map Home <| HomeFocus.hash2focus rest
-                        
-                        "account" ->
-                            Maybe.map Account <| AccountFocus.hash2focus rest
-                        
-                        "admin" ->
-                            Maybe.map Admin <| AdminFocus.hash2focus rest
-
-                        "tasks" ->
-                            Maybe.map Tasks <| TasksFocus.hash2focus rest
-                        
-                        _ ->
-                            Nothing
-
-                _ ->
-                    Nothing
-
-
-focus2hash : Focus -> String
-focus2hash focus =
-    let
-        hashList =
-            case focus of
-                Home homeFocus ->
-                    "" :: HomeFocus.focus2hash homeFocus
-
-                Error ->
-                    ["error"]
-
-                Account accountFocus ->
-                    "account" :: AccountFocus.focus2hash accountFocus
-
-                Admin adminFocus ->
-                    "admin" :: AdminFocus.focus2hash adminFocus
-
-                Tasks tasksFocus ->
-                    "tasks" :: TasksFocus.focus2hash tasksFocus
-
-    in
-        hashPrefix
-        ++
-        List.foldl
-            ( \iter accum -> accum ++ if accum == "" then (uriEncode iter) else "/" ++ (uriEncode iter) )
-            ""
-            hashList
-
-
-tasks : Signal (Maybe (Task () ()))
-tasks = Signal.map reaction (.signal actions)
-    
 
 reaction : Action -> Maybe (Task () ())
 reaction action =
@@ -174,82 +34,129 @@ reaction action =
             Nothing
 
 
-update : Action -> Model m -> Model m
-update action model =
+deltaReaction : (Model, Model) -> Maybe (Task () ())
+deltaReaction delta =
     let
-        (focus', pathUpdater) =
-            case (action, model.focus) of
-                (SwitchFocus focus, _) ->
-                    (Just focus, SetPath) 
-
-                -- If the focus change is coming from the path, then we set up a
-                -- possible ReplacePath action, rather than SetPath. That way,
-                -- we'll get our canonical path, but we won't update the history,
-                -- since clearly the old path got us here too.
-                (SwitchFocusFromPath focus, _) ->
-                    (Just focus, ReplacePath)
-
-                (FocusAccount accountAction, Account accountFocus) ->
-                    (Maybe.map Account <| AccountFocus.updateFocus accountAction <| Just accountFocus, SetPath)
-
-                (FocusAccount accountAction, _) ->
-                    (Maybe.map Account <| AccountFocus.updateFocus accountAction Nothing, SetPath)
-
-                (FocusHome homeAction, Home homeFocus) ->
-                    (Maybe.map Home <| HomeFocus.updateFocus homeAction <| Just homeFocus, SetPath)
-                
-                (FocusHome homeAction, _) ->
-                    (Maybe.map Home <| HomeFocus.updateFocus homeAction Nothing, SetPath)
-
-                (FocusAdmin adminAction, Admin adminFocus) ->
-                    (Maybe.map Admin <| AdminFocus.updateFocus adminAction <| Just adminFocus, SetPath)
-                
-                (FocusAdmin adminAction, _) ->
-                    (Maybe.map Admin <| AdminFocus.updateFocus adminAction Nothing, SetPath)
-                
-                (FocusTasks tasksAction, Tasks tasksFocus) ->
-                    (Maybe.map Tasks <| TasksFocus.updateFocus tasksAction <| Just tasksFocus, SetPath)
-                
-                (FocusTasks tasksAction, _) ->
-                    (Maybe.map Tasks <| TasksFocus.updateFocus tasksAction Nothing, SetPath)
-                
-                (_, _) ->
-                    (Nothing, ReplacePath)
+        action =
+            path (.focus (fst delta)) (.focus (snd delta))
 
     in
-        { model
-            | focus <- withDefault model.focus focus'
-            , desiredLocation <- Maybe.map ( pathUpdater << focus2hash ) focus'
-        }
+        Maybe.map RouteService.do action
+            
+
+{-| Given a new focus and an old focus, calculate whether we should
+    set or replace the path.
+-}
+path : Focus -> Focus -> Maybe PathAction 
+path focus focus' =
+    let
+        prepend prefix =
+            Maybe.map (RouteService.map ((::) prefix))
+    
+    in
+        if focus == focus'
+            then Nothing
+            else case focus' of
+                Home subfocus ->
+                    prepend "home" (HomeFocus.path (homeFocus focus) subfocus)
+
+                Error subfocus ->
+                    prepend "error" (ErrorFocus.path (errorFocus focus) subfocus)
+
+                Account subfocus ->
+                    prepend "account" (AccountFocus.path (accountFocus focus) subfocus)
+
+                Admin subfocus ->
+                    prepend "admin" (AdminFocus.path (adminFocus focus) subfocus)
+
+                Tasks subfocus ->
+                    prepend "tasks" (TasksFocus.path (tasksFocus focus) subfocus)
+
+
+route : List String -> Maybe Action
+route hash =
+    case hash of
+        first :: rest ->
+            case first of
+                "" ->
+                    Maybe.map FocusHome <| HomeFocus.route rest
+                
+                "account" ->
+                    Maybe.map FocusAccount <| AccountFocus.route rest
+                
+                "admin" ->
+                    Maybe.map FocusAdmin <| AdminFocus.route rest
+
+                "tasks" ->
+                    Maybe.map FocusTasks <| TasksFocus.route rest
+                
+                _ ->
+                    Just <| FocusError ErrorTypes.FocusError
+
+        _ ->
+            Maybe.map FocusHome <| HomeFocus.route []
+
+
+tasks : Signal (Maybe (Task () ()))
+tasks = Signal.map (Maybe.map do << route) RouteService.routes
+
+
+update : Action -> Model -> Model
+update action model =
+    let
+        focus' =
+            case action of
+                FocusAccount subaction ->
+                    Maybe.map Account <| AccountFocus.update subaction (accountFocus model.focus)
+
+                FocusHome subaction ->
+                    Maybe.map Home <| HomeFocus.update subaction (homeFocus model.focus)
+                
+                FocusAdmin subaction ->
+                    Maybe.map Admin <| AdminFocus.update subaction (adminFocus model.focus)
+                
+                FocusTasks subaction ->
+                    Maybe.map Tasks <| TasksFocus.update subaction (tasksFocus model.focus)
+                 
+                _ ->
+                    Nothing
+
+    in
+        @focus (withDefault model.focus focus') model
 
 
 forward : (a -> Action) -> Address a
 forward = forwardTo actions.address
 
 
-render : { a | currentUser : Maybe AccountService.User, focus : Focus } -> Language -> Html
-render model language =
-    case model.focus of
-        Home homeFocus ->
-            HomeFocus.renderFocus model.currentUser language
-        
-        Error ->
-            ErrorFocus.render language
-        
-        Account accountFocus ->
-            AccountFocus.renderFocus (forward FocusAccount) accountFocus language
-        
-        Admin adminFocus ->
-            AdminFocus.renderFocus (forward FocusAdmin) adminFocus language
+view : Model -> Html
+view model =
+    let
+        menus =
+            NavBarUI.view model
+                [ HomeFocus.menu (forward FocusHome) model (homeFocus model.focus)
+                , TasksFocus.menu (forward FocusTasks) model (tasksFocus model.focus)
+                , AccountFocus.menu (forward FocusAccount) model (accountFocus model.focus)
+                , AdminFocus.menu (forward FocusAdmin) model (adminFocus model.focus)
+                , LanguageUI.menu model
+                ]
 
-        Tasks tasksFocus ->
-            TasksFocus.renderFocus (forward FocusTasks) tasksFocus language
+        page =
+            case model.focus of
+                Home subfocus ->
+                    HomeFocus.view (forward FocusHome) model subfocus
+                     
+                Error subfocus->
+                    ErrorFocus.view (forward FocusError) model subfocus
+                
+                Account subfocus ->
+                    AccountFocus.view (forward FocusAccount) model subfocus
+                
+                Admin subfocus ->
+                    AdminFocus.view (forward FocusAdmin) model subfocus
 
+                Tasks subfocus ->
+                    TasksFocus.view (forward FocusTasks) model subfocus
 
-renderMenus : Maybe User -> Focus -> Language -> List Html
-renderMenus user focus language =
-    [ HomeFocus.renderMenu (forward FocusHome) (homeFocus focus) language
-    , TasksFocus.renderMenu (forward FocusTasks) (tasksFocus focus) language
-    , AccountFocus.renderMenu (forward FocusAccount) user (accountFocus focus) language
-    , AdminFocus.renderMenu (forward FocusAdmin) (adminFocus focus) language
-    ]
+    in
+        div [] [ menus, page ]

@@ -1,128 +1,59 @@
 module App where
 
-import History exposing (hash, setPath, replacePath)
+import AppTypes exposing (..)
 import Html exposing (Html, div)
 import Signal exposing (Signal, Mailbox, filter, mailbox, filterMap, merge, foldp, dropRepeats)
 import Task exposing (Task, andThen, onError)
-import Focus.FocusTypes as FocusTypes 
-import Focus.FocusUI as FocusUI exposing (DesiredLocation(SetPath, ReplacePath))
-import NavBar.NavBarUI as NavBarUI
+import Focus.FocusTypes as FocusTypes
+import Focus.FocusUI as FocusUI
 import Account.AccountService as AccountService
+import Account.AccountServiceTypes as AccountServiceTypes
 import Language.LanguageService as LanguageService
+import Language.LanguageTypes as LanguageTypes
 import Signal.Extra exposing (foldp')
 
 
-type alias Model m =
-    LanguageService.Model (
-    AccountService.Model (
-    FocusUI.Model (
-      {} 
-    )))
+{-| The initial model.
 
-
-initialModel : Model m
+We collect the initialization of the model from the various modules that
+'own' the parts of the model.
+-}
+initialModel : Model
 initialModel =
-    AccountService.init ( 
-    FocusUI.init (
-    LanguageService.init (
+    AccountServiceTypes.initialModel ( 
+    FocusUI.initialModel (
+    LanguageTypes.initialModel (
         {}
     )))
 
 
+{-| The actions our app can perform
+
+We don't have any top-level actions ... we simply dispatch to one
+module or another.
+-}
 type Action
-    = AccountAction (AccountService.Action)
+    = AccountAction AccountServiceTypes.Action
     | FocusAction FocusTypes.Action
-    | LanguageAction LanguageService.Action
+    | LanguageAction LanguageTypes.Action
     | NoOp
 
 
-actions : Signal (Action)
+{-| The merger of all the action signals defined by various modules. -}
+actions : Signal Action
 actions =
     Signal.mergeMany
-        [ Signal.map FocusAction <| FocusUI.hashSignal
-        , Signal.map FocusAction <| .signal FocusTypes.actions
-        , Signal.map AccountAction <| .signal AccountService.actions
-        , Signal.map LanguageAction <| .signal LanguageService.actions
+        [ Signal.map FocusAction <| .signal FocusTypes.actions
+        , Signal.map AccountAction <| .signal AccountServiceTypes.actions
+        , Signal.map LanguageAction <| .signal LanguageTypes.actions
         ]
 
 
-main : Signal Html
-main =
-    Signal.map render heraclitus
+{-| The update function.
 
-
-render : Model m -> Html
-render model =
-    div []
-    [ NavBarUI.render model.currentUser model.focus model.useLanguage
-    , FocusUI.render model model.useLanguage
-    ]
-
-
-heraclitus : Signal (Model m)
-heraclitus =
-    let
-        initialUpdate = 
-            (flip update) initialModel 
-        
-    in
-        foldp' update initialUpdate actions 
-
-
-desiredLocations : Signal (Maybe DesiredLocation)
-desiredLocations =
-    Signal.map .desiredLocation heraclitus
-
-
--- Generate a location-changing action if the
--- desired location is different from the current one                                                    
-locationAction : Maybe DesiredLocation -> String -> Maybe (Task error ())
-locationAction desired current =
-    case desired of
-        Nothing -> Nothing
-        Just (SetPath path) -> if path == current then Nothing else Just <| setPath path
-        Just (ReplacePath path) -> if path == current then Nothing else Just <| replacePath path
-
-
-port locationUpdates : Signal (Task error ())
-port locationUpdates =
-    let
-        taskMap = 
-            Signal.map2 locationAction desiredLocations hash
-
-        default =
-            Task.succeed ()
-
-    in
-        Signal.Extra.filter default taskMap
-
-
-ignoreResult : Task x a -> Task () ()
-ignoreResult =
-    Task.map (always ()) << Task.mapError (always ())
-
-
-initialTask : Task () () 
-initialTask =
-    ignoreResult <| Task.sequence
-        [ ignoreResult AccountService.fetchCurrentUser
-        ]
-
-
-mergedTasks : Signal (Maybe (Task () () ))    
-mergedTasks =
-    Signal.mergeMany
-        [ AccountService.tasks
-        , FocusUI.tasks
-        ]
-    
-
-port tasks : Signal (Task () ())
-port tasks =
-    Signal.Extra.filter initialTask mergedTasks
-
-
-update : Action -> Model m -> Model m
+Just dispatch to the various models that can handle actions.
+-}
+update : Action -> Model -> Model
 update action model =
     case action of
         AccountAction accountAction ->
@@ -137,4 +68,145 @@ update action model =
         _ -> model
 
 
+{-| Like update, except returns an additional task to perform
+in response to the action (rather than an updated model).
 
+Of coure, the task returned may be a sequence, or composed with various
+`andThen` tasks.
+
+An alternative is to let have the `update` function return a tuple of model and
+task. However, I think it's nice to keep the two things separate.
+
+One consequence is that when computing a reaction, modules don't actually have
+access to the model. So far, this hasn't been a problem. You simply have to
+define the action in a way that includes all the data needed to compute the
+reaction. And, if the reaction needs to change the model, then it can simply
+include a Task that sends the appropriate message.
+
+Of course, there would be ways of providing read-only access to the model
+here, if needed.
+
+The reaction is actually picked up by the tasks merger below.
+-}
+reaction : Action -> Maybe (Task () ())
+reaction action =
+    case action of
+        FocusAction action ->
+            FocusUI.reaction action
+
+        AccountAction action ->
+            AccountService.reaction action
+
+        _ ->
+            Nothing
+
+
+{-| A signal of the changing model over time.
+
+Note that we use foldp' from Signal.Extra to work around a characteristic
+of the standard foldp. That characteristic is that the standard foldp
+does nothing with the initial value of the Signal that you supply to it.
+This was causing problems at one point.
+-}
+models : Signal Model
+models =
+    let
+        initialUpdate = (flip update) initialModel 
+        
+    in
+        foldp' update initialUpdate actions 
+
+
+{-| A signal of changes to the model.
+
+The tuple has the previous model first and then the current model.
+
+We use this to calculate possible changes to the location. We need the previous
+model because whether to make the change, and whether to make it a "setPath" or
+"replacePath", depends on the previous state.  Well, I suppose it could depend
+on the previous location, but this seems simpler ... we just assume that the
+previous location was propertly set (which seems safe, since this is what is
+doing it ...).
+-}
+deltas : Signal (Model, Model)
+deltas =
+    let
+        update model delta = (snd delta, model)
+
+    in
+        Signal.foldp update (initialModel, initialModel) models
+
+
+{-| Like reaction, but supplying the model delta instead of the action.
+
+Mainly to calculate path changes for the location, but could theoretically
+be used for other things.
+-}
+deltaReaction : (Model, Model) -> Maybe (Task () ())
+deltaReaction =
+    -- For now, we just ask the focus to deal with it.
+    FocusUI.deltaReaction 
+
+
+{-| The main method, which generates a signal of Html to display.
+
+Such a deceptively simple implementation :-)
+-}
+main : Signal Html
+main = Signal.map view models 
+
+
+{-| Turns our model into Html.
+
+Just delegates to a module which creates the NavBar, and then to a module which
+generates whatever virtual page we're on.
+
+Note that we don't necessarily expose knowledge of the full model at each
+level.  That is why we supply some sort-of-redundant parameters like the
+currentUser and the language. On the whole, in the lower modules, we ask for
+what we need as a parameter, including whatever part of the model we own. If we
+need something we don't own, we ask for it mostly as a separate parameter
+(though, of course, we could "borrow" the model definition in some cases).
+-}
+view : Model -> Html
+view = FocusUI.view
+
+
+{-| A task to perform when the app starts.
+
+Note that we've defined this as a sequence, even though it's just
+one task so far, since one could easily want more tasks at some point.
+
+The `execute` port actually executes this task.
+-}
+initialTask : Task () () 
+initialTask =
+    let
+        ignore =
+            Task.map (always ()) << Task.mapError (always ())
+    
+    in
+        ignore <| Task.sequence
+            [ ignore AccountService.initialTask
+            ]
+
+
+{-| Brings together all the task sources in the app.
+
+Note that this is where we also merge the `reaction` to actions,
+and the deltaReactions to the deltas -}
+tasks : Signal (Maybe (Task () () ))    
+tasks =
+    Signal.mergeMany
+        [ Signal.map reaction actions
+        , Signal.map deltaReaction deltas
+        ]
+
+
+{-| Actually executes the tasks.
+
+Note the default is the initialTask, so that the initialTask gets executed.
+-}
+port execute : Signal (Task () ())
+port execute =
+    Signal.Extra.filter initialTask tasks 

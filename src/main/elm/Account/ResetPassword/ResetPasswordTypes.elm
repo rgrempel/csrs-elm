@@ -1,6 +1,6 @@
 module Account.ResetPassword.ResetPasswordTypes where
 
-import Language.LanguageService exposing (Language)
+import Language.LanguageTypes exposing (Language)
 import Http
 
 type Action

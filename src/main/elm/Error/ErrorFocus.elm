@@ -1,15 +1,23 @@
 module Error.ErrorFocus where
 
+import AppTypes exposing (..)
+import Error.ErrorTypes exposing (..)
+import Error.ErrorText as ErrorText
+import Signal exposing (Address)
 import Html exposing (Html, div, button, text, span, h1, p, ul, li)
 import Html.Attributes exposing (class, key)
-import Language.LanguageService exposing (Language)
-import Error.ErrorText as ErrorText
+import Route.RouteService exposing (PathAction(..))
 
 
-render : Language -> Html
-render language =
+-- This is display only ... don't change the URL
+path : Maybe Focus -> Focus -> Maybe PathAction
+path focus focus' = Nothing
+
+
+view : Address Action -> Model -> Focus -> Html
+view address model focus =
     let 
-        trans = ErrorText.translate language
+        trans = ErrorText.translate model.useLanguage
 
     in
         div [ class "error-page container" ]

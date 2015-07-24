@@ -1,6 +1,6 @@
 module Account.Login.LoginTypes where
 
-import Account.AccountService as AccountService exposing (Credentials, LoginError)
+import Account.AccountServiceTypes exposing (Credentials, LoginError)
 
 type Action
     = FocusUserName String

@@ -1,12 +1,7 @@
 module Account.Invitation.ResetPassword.ResetPasswordText where
 
-import Language.LanguageService exposing (Language(..))
+import Language.LanguageTypes exposing (Language(..))
 import Html exposing (Html, text, span, strong, a)
-import Html.Events exposing (onClick)
-import Focus.FocusTypes exposing (Action(FocusAccount), address)
-import Account.AccountTypes exposing (Action(FocusLogin, FocusResetPassword))
-import Account.Login.LoginTypes as LoginTypes
-import Account.ResetPassword.ResetPasswordTypes as ResetPasswordTypes
 
 
 type TextMessage

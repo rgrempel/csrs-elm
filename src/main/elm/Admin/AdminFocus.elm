@@ -1,43 +1,44 @@
 module Admin.AdminFocus where
 
+import AppTypes exposing (..)
 import Admin.AdminTypes exposing (..)
 import Html exposing (Html, h1, text, div, li, ul, a, span)
 import Html.Attributes exposing (class, classList, href)
 import Html.Events exposing (onClick)
 import Signal exposing (Address, forwardTo)
 import Admin.AdminText as AdminText
-import Language.LanguageService exposing (Language)
 import Html.Util exposing (dropdownMenu, dropdownToggle, dropdownPointer, glyphicon, unbreakableSpace)
+import Route.RouteService exposing (PathAction(..))
 
 
-hash2focus : List String -> Maybe Focus
-hash2focus hashList =
+route : List String -> Maybe Action
+route hashList =
     case hashList of
         first :: rest ->
             case first of
                 "metrics" ->
-                    Just Metrics
+                    Just FocusMetrics
 
                 "health" ->
-                    Just Health
+                    Just FocusHealth
 
                 "configuration" ->
-                    Just Configuration
+                    Just FocusConfiguration
 
                 "audits" ->
-                    Just Audits
+                    Just FocusAudits
 
                 "logs" ->
-                    Just Logs
+                    Just FocusLogs
 
                 "api" ->
-                    Just ApiDocs
+                    Just FocusApiDocs
 
                 "templates" ->
-                    Just Templates
+                    Just FocusTemplates
 
                 "images" ->
-                    Just Images
+                    Just FocusImages
 
                 _ ->
                     Nothing
@@ -46,65 +47,66 @@ hash2focus hashList =
             Nothing
 
 
-focus2hash : Focus -> List String
-focus2hash focus =
-    case focus of
-        Metrics ->
-            ["metrics"]
+path : Maybe Focus -> Focus -> Maybe PathAction
+path focus focus' =
+    if (focus == Just focus')
+        then Nothing
+        else case focus' of
+            Metrics ->
+                Just <| SetPath ["metrics"]
 
-        Health ->
-            ["health"]
+            Health ->
+                Just <| SetPath ["health"]
 
-        Configuration ->
-            ["configuration"]
+            Configuration ->
+                Just <| SetPath ["configuration"]
 
-        Audits ->
-            ["audits"]
+            Audits ->
+                Just <| SetPath ["audits"]
 
-        Logs ->
-            ["logs"]
+            Logs ->
+                Just <| SetPath ["logs"]
 
-        ApiDocs ->
-            ["api"]
+            ApiDocs ->
+                Just <| SetPath ["api"]
 
-        Templates ->
-            ["templates"]
+            Templates ->
+                Just <| SetPath ["templates"]
 
-        Images ->
-            ["images"]
+            Images ->
+                Just <| SetPath ["images"]
 
 
-updateFocus : Action -> Maybe Focus -> Maybe Focus
-updateFocus action focus =
-    case (action, focus) of
-        
-        (FocusMetrics, _) ->
+update : Action -> Maybe Focus -> Maybe Focus
+update action focus =
+    case action of
+        FocusMetrics ->
             Just Metrics
 
-        (FocusHealth, _) ->
+        FocusHealth ->
             Just Health
 
-        (FocusConfiguration, _) ->
+        FocusConfiguration ->
             Just Configuration
 
-        (FocusAudits, _) ->
+        FocusAudits ->
             Just Audits
 
-        (FocusApiDocs, _) ->
+        FocusApiDocs ->
             Just ApiDocs
 
-        (FocusTemplates, _) ->
+        FocusTemplates ->
             Just Templates
         
-        (FocusImages, _) ->
+        FocusImages ->
             Just Images
         
         _ ->
             Nothing
 
 
-renderFocus : Address Action -> Focus -> Language -> Html
-renderFocus address focus language =
+view : Address Action -> Model -> Focus -> Html
+view address model focus =
     let 
         v s =
             div [ class "container" ]
@@ -123,11 +125,11 @@ renderFocus address focus language =
 
 
 -- TODO: ONly show to admins
-renderMenu : Address Action -> Maybe Focus -> Language -> Html
-renderMenu address focus language =
+menu : Address Action -> Model -> Maybe Focus -> Html
+menu address model focus =
     let
         trans =
-            AdminText.translate language
+            AdminText.translate model.useLanguage
 
         standardMenuItem icon message action newFocus =
             li [ classList [ ( "active", focus == Just newFocus ) ] ]
@@ -158,5 +160,3 @@ renderMenu address focus language =
                 , standardMenuItem "picture" AdminText.Images FocusImages Images
                 ]
             ]
-
-

@@ -1,21 +1,18 @@
 module NavBar.NavBarUI where
 
+import AppTypes exposing (..)
 import Html exposing (Html, Attribute, nav, a, div, button, text, span, h1, p, ul, li)
 import Html.Attributes exposing (attribute, key, href, id, class, classList, type')
 import Html.Util exposing (dataToggle, dataTarget, unbreakableSpace, role)
-import Language.LanguageService exposing (Language)
-import Language.LanguageUI as LanguageUI
 import Version exposing (version)
 import NavBar.NavBarText as NavBarText
-import Focus.FocusTypes exposing (Focus)
-import Focus.FocusUI exposing (renderMenus)
-import Account.AccountService exposing (User)
 
 
-render : Maybe User -> Focus -> Language -> Html
-render user focus language =
+view : Model -> List Html -> Html
+view model menus =
     let 
-        trans = NavBarText.translate language 
+        trans =
+            NavBarText.translate model.useLanguage 
 
         navbarHeader = 
             div [ class "navbar-header" ]
@@ -44,11 +41,9 @@ render user focus language =
                 [ class "collapse navbar-collapse"
                 , id "navbar-collapse"
                 ]
-                [ ul [ class "nav navbar-nav nav-pills navbar-right" ]
-                    (renderMenus user focus language
-                    ++
-                    [ LanguageUI.renderMenu language
-                    ])
+                [ ul
+                    [ class "nav navbar-nav nav-pills navbar-right" ]
+                    menus
                 ]
         
     in

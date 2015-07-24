@@ -1,14 +1,16 @@
+module Test where
+
 import String
 import Graphics.Element exposing (Element)
-
 import ElmTest.Test exposing (test, Test, suite)
 import ElmTest.Assertion exposing (assert, assertEqual)
 import ElmTest.Runner.Element exposing (runDisplay)
 
-import Focus.FocusUITest exposing (tests)
+import Route.RouteTest as RouteTest
+
 
 allTests : Test
-allTests = tests
+allTests = RouteTest.tests
 
 main : Element
 main = runDisplay allTests

@@ -6,7 +6,7 @@ import Html exposing (Html, p, text)
 import Html.Attributes exposing (class)
 import Validation.ValidationText exposing (translate)
 import Validation.ValidationTypes exposing (..)
-import Language.LanguageService exposing (Language)
+import Language.LanguageTypes exposing (Language)
 import Regex exposing (regex, caseInsensitive, contains)
 
 

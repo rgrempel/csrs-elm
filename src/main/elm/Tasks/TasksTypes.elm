@@ -8,4 +8,3 @@ type Action
     = FocusProcessForms
     | FocusMembershipByYear
 
-

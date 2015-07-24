@@ -1,6 +1,6 @@
 module Admin.AdminText where
 
-import Language.LanguageService exposing (Language(..))
+import Language.LanguageTypes exposing (Language(..))
 import Html exposing (Html, text, span, strong, a)
 
 type Message

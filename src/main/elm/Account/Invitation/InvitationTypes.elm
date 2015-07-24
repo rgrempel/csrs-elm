@@ -1,9 +1,10 @@
 module Account.Invitation.InvitationTypes where
 
-import Account.AccountService exposing (UserEmailActivation)
-import Http
+import Account.AccountServiceTypes exposing (UserEmailActivation)
 import Account.Invitation.Register.RegisterTypes as RegisterTypes
 import Account.Invitation.ResetPassword.ResetPasswordTypes as ResetPasswordTypes
+import Http
+
 
 type Action
     = FocusBlank
@@ -32,4 +33,17 @@ type alias InvitationFocus =
     , status : Status
     }
 
+
+registerFocus : Focus -> Maybe RegisterTypes.Focus
+registerFocus focus =
+    case focus of
+        Register subfocus -> Just subfocus
+        _ -> Nothing
+
+
+resetPasswordFocus : Focus -> Maybe ResetPasswordTypes.Focus
+resetPasswordFocus focus =
+    case focus of
+        ResetPassword subfocus -> Just subfocus
+        _ -> Nothing
 

@@ -1,13 +1,13 @@
-module Focus.FocusUITest where
+module Route.RouteTest where
 
 import ElmTest.Assertion exposing (..)
 import ElmTest.Test exposing (..)
 
-import Focus.FocusUI exposing (removeInitial, removeAnyInitial)
+import Route.RouteService exposing (removeInitial, removeInitialSequence)
 
 tests : Test
 tests =
-    suite "Focus"
+    suite "RouteService"
         [ suite "removeInitial"
             [ test "when present" <|
                 assertEqual "ob"  <| removeInitial 'b' "bob"
@@ -18,17 +18,17 @@ tests =
             ]
         , suite "removeAnyInitial"
             [ test "when absent" <|
-                assertEqual "baseball" <| removeAnyInitial "con" "baseball"
+                assertEqual "baseball" <| removeInitialSequence "con" "baseball"
             , test "when whole present" <|
-                assertEqual "ball" <| removeAnyInitial "base" "baseball"
+                assertEqual "ball" <| removeInitialSequence "base" "baseball"
             , test "when first part present" <|
-                assertEqual "seball" <| removeAnyInitial "bark" "baseball"
+                assertEqual "seball" <| removeInitialSequence "bark" "baseball"
             , test "when last part present" <|
-                assertEqual "seball" <| removeAnyInitial "krba" "baseball"
+                assertEqual "seball" <| removeInitialSequence "krba" "baseball"
             , test "when last part present but order wrong" <|
-                assertEqual "aseball" <| removeAnyInitial "krab" "baseball"
+                assertEqual "aseball" <| removeInitialSequence "krab" "baseball"
             , test "when parts interspersed" <|
-                assertEqual "seball" <| removeAnyInitial "abcdaeb" "baseball"
+                assertEqual "seball" <| removeInitialSequence "abcdaeb" "baseball"
             ]
         ]
 

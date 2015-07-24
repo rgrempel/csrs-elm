@@ -1,46 +1,55 @@
 module Home.HomeFocus where
 
+import AppTypes exposing (..)
 import Home.HomeTypes as HomeTypes exposing (..)
+import Home.HomeText as HomeText
+import Signal exposing (Address)
+import Route.RouteService exposing (PathAction(..))
+import Focus.FocusTypes as FocusTypes 
+import Account.AccountTypes as AccountTypes 
 
 import Html exposing (Html, div, button, text, span, h1, p, ul, li, a)
 import Html.Events exposing (onClick)
 import Html.Attributes exposing (href, class, key, classList)
 import Html.Util exposing (glyphicon, unbreakableSpace)
-import Signal exposing (Address)
-import Language.LanguageService exposing (Language(..))
-import Account.AccountService as AccountService exposing (User)
-import Focus.FocusTypes exposing (address, Action(FocusAccount))
-import Account.AccountTypes exposing (Action(FocusSettings))
-
-import Home.HomeText as HomeText
 
 
-hash2focus : List String -> Maybe Focus
-hash2focus hashList = Just Home
+route : List String -> Maybe Action
+route list = Just FocusHome
 
 
-focus2hash : Focus -> List String
-focus2hash focus = []
+path : Maybe Focus -> Focus -> Maybe PathAction
+path focus focus' =
+    if focus == Just focus'
+        then Nothing
+        else Just <| SetPath []
 
 
-updateFocus : HomeTypes.Action -> Maybe Focus -> Maybe Focus
-updateFocus action focus =
+update : Action -> Maybe Focus -> Maybe Focus
+update action focus =
     case action of
-        FocusHome -> Just Home
-        _ -> focus
+        FocusHome ->
+            Just Home
+        
+        _ ->
+            focus
 
 
-renderFocus : Maybe User -> Language -> Html
-renderFocus user language =
+view : Address Action -> Model -> Focus -> Html
+view address model focus =
     let 
         trans = 
-            HomeText.translate language
+            HomeText.translate model.useLanguage
+
+        user =
+            model.currentUser
 
         loginHtml =
             case user of
                 Just u ->
-                    [ div [ class "alert alert-success" ]
-                        [ trans (HomeText.LoggedInAs u.login) ]
+                    [ div 
+                        [ class "alert alert-success" ]
+                        [ trans ( HomeText.LoggedInAs u.login ) ]
                     ]
 
                 _ ->
@@ -48,10 +57,10 @@ renderFocus user language =
    
         thingsMembersCanDo =
             case user of
-                Just u ->
+                Just _ ->
                     [ ul []
                         [ li []
-                            [ a [ onClick address <| FocusAccount FocusSettings ]
+                            [ a [ onClick FocusTypes.address <| FocusTypes.FocusAccount AccountTypes.FocusSettings ]
                                 [ trans HomeText.CheckMembershipInformation ]
                             ]
                         ]
@@ -94,10 +103,10 @@ renderFocus user language =
             ]
 
 
-renderMenu : Address HomeTypes.Action -> Maybe Focus -> Language -> Html
-renderMenu address focus language =
+menu : Address Action -> Model -> Maybe Focus -> Html
+menu address model focus =
     let 
-        trans = HomeText.translate language
+        trans = HomeText.translate model.useLanguage
 
     in
         li [ classList [ ( "active", focus /= Nothing ) ] ]

@@ -1,6 +1,6 @@
 module Account.ResetPassword.ResetPasswordText where
 
-import Language.LanguageService exposing (Language(..))
+import Language.LanguageTypes exposing (Language(..))
 import Html exposing (Html, text, span, strong, a)
 import Html.Events exposing (onClick)
 import Focus.FocusTypes exposing (address, Action(FocusAccount))
