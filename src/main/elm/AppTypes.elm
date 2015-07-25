@@ -2,7 +2,7 @@ module AppTypes where
 
 import Language.LanguageTypes exposing (LanguageModel)
 import Account.AccountServiceTypes exposing (AccountModel)
-import Focus.FocusTypes exposing (FocusModel)
+import Components.FocusTypes exposing (FocusModel)
 
 
 {-| The big model ...

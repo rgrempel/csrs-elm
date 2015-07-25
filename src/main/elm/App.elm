@@ -1,16 +1,18 @@
 module App where
 
 import AppTypes exposing (..)
-import Html exposing (Html, div)
-import Signal exposing (Signal, Mailbox, filter, mailbox, filterMap, merge, foldp, dropRepeats)
-import Task exposing (Task, andThen, onError)
-import Focus.FocusTypes as FocusTypes
-import Focus.FocusUI as FocusUI
 import Account.AccountService as AccountService
 import Account.AccountServiceTypes as AccountServiceTypes
 import Language.LanguageService as LanguageService
 import Language.LanguageTypes as LanguageTypes
+
+import Components.FocusTypes as FocusTypes
+import Components.FocusUI as FocusUI
+
+import Html exposing (Html, div)
+import Signal exposing (Signal, Mailbox, filter, mailbox, filterMap, merge, foldp, dropRepeats)
 import Signal.Extra exposing (foldp')
+import Task exposing (Task, andThen, onError)
 
 
 {-| The initial model.

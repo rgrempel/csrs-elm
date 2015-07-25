@@ -1,0 +1,259 @@
+module Components.Account.Login.LoginFocus where
+
+import AppTypes exposing (..)
+import Account.AccountServiceTypes exposing (Credentials)
+import Account.AccountService as AccountService exposing (attemptLogin)
+import Validation.Validation exposing (checkString, helpBlock)
+import Validation.ValidationTypes exposing (StringValidator, Validator(Required))
+import Route.RouteService exposing (PathAction(..))
+
+import Components.Account.Login.LoginTypes as LoginTypes exposing (..)
+import Components.Account.Login.LoginText as LoginText
+import Components.FocusTypes as FocusTypes
+import Components.Home.HomeTypes as HomeTypes
+
+import Signal exposing (message)
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import Html.Events exposing (..)
+import Html.Util exposing (role, glyphicon, unbreakableSpace)
+import Signal exposing (Address)
+import Maybe exposing (withDefault)
+import Task exposing (Task)
+import List exposing (all, isEmpty)
+
+
+route : List String -> Maybe Action
+route hashList = Just FocusBlank
+
+
+path : Maybe Focus -> Focus -> Maybe PathAction
+path focus focus' =
+    if focus == Nothing
+        then Just <| SetPath []
+        else Nothing
+
+
+reaction : Address LoginTypes.Action -> LoginTypes.Action -> Maybe (Task () ())
+reaction address action =
+    case action of
+        AttemptLogin credentials ->
+            if checkCredentials credentials
+                then
+                    Just <|
+                        (AccountService.attemptLogin credentials)
+                        `Task.andThen` (\user -> 
+                            FocusTypes.do (FocusTypes.FocusHome HomeTypes.FocusHome)
+                        ) `Task.onError` (\error ->
+                            Signal.send address (FocusLoginError error)
+                        )
+                else
+                    Nothing
+
+        _ ->
+            Nothing
+
+
+update : LoginTypes.Action -> Maybe Focus -> Maybe Focus
+update action focus =
+    let
+        focus' =
+            withDefault defaultFocus focus
+        
+        updateCredentials func value =
+            @credentials (func value focus'.credentials) focus'
+
+    in
+        Just <|
+            case action of
+                FocusUserName name ->
+                    updateCredentials @username name
+
+                FocusPassword password ->
+                    updateCredentials @password password
+
+                FocusRememberMe rememberMe ->
+                    updateCredentials @rememberMe rememberMe
+
+                FocusLoginError loginError ->
+                    @loginStatus (LoginError loginError) focus'
+
+                AttemptLogin credentials ->
+                    @loginStatus LoginInProgress focus'
+
+                _ -> focus'
+
+
+defaultFocus : Focus
+defaultFocus = Focus blankCredentials LoginNotAttempted
+
+
+blankCredentials : Credentials
+blankCredentials = Credentials "" "" False
+
+
+checkCredentials : Credentials -> Bool
+checkCredentials credentials =
+    List.all (isEmpty << checkRequired)
+        [ credentials.username
+        , credentials.password
+        ]
+
+
+checkRequired : String -> List StringValidator
+checkRequired = checkString [Required]
+    
+
+view : Address LoginTypes.Action -> Model -> Focus -> Html
+view address model focus =
+    let
+        language =
+            model.useLanguage
+
+        transHtml =
+            LoginText.translateHtml language 
+        
+        trans =
+            LoginText.translateText language
+
+        usernameField =
+            let
+                errors =
+                    if focus.loginStatus == LoginNotAttempted
+                        then []
+                        else checkRequired focus.credentials.username
+
+            in
+                div [ key "username"
+                    , classList
+                        [ ("form-group", True)
+                        , ("has-error", not <| isEmpty errors)
+                        ]
+                    ]
+                    <|
+                    [ label [ for "username" ] [ transHtml LoginText.Username ]
+                    , input
+                        [ class "form-control"
+                        , type' "text"
+                        , id "username"
+                        , placeholder <| trans LoginText.UsernamePlaceholder
+                        , value focus.credentials.username
+                        , on "input" targetValue <| (message address) << FocusUserName
+                        ] [] 
+                    ]
+                    ++ 
+                    ( List.map (helpBlock language) errors )
+ 
+        passwordField =
+            let
+                errors =
+                    if focus.loginStatus == LoginNotAttempted
+                        then []
+                        else checkRequired focus.credentials.password
+
+            in
+                div [ key "password"
+                    , classList
+                        [ ("form-group", True)
+                        , ("has-error", not <| isEmpty errors)
+                        ]
+                    ]
+                    <|
+                    [ label [ for "password" ] [ transHtml LoginText.Password ]
+                    , input
+                        [ class "form-control"
+                        , type' "password"
+                        , id "password"
+                        , value focus.credentials.password
+                        , placeholder <| trans LoginText.PasswordPlaceholder
+                        , on "input" targetValue <| (message address) << FocusPassword
+                        ] []
+                    ]
+                    ++ 
+                    ( List.map (helpBlock language) errors )
+ 
+        rememberMeField =
+            div [ key "rememberMe"
+                , class "form-group"
+                ]
+                [ label []
+                    [ input
+                        [ type' "checkbox"
+                        , checked focus.credentials.rememberMe
+                        , on "input" targetChecked <| (message address) << FocusRememberMe
+                        ] []
+                    , text " "
+                    , transHtml LoginText.RememberMe
+                    ]
+                ]
+
+        submitButton =
+            button
+                [ type' "submit"
+                , key "submit"
+                , class "btn btn-primary"
+                ] [ transHtml LoginText.Button ]
+
+        result =
+            case focus.loginStatus of
+                LoginError loginError -> 
+                    p
+                        [ key "result"
+                        , class "alert alert-danger" 
+                        ]
+                        [ transHtml LoginText.Failed ]
+
+                LoginSuccess ->
+                    p 
+                        [ key "result"
+                        , class "alert alert-success"
+                        ]
+                        [ transHtml LoginText.Succeeded ]
+
+                _ ->
+                    p [ key "result" ] []
+
+        loginForm =
+            Html.form
+                [ class "form"
+                , role "form"
+                , onSubmit address (AttemptLogin focus.credentials)
+                ]
+                [ usernameField
+                , passwordField
+                , rememberMeField
+                , div [ class "text-center" ] [ submitButton ]
+                , div [ style [ ("margin-top", "18px") ]] [ result ] 
+                ]
+        
+    in
+        div [ class "csrs-auth-login container" ]
+            [ div [ class "well well-sm" ]
+                [ div [ class "row" ]
+                    [ div [ class "col-md-4 col-md-offset-4" ]
+                        [ h1 [] [ transHtml LoginText.Title ]
+                        , loginForm
+                        , div 
+                            [ class "alert alert-warning"
+                            , style [ ("margin-top", "18px") ]
+                            ] 
+                            [ transHtml LoginText.Register ]
+                        , div
+                            [ class "alert alert-warning" ]
+                            [ transHtml LoginText.ResetPassword ]
+                        ]
+                    ]
+                ]
+            ]
+
+
+menuItem : Address LoginTypes.Action -> Model -> Maybe Focus -> Html
+menuItem address model focus =
+    li [ classList [ ( "active", focus /= Nothing ) ] ]
+        [ a [ onClick address FocusBlank ]
+            [ glyphicon "log-in" 
+            , text unbreakableSpace
+            , LoginText.translateHtml model.useLanguage LoginText.Title 
+            ]
+        ]
+
