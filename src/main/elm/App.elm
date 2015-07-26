@@ -193,22 +193,26 @@ initialTask =
             ]
 
 
-{-| Brings together all the task sources in the app.
-
-Note that this is where we also merge the `reaction` to actions,
-and the deltaReactions to the deltas -}
-tasks : Signal (Maybe (Task () () ))    
-tasks =
-    Signal.mergeMany
-        [ Signal.map reaction actions
-        , Signal.map deltaReaction deltas
-        ]
-
-
-{-| Actually executes the tasks.
+{-| Actually executes the reaction tasks.
 
 Note the default is the initialTask, so that the initialTask gets executed.
 -}
-port execute : Signal (Task () ())
-port execute =
-    Signal.Extra.filter initialTask tasks 
+port executeReactions : Signal (Task () ())
+port executeReactions =
+    Signal.Extra.filter
+        initialTask
+        (Signal.map reaction actions)
+
+
+{-| Actually executes the deltaReaction tasks.
+
+Note that I originally combined this with the port for executeReactions,
+but that doesn't work because of the way that Signal.merge works -- it
+discards values if they arrive "at the same time" -- which, in this case,
+they do, and I want both executed.
+-}
+port executeDeltaReactions : Signal (Task () ())
+port executeDeltaReactions =
+    Signal.Extra.filter 
+        (Task.succeed ())
+        (Signal.map deltaReaction deltas)
