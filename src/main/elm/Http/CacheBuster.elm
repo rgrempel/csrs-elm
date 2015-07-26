@@ -28,9 +28,10 @@ withCacheBuster : (Settings -> Request -> Task RawError Response) -> Settings ->
 withCacheBuster func settings request =
     let
         funcWithTime time =
-            func settings {request |
-                url <- addCacheBuster time request.url
-            }
+            func settings 
+                { request |
+                    url <- addCacheBuster time request.url
+                }
 
     in
         getCurrentTime `andThen` funcWithTime

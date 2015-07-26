@@ -20,9 +20,10 @@ withCsrf func settings request =
         funcWithCookies cookies =
             case get csrfCookie cookies of
                 Just token ->
-                    func settings {request |
-                        headers <- (csrfHeader, token) :: request.headers
-                    }
+                    func settings
+                        { request |
+                            headers <- (csrfHeader, token) :: request.headers
+                        }
 
                 _ ->
                     func settings request
