@@ -216,3 +216,11 @@ port executeDeltaReactions =
     Signal.Extra.filter 
         (Task.succeed ())
         (Signal.map deltaReaction deltas)
+
+
+{-| A third source of tasks, which I should probably integrate differently -}
+port focusTasks : Signal (Task () ())
+port focusTasks =
+    Signal.Extra.filter
+        (Task.succeed ())
+        FocusUI.tasks
