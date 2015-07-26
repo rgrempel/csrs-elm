@@ -94,6 +94,9 @@ update action focus =
         FocusAudits ->
             Just Audits
 
+        FocusLogs ->
+            Just Logs
+
         FocusApiDocs ->
             Just ApiDocs
 
@@ -121,6 +124,7 @@ view address model focus =
             Health -> v "Health"
             Configuration -> v "Configuration"
             Audits -> v "Audits"
+            Logs -> v "Logs"
             ApiDocs -> v "API Docs"
             Templates -> v "Templates"
             Images -> v "Images"
