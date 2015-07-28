@@ -25,6 +25,16 @@ map func action =
             action
 
 
+return : PathAction -> List String
+return action =
+    case action of
+        SetPath list ->
+            list
+
+        ReplacePath list ->
+            list
+
+
 routes : Signal (List String)
 routes = Signal.map hash2list History.hash
 

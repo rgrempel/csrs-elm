@@ -5,12 +5,13 @@ import Account.AccountService as AccountService
 import Account.AccountServiceTypes as AccountServiceTypes
 import Language.LanguageService as LanguageService
 import Language.LanguageTypes as LanguageTypes
+import Route.RouteService as RouteService exposing (PathAction(..))
 
 import Components.FocusTypes as FocusTypes
 import Components.FocusUI as FocusUI
 
 import Html exposing (Html, div)
-import Signal exposing (Signal, Mailbox, filter, mailbox, filterMap, merge, foldp, dropRepeats)
+import Signal exposing (Signal, Mailbox, filter, mailbox, filterMap, merge, foldp, dropRepeats, sampleOn)
 import Signal.Extra exposing (foldp')
 import Task exposing (Task, andThen, onError)
 
@@ -103,77 +104,6 @@ reaction action =
             Nothing
 
 
-{-| A signal of the changing model over time.
-
-Note that we use foldp' from Signal.Extra to work around a characteristic
-of the standard foldp. That characteristic is that the standard foldp
-does nothing with the initial value of the Signal that you supply to it.
-This was causing problems at one point.
--}
-models : Signal Model
-models =
-    let
-        initialUpdate = (flip update) initialModel 
-        
-    in
-        foldp' update initialUpdate actions 
-
-
-{-| A signal of changes to the model.
-
-The tuple has the previous model first and then the current model.
-
-We use this to calculate possible changes to the location. We need the previous
-model because whether to make the change, and whether to make it a "setPath" or
-"replacePath", depends on the previous state.  Well, I suppose it could depend
-on the previous location, but this seems simpler ... we just assume that the
-previous location was propertly set (which seems safe, since this is what is
-doing it ...).
--}
-deltas : Signal (Model, Model)
-deltas =
-    let
-        update model delta = (snd delta, model)
-
-    in
-        Signal.foldp update (initialModel, initialModel) models
-
-
-{-| Like reaction, but supplying the model delta instead of the action.
-
-Mainly to calculate path changes for the location, but could theoretically
-be used for other things.
--}
-deltaReaction : (Model, Model) -> Maybe (Task () ())
-deltaReaction =
-    -- For now, we just ask the focus to deal with it.
-    FocusUI.deltaReaction 
-
-
-{-| The main method, which generates a signal of Html to display.
-
-Such a deceptively simple implementation :-)
--}
-main : Signal Html
-main = Signal.map view models 
-
-
-{-| Turns our model into Html.
-
-Just delegates to a module which creates the NavBar, and then to a module which
-generates whatever virtual page we're on.
-
-Note that we don't necessarily expose knowledge of the full model at each
-level.  That is why we supply some sort-of-redundant parameters like the
-currentUser and the language. On the whole, in the lower modules, we ask for
-what we need as a parameter, including whatever part of the model we own. If we
-need something we don't own, we ask for it mostly as a separate parameter
-(though, of course, we could "borrow" the model definition in some cases).
--}
-view : Model -> Html
-view = FocusUI.view
-
-
 {-| A task to perform when the app starts.
 
 Note that we've defined this as a sequence, even though it's just
@@ -197,30 +127,112 @@ initialTask =
 
 Note the default is the initialTask, so that the initialTask gets executed.
 -}
-port executeReactions : Signal (Task () ())
-port executeReactions =
+port reactions : Signal (Task () ())
+port reactions =
     Signal.Extra.filter
         initialTask
         (Signal.map reaction actions)
 
 
-{-| Actually executes the deltaReaction tasks.
+{-| A signal of the changing model over time.
 
-Note that I originally combined this with the port for executeReactions,
-but that doesn't work because of the way that Signal.merge works -- it
-discards values if they arrive "at the same time" -- which, in this case,
-they do, and I want both executed.
+Note that we use foldp' from Signal.Extra to work around a characteristic
+of the standard foldp. That characteristic is that the standard foldp
+does nothing with the initial value of the Signal that you supply to it.
+This was causing problems at one point.
 -}
-port executeDeltaReactions : Signal (Task () ())
-port executeDeltaReactions =
-    Signal.Extra.filter 
-        (Task.succeed ())
-        (Signal.map deltaReaction deltas)
+models : Signal Model
+models =
+    let
+        initialUpdate = (flip update) initialModel 
+        
+    in
+        foldp' update initialUpdate actions 
 
 
-{-| A third source of tasks, which I should probably integrate differently -}
-port focusTasks : Signal (Task () ())
-port focusTasks =
+{-| Turns our model into Html.
+
+Just delegates to a module which creates the NavBar, and then to a module which
+generates whatever virtual page we're on.
+
+Note that we don't necessarily expose knowledge of the full model at each
+level.  That is why we supply some sort-of-redundant parameters like the
+currentUser and the language. On the whole, in the lower modules, we ask for
+what we need as a parameter, including whatever part of the model we own. If we
+need something we don't own, we ask for it mostly as a separate parameter
+(though, of course, we could "borrow" the model definition in some cases).
+-}
+view : Model -> Html
+view = FocusUI.view
+
+
+{-| The main method, which generates a signal of Html to display.
+
+Such a deceptively simple implementation :-)
+-}
+main : Signal Html
+main = Signal.map view models 
+
+
+sampleWith : (a -> b -> result) -> Signal a -> Signal b -> Signal result
+sampleWith func a b =
+    Signal.map2 func a (Signal.sampleOn a b)
+
+
+{-| A signal of changes to the model.
+
+The tuple has the previous model first and then the current model.
+
+We use this to calculate possible changes to the location. We need the previous
+model because whether to make the change, and whether to make it a "setPath" or
+"replacePath", depends on the previous state.  Well, I suppose it could depend
+on the previous location, but this seems simpler ... we just assume that the
+previous location was propertly set (which seems safe, since this is what is
+doing it ...).
+-}
+deltas : Signal (Model, Model)
+deltas =
+    let
+        update model delta = (snd delta, model)
+
+    in
+        Signal.foldp update (initialModel, initialModel) models
+
+
+paths : Signal (Maybe PathAction)
+paths =
+    sampleWith FocusUI.delta2path deltas RouteService.routes
+
+
+port pathTasks : Signal (Task () ())
+port pathTasks =
     Signal.Extra.filter
         (Task.succeed ())
-        FocusUI.tasks
+        (Signal.map (Maybe.map RouteService.do) paths)
+
+
+route : List String -> Maybe PathAction -> Maybe (Task () ())
+route list action =
+    Maybe.map
+        FocusTypes.do
+        (case action of
+            Just (SetPath current) ->
+                if current == list
+                    then Nothing
+                    else FocusUI.route list
+
+            Just (ReplacePath current) ->
+                if current == list
+                    then Nothing
+                    else FocusUI.route list
+
+            Nothing ->
+                FocusUI.route list
+        )
+
+
+port routes : Signal (Task () ())
+port routes =
+    Signal.Extra.filter
+        (Task.succeed ())
+        (sampleWith route RouteService.routes paths)

@@ -34,20 +34,7 @@ reaction action =
             Nothing
 
 
-deltaReaction : (Model, Model) -> Maybe (Task () ())
-deltaReaction delta =
-    let
-        action =
-            path (.focus (fst delta)) (.focus (snd delta))
-
-    in
-        Maybe.map RouteService.do action
-            
-
-{-| Given a new focus and an old focus, calculate whether we should
-    set or replace the path.
--}
-path : Focus -> Focus -> Maybe PathAction 
+path : Focus -> Focus -> Maybe PathAction
 path focus focus' =
     let
         prepend prefix =
@@ -58,10 +45,10 @@ path focus focus' =
             then Nothing
             else case focus' of
                 Home subfocus ->
-                    prepend "home" (HomeFocus.path (homeFocus focus) subfocus)
+                    (HomeFocus.path (homeFocus focus) subfocus)
 
                 Error subfocus ->
-                    prepend "error" (ErrorFocus.path (errorFocus focus) subfocus)
+                    Nothing 
 
                 Account subfocus ->
                     prepend "account" (AccountFocus.path (accountFocus focus) subfocus)
@@ -71,6 +58,30 @@ path focus focus' =
 
                 Tasks subfocus ->
                     prepend "tasks" (TasksFocus.path (tasksFocus focus) subfocus)
+
+
+{-| Given a new focus and an old focus, calculate whether we should
+    set or replace the path.
+-}
+delta2path : (Model, Model) -> List String -> Maybe PathAction 
+delta2path delta current =
+    let
+        focus =
+            .focus (fst delta)
+
+        focus' = 
+            .focus (snd delta)
+        
+        action =
+            path focus focus'
+
+        checkCurrent pathAction =
+            if current == RouteService.return pathAction
+                then Nothing
+                else (Just pathAction)
+
+    in
+        action `Maybe.andThen` checkCurrent
 
 
 route : List String -> Maybe Action
@@ -94,11 +105,7 @@ route hash =
                     Just <| FocusError ErrorTypes.FocusError
 
         _ ->
-            Maybe.map FocusHome <| HomeFocus.route []
-
-
-tasks : Signal (Maybe (Task () ()))
-tasks = Signal.map (Maybe.map do << route) RouteService.routes
+            Just <| FocusError ErrorTypes.FocusError
 
 
 update : Action -> Model -> Model
@@ -117,7 +124,10 @@ update action model =
                 
                 FocusTasks subaction ->
                     Maybe.map Tasks <| TasksFocus.update subaction (tasksFocus model.focus)
-                 
+                
+                FocusError subaction ->
+                    Maybe.map Error <| ErrorFocus.update subaction (errorFocus model.focus)
+
                 _ ->
                     Nothing
 

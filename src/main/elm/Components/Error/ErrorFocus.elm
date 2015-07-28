@@ -11,9 +11,23 @@ import Html exposing (Html, div, button, text, span, h1, p, ul, li)
 import Html.Attributes exposing (class, key)
 
 
+route : List String -> Maybe Action
+route list = Just FocusError
+
+
 -- This is display only ... don't change the URL
 path : Maybe Focus -> Focus -> Maybe PathAction
 path focus focus' = Nothing
+
+
+update : Action -> Maybe Focus -> Maybe Focus
+update action focus =
+    case action of
+        FocusError ->
+            Just Error
+        
+        _ ->
+            focus
 
 
 view : Address Action -> Model -> Focus -> Html
