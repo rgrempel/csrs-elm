@@ -1,0 +1,129 @@
+digraph "signals" {
+    node
+        [ fontsize = 12
+        ];
+    
+    edge 
+        [ fontsize = 11
+        , labelfloat = true
+        ];
+
+    port
+        [ label = "Port"
+        , shape = "box"
+        ]
+
+    app_actions 
+        [ label = "App.actions :\nApp.Action"
+        ];
+
+    focus_actions
+        [ label = "FocusTypes.actions :\nFocusTypes.Action"
+        , shape = polygon
+        ];
+
+    account_actions
+        [ label = "AccountServiceTypes.actions :\nAccountServiceTypes.Action"
+        , shape = polygon
+        ];
+
+    language_actions
+        [ label = "LanguageTypes.action :\nLanguageTypes.Action"
+        , shape = polygon
+        ];
+
+    app_models
+        [ label = "App.models :\nModel"
+        ];
+
+    focus_actions -> app_actions
+        [ xlabel = "map App.FocusAction"
+        ];
+
+    account_actions -> app_actions
+        [ xlabel = "map App.AccountAction"
+        ];
+
+    language_actions -> app_actions
+        [ xlabel = "        map App.LanguageAction"
+        ];
+
+    app_actions -> app_models
+        [ xlabel = "foldp App.update"
+        ];
+
+    app_deltas
+        [ label = "App.deltas :\n(Model, Model)"
+        ];
+
+    app_models -> app_deltas
+        [ xlabel = "foldp"
+        ];
+
+    app_main
+        [ label = "App.main :\nHtml"
+        ];
+
+    app_main -> port
+
+    app_models -> app_main
+        [ xlabel = "map App.view"
+        ];
+
+    app_reactions
+       [ label = "App.reactions :\nTask () ()"
+       ];
+
+    app_reactions -> port
+
+    app_actions -> app_reactions
+        [ xlabel = "map App.reaction"
+        ];
+
+    history_hash
+        [ label = "History.hash :\nString"
+        ];
+
+    route_routes
+        [ label = "RouteService.routes :\nList String"
+        ];
+
+    history_hash -> route_routes
+        [ xlabel = "map RouteService.hash2list"
+        ];
+
+    app_paths
+        [ label = "App.paths :\nMaybe RouteService.PathAction"
+        ];
+
+    app_deltas -> app_paths
+        [ xlabel = "sampleWith FocusUI.delta2path"
+        ];
+
+    route_routes -> app_paths
+        [ style = "dashed"
+        ];
+
+    app_path_tasks 
+        [ label = "App.pathTasks :\nTask () ()"
+        ];
+
+    app_paths -> app_path_tasks
+
+    app_path_tasks -> port
+
+    app_routes
+        [ label = "App.routes :\nTask () ()"
+        ];
+
+    app_routes -> port
+
+    route_routes -> app_routes
+        [ xlabel = "sampleWith App.route"
+        ];
+
+    app_paths -> app_routes
+        [ style = "dashed"
+        ];
+
+}

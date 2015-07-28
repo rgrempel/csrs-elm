@@ -46,6 +46,16 @@ gulp.task('test', function (cb) {
     });
 });
 
+gulp.task('signals.svg', function (cb) {
+    var exec = require('child_process').exec;
+    
+    exec('dot src/main/elm/signals.gv -Tsvg -o src/main/elm/signals.svg', function (err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+        cb(err);
+    });
+});
+
 gulp.task('bower', ['web'], function (cb) {
     var exec = require('child_process').exec;
     
