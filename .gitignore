@@ -1,3 +1,4 @@
+src/main/resources/config/liquibase/users.csv
 target
 node
 node_modules
