@@ -1,4 +1,5 @@
 src/main/resources/config/liquibase/users.csv
+src/main/resources/config/application*.yml
 target
 node
 elm-stuff
