@@ -14,24 +14,18 @@ learn Elm, I decided to try porting the application to Elm -- I figured I would
 abandon the effort when it became clear that Elm couldn't handle what I wanted
 to do. So far, that hasn't happened ...
 
-I've also taken a look at Purescript as an Elm altrnative.  In some ways,
-Purescript is more sophisticated, since it borrows more of the Haskell functional
-goodness (though not slavishly).  However, Elm is somewhat more approachable,
-and I haven't really needed any of Purescript's extra sophistication yet.
-Plus, Elm is more squarely focused on the 'functional reactive' UI model,
-though Purescript does have packages like purescript-halogen which take
-similar approaches.
+As far as points of interest go, there are a variety of things on the Elm side
+that could be of interest to Elm programmers -- see src/main/Elm for the code.
 
-As far as points of interest go, there are a variety of things on the Elm
-side that could be of interest to Elm programmers -- see src/main/Elm for
-the code.
+For the Java side, some of the stuff that I'm doing with Specifications could
+be interesting -- see src/main/java/com/fulliautomatix/csrs/specification for
+source. Essentially, I'm using specifications and their JSON representations as
+a method to transmit queries from the client to the server. This is an area
+that doesn't really have an obvious solution, though of course there are a
+variety of alternatives.
 
-For the Java side, some of the stuff that I'm doing with Specifications
-could be interesting -- see src/main/java/com/fulliautomatix/csrs/specification
-for source. Essentially, I'm using specifications and their JSON representations
-as a method to transmit queries from the client to the server. This is an
-area that doesn't really have an obvious solution, though of course there are
-a variety of alternatives.
-
-Note that the port to Elm is a work-in-progress, so there are a variety
-of things which are unimplemented at this point.
+Note that there are some missing files and other problems with the build process
+such that I don't really expect people to be able to build the app. Instead, it's
+here mainly to illustrate some techniques, especially in the Elm code. At some
+point, I may break various things out into separate packages that are more easily
+used by others.

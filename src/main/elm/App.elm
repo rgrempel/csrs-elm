@@ -18,8 +18,8 @@ import Task exposing (Task, andThen, onError)
 
 {-| The initial model.
 
-We collect the initialization of the model from the various modules that
-'own' the parts of the model.
+We collect the initialization of the model from the various modules that 'own'
+the parts of the model.
 -}
 initialModel : Model
 initialModel =
@@ -71,8 +71,8 @@ update action model =
         _ -> model
 
 
-{-| Like update, except returns an additional task to perform
-in response to the action (rather than an updated model).
+{-| Like update, except returns an additional task to perform in response to
+the action (rather than an updated model).
 
 Of coure, the task returned may be a sequence, or composed with various
 `andThen` tasks.
@@ -88,8 +88,6 @@ include a Task that sends the appropriate message.
 
 Of course, there would be ways of providing read-only access to the model
 here, if needed.
-
-The reaction is actually picked up by the tasks merger below.
 -}
 reaction : Action -> Maybe (Task () ())
 reaction action =
@@ -108,8 +106,6 @@ reaction action =
 
 Note that we've defined this as a sequence, even though it's just
 one task so far, since one could easily want more tasks at some point.
-
-The `execute` port actually executes this task.
 -}
 initialTask : Task () () 
 initialTask =
@@ -150,26 +146,12 @@ models =
         foldp' update initialUpdate actions 
 
 
-{-| Turns our model into Html.
-
-Just delegates to a module which creates the NavBar, and then to a module which
-generates whatever virtual page we're on.
-
-Note that we don't necessarily expose knowledge of the full model at each
-level.  That is why we supply some sort-of-redundant parameters like the
-currentUser and the language. On the whole, in the lower modules, we ask for
-what we need as a parameter, including whatever part of the model we own. If we
-need something we don't own, we ask for it mostly as a separate parameter
-(though, of course, we could "borrow" the model definition in some cases).
--}
+{-| Turns our model into Html. -}
 view : Model -> Html
 view = FocusUI.view
 
 
-{-| The main method, which generates a signal of Html to display.
-
-Such a deceptively simple implementation :-)
--}
+{-| The main method, which generates a signal of Html to display. -}
 main : Signal Html
 main = Signal.map view models 
 

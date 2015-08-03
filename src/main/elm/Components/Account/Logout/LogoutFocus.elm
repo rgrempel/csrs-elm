@@ -61,10 +61,10 @@ update action focus =
         Just <|
             case action of
                 FocusError error ->
-                    @logoutStatus (LogoutError error) focus'
+                    {focus' | logoutStatus <- LogoutError error}
 
                 FocusSuccess ->
-                    @logoutStatus LogoutSuccess focus'
+                    {focus' | logoutStatus <- LogoutSuccess}
 
                 _ -> focus'
 

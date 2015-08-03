@@ -97,7 +97,7 @@ digraph "signals" {
         ];
 
     app_deltas -> app_paths
-        [ xlabel = "sampleWith FocusUI.delta2path"
+        [ xlabel = "passiveMap2 FocusUI.delta2path"
         ];
 
     route_routes -> app_paths
@@ -119,7 +119,7 @@ digraph "signals" {
     app_routes -> port
 
     route_routes -> app_routes
-        [ xlabel = "sampleWith App.route"
+        [ xlabel = "passiveMap2 App.route"
         ];
 
     app_paths -> app_routes

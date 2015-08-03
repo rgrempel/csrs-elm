@@ -114,7 +114,7 @@
 <g id="edge11" class="edge"><title>app_deltas&#45;&gt;app_paths</title>
 <path fill="none" stroke="black" d="M294.072,-240.343C288.861,-231.788 282.845,-221.911 277.237,-212.706"/>
 <polygon fill="black" stroke="black" points="280.218,-210.871 272.027,-204.152 274.24,-214.513 280.218,-210.871"/>
-<text text-anchor="middle" x="211.615" y="-225.556" font-family="Times,serif" font-size="11.00">sampleWith FocusUI.delta2path</text>
+<text text-anchor="middle" x="209.115" y="-225.556" font-family="Times,serif" font-size="11.00">passiveMap2 FocusUI.delta2path</text>
 </g>
 <!-- app_main&#45;&gt;port -->
 <g id="edge6" class="edge"><title>app_main&#45;&gt;port</title>
@@ -159,7 +159,7 @@
 <g id="edge16" class="edge"><title>route_routes&#45;&gt;app_routes</title>
 <path fill="none" stroke="black" d="M117.784,-239.865C113.967,-217.011 111.648,-181.951 126,-156.083 135.184,-139.53 151.198,-126.789 167.133,-117.453"/>
 <polygon fill="black" stroke="black" points="168.858,-120.499 175.934,-112.614 165.485,-114.365 168.858,-120.499"/>
-<text text-anchor="middle" x="75.5135" y="-159.259" font-family="Times,serif" font-size="11.00">sampleWith App.route</text>
+<text text-anchor="middle" x="73.0135" y="-159.259" font-family="Times,serif" font-size="11.00">passiveMap2 App.route</text>
 </g>
 <!-- app_path_tasks -->
 <g id="node13" class="node"><title>app_path_tasks</title>

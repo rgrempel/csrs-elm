@@ -16,7 +16,7 @@ update : Action -> Model -> Model
 update action model =
     case action of
         SetCurrentUser user ->
-            @currentUser user model
+            {model | currentUser <- user}
 
         _ ->
             model

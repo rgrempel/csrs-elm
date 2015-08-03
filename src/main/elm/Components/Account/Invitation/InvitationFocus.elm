@@ -109,19 +109,19 @@ update action focus =
                 Maybe.map ResetPassword <| ResetPasswordFocus.update subaction <| focus `Maybe.andThen` resetPasswordFocus 
 
             FocusKey key ->
-                Just <| Invitation <| @key key invitation
+                Just <| Invitation <| {invitation | key <- key}
 
             CheckInvitation key ->
-                Just <| Invitation <| @status CheckingInvitation invitation
+                Just <| Invitation <| {invitation | status <- CheckingInvitation}
 
             FocusInvitationNotFound ->
-                Just <| Invitation <| @status InvitationNotFound invitation
+                Just <| Invitation <| {invitation | status <- InvitationNotFound}
 
             FocusInvitationFound activation ->
-                Just <| Invitation <| @status (InvitationFound activation) invitation
+                Just <| Invitation <| {invitation | status <- InvitationFound activation}
 
             FocusError error ->
-                Just <| Invitation <| @status (Error error) invitation
+                Just <| Invitation <| {invitation | status <- Error error}
 
             _ ->
                 Just <| Invitation invitation

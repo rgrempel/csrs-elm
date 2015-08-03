@@ -78,19 +78,19 @@ update action focus =
         Just <|
             case action of
                 FocusEmail email ->
-                    @email email focus'
+                    {focus' | email <- email}
 
                 FocusInvitation invitation ->
-                    @invitation invitation focus'
+                    {focus' | invitation <- invitation}
 
                 SendInvitation invitation language ->
-                    @registerStatus SendingInvitation focus'
+                    {focus' | registerStatus <- SendingInvitation}
                    
                 UseInvitation invitation ->
-                    @registerStatus UsingInvitation focus'
+                    {focus' | registerStatus <- UsingInvitation}
 
                 FocusInvitationSent ->
-                    @registerStatus InvitationSent focus'
+                    {focus' | registerStatus <- InvitationSent}
 
                 _ -> focus'
 

@@ -132,13 +132,15 @@ update action model =
                     Nothing
 
     in
-        @focus (withDefault model.focus focus') model
+        {model | focus <- withDefault model.focus focus'}
 
 
 forward : (a -> Action) -> Address a
 forward = forwardTo actions.address
 
 
+{-| Creates the NavBar, and then generates whatever virtual page we're on.
+-}
 view : Model -> Html
 view model =
     let

@@ -81,19 +81,19 @@ update action focus =
         Just <|
             case action of
                 FocusEmail email ->
-                    @email email focus'
+                    {focus' | email <- email}
 
                 FocusToken token ->
-                    @token token focus'
+                    {focus' | token <- token}
 
                 SendToken token language ->
-                    @resetPasswordStatus SendingToken focus'
+                    {focus' | resetPasswordStatus <- SendingToken}
 
                 UseToken token ->
-                    @resetPasswordStatus UsingToken focus'
+                    {focus' | resetPasswordStatus <- UsingToken}
 
                 FocusTokenSent ->
-                    @resetPasswordStatus TokenSent focus'
+                    {focus' | resetPasswordStatus <- TokenSent}
 
                 _ -> focus'
 

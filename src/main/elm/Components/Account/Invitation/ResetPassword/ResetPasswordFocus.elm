@@ -75,16 +75,16 @@ update action focus =
             Nothing
 
         (FocusActivation activation, Just focus') ->
-            Just <| @activation activation focus'
+            Just <| {focus' | activation <- activation}
 
         (FocusStatus status, Just focus') ->
-            Just <| @status status focus'
+            Just <| {focus' | status <- status}
 
         (FocusPassword password, Just focus') ->
-            Just <| @password password focus'
+            Just <| {focus' | password <- password}
 
         (FocusConfirmPassword password, Just focus') ->
-            Just <| @confirmPassword password focus'
+            Just <| {focus' | confirmPassword <- password}
 
         (_, Just focus') ->
             Just <| focus'
