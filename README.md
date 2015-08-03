@@ -15,7 +15,8 @@ abandon the effort when it became clear that Elm couldn't handle what I wanted
 to do. So far, that hasn't happened ...
 
 As far as points of interest go, there are a variety of things on the Elm side
-that could be of interest to Elm programmers -- see src/main/Elm for the code.
+that could be of interest to Elm programmers -- see
+[src/main/elm](src/main/elm) for the code.
 
 For the Java side, some of the stuff that I'm doing with Specifications could
 be interesting -- see src/main/java/com/fulliautomatix/csrs/specification for
