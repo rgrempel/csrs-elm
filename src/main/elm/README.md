@@ -61,7 +61,7 @@ I found that it was useful to diagram the signal graph once it got a little
 complicated, so here it is. The dotted lines indicate cases where I've used
 `passiveMap2` from `Signal.Extra`.
 
-![Signal graph](signals.svg)
+![Signal graph](https://cdn.rawgit.com/rgrempel/csrs-elm/master/src/main/elm/signals.svg)
 
 ## Routing
 
