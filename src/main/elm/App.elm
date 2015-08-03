@@ -12,7 +12,7 @@ import Components.FocusUI as FocusUI
 
 import Html exposing (Html, div)
 import Signal exposing (Signal, Mailbox, filter, mailbox, filterMap, merge, foldp, dropRepeats, sampleOn)
-import Signal.Extra exposing (foldp')
+import Signal.Extra exposing (foldp', passiveMap2)
 import Task exposing (Task, andThen, onError)
 
 
@@ -174,11 +174,6 @@ main : Signal Html
 main = Signal.map view models 
 
 
-sampleWith : (a -> b -> result) -> Signal a -> Signal b -> Signal result
-sampleWith func a b =
-    Signal.map2 func a (Signal.sampleOn a b)
-
-
 {-| A signal of changes to the model.
 
 The tuple has the previous model first and then the current model.
@@ -201,7 +196,7 @@ deltas =
 
 paths : Signal (Maybe PathAction)
 paths =
-    sampleWith FocusUI.delta2path deltas RouteService.routes
+    passiveMap2 FocusUI.delta2path deltas RouteService.routes
 
 
 port pathTasks : Signal (Task () ())
@@ -235,4 +230,4 @@ port routes : Signal (Task () ())
 port routes =
     Signal.Extra.filter
         (Task.succeed ())
-        (sampleWith route RouteService.routes paths)
+        (passiveMap2 route RouteService.routes paths)

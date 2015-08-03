@@ -9,7 +9,7 @@
     "exposed-modules": [],
     "native-modules": true,
     "dependencies": {
-        "Apanatshka/elm-signal-extra": "5.1.1 <= v < 5.2.0",
+        "Apanatshka/elm-signal-extra": "5.1.1 <= v < 6.0.0",
         "TheSeamau5/elm-history": "1.0.0 <= v < 2.0.0",
         "deadfoxygrandpa/Elm-Test": "1.0.4 <= v < 2.0.0",
         "elm-lang/core": "2.1.0 <= v < 3.0.0",
