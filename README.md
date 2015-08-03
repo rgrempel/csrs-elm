@@ -19,8 +19,9 @@ that could be of interest to Elm programmers -- see
 [src/main/elm](src/main/elm) for the code.
 
 For the Java side, some of the stuff that I'm doing with Specifications could
-be interesting -- see src/main/java/com/fulliautomatix/csrs/specification for
-source. Essentially, I'm using specifications and their JSON representations as
+be interesting -- see
+[src/main/java/com/fulliautomatix/csrs/specification](src/main/java/com/fulliautomatix/csrs/specification)
+for the source. Essentially, I'm using specifications and their JSON representations as
 a method to transmit queries from the client to the server. This is an area
 that doesn't really have an obvious solution, though of course there are a
 variety of alternatives.

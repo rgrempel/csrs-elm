@@ -61,7 +61,7 @@ I found that it was useful to diagram the signal graph once it got a little
 complicated, so here it is. The dotted lines indicate cases where I've used
 `passiveMap2` from `Signal.Extra`.
 
-<img src="signals.svg" />
+![Signal graph](signals.svg)
 
 ## Routing
 
