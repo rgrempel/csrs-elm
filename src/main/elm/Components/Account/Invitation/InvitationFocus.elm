@@ -10,6 +10,8 @@ import Components.Account.Invitation.InvitationTypes as InvitationTypes exposing
 import Components.Account.Invitation.InvitationText as InvitationText
 import Components.Account.Invitation.Register.RegisterFocus as RegisterFocus
 import Components.Account.Invitation.ResetPassword.ResetPasswordFocus as ResetPasswordFocus
+import Components.Account.Invitation.Register.RegisterTypes as RegisterTypes
+import Components.Account.Invitation.ResetPassword.ResetPasswordTypes as ResetPasswordTypes
 
 import Signal exposing (message, forwardTo)
 import Html exposing (..)
@@ -61,23 +63,30 @@ reaction address action =
         FocusResetPassword subaction ->
             ResetPasswordFocus.reaction (forwardTo address FocusResetPassword) subaction
 
-        CheckInvitation key ->
-            if isEmpty (checkRequired key) 
-                then
-                    Just <|
-                        (AccountService.fetchInvitation key)
-                        `andThen` 
-                        (Signal.send address << FocusInvitationFound)
-                        `onError` (\error ->
-                            case error of
-                                Http.BadResponse 404 _ ->
-                                    Signal.send address FocusInvitationNotFound
+        FocusInvitationFound activation ->
+            if activation.userEmail.user == Nothing
+                then Just <| Signal.send address <| FocusResetPassword <| ResetPasswordTypes.FocusActivation activation
+                else Just <| Signal.send address <| FocusRegister <| RegisterTypes.FocusActivation activation
 
-                                _ ->
-                                    Signal.send address (FocusError error)
-                        )
-                else
-                    Nothing
+        CheckInvitation key ->
+            let
+                handleError error =
+                    case error of
+                        Http.BadResponse 404 _ ->
+                            Signal.send address FocusInvitationNotFound
+
+                        _ ->
+                            Signal.send address (FocusError error)
+            
+            in
+                if isEmpty (checkRequired key) 
+                    then
+                        Just <|
+                            (AccountService.fetchInvitation key)
+                                `andThen` (Signal.send address << FocusInvitationFound)
+                                `onError` handleError
+                    else
+                        Nothing
 
         _ ->
             Nothing
