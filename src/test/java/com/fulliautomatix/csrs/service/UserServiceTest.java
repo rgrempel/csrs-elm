@@ -29,7 +29,6 @@ import static org.assertj.core.api.Assertions.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-@IntegrationTest
 @Transactional
 public class UserServiceTest {
 
