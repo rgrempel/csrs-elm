@@ -182,6 +182,8 @@ dependencies {
     testCompile group: 'com.mattbertolini', name: 'liquibase-slf4j', version: liquibase_slf4j_version
     testCompile group: 'org.hamcrest', name: 'hamcrest-library'
     testCompile group: 'io.gatling.highcharts', name: 'gatling-charts-highcharts', version: gatling_version
+    testCompile group: 'org.fluentlenium', name: 'fluentlenium-core', version: fluentlenium_version
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: selenium_version
 }
 
 task wrapper(type: Wrapper) {
