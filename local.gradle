@@ -11,3 +11,6 @@ task eclim(type: Exec) {
     commandLine('/usr/local/bin/eclimd', '-b');
 }
 
+task report(type: Exec) {
+    commandLine('open', 'build/reports/tests/index.html');
+}

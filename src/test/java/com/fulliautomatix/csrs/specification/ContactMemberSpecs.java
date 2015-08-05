@@ -3,6 +3,7 @@ package com.fulliautomatix.csrs.specification;
 import com.fulliautomatix.csrs.Application;
 import com.fulliautomatix.csrs.domain.Contact;
 import com.fulliautomatix.csrs.repository.ContactRepository;
+import com.fulliautomatix.csrs.specification.ContactSpec;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +38,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasEverMember () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasEverMember()
+            new ContactSpec.WasEverMember()
         );
         assertThat(contact.size()).isEqualTo(2);
     }
@@ -48,7 +49,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberNoArgs () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMember()
+            new ContactSpec.WasMember()
         );
         assertThat(contact.size()).isEqualTo(2);
     }
@@ -59,7 +60,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberNullArgs () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMember((Set<Integer>) null, (Set<Integer>) null)
+            new ContactSpec.WasMember((Set<Integer>) null, (Set<Integer>) null)
         );
         assertThat(contact.size()).isEqualTo(2);
     }
@@ -70,7 +71,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberEmptyArgs () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMember(new HashSet<Integer>(), new HashSet<Integer>())
+            new ContactSpec.WasMember(new HashSet<Integer>(), new HashSet<Integer>())
         );
         assertThat(contact.size()).isEqualTo(2);
     }
@@ -80,7 +81,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberInAllSingleTrue () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMemberInAll(2001)
+            new ContactSpec.WasMemberInAll(2001)
         );
         assertThat(contact.size()).isEqualTo(2);
     }
@@ -91,7 +92,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberSingleTrueNull () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMember(new Integer[] {2001}, null)
+            new ContactSpec.WasMember(new Integer[] {2001}, null)
         );
         assertThat(contact.size()).isEqualTo(2);
     }
@@ -102,7 +103,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberSingleTrueEmpty () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMember(new Integer[] {2001}, new Integer[0])
+            new ContactSpec.WasMember(new Integer[] {2001}, new Integer[0])
         );
         assertThat(contact.size()).isEqualTo(2);
     }
@@ -112,7 +113,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberInAllSingleFalse () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMemberInAll(2002)
+            new ContactSpec.WasMemberInAll(2002)
         );
         assertThat(contact.size()).isEqualTo(0);
     }
@@ -123,7 +124,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberSingleFalseNull () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMember(new Integer[] {2002}, null)
+            new ContactSpec.WasMember(new Integer[] {2002}, null)
         );
         assertThat(contact.size()).isEqualTo(0);
     }
@@ -133,7 +134,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberInAllSingleNotPresent () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMemberInAll(1958)
+            new ContactSpec.WasMemberInAll(1958)
         );
         assertThat(contact.size()).isEqualTo(0);
     }
@@ -144,7 +145,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberSingleNotPresent () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMember(new Integer[] {1958}, null)
+            new ContactSpec.WasMember(new Integer[] {1958}, null)
         );
         assertThat(contact.size()).isEqualTo(0);
     }
@@ -154,7 +155,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberInAllDualOnePresent () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMemberInAll(1958, 2001)
+            new ContactSpec.WasMemberInAll(1958, 2001)
         );
         assertThat(contact.size()).isEqualTo(0);
     }
@@ -164,7 +165,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberInAllDualBothPresent () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMemberInAll(2001, 2003)
+            new ContactSpec.WasMemberInAll(2001, 2003)
         );
         assertThat(contact.size()).isEqualTo(1);
     }
@@ -174,7 +175,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberInNoneTrue () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMemberInNone(1958)
+            new ContactSpec.WasMemberInNone(1958)
         );
         assertThat(contact.size()).isEqualTo(4);
     }
@@ -184,7 +185,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberInNoneSingle () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMemberInNone(2001)
+            new ContactSpec.WasMemberInNone(2001)
         );
         assertThat(contact.size()).isEqualTo(2);
     }
@@ -194,7 +195,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberInNoneDual () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMemberInNone(2001, 2002, 2003)
+            new ContactSpec.WasMemberInNone(2001, 2002, 2003)
         );
         assertThat(contact.size()).isEqualTo(2);
     }
@@ -204,7 +205,7 @@ public class ContactMemberSpecs {
     @Sql({"/sql/contactSpecification.sql"})
     public void testContactWasMemberIncludeExclude () {
         List<Contact> contact = contactRepository.findAll(
-            new ContactWasMember(new Integer[] {2001}, new Integer[] {2003})
+            new ContactSpec.WasMember(new Integer[] {2001}, new Integer[] {2003})
         );
         assertThat(contact.size()).isEqualTo(1);
     } 
