@@ -1,4 +1,3 @@
-src/main/resources/config/liquibase/users.csv
 src/main/resources/config/application*.yml
 src/test/resources/config/application*.yml
 elm-stuff
