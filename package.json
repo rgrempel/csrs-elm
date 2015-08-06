@@ -1,7 +1,11 @@
 {
   "name": "csrs-elm",
   "version": "0.0.1",
-  "description": "Elm version of CSRS membership",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rgrempel/csrs-elm.git"
+  },
+  "description": "Elm version of CSRS membership database",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
