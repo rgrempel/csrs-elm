@@ -48,6 +48,26 @@ if (profile == 'prod') {
     apply from: 'profile_dev.gradle'
 }
 
+processResources {
+    doFirst {
+        checkTemplate('src/main/resources/config/application-dev.yml');
+        checkTemplate('src/main/resources/config/application-prod.yml');
+        checkTemplate('src/main/resources/config/application.yml');
+    }
+}
+
+processTestResources {
+    doFirst {
+        checkTemplate('src/test/resources/config/application.yml');
+    }
+}
+
+def checkTemplate (f) {
+    if (!file(f).exists()) {
+        ant.fail("You must create the file ${f} by copying the template in that directory and customizing it.");
+    }
+}
+
 sourceCompatibility=1.8
 targetCompatibility=1.8
 
