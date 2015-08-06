@@ -21,6 +21,13 @@ public class LoginTest extends Base {
     }
 
     @Test
+    public void can_login_as_user () {
+        goTo(loginPage);
+        loginPage.tryLogin("user", "user"); 
+        assertThat(homePage.loggedInMessage).isDisplayed();
+    }
+
+    @Test
     public void logging_in_with_wrong_password_fails () {
         goTo(loginPage);
         loginPage.tryLogin("admin", "wrong");
