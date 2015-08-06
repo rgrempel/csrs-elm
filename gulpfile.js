@@ -74,7 +74,7 @@ gulp.task('scss:dir', function (cb) {
     });
 });
 
-gulp.task('scss:inject', ['scss:dir'], function () {
+gulp.task('scss:inject', ['scss:dir', 'bower'], function () {
     var inject = require('gulp-inject');
     var sort = require('gulp-sort');
 
