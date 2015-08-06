@@ -1,0 +1,54 @@
+server:
+    # Change to whatever you like
+    port: 8092
+
+spring:
+    profiles:
+        active: dev
+    datasource:
+        # The app depends on Postgres-specific stuff
+        dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
+        url:
+        databaseName: # Enter the database name for development
+        serverName: localhost
+        username: # Enter the username for development
+        password: # Enter the password for development 
+
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQL82Dialect
+        database: POSTGRESQL
+        openInView: false
+        show_sql: true
+        generate-ddl: false
+        hibernate:
+            ddl-auto: none
+            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+        properties:
+            hibernate.cache.use_second_level_cache: true
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: true
+            hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+
+    mail:
+        baseUrl: # Not sure this is actually used -- is calculated
+            
+    thymeleaf:
+        mode: XHTML
+        cache: false
+
+metrics:
+    jmx.enabled: true
+    spark:
+        enabled: false
+        host: localhost
+        port: 9999
+    graphite:
+        enabled: false
+        host: localhost
+        port: 2003
+        prefix: csrs
+
+cache:
+    timeToLiveSeconds: 3600
+    ehcache:
+        maxBytesLocalHeap: 16M
