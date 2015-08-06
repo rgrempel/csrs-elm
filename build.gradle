@@ -48,7 +48,19 @@ if (profile == 'prod') {
     apply from: 'profile_dev.gradle'
 }
 
+task 'gulp' (type: Exec) {
+    commandLine('node_modules/.bin/gulp')
+
+    outputs.dir 'build/resources/main/public'
+
+    inputs.dir 'src/main/elm'
+    inputs.file 'bower.json'
+    inputs.file 'gulpfile.js'
+}
+
 processResources {
+    dependsOn gulp
+
     doFirst {
         checkTemplate('src/main/resources/config/application-dev.yml');
         checkTemplate('src/main/resources/config/application-prod.yml');
