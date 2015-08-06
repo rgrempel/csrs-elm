@@ -11,7 +11,7 @@ import Components.Home.HomeText as HomeText
 import Signal exposing (Address)
 import Html exposing (Html, div, button, text, span, h1, p, ul, li, a)
 import Html.Events exposing (onClick)
-import Html.Attributes exposing (href, class, key, classList)
+import Html.Attributes exposing (..)
 import Html.Util exposing (glyphicon, unbreakableSpace)
 
 
@@ -49,7 +49,9 @@ view address model focus =
             case user of
                 Just u ->
                     [ div 
-                        [ class "alert alert-success" ]
+                        [ class "alert alert-success"
+                        , id "loggedInMessage"
+                        ]
                         [ trans ( HomeText.LoggedInAs u.login ) ]
                     ]
 
@@ -73,7 +75,11 @@ view address model focus =
         thingsToDoIfNotLoggedIn =
             case user of
                 Nothing ->
-                    [ div [ class "alert alert-warning" ] [ trans HomeText.BeenHereBefore ]
+                    [ div
+                        [ class "alert alert-warning"
+                        , id "notLoggedInMessage"
+                        ]
+                        [ trans HomeText.BeenHereBefore ]
                     , div [ class "alert alert-warning" ] [ trans HomeText.NoAccount ]
                     ]
 

@@ -10,7 +10,6 @@ import String exposing (toUpper)
 
 type LoginError
     = LoginWrongPassword  -- 401
-    | LoginWrongCsrf      -- 403
     | LoginHttpError Http.Error
 
 type Action

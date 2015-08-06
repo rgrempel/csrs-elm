@@ -1,7 +1,7 @@
 module Components.Account.Login.LoginFocus where
 
 import AppTypes exposing (..)
-import Account.AccountServiceTypes exposing (Credentials)
+import Account.AccountServiceTypes exposing (Credentials, LoginError(..))
 import Account.AccountService as AccountService exposing (attemptLogin)
 import Validation.Validation exposing (checkString, helpBlock)
 import Validation.ValidationTypes exposing (StringValidator, Validator(Required))
@@ -16,7 +16,7 @@ import Signal exposing (message)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Html.Util exposing (role, glyphicon, unbreakableSpace)
+import Html.Util exposing (role, glyphicon, unbreakableSpace, showError)
 import Signal exposing (Address)
 import Maybe exposing (withDefault)
 import Task exposing (Task)
@@ -183,6 +183,7 @@ view address model focus =
                     [ input
                         [ type' "checkbox"
                         , checked focus.credentials.rememberMe
+                        , id "rememberMe"
                         , on "input" targetChecked <| (message address) << FocusRememberMe
                         ] []
                     , text " "
@@ -194,17 +195,26 @@ view address model focus =
             button
                 [ type' "submit"
                 , key "submit"
+                , id "submitButton"
                 , class "btn btn-primary"
                 ] [ transHtml LoginText.Button ]
 
         result =
             case focus.loginStatus of
-                LoginError loginError -> 
+                LoginError LoginWrongPassword -> 
                     p
                         [ key "result"
-                        , class "alert alert-danger" 
+                        , class "alert alert-danger"
+                        , id "loginFailed"
                         ]
                         [ transHtml LoginText.Failed ]
+                
+                LoginError (LoginHttpError error) ->
+                    p
+                        [ key "result"
+                        , id "loginFailed"
+                        ]
+                        [ showError language error ]
 
                 LoginSuccess ->
                     p 

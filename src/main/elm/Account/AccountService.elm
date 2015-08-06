@@ -4,12 +4,12 @@ import AppTypes exposing (..)
 import Account.AccountServiceTypes exposing (..)
 import Language.LanguageTypes as LanguageTypes exposing (Language(..)) 
 
-import List exposing (foldl, foldr, intersperse)
 import Http exposing (uriEncode, url, string, defaultSettings, fromJson, Settings, Request, Response, Error(BadResponse), RawError(RawTimeout, RawNetworkError))
 import Task exposing (Task, map, mapError, succeed, fail, onError, andThen, toResult)
 import Http.Csrf exposing (withCsrf)
 import Http.CacheBuster exposing (withCacheBuster)
 import Json.Encode as JE
+import String exposing (join)
 
 
 update : Action -> Model -> Model
@@ -42,7 +42,7 @@ attemptLogin : Credentials -> Task LoginError (Maybe User)
 attemptLogin credentials =
     let
         params =
-            foldr (++) "" <| intersperse "&"
+            join "&"
                 [ "j_username=" ++ uriEncode(credentials.username)
                 , "j_password=" ++ uriEncode(credentials.password)
                 , "remember-me=" ++ ( if credentials.rememberMe then "true" else "false" )
@@ -61,7 +61,6 @@ attemptLogin credentials =
             case response.status of
                 200 -> fetchCurrentUser |> mapError LoginHttpError
                 401 -> fail LoginWrongPassword
-                403 -> fail LoginWrongCsrf
                 _ -> fail <| LoginHttpError (Http.BadResponse response.status response.statusText)
 
     in
