@@ -3,7 +3,7 @@
 Here are a few notes on the Elm code. Note that the port to Elm is a
 work-in-progress, so there are a variety of things which are unimplemented at
 this point, or don't work quite right. But, if you're interested in building
-the app to play with, there are [instructions](../../../).
+the app to play with, there are [instructions](/).
 
 ## Organization
 
