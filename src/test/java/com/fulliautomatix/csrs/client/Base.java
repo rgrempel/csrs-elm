@@ -12,7 +12,7 @@ import com.fulliautomatix.csrs.Application;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
-@WebIntegrationTest("server.port:9102")
+@WebIntegrationTest("server.port:0")
 @SharedDriver(
     type = SharedDriver.SharedType.ONCE,
     deleteCookies = false
