@@ -158,8 +158,9 @@ view address model focus =
                                 , on "input" targetValue <| (message address) << FocusEmail
                                 ] []
                             , span [ class "input-group-btn" ]
-                                [ button 
+                                [ button
                                     [ type' "submit"
+                                    , id "email-submit"
                                     , class "btn btn-primary"
                                     ]
                                     [ glyphicon "send"
@@ -207,6 +208,7 @@ view address model focus =
                             , span [ class "input-group-btn" ]
                                 [ button
                                     [ type' "submit"
+                                    , id "key-submit"
                                     , class "btn btn-primary"
                                     ]
                                     [ glyphicon "tag"
@@ -223,7 +225,9 @@ view address model focus =
         invitationSent =
             case focus.registerStatus of
                 InvitationSent ->
-                    div [ class "alert alert-success text-left" ]
+                    div [ id "invitation-sent"
+                        , class "alert alert-success text-left"
+                        ]
                         [ h4 [] [ trans RegisterText.InvitationSent ]
                         , p [] [ trans RegisterText.InvitationMessage ]
                         ]

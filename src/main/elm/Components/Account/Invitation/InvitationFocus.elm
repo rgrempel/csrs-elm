@@ -180,7 +180,7 @@ viewInvitation address model focus =
         failureMessage =
             case focus.status of
                 InvitationNotFound ->
-                    [ div [ class "alert alert-danger text-left" ]
+                    [ div [ class "alert invitation-not-found alert-danger text-left" ]
                         [ h4 [] [ trans InvitationText.NotFound ]
                         , p [] [ trans InvitationText.TryAgain ]
                         ]

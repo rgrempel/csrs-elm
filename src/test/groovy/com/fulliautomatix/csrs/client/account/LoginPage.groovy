@@ -1,4 +1,6 @@
-package com.fulliautomatix.csrs.client
+package com.fulliautomatix.csrs.client.account
+
+import com.fulliautomatix.csrs.client.NavBarPage
 
 class LoginPage extends NavBarPage {
     static url = "#!/account/login"

@@ -1,6 +1,8 @@
-package com.fulliautomatix.csrs.client
+package com.fulliautomatix.csrs.client.account
 
 import org.junit.Test
+import com.fulliautomatix.csrs.client.BaseTest
+import com.fulliautomatix.csrs.client.HomePage
 
 class LoginTest extends BaseTest {
     @Test
