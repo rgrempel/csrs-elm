@@ -60,13 +60,14 @@ glyphicon : String -> Html
 glyphicon which = span [ class ("glyphicon glyphicon-" ++ which) ] []
 
 
-dropdownToggle : List Html -> Html
-dropdownToggle = 
-    a
-        [ class "dropdown-toggle"
-        , dataToggle "dropdown"
---        , href "#"
-        ]
+dropdownToggle : List Attribute -> List Html -> Html
+dropdownToggle attributes = 
+    a <|
+        attributes ++
+            [ class "dropdown-toggle"
+            , dataToggle "dropdown"
+    --        , href "#"
+            ]
 
 
 dropdownPointer : List Attribute -> List Html -> Html

@@ -148,7 +148,7 @@ menu address model focus =
     
     in
         dropdownPointer [ classList [ ( "active", focus /= Nothing ) ] ]
-            [ dropdownToggle
+            [ dropdownToggle []
                 [ glyphicon "tower"
                 , text unbreakableSpace
                 , span [ class "hidden-tablet" ] [ trans AdminText.Title ]

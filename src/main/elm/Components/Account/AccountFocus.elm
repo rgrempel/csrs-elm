@@ -12,7 +12,7 @@ import Components.Account.Invitation.InvitationFocus as InvitationFocus
 import Components.Account.AccountText as AccountText
 
 import Html exposing (Html, h1, text, div, li, ul, a, span)
-import Html.Attributes exposing (class, classList, href)
+import Html.Attributes exposing (class, classList, href, id)
 import Html.Events exposing (onClick)
 import Signal exposing (Address, forwardTo)
 import Html.Util exposing (dropdownMenu, dropdownToggle, dropdownPointer, glyphicon, unbreakableSpace)
@@ -203,7 +203,7 @@ menu address model focus =
  
     in
         dropdownPointer [ classList [ ( "active", focus /= Nothing ) ] ]
-            [ dropdownToggle
+            [ dropdownToggle [ id "navbar-account-menu" ]
                 [ glyphicon "user"
                 , text unbreakableSpace
                 , span [ class "hidden-tablet" ] [ trans AccountText.Title ]

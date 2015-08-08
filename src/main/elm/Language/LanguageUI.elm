@@ -27,7 +27,7 @@ menu model =
 
     in
         dropdownPointer []
-            [ dropdownToggle
+            [ dropdownToggle []
                 [ glyphicon "flag"
                 , text unbreakableSpace
                 , span [ class "hidden-tablet" ] [ trans LanguageText.TheWordLanguage ]

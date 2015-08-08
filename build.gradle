@@ -12,6 +12,7 @@ buildscript {
 }
 
 apply plugin: 'java'
+apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'spring-boot'
 apply plugin: 'war'
@@ -214,9 +215,14 @@ dependencies {
     testCompile group: 'com.mattbertolini', name: 'liquibase-slf4j', version: liquibase_slf4j_version
     testCompile group: 'org.hamcrest', name: 'hamcrest-library'
     testCompile group: 'io.gatling.highcharts', name: 'gatling-charts-highcharts', version: gatling_version
-    testCompile group: 'org.fluentlenium', name: 'fluentlenium-core', version: fluentlenium_version
-    testCompile group: 'org.fluentlenium', name: 'fluentlenium-assertj', version: fluentlenium_version
-    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: selenium_version
+
+    testCompile group: 'org.gebish', name: 'geb-junit4', version: geb_version
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: selenium_version
+    testRuntime group: 'org.seleniumhq.selenium', name: 'selenium-support', version: selenium_version
+}
+
+test {
+    systemProperties "geb.build.reportsDir": "$reportsDir/geb"
 }
 
 task wrapper(type: Wrapper) {

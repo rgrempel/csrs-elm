@@ -263,7 +263,9 @@ view address model focus =
 menuItem : Address LoginTypes.Action -> Model -> Maybe Focus -> Html
 menuItem address model focus =
     li [ classList [ ( "active", focus /= Nothing ) ] ]
-        [ a [ onClick address FocusBlank ]
+        [ a [ onClick address FocusBlank
+            , id "navbar-account-login"
+            ]
             [ glyphicon "log-in" 
             , text unbreakableSpace
             , LoginText.translateHtml model.useLanguage LoginText.Title 

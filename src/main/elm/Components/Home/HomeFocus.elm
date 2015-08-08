@@ -88,7 +88,7 @@ view address model focus =
 
 
     in
-        div [ class "main container" ]
+        div [ class "main focus-home container" ]
             [ div [ class "well well-sm" ]
                 [ div [ class "row" ]
                     [ div [ class "col-md-4" ]
@@ -117,7 +117,10 @@ menu address model focus =
 
     in
         li [ classList [ ( "active", focus /= Nothing ) ] ]
-            [ a [ onClick address FocusHome ]
+            [ a
+                [ onClick address FocusHome
+                , id "navbar-link-home" 
+                ]
                 [ glyphicon "home"
                 , text unbreakableSpace
                 , trans HomeText.MenuItem
