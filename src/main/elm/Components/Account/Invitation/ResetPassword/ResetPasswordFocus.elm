@@ -132,7 +132,7 @@ view address model focus =
                 , p [ class "form-control-static" ]
                     [ text <|
                         Maybe.withDefault "" <|
-                            Maybe.map .login focus.activation.userEmail.user
+                            Maybe.map .username focus.activation.userEmail.user
                     ]
                 ]
 

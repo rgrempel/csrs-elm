@@ -68,6 +68,43 @@ attemptLogin credentials =
         `andThen` handleResponse
         
 
+createAccount : CreateAccountInfo -> Task CreateAccountError ()
+createAccount info =
+    let
+        request =
+            { verb = "POST"
+            , headers =
+                [ ("Content-Type", "application/json")
+                ]
+            , url = url "/api/register" [ ("key", info.activationKey) ]
+            , body =
+                Http.string <|
+                    JE.encode 0 <|
+                        JE.object
+                            [ ("login", JE.string info.username)
+                            , ("password", JE.string info.password)
+                            , ("langKey", LanguageTypes.encode info.language)
+                            ]
+            }
+
+        handleResponse response =
+            case response.status of
+                201 ->
+                    succeed ()
+                
+                400 ->
+                    fail <| UserAlreadyExists info.username 
+                
+                _ ->
+                    fail <|
+                        CreateAccountHttpError <|
+                            BadResponse response.status response.statusText
+
+    in
+        (send request |> mapError (CreateAccountHttpError << promoteError))
+        `andThen` handleResponse
+
+
 promoteError : RawError -> Error
 promoteError error =
     case error of

@@ -52,7 +52,7 @@ view address model focus =
                         [ class "alert alert-success"
                         , id "loggedInMessage"
                         ]
-                        [ trans ( HomeText.LoggedInAs u.login ) ]
+                        [ trans ( HomeText.LoggedInAs u.username ) ]
                     ]
 
                 _ ->

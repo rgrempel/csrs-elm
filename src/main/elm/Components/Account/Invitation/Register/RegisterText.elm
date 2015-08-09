@@ -16,6 +16,7 @@ type HtmlMessage
     | ConfirmPassword
     | Title
     | Blurb
+    | UserAlreadyExists String
 
 
 translateText : Language -> TextMessage -> String
@@ -81,3 +82,8 @@ translateHtml language message =
             EN -> "Username"
             FR -> "Nom d'utilisateur"
             LA -> "Nomen usoris"
+
+        UserAlreadyExists user -> case language of
+            EN -> "Username " ++ user ++ " is already taken"
+            FR -> "Nom d'utilisateur " ++ user ++ " déjà utilisé"
+            LA -> "Nomem usoris " ++ user ++ " iam petita"

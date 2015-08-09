@@ -12,6 +12,12 @@ type LoginError
     = LoginWrongPassword  -- 401
     | LoginHttpError Http.Error
 
+
+type CreateAccountError
+    = UserAlreadyExists String   -- 400
+    | CreateAccountHttpError Http.Error
+
+
 type Action
     = SetCurrentUser (Maybe User)
     | NoOp
@@ -42,7 +48,7 @@ roleDecoder =
 
 
 type alias User =
-    { login : String
+    { username : String
     , langKey: Language
     , roles: Maybe (List Role) 
     }
@@ -81,6 +87,14 @@ actions = mailbox NoOp
 
 do : Action -> Task x ()
 do = Signal.send actions.address
+
+
+type alias CreateAccountInfo =
+    { username : String
+    , password : String
+    , language : Language
+    , activationKey : String
+    }
 
 
 type alias UserEmailActivation =

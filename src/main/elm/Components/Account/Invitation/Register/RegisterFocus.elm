@@ -3,9 +3,13 @@ module Components.Account.Invitation.Register.RegisterFocus where
 import AppTypes exposing (..)
 import Validation.Validation exposing (checkString, helpBlock)
 import Validation.ValidationTypes exposing (StringValidator, Validator(..))
-import Account.AccountServiceTypes as AccountServiceTypes exposing (UserEmailActivation)
+import Account.AccountServiceTypes as AccountServiceTypes exposing (UserEmailActivation, LoginError(..), CreateAccountError(..))
+import Account.AccountService as AccountService
 import Account.PasswordStrengthBar.PasswordStrengthBar as PasswordStrengthBar
 import Route.RouteService exposing (PathAction(..))
+import Components.FocusTypes as FocusTypes
+import Components.Home.HomeTypes as HomeTypes
+import Components.Account.Login.LoginText as LoginText
 
 import Components.Account.Invitation.Register.RegisterTypes as RegisterTypes exposing (..)
 import Components.Account.Invitation.Register.RegisterText as RegisterText
@@ -33,66 +37,104 @@ path focus focus' = Nothing
 reaction : Address RegisterTypes.Action -> RegisterTypes.Action -> Maybe (Task () ())
 reaction address action =
     case action of
+        CreateAccount accountInfo activation language ->
+            let
+                handleError error =
+                    Signal.send address (FocusError error)
+
+                handleLoginError error =
+                    Signal.send address (FocusLoginError error)
+
+                goHome =
+                    FocusTypes.do (FocusTypes.FocusHome HomeTypes.FocusHome)
+                
+                attemptLogin =
+                    AccountService.attemptLogin
+                        { username = accountInfo.username
+                        , password = accountInfo.password
+                        , rememberMe = False
+                        }
+                    `andThen` always goHome
+                    `onError` handleLoginError
+
+            in
+                if isEmpty (checkAccountInfo accountInfo)
+                    then
+                        Just <|
+                            AccountService.createAccount 
+                                { username = accountInfo.username
+                                , password = accountInfo.password
+                                , language = language
+                                , activationKey = activation.activationKey
+                                }
+                            `andThen` always attemptLogin
+                            `onError` handleError
+
+                    else 
+                        Nothing
+        
         _ ->
             Nothing
-
-{-
-    this.createAccount = function () {
-        if (!$scope.createAccountForm.$valid) {return;}
-
-        this.serverError = null;
-        this.account.langKey = $translate.use();
-
-        var self = this;
-        Register.save({
-            key: this.invitation.activationKey
-        }, this.account, function () {
-            Auth.login({
-                username: self.account.login,
-                password: self.account.password,
-                rememberMe: false
-            }).then(function () {
-                $state.go('settings');
-            }, function (error) {
-                self.serverError = angular.toJson(error);
-            });
-        }, function (error) {
-            self.serverError = angular.toJson(error);
-        });
-    };
--}
 
 
 update : RegisterTypes.Action -> Maybe Focus -> Maybe Focus
 update action focus =
-    case (action, focus) of
-        (FocusActivation activation, Nothing) ->
-            Just <| defaultFocus activation
+    let
+        accountInfo =
+            withDefault defaultAccountInfo <|
+                Maybe.map .accountInfo focus
 
-        (_, Nothing) ->
-            Nothing
+    in
+        case (action, focus) of
+            (FocusActivation activation, Nothing) ->
+                Just <| defaultFocus activation
 
-        (FocusActivation activation, Just focus') ->
-            Just <| {focus' | activation <- activation}
+            (FocusActivation activation, Just focus') ->
+                Just { focus' | activation <- activation }
 
-        (FocusRegisterStatus status, Just focus') ->
-            Just <| {focus' | registerStatus <- status}
+            (_, Nothing) ->
+                Nothing
 
-        (FocusPassword password, Just focus') ->
-            Just <| {focus' | password <- password}
+            (FocusPassword password, Just focus') ->
+                Just
+                    { focus' | accountInfo <- 
+                        { accountInfo | password <- password }
+                    }
 
-        (FocusConfirmPassword password, Just focus') ->
-            Just <| {focus' | confirmPassword <- password}
+            (FocusConfirmPassword password, Just focus') ->
+                Just
+                    { focus' | accountInfo <-
+                        { accountInfo | confirmPassword <- password }
+                    }
 
-        (FocusUserName name, Just focus') ->
-            Just <| {focus' | userName <- name}
+            (FocusUserName name, Just focus') ->
+                Just
+                    { focus' | accountInfo <-
+                        { accountInfo | username <- name }
+                    }
+        
+            (CreateAccount accountInfo activation language, Just focus') ->
+                Just
+                    { focus' | status <- CreatingAccount }
 
-        (_, Just focus') ->
-            Just <| focus'
+            (FocusError error, Just focus') ->
+                Just
+                    { focus' | status <- CreationError error }
+
+            (FocusLoginError error, Just focus') ->
+                Just
+                    { focus' | status <- LoginError error }
+
+            (_, Just focus') ->
+                Just focus'
 
 
 defaultFocus : UserEmailActivation -> Focus
-defaultFocus = Focus RegisterStart "" "" ""
+defaultFocus = Focus RegisterStart defaultAccountInfo 
+
+
+defaultAccountInfo : AccountInfo
+defaultAccountInfo = AccountInfo "" "" ""
 
 
 checkUserName : String -> List StringValidator
@@ -105,6 +147,13 @@ checkPassword = checkString [MinLength 5, MaxLength 50]
 
 checkConfirmPassword : String -> String -> List StringValidator
 checkConfirmPassword password = checkString [Matches password]
+
+
+checkAccountInfo : AccountInfo -> List StringValidator
+checkAccountInfo accountInfo =
+    checkUserName accountInfo.username ++
+    checkPassword accountInfo.password ++
+    checkConfirmPassword accountInfo.confirmPassword accountInfo.password
 
 
 view : Address RegisterTypes.Action -> Model -> Focus -> Html
@@ -133,9 +182,9 @@ view address model focus =
         usernameField =
             let
                 errors =
-                    case focus.registerStatus of
+                    case focus.status of
                         RegisterStart -> []
-                        _ -> checkUserName focus.userName
+                        _ -> checkUserName focus.accountInfo.username
 
             in
                 div
@@ -149,6 +198,7 @@ view address model focus =
                         [ transHtml RegisterText.UserName
                         , input 
                             [ class "form-control"
+                            , id "username"
                             , type' "text"
                             , placeholder (trans RegisterText.UserNamePlaceholder)
                             , on "input" targetValue <| (message address) << FocusUserName
@@ -161,16 +211,18 @@ view address model focus =
             div [ class "form-group" ]
                 [ label []
                     [ transHtml RegisterText.Email ]
-                , p [ class "form-control-static" ]
+                , p [ class "form-control-static"
+                    , id "email" 
+                    ]
                     [ text focus.activation.userEmail.email.emailAddress ]
                 ]
 
         passwordField =
             let
                 errors =
-                    case focus.registerStatus of
+                    case focus.status of
                         RegisterStart -> []
-                        _ -> checkPassword focus.password
+                        _ -> checkPassword focus.accountInfo.password
 
             in
                 div
@@ -184,22 +236,23 @@ view address model focus =
                         [ transHtml RegisterText.NewPassword
                         , input
                             [ class "form-control"
+                            , id "password"
                             , type' "password"
                             , name "password"
                             , placeholder (trans RegisterText.PasswordPlaceholder)
                             , on "input" targetValue <| (message address) << FocusPassword
                             ] []
                         ]
-                    , PasswordStrengthBar.draw language focus.password 
+                    , PasswordStrengthBar.draw language focus.accountInfo.password 
                     ]
                     ++ List.map (helpBlock language) errors
 
         confirmPasswordField =
             let
                 errors =
-                    case focus.registerStatus of
+                    case focus.status of
                         RegisterStart -> []
-                        _ -> checkConfirmPassword focus.confirmPassword focus.password
+                        _ -> checkConfirmPassword focus.accountInfo.confirmPassword focus.accountInfo.password
 
             in
                 div
@@ -214,6 +267,7 @@ view address model focus =
                         , input 
                             [ class "form-control"
                             , type' "password"
+                            , id "confirmPassword"
                             , name "confirmPassword"
                             , placeholder (trans RegisterText.ConfirmPasswordPlaceholder)
                             , on "input" targetValue <| (message address) << FocusConfirmPassword
@@ -223,11 +277,42 @@ view address model focus =
                     ++
                     List.map (helpBlock language) errors
 
+        result =
+            case focus.status of
+                LoginError LoginWrongPassword -> 
+                    p
+                        [ class "alert alert-danger"
+                        , id "loginFailed"
+                        ]
+                        [ LoginText.translateHtml language LoginText.Failed ]
+                
+                LoginError (LoginHttpError error) ->
+                    p
+                        [ id "loginFailed"
+                        ]
+                        [ showError language error ]
+                 
+                CreationError (UserAlreadyExists user) ->
+                    p
+                        [ class "alert alert-danger"
+                        , id "loginFailed"
+                        ]
+                        [ transHtml <| RegisterText.UserAlreadyExists user ]
+
+                CreationError (CreateAccountHttpError error) ->
+                    p
+                        [ id "loginFailed"
+                        ]
+                        [ showError language error ]
+                
+                _ ->
+                    p [] []
+
         form =
             Html.form
                 [ role "form"
                 , class "form"
-                -- , onSubmit address doSomething 
+                , onlyOnSubmit address (CreateAccount focus.accountInfo focus.activation model.useLanguage)
                 ]
                 [ div [ class "row" ]
                     [ div
@@ -247,6 +332,7 @@ view address model focus =
                 , div [ class "row text-center" ]
                     [ button
                         [ type' "submit"
+                        , id "submitButton"
                         , class "btn btn-primary"
                         ]
                         [ glyphicon "send"
@@ -262,5 +348,6 @@ view address model focus =
             [ h2 [] [ transHtml RegisterText.Title ]
             , p [] [ transHtml RegisterText.Blurb ]
             , form
+            , result
             ]
 

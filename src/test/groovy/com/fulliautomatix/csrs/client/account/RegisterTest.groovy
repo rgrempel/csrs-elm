@@ -2,6 +2,7 @@ package com.fulliautomatix.csrs.client.account
 
 import javax.inject.Inject
 import org.junit.Test
+import org.springframework.test.context.jdbc.Sql
 import com.fulliautomatix.csrs.client.BaseTest
 import com.fulliautomatix.csrs.client.HomePage
 import com.fulliautomatix.csrs.repository.UserEmailActivationRepository
@@ -25,7 +26,6 @@ class RegisterTest extends BaseTest {
         assert invitationNotFound.displayed
     }
 
-    @Test
     void sends_invitation () {
         fetch RegisterPage
        
@@ -35,7 +35,6 @@ class RegisterTest extends BaseTest {
         assert invitationSent.displayed
     }
 
-    @Test 
     void sends_and_finds_invitation () {
         userEmailActivationRepository.deleteAll()
         userEmailRepository.deleteAll()
@@ -46,5 +45,20 @@ class RegisterTest extends BaseTest {
         key.value(uea.activationKey)
 
         keySubmit.click(InvitationRegisterPage)
+        
+        assert email.text() == "test@nowhere.com"
+    }
+
+    @Test
+    @Sql(["/sql/deleteCustomUsers.sql"])
+    void actually_creates_new_user () {
+        sends_and_finds_invitation()
+
+        username.value("testuser")
+        password.value("password")
+        confirmPassword.value("password")
+
+        submitButton.click(HomePage)
+        assert loggedInMessage.displayed
     }
 }

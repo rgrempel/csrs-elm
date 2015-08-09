@@ -168,4 +168,38 @@
             <column name="lower(email)" />
         </createIndex>
     </changeSet>
+
+    <changeSet id="makeUsersDeletable" author="ryan">
+        <sql>SELECT setVal('t_user_id_seq', 1000);</sql>
+
+        <dropForeignKeyConstraint 
+            baseTableName="T_USER_AUTHORITY" 
+            constraintName="fk_user_id"
+        />
+
+        <dropForeignKeyConstraint
+            baseTableName="T_PERSISTENT_TOKEN" 
+            constraintName="fk_user_persistent_token"
+        />
+
+        <addForeignKeyConstraint
+            baseColumnNames="user_id"
+            baseTableName="T_USER_AUTHORITY"
+            constraintName="fk_user_id"
+            referencedColumnNames="id"
+            referencedTableName="T_USER"
+            onDelete="CASCADE"
+            onUpdate="CASCADE"
+        />
+
+        <addForeignKeyConstraint
+            baseColumnNames="user_id"
+            baseTableName="T_PERSISTENT_TOKEN"
+            constraintName="fk_user_persistent_token"
+            referencedColumnNames="id"
+            referencedTableName="T_USER"
+            onDelete="CASCADE"
+            onUpdate="CASCADE"
+        />
+    </changeSet>
 </databaseChangeLog>
