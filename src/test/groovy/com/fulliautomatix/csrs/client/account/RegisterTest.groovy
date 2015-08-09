@@ -15,8 +15,6 @@ class RegisterTest extends BaseTest {
     @Inject
     UserEmailRepository userEmailRepository
 
-    @Inject
-
     @Test
     void shows_error_for_unknown_key () {
         fetch RegisterPage
