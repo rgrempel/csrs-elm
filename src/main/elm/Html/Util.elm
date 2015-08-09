@@ -4,9 +4,12 @@ import String exposing (fromChar)
 import Char exposing (fromCode)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Html.Events exposing (onWithOptions, Options, defaultOptions)
 import Http
 import Html.UtilText as UtilText exposing (translate)
 import Language.LanguageTypes exposing (Language)
+import Json.Decode
+import Signal exposing (Address, message)
 
 
 showError : Language -> Http.Error -> Html
@@ -38,6 +41,17 @@ showError language error =
         div
             [ class "alert alert-danger" ]
             content
+
+
+preventDefault : Options
+preventDefault =
+    { defaultOptions | preventDefault <- True }
+
+
+onlyOnSubmit : Address a -> a -> Attribute
+onlyOnSubmit addr msg =
+    onWithOptions "submit" preventDefault Json.Decode.value <| 
+        always <| message addr msg
 
 
 unbreakableSpace : String

@@ -16,7 +16,7 @@ import Signal exposing (message)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Html.Util exposing (role, glyphicon, unbreakableSpace, showError)
+import Html.Util exposing (role, glyphicon, unbreakableSpace, showError, onlyOnSubmit)
 import Signal exposing (Address)
 import Maybe exposing (withDefault)
 import Task exposing (Task)
@@ -230,7 +230,7 @@ view address model focus =
             Html.form
                 [ class "form"
                 , role "form"
-                , onSubmit address (AttemptLogin focus.credentials)
+                , onlyOnSubmit address (AttemptLogin focus.credentials)
                 ]
                 [ usernameField
                 , passwordField

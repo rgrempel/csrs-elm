@@ -17,7 +17,7 @@ import Signal exposing (message, forwardTo)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Html.Util exposing (role, glyphicon, unbreakableSpace, showError)
+import Html.Util exposing (role, glyphicon, unbreakableSpace, showError, onlyOnSubmit)
 import Signal exposing (Address)
 import Maybe exposing (withDefault)
 import Task exposing (Task, andThen, onError)
@@ -208,7 +208,7 @@ viewInvitation address model focus =
                 , Html.form
                     [ class "form"
                     , role "form"
-                    , onSubmit address (CheckInvitation focus.key)
+                    , onlyOnSubmit address (CheckInvitation focus.key)
                     ]
                     [ div
                         [ classList

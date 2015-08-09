@@ -16,7 +16,7 @@ import Signal exposing (Address, message)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Html.Util exposing (role, glyphicon, unbreakableSpace)
+import Html.Util exposing (role, glyphicon, unbreakableSpace, onlyOnSubmit)
 import Maybe exposing (withDefault)
 import Task exposing (Task, andThen, onError)
 import List exposing (all, isEmpty)
@@ -138,7 +138,7 @@ view address model focus =
                 Html.form
                     [ role "form"
                     , class "form"
-                    , onSubmit address (SendInvitation focus.email language)
+                    , onlyOnSubmit address (SendInvitation focus.email language)
                     ]
                     [ div
                         [ classList
@@ -185,7 +185,7 @@ view address model focus =
                 Html.form
                     [ role "form"
                     , class "form"
-                    , onSubmit address (UseInvitation focus.invitation)
+                    , onlyOnSubmit address (UseInvitation focus.invitation)
                     ]
                     [ div
                         [ classList
