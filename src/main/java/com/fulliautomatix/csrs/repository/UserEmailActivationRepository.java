@@ -1,14 +1,11 @@
 package com.fulliautomatix.csrs.repository;
 
-import com.fulliautomatix.csrs.domain.UserEmailActivation;
-
-import org.joda.time.DateTime;
-import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
-import java.util.Optional;
+import com.fulliautomatix.csrs.domain.UserEmailActivation;
 
 /**
  * Spring Data JPA repository for the UserEmailActivation entity.
@@ -17,4 +14,6 @@ public interface UserEmailActivationRepository extends JpaRepository<UserEmailAc
     
     Optional<UserEmailActivation> findByActivationKey (String key);
 
+    @Query("SELECT DISTINCT uea FROM UserEmailActivation uea JOIN uea.userEmail ue JOIN ue.email e WHERE e.emailAddress = ?1")
+    Optional<UserEmailActivation> findByEmailAddress (String address);
 }

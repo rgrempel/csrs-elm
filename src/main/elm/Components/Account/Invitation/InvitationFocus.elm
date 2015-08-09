@@ -65,8 +65,8 @@ reaction address action =
 
         FocusInvitationFound activation ->
             if activation.userEmail.user == Nothing
-                then Just <| Signal.send address <| FocusResetPassword <| ResetPasswordTypes.FocusActivation activation
-                else Just <| Signal.send address <| FocusRegister <| RegisterTypes.FocusActivation activation
+                then Just <| Signal.send address <| FocusRegister <| RegisterTypes.FocusActivation activation
+                else Just <| Signal.send address <| FocusResetPassword <| ResetPasswordTypes.FocusActivation activation
 
         CheckInvitation key ->
             let
