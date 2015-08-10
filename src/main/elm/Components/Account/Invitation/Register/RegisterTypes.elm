@@ -3,7 +3,6 @@ module Components.Account.Invitation.Register.RegisterTypes where
 import Account.AccountServiceTypes exposing (UserEmailActivation, LoginError, CreateAccountError)
 import Language.LanguageTypes exposing (Language)
 import Dict exposing (Dict)
-import Time exposing (Time)
 
 
 type Action
