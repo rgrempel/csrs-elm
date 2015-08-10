@@ -1,5 +1,6 @@
 module Validation.ValidationTypes where
 
+import Dict exposing (Dict)
 
 type Validator a
     = Required
@@ -8,7 +9,8 @@ type Validator a
     | Between a a
     | MinLength Int
     | MaxLength Int
-    | Matches a 
+    | Matches a
+    | NotTaken (Dict a Bool)
 
 
 type alias StringValidator = Validator String

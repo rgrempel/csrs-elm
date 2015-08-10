@@ -43,3 +43,9 @@ translate language validator =
             FR -> "Does not match"
             LA -> "Does not match"
 
+        NotTaken dict -> case language of
+            EN -> "Already taken"
+            FR -> "Déjà utilisé"
+            LA -> "Iam petita"
+
+

@@ -8,6 +8,8 @@ import Validation.ValidationText exposing (translate)
 import Validation.ValidationTypes exposing (..)
 import Language.LanguageTypes exposing (Language)
 import Regex exposing (regex, caseInsensitive, contains)
+import Dict exposing (Dict)
+import Maybe exposing (withDefault)
 
 
 validEmail : String -> Bool
@@ -44,6 +46,9 @@ checkString validators value =
 
                 Matches other ->
                     value == other
+
+                NotTaken dict ->
+                    not <| withDefault False (Dict.get value dict) 
 
     in
         filter (not << check) validators

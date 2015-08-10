@@ -21,8 +21,10 @@ import Html.Events exposing (..)
 import Html.Util exposing (role, glyphicon, unbreakableSpace, showError, onlyOnSubmit)
 import Signal exposing (Address)
 import Maybe exposing (withDefault)
-import Task exposing (Task, andThen, onError)
+import Task exposing (Task, andThen, onError, mapError, sleep)
 import List exposing (all, isEmpty)
+import Time exposing (Time, millisecond)
+import Dict exposing (Dict)
 
 
 -- You can't get here via hash ... 
@@ -34,9 +36,36 @@ path : Maybe Focus -> Focus -> Maybe PathAction
 path focus focus' = Nothing
 
 
-reaction : Address RegisterTypes.Action -> RegisterTypes.Action -> Maybe (Task () ())
-reaction address action =
+-- This is the time for which the username field must be stable before
+-- we contact the server to see whether it's taken or not.
+debounceUserChecks : Time
+debounceUserChecks = 500 * millisecond
+
+
+reaction : Address RegisterTypes.Action -> RegisterTypes.Action -> Maybe Focus -> Maybe (Task () ())
+reaction address action focus =
     case action of
+        FocusUserName name ->
+            -- The logic here is something like this. When we see that the
+            -- username has changed, set a timeout so that after the debounce
+            -- period, we'll possibly check the name. But, at that time, we'll
+            -- check whether the username still matches ... if it's changed,
+            -- we'll wait for the next timeout. This is imperfect, since the
+            -- username may have changed and changed back to the previous value.
+            -- But that's not a big deal.
+            if name == "" then Nothing else Just <|
+                sleep debounceUserChecks
+                `andThen` always (Signal.send address (CheckUserName name))
+
+        CheckUserName name ->
+            focus `Maybe.andThen` \focus' ->
+                if name /= focus'.accountInfo.username || Dict.member name focus'.users
+                    then Nothing
+                    else Just <|
+                        (AccountService.userExists name
+                        |> mapError (always ()))
+                        `andThen` (Signal.send address << FocusUserExists name) 
+
         CreateAccount accountInfo activation language ->
             let
                 handleError error =
@@ -58,7 +87,9 @@ reaction address action =
                     `onError` handleLoginError
 
             in
-                if isEmpty (checkAccountInfo accountInfo)
+                -- We bypass the check for existing users ... so we don't prevent submission
+                -- So, the check for existing users is advisory only
+                if isEmpty (checkAccountInfo Dict.empty accountInfo)
                     then
                         Just <|
                             AccountService.createAccount 
@@ -92,6 +123,9 @@ update action focus =
             (FocusActivation activation, Just focus') ->
                 Just { focus' | activation <- activation }
 
+            -- If there's no focus ... that is, we're coming from somewhere
+            -- else -- then we don't accept the focus unless we were given
+            -- an activation. That is, you have to start with an activation.
             (_, Nothing) ->
                 Nothing
 
@@ -125,20 +159,31 @@ update action focus =
                 Just
                     { focus' | status <- LoginError error }
 
+            -- Note that if the focus has gone somewhere else, we
+            -- don't drag it back here just because a task has
+            -- completed. (Since we don't match a Nothing focus)
+            (FocusUserExists user exists, Just focus') ->
+                Just
+                    { focus' | users <- Dict.insert user exists focus'.users }
+
             (_, Just focus') ->
                 Just focus'
 
 
 defaultFocus : UserEmailActivation -> Focus
-defaultFocus = Focus RegisterStart defaultAccountInfo 
+defaultFocus = Focus RegisterStart defaultAccountInfo Dict.empty
 
 
 defaultAccountInfo : AccountInfo
 defaultAccountInfo = AccountInfo "" "" ""
 
 
-checkUserName : String -> List StringValidator
-checkUserName = checkString [Required]
+checkUserName : Dict String Bool -> String -> List StringValidator
+checkUserName dict = checkString [Required, NotTaken dict]
+
+
+checkUserNameAvailable : Dict String Bool -> String -> List StringValidator
+checkUserNameAvailable dict = checkString [NotTaken dict]
 
 
 checkPassword : String -> List StringValidator
@@ -149,9 +194,9 @@ checkConfirmPassword : String -> String -> List StringValidator
 checkConfirmPassword password = checkString [Matches password]
 
 
-checkAccountInfo : AccountInfo -> List StringValidator
-checkAccountInfo accountInfo =
-    checkUserName accountInfo.username ++
+checkAccountInfo : Dict String Bool -> AccountInfo -> List StringValidator
+checkAccountInfo dict accountInfo =
+    checkUserName dict accountInfo.username ++
     checkPassword accountInfo.password ++
     checkConfirmPassword accountInfo.confirmPassword accountInfo.password
 
@@ -183,8 +228,8 @@ view address model focus =
             let
                 errors =
                     case focus.status of
-                        RegisterStart -> []
-                        _ -> checkUserName focus.accountInfo.username
+                        RegisterStart -> checkUserNameAvailable focus.users focus.accountInfo.username 
+                        _ -> checkUserName focus.users focus.accountInfo.username
 
             in
                 div

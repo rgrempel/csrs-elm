@@ -196,4 +196,19 @@ fetchInvitation key =
             }
     )
 
-    
+
+userExists : String -> Task Http.Error Bool
+userExists user =
+    (send
+        { verb = "HEAD"
+        , headers = []
+        , url = url ("/api/users/" ++ user) []
+        , body = Http.empty
+        }
+    |> mapError promoteError)
+    `andThen` (\response ->
+        case response.status of
+            200 -> succeed True
+            404 -> succeed False
+            _ -> fail <| BadResponse response.status response.statusText
+    )
