@@ -80,6 +80,8 @@ digraph "signals" {
         [ xlabel = "map App.reaction"
         ];
 
+    app_models -> app_reactions
+
     history_hash
         [ label = "History.hash :\nString"
         ];

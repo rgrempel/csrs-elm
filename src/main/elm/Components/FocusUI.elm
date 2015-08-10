@@ -24,11 +24,11 @@ initialModel : m -> FocusModel m
 initialModel model = FocusModel (Home HomeTypes.Home) model
 
 
-reaction : Action -> Maybe (Task () ())
-reaction action =
+reaction : Action -> Model -> Maybe (Task () ())
+reaction action model =
     case action of
         FocusAccount action ->
-            AccountFocus.reaction (forward FocusAccount) action
+            AccountFocus.reaction (forward FocusAccount) action (accountFocus model.focus)
 
         _ ->
             Nothing

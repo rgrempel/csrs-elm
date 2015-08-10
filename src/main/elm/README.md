@@ -155,7 +155,7 @@ path : Maybe Focus -> Focus -> Maybe PathAction
 
 {-| Given an address to send our actions to, and the current action, compute
     whether a task should be executed in reaction. -}
-reaction : Address Action -> Action -> Maybe (Task () ())
+reaction : Address Action -> Action -> Maybe Focus -> Maybe (Task () ())
 
 {-| Given an action and possibly a focus (if we had the focus already),
     compute the new Focus -}
@@ -176,11 +176,10 @@ One often sees this handled in the `update` function instead -- for instance,
 by having `update` return a tuple of `(Model, Task)` or something like that.
 Those seem like two different jobs to me, so I put them in two different functions.
 
-Note that the `reaction` function only knows about the `Action` -- it does not have
-access to the model, or even the focus! This means that there needs to be enough
-data in the `Action` itself to compute the necessary reaction. So far, this hasn't
-been a problem. It would not be hard to give the `reaction` function read-only
-access to the model and/or focus, if that turns out to be needed.
+Originally, I set things up so that the `reaction` function only knew about the `Action`.
+However, this turned out to be too limiting, so now I supply the Focus as well.
+By itself, this is read-only access, except that it can construct a Task that
+sends a message that does an update.
 
 The `update` function is a little curious in that each module only gets access
 to the Focus that it defines -- that is, only to its own data. It does not

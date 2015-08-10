@@ -30,8 +30,8 @@ path focus focus' =
         else Nothing
 
 
-reaction : Address LogoutTypes.Action -> LogoutTypes.Action -> Maybe (Task () ())
-reaction address action =
+reaction : Address LogoutTypes.Action -> LogoutTypes.Action -> Maybe Focus -> Maybe (Task () ())
+reaction address action focus =
     case action of
         AttemptLogout ->
             Just <|

@@ -22,8 +22,8 @@ update action model =
             model
 
 
-reaction : Action -> Maybe (Task () ())
-reaction action =
+reaction : Action -> Model -> Maybe (Task () ())
+reaction action model =
     case action of
         SetCurrentUser user ->
             Maybe.map

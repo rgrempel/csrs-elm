@@ -80,23 +80,20 @@ Of coure, the task returned may be a sequence, or composed with various
 An alternative is to let have the `update` function return a tuple of model and
 task. However, I think it's nice to keep the two things separate.
 
-One consequence is that when computing a reaction, modules don't actually have
-access to the model. So far, this hasn't been a problem. You simply have to
-define the action in a way that includes all the data needed to compute the
-reaction. And, if the reaction needs to change the model, then it can simply
-include a Task that sends the appropriate message.
-
-Of course, there would be ways of providing read-only access to the model
-here, if needed.
+Originally, I didn't provide access to the model here -- all the needed
+information had to be in the action itself. However, this turned out to be too
+limiting for some cases, so now I provide it. Of course, the access to the
+model is essentially read-only. However, if the reaction needs to change the
+model, then it can simply include a Task that sends the appropriate message.
 -}
-reaction : Action -> Maybe (Task () ())
-reaction action =
+reaction : Action -> Model -> Maybe (Task () ())
+reaction action model =
     case action of
         FocusAction action ->
-            FocusUI.reaction action
+            FocusUI.reaction action model
 
         AccountAction action ->
-            AccountService.reaction action
+            AccountService.reaction action model
 
         _ ->
             Nothing
@@ -127,7 +124,7 @@ port reactions : Signal (Task () ())
 port reactions =
     Signal.Extra.filter
         initialTask
-        (Signal.map reaction actions)
+        (Signal.map2 reaction actions models)
 
 
 {-| A signal of the changing model over time.

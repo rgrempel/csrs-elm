@@ -54,14 +54,14 @@ path focus focus' =
                 Nothing
 
 
-reaction : Address InvitationTypes.Action -> InvitationTypes.Action -> Maybe (Task () ())
-reaction address action =
+reaction : Address InvitationTypes.Action -> InvitationTypes.Action -> Maybe InvitationTypes.Focus -> Maybe (Task () ())
+reaction address action focus =
     case action of
         FocusRegister subaction ->
-            RegisterFocus.reaction (forwardTo address FocusRegister) subaction
+            RegisterFocus.reaction (forwardTo address FocusRegister) subaction <| focus `Maybe.andThen` registerFocus
 
         FocusResetPassword subaction ->
-            ResetPasswordFocus.reaction (forwardTo address FocusResetPassword) subaction
+            ResetPasswordFocus.reaction (forwardTo address FocusResetPassword) subaction <| focus `Maybe.andThen` resetPasswordFocus
 
         FocusInvitationFound activation ->
             if activation.userEmail.user == Nothing

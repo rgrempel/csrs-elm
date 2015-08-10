@@ -33,8 +33,8 @@ path focus focus' =
         else Nothing
 
 
-reaction : Address RegisterTypes.Action -> RegisterTypes.Action -> Maybe (Task () ())
-reaction address action =
+reaction : Address RegisterTypes.Action -> RegisterTypes.Action -> Maybe Focus -> Maybe (Task () ())
+reaction address action focus =
     case action of
         SendInvitation email language ->
             if isEmpty (checkEmail email)

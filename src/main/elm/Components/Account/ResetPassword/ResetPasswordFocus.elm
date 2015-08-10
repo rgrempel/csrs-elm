@@ -35,8 +35,8 @@ path focus focus' =
         else Nothing
 
 
-reaction : Address ResetPasswordTypes.Action -> ResetPasswordTypes.Action -> Maybe (Task () ())
-reaction address action =
+reaction : Address ResetPasswordTypes.Action -> ResetPasswordTypes.Action -> Maybe ResetPasswordTypes.Focus -> Maybe (Task () ())
+reaction address action focus =
     case action of
         SendToken email language ->
             if isEmpty (checkEmail email)

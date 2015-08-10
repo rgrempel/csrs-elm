@@ -34,8 +34,8 @@ path focus focus' =
         else Nothing
 
 
-reaction : Address LoginTypes.Action -> LoginTypes.Action -> Maybe (Task () ())
-reaction address action =
+reaction : Address LoginTypes.Action -> LoginTypes.Action -> Maybe Focus -> Maybe (Task () ())
+reaction address action focus =
     case action of
         AttemptLogin credentials ->
             if checkCredentials credentials

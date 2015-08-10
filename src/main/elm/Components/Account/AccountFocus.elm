@@ -94,23 +94,23 @@ path focus focus' =
                     else Just <| SetPath ["sessions"]
 
 
-reaction : Address Action -> Action -> Maybe (Task () ())
-reaction address action =
+reaction : Address Action -> Action -> Maybe Focus -> Maybe (Task () ())
+reaction address action focus =
     case action of
         FocusLogin subaction ->
-            LoginFocus.reaction (forwardTo address FocusLogin) subaction
+            LoginFocus.reaction (forwardTo address FocusLogin) subaction <| focus `Maybe.andThen` loginFocus
 
         FocusLogout subaction ->
-            LogoutFocus.reaction (forwardTo address FocusLogout) subaction
+            LogoutFocus.reaction (forwardTo address FocusLogout) subaction <| focus `Maybe.andThen` logoutFocus
         
         FocusRegister subaction ->
-            RegisterFocus.reaction (forwardTo address FocusRegister) subaction
+            RegisterFocus.reaction (forwardTo address FocusRegister) subaction <| focus `Maybe.andThen` registerFocus
         
         FocusResetPassword subaction ->
-            ResetPasswordFocus.reaction (forwardTo address FocusResetPassword) subaction
+            ResetPasswordFocus.reaction (forwardTo address FocusResetPassword) subaction <| focus `Maybe.andThen` resetPasswordFocus
         
         FocusInvitation subaction ->
-            InvitationFocus.reaction (forwardTo address FocusInvitation) subaction
+            InvitationFocus.reaction (forwardTo address FocusInvitation) subaction <| focus `Maybe.andThen` invitationFocus
         
         _ ->
             Nothing

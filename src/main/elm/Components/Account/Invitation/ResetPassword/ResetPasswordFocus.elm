@@ -29,8 +29,8 @@ path : Maybe Focus -> Focus -> Maybe PathAction
 path focus focus' = Nothing
 
 
-reaction : Address ResetPasswordTypes.Action -> ResetPasswordTypes.Action -> Maybe (Task () ())
-reaction address action =
+reaction : Address ResetPasswordTypes.Action -> ResetPasswordTypes.Action -> Maybe Focus -> Maybe (Task () ())
+reaction address action focus =
     case action of
         _ ->
             Nothing
