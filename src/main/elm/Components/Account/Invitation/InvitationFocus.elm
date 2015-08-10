@@ -29,7 +29,7 @@ route : List String -> Maybe Action
 route hashList = 
     case hashList of
         first :: rest ->
-            Just <| FocusKey first
+            Just <| CheckInvitation first
 
         _ ->
             Just <| FocusBlank
@@ -112,7 +112,11 @@ update action focus =
                 Just <| Invitation <| {invitation | key <- key}
 
             CheckInvitation key ->
-                Just <| Invitation <| {invitation | status <- CheckingInvitation}
+                Just <| Invitation <|
+                    { invitation
+                        | status <- CheckingInvitation
+                        , key <- key
+                    }
 
             FocusInvitationNotFound ->
                 Just <| Invitation <| {invitation | status <- InvitationNotFound}

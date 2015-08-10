@@ -26,27 +26,44 @@ class RegisterTest extends BaseTest {
         assert invitationNotFound.displayed
     }
 
-    void sends_invitation () {
+    String sends_invitation () {
+        userEmailActivationRepository.deleteAll()
+        userEmailRepository.deleteAll()
+
         fetch RegisterPage
        
         email.value "test@nowhere.com"
         emailSubmit.click()
 
         assert invitationSent.displayed
+        
+        UserEmailActivation uea = userEmailActivationRepository.findByEmailAddress("test@nowhere.com").get()
+        uea.activationKey
     }
 
     void sends_and_finds_invitation () {
-        userEmailActivationRepository.deleteAll()
-        userEmailRepository.deleteAll()
-
-        sends_invitation()
-
-        UserEmailActivation uea = userEmailActivationRepository.findByEmailAddress("test@nowhere.com").get()
-        key.value(uea.activationKey)
-
+        String activationKey = sends_invitation()
+        
+        key.value(activationKey)
         keySubmit.click(InvitationRegisterPage)
         
         assert email.text() == "test@nowhere.com"
+    }
+
+    @Test
+    void correct_invitation_url_goes_to_registration_page () {
+        String activationKey = sends_invitation()
+        via InvitationPage, activationKey
+        refresh()
+        at InvitationRegisterPage
+    }
+
+    @Test
+    void wrong_invitation_url_stays_on_invitation_page () {
+        String activationKey = sends_invitation()
+        via InvitationPage, "wrongkey" 
+        refresh()
+        at InvitationPage
     }
 
     @Test
