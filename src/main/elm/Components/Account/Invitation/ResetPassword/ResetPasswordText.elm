@@ -15,7 +15,6 @@ type HtmlMessage
     | NewPassword
     | ConfirmPassword
     | Title
-    | Blurb
 
 
 translateText : Language -> TextMessage -> String

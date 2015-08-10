@@ -16,7 +16,7 @@ import Signal exposing (Address, message)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onSubmit, on, targetValue)
-import Html.Util exposing (role, glyphicon, unbreakableSpace)
+import Html.Util exposing (role, glyphicon, unbreakableSpace, onlyOnSubmit)
 import Maybe exposing (withDefault)
 import Task exposing (Task, andThen, onError)
 import List exposing (all, isEmpty)
@@ -138,7 +138,7 @@ view address model focus =
                 Html.form
                     [ role "form"
                     , class "form"
-                    , onSubmit address (UseToken focus.token)
+                    , onlyOnSubmit address (UseToken focus.token)
                     ]
                     [ div
                         [ classList
@@ -161,6 +161,7 @@ view address model focus =
                             , span [ class "input-group-btn" ]
                                 [ button
                                     [ type' "submit"
+                                    , id "key-submit"
                                     , class "btn btn-primary"
                                     ]
                                     [ glyphicon "tag"
@@ -185,7 +186,7 @@ view address model focus =
                 Html.form
                     [ role "form"
                     , class "form"
-                    , onSubmit address (SendToken focus.email model.useLanguage)
+                    , onlyOnSubmit address (SendToken focus.email model.useLanguage)
                     ]
                     [ div
                         [ classList
@@ -207,6 +208,7 @@ view address model focus =
                             , span [ class "input-group-btn" ]
                                 [ button 
                                     [ type' "submit"
+                                    , id "email-submit"
                                     , class "btn btn-primary"
                                     ]
                                     [ glyphicon "send"
@@ -223,7 +225,9 @@ view address model focus =
         tokenSent =
             case focus.resetPasswordStatus of
                 TokenSent ->
-                    div [ class "alert alert-success text-left" ]
+                    div [ class "alert alert-success text-left" 
+                        , id "invitation-sent"
+                        ]
                         [ h4 [] [ trans ResetPasswordText.TokenSent ]
                         , p [] [ trans ResetPasswordText.TokenMessage ]
                         ]

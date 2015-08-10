@@ -3,9 +3,13 @@ module Components.Account.Invitation.ResetPassword.ResetPasswordFocus where
 import AppTypes exposing (..)
 import Validation.Validation exposing (checkString, helpBlock)
 import Validation.ValidationTypes exposing (StringValidator, Validator(..))
-import Account.AccountServiceTypes as AccountServiceTypes exposing (UserEmailActivation)
+import Account.AccountServiceTypes as AccountServiceTypes exposing (UserEmailActivation, LoginError(..))
+import Account.AccountService as AccountService
 import Account.PasswordStrengthBar.PasswordStrengthBar as PasswordStrengthBar
 import Route.RouteService exposing (PathAction(..))
+import Components.FocusTypes as FocusTypes
+import Components.Home.HomeTypes as HomeTypes
+import Components.Account.Login.LoginText as LoginText
 
 import Components.Account.Invitation.ResetPassword.ResetPasswordTypes as ResetPasswordTypes exposing (..)
 import Components.Account.Invitation.ResetPassword.ResetPasswordText as ResetPasswordText
@@ -14,7 +18,7 @@ import Signal exposing (Address, message)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
-import Html.Util exposing (role, glyphicon, unbreakableSpace)
+import Html.Util exposing (role, glyphicon, unbreakableSpace, showError, onlyOnSubmit)
 import Maybe exposing (withDefault)
 import Task exposing (Task, andThen, onError)
 import List exposing (all, isEmpty)
@@ -32,37 +36,38 @@ path focus focus' = Nothing
 reaction : Address ResetPasswordTypes.Action -> ResetPasswordTypes.Action -> Maybe Focus -> Maybe (Task () ())
 reaction address action focus =
     case action of
+        ResetPassword password confirmPassword activation ->
+            let
+                handleError error =
+                    Signal.send address (FocusError error)
+
+                handleLoginError error =
+                    Signal.send address (FocusLoginError error)
+
+                goHome =
+                    FocusTypes.do (FocusTypes.FocusHome HomeTypes.FocusHome)
+                
+                attemptLogin =
+                    AccountService.attemptLogin
+                        { username = withDefault "" <| Maybe.map .username activation.userEmail.user
+                        , password = password
+                        , rememberMe = False
+                        }
+                    `andThen` always goHome
+                    `onError` handleLoginError
+
+            in
+                if isEmpty (checkPasswords password confirmPassword)
+                    then
+                        Just <|
+                            AccountService.resetPassword password activation.activationKey
+                            `andThen` always attemptLogin
+                            `onError` handleError
+
+                    else 
+                        Nothing
         _ ->
             Nothing
-
-{-
-    this.resetPassword = function () {
-        if (!$scope.resetPasswordForm.$valid) return;
-
-        this.serverError = null;
-        this.success = false;
-
-        var self = this;
-        $http.post('/api/reset_password', {
-            key: this.invitation.activationKey,
-            newPassword: this.password
-        }).then(function () {
-            Auth.login({
-                username: self.login,
-                password: self.password,
-                rememberMe: false
-            }).then(function () {
-                $state.go('settings');
-            }, function (error) {
-                self.serverError = angular.toJson(error);
-            });
-        }, function (error) {
-            self.serverError = angular.toJson(error);
-        });
-    };
-});
-
--}
 
 
 update : ResetPasswordTypes.Action -> Maybe Focus -> Maybe Focus
@@ -71,27 +76,42 @@ update action focus =
         (FocusActivation activation, Nothing) ->
             Just <| defaultFocus activation
 
+        -- If there's no focus ... that is, we're coming from somewhere
+        -- else ... and no activation, then we refuse to take the focus.
+        -- In other words, you have to supply the activation first.
         (_, Nothing) ->
             Nothing
 
         (FocusActivation activation, Just focus') ->
-            Just <| {focus' | activation <- activation}
-
-        (FocusStatus status, Just focus') ->
-            Just <| {focus' | status <- status}
+            Just <| { focus' | activation <- activation }
 
         (FocusPassword password, Just focus') ->
-            Just <| {focus' | password <- password}
+            Just <| { focus' | password <- password }
 
         (FocusConfirmPassword password, Just focus') ->
-            Just <| {focus' | confirmPassword <- password}
+            Just <| { focus' | confirmPassword <- password }
 
+        (FocusError error, Just focus') ->
+            Just { focus' | status <- Error error }
+
+        (FocusLoginError error, Just focus') ->
+            Just { focus' | status <- LoginError error }
+
+        (ResetPassword password confirmPassword activation, Just focus') ->
+            Just { focus' | status <- ResettingPassword }
+        
         (_, Just focus') ->
             Just <| focus'
 
 
 defaultFocus : UserEmailActivation -> Focus
-defaultFocus = Focus Start "" "" ""
+defaultFocus = Focus Start "" ""
+
+
+checkPasswords : String -> String -> List StringValidator
+checkPasswords password confirmPassword =
+    checkPassword password ++
+    checkConfirmPassword password confirmPassword
 
 
 checkPassword : String -> List StringValidator
@@ -129,7 +149,9 @@ view address model focus =
             div [ class "form-group" ]
                 [ label []
                     [ transHtml ResetPasswordText.UserName ]
-                , p [ class "form-control-static" ]
+                , p [ class "form-control-static"
+                    , id "username"
+                    ]
                     [ text <|
                         Maybe.withDefault "" <|
                             Maybe.map .username focus.activation.userEmail.user
@@ -140,7 +162,9 @@ view address model focus =
             div [ class "form-group" ]
                 [ label []
                     [ transHtml ResetPasswordText.Email ]
-                , p [ class "form-control-static" ]
+                , p [ class "form-control-static"
+                    , id "email"
+                    ]
                     [ text focus.activation.userEmail.email.emailAddress ]
                 ]
 
@@ -165,6 +189,7 @@ view address model focus =
                             [ class "form-control"
                             , type' "password"
                             , name "password"
+                            , id "password"
                             , placeholder (trans ResetPasswordText.PasswordPlaceholder)
                             , on "input" targetValue <| (message address) << FocusPassword
                             ] []
@@ -194,6 +219,7 @@ view address model focus =
                             [ class "form-control"
                             , type' "password"
                             , name "confirmPassword"
+                            , id "confirmPassword"
                             , placeholder (trans ResetPasswordText.ConfirmPasswordPlaceholder)
                             , on "input" targetValue <| (message address) << FocusConfirmPassword
                             ] []
@@ -202,11 +228,35 @@ view address model focus =
                     ++
                     List.map (helpBlock language) errors
 
+        result =
+            case focus.status of
+                LoginError LoginWrongPassword -> 
+                    p
+                        [ class "alert alert-danger"
+                        , id "loginFailed"
+                        ]
+                        [ LoginText.translateHtml language LoginText.Failed ]
+                
+                LoginError (LoginHttpError error) ->
+                    p
+                        [ id "loginFailed"
+                        ]
+                        [ showError language error ]
+                 
+                Error error ->
+                    p
+                        [ id "loginFailed"
+                        ]
+                        [ showError language error ]
+                
+                _ ->
+                    p [] []
+
         form =
             Html.form
                 [ role "form"
                 , class "form"
-                -- , onSubmit address doSomething 
+                , onlyOnSubmit address <| ResetPassword focus.password focus.confirmPassword focus.activation
                 ]
                 [ div [ class "row" ]
                     [ div
@@ -227,6 +277,7 @@ view address model focus =
                     [ button
                         [ type' "submit"
                         , class "btn btn-primary"
+                        , id "submitButton"
                         ]
                         [ glyphicon "send"
                         , text unbreakableSpace
@@ -240,5 +291,6 @@ view address model focus =
         wrap <|
             [ h2 [] [ transHtml ResetPasswordText.Title ]
             , form
+            , result
             ]
 

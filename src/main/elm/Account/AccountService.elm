@@ -105,6 +105,30 @@ createAccount info =
         `andThen` handleResponse
 
 
+resetPassword : String -> String -> Task Error ()
+resetPassword password key =
+    let
+        request =
+            { verb = "POST"
+            , headers =
+                [ ("Content-Type", "application/json")
+                ]
+            , url = url "/api/reset_password" []
+            , body =
+                Http.string <|
+                    JE.encode 0 <|
+                        JE.object
+                            [ ("key", JE.string key)
+                            , ("newPassword", JE.string password)
+                            ]
+            }
+
+    in
+        map (always ()) <|
+            mapError promoteError <|
+                send request
+
+
 promoteError : RawError -> Error
 promoteError error =
     case error of
