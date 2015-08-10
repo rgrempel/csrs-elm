@@ -1,10 +1,10 @@
 module Account.AccountServiceTypes where
 
-import Language.LanguageTypes as LanguageTypes exposing (Language)
+import Language.LanguageTypes as LanguageTypes exposing (Language, defaultLanguage)
 import Http exposing (uriEncode, url, string, defaultSettings, fromJson, Settings, Request, Response, Error(BadResponse), RawError(RawTimeout, RawNetworkError))
 import Signal exposing (Mailbox, Address, mailbox)
 import Task exposing (Task, map, mapError, succeed, fail, onError, andThen, toResult)
-import Json.Decode as JD exposing ((:=))
+import Json.Decode as JD exposing ((:=), oneOf)
 import String exposing (toUpper)
 
 
@@ -56,21 +56,18 @@ type alias User =
 
 userDecoder : JD.Decoder User
 userDecoder =
-    let
-        withRoles =
-            JD.object3 User
-                ("login" := JD.string)
-                ("langKey" := LanguageTypes.decoder)
-                ("roles" := JD.maybe (JD.list roleDecoder))
-
-        withoutRoles =
-            JD.object3 User
-                ("login" := JD.string)
-                ("langKey" := LanguageTypes.decoder)
-                (JD.succeed Nothing)
-
-    in
-        JD.oneOf [withRoles, withoutRoles]
+    JD.object3 User
+        ( "login" := JD.string )
+        ( oneOf 
+            [ "langKey" := LanguageTypes.decoder
+            , JD.succeed defaultLanguage 
+            ]
+        )
+        ( oneOf
+            [ "roles" := JD.maybe (JD.list roleDecoder)
+            , JD.succeed Nothing
+            ]
+        )
 
 
 type alias AccountModel m =
