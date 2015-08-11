@@ -7,7 +7,6 @@ type Message
     = Title
     -- Split out eventually
     | Settings
-    | Password
     | Sessions
 
 
@@ -24,11 +23,6 @@ translate language message =
             EN -> "Settings"
             FR -> "Profil"
             LA -> "Optiones"
-
-        Password -> case language of
-            EN -> "Password"
-            FR -> "Mot de passe"
-            LA -> "Signum"
 
         Sessions -> case language of
             EN -> "Sessions"

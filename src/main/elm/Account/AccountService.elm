@@ -61,7 +61,7 @@ attemptLogin credentials =
             case response.status of
                 200 -> fetchCurrentUser |> mapError LoginHttpError
                 401 -> fail LoginWrongPassword
-                _ -> fail <| LoginHttpError (Http.BadResponse response.status response.statusText)
+                _ -> fail <| LoginHttpError (BadResponse response.status response.statusText)
 
     in
         (send request |> mapError (promoteError >> LoginHttpError))
@@ -127,6 +127,35 @@ resetPassword password key =
         map (always ()) <|
             mapError promoteError <|
                 send request
+
+
+changePassword : String -> String -> Task LoginError ()
+changePassword old new =
+    let
+        request =
+            { verb = "POST"
+            , headers =
+                [ ("Content-Type", "application/json")
+                ]
+            , url = url "/api/account/change_password" []
+            , body =
+                Http.string <|
+                    JE.encode 0 <|
+                        JE.object
+                            [ ("oldPassword", JE.string old)
+                            , ("newPassword", JE.string new)
+                            ]
+            }
+
+        handleResponse response =
+            case response.status of
+                200 -> succeed ()
+                403 -> fail LoginWrongPassword
+                _ -> fail <| LoginHttpError (BadResponse response.status response.statusText)
+
+    in
+        (send request |> mapError (promoteError >> LoginHttpError))
+        `andThen` handleResponse
 
 
 promoteError : RawError -> Error
