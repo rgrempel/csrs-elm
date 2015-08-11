@@ -8,8 +8,8 @@ class HomePage extends NavBarPage {
     }
     
     static content = {
-        loggedInMessage { $("#loggedInMessage") }
-        notLoggedInMessage { $("#notLoggedInMessage") }
+        loggedInMessage (wait: true) { $("#loggedInMessage") }
+        notLoggedInMessage (wait: true) { $("#notLoggedInMessage") }
         bigHeading { $("h1") }
     }
 }
