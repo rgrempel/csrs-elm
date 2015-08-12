@@ -184,7 +184,7 @@ view address model focus =
                         [ type' "checkbox"
                         , checked focus.credentials.rememberMe
                         , id "rememberMe"
-                        , on "input" targetChecked <| (message address) << FocusRememberMe
+                        , on "change" targetChecked <| (message address) << FocusRememberMe
                         ] []
                     , text " "
                     , transHtml LoginText.RememberMe

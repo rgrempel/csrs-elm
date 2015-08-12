@@ -32,4 +32,26 @@ class LoginTest extends BaseTest {
         tryLogin("admin", "wrong", LoginPage)
         assert loginFailed.displayed
     }
+    
+    @Test
+    void login_without_remember_me_is_not_remembered () {
+        fetch LoginPage
+        tryLogin("user", "user", HomePage)
+        assert loggedInMessage.displayed
+
+        deleteCookieNamed "JSESSIONID"
+        refresh()
+        assert notLoggedInMessage.displayed
+    }
+    
+    @Test
+    void login_with_remember_me_is_remembered () {
+        fetch LoginPage
+        rememberLogin("user", "user", HomePage)
+        assert loggedInMessage.displayed
+
+        deleteCookieNamed "JSESSIONID"
+        refresh()
+        assert loggedInMessage.displayed
+    }
 }

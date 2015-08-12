@@ -27,6 +27,14 @@ abstract class BaseTest extends GebReportingTest {
         driver.navigate().refresh()
     }
 
+    def getCookies () {
+        driver.manage().getCookies()
+    }
+
+    def deleteCookieNamed (name) {
+        driver.manage().deleteCookieNamed(name)
+    }
+
     def fetch (page) {
         to page
         refresh()

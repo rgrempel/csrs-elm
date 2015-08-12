@@ -20,6 +20,14 @@ class LoginPage extends NavBarPage {
     void tryLogin (user, pass, page) {
         username.value user
         password.value pass
+        rememberMe.value false
+        submitButton.click(page)
+    }
+
+    void rememberLogin (user, pass, page) {
+        username.value user
+        password.value pass
+        rememberMe.value true
         submitButton.click(page)
     }
 }
