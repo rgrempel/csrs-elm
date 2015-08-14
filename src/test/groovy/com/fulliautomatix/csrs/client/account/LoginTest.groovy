@@ -54,4 +54,18 @@ class LoginTest extends BaseTest {
         refresh()
         assert loggedInMessage.displayed
     }
+    
+    @Test
+    void logging_out_after_remember_me_forgets () {
+        fetch LoginPage
+        rememberLogin("user", "user", HomePage)
+        assert loggedInMessage.displayed
+
+        clickLogout()
+        at HomePage
+
+        deleteCookieNamed "JSESSIONID"
+        refresh()
+        assert notLoggedInMessage.displayed
+    }
 }
