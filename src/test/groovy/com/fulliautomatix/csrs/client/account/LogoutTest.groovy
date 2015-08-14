@@ -11,8 +11,18 @@ class LogoutTest extends BaseTest {
         tryLogin("admin", "admin", HomePage)
         assert loggedInMessage.displayed
         
-        navbarMenuAccount.click()
-        navbarMenuAccountLogout.click()
+        clickLogout()
+        assert notLoggedInMessage.displayed
+    }
+
+    @Test
+    void logging_out_takes_you_to_home_page () {
+        fetch LoginPage
+        tryLogin("admin", "admin", HomePage)
+
+        to LoginPage
+        clickLogout()
+        at HomePage
         assert notLoggedInMessage.displayed
     }
 }

@@ -8,8 +8,8 @@ class LoginTest extends BaseTest {
     @Test
     void clicking_on_navbar_link () {
         fetch HomePage
-        navbarMenuAccount.click()
-        navbarMenuAccountLogin.click(LoginPage)
+        clickLogin()
+        at LoginPage
     }
 
     @Test
