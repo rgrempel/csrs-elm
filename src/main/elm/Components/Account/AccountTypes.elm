@@ -5,12 +5,13 @@ import Components.Account.Logout.LogoutTypes as LogoutTypes
 import Components.Account.Register.RegisterTypes as RegisterTypes
 import Components.Account.ResetPassword.ResetPasswordTypes as ResetPasswordTypes
 import Components.Account.Invitation.InvitationTypes as InvitationTypes
+import Components.Account.Sessions.SessionsTypes as SessionsTypes
 import Components.Account.ChangePassword.ChangePasswordTypes as ChangePasswordTypes
 
 
 type Focus
     = Settings
-    | Sessions
+    | Sessions SessionsTypes.Focus
     | Invitation InvitationTypes.Focus
     | Logout LogoutTypes.Focus
     | Login LoginTypes.Focus
@@ -21,7 +22,7 @@ type Focus
 type Action
     = FocusLogin LoginTypes.Action 
     | FocusSettings
-    | FocusSessions
+    | FocusSessions SessionsTypes.Action
     | FocusInvitation InvitationTypes.Action
     | FocusLogout LogoutTypes.Action
     | FocusRegister RegisterTypes.Action
@@ -61,6 +62,13 @@ invitationFocus : Focus -> Maybe InvitationTypes.Focus
 invitationFocus focus =
     case focus of
         Invitation subfocus -> Just subfocus
+        _ -> Nothing
+
+
+sessionsFocus : Focus -> Maybe SessionsTypes.Focus
+sessionsFocus focus =
+    case focus of
+        Sessions subfocus -> Just subfocus
         _ -> Nothing
 
 

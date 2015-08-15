@@ -9,6 +9,7 @@ import Task exposing (Task, map, mapError, succeed, fail, onError, andThen, toRe
 import Http.Csrf exposing (withCsrf)
 import Http.CacheBuster exposing (withCacheBuster)
 import Json.Encode as JE
+import Json.Decode as JD
 import String exposing (join)
 
 
@@ -248,6 +249,34 @@ fetchInvitation key =
             , body = Http.empty
             }
     )
+
+
+allSessions : Task Http.Error (List Session)
+allSessions =
+    Http.fromJson (JD.list sessionDecoder) <|
+        send
+            { verb = "GET"
+            , headers =
+                [ ("Accept", "application/json")
+                ]
+            , url = url "/api/account/sessions" []
+            , body = Http.empty
+            }
+
+
+deleteSession : Session -> Task Http.Error Session
+deleteSession session =
+    (send
+        { verb = "DELETE"
+        , headers = []
+        , url = url ("/api/account/sessions/" ++ session.series) []
+        , body = Http.empty
+        }
+    |> mapError promoteError)
+    `andThen` \response ->
+        case response.status of
+            200 -> succeed session
+            _ -> fail <| BadResponse response.status response.statusText
 
 
 userExists : String -> Task Http.Error Bool

@@ -258,16 +258,17 @@ public class AccountResource {
         method = RequestMethod.DELETE
     )
     @Timed
-    public void invalidateSession(@PathVariable String series) throws UnsupportedEncodingException {
+    public ResponseEntity<?> invalidateSession(@PathVariable String series) throws UnsupportedEncodingException {
         String decodedSeries = URLDecoder.decode(series, "UTF-8");
-        userRepository.findOneByLogin(
+        return userRepository.findOneByLogin(
             securityUtils.getCurrentLogin()
-        ).ifPresent(u -> {
-            persistentTokenRepository.findByUser(u).stream().filter(persistentToken -> 
+        ).map(u -> {
+            return persistentTokenRepository.findByUser(u).stream().filter(persistentToken -> 
                 StringUtils.equals(persistentToken.getSeries(), decodedSeries)
-            ).findAny().ifPresent(t -> 
-                persistentTokenRepository.delete(decodedSeries)
-            );
-        });
+            ).findAny().map(t -> { 
+                persistentTokenRepository.delete(decodedSeries);
+                return new ResponseEntity<>(HttpStatus.OK); 
+            }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        }).orElse(new ResponseEntity<>(HttpStatus.FORBIDDEN));
     }
 }

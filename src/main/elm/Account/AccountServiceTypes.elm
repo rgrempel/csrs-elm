@@ -63,11 +63,23 @@ userDecoder =
             , JD.succeed defaultLanguage 
             ]
         )
-        ( oneOf
-            [ "roles" := JD.maybe (JD.list roleDecoder)
-            , JD.succeed Nothing
-            ]
-        )
+        ( JD.maybe <| "roles" := (JD.list roleDecoder) )
+
+
+type alias Session =
+    { series : String
+    , ipAddress : Maybe String
+    , userAgent : Maybe String
+    , date : Maybe String
+    }
+
+sessionDecoder : JD.Decoder Session
+sessionDecoder =
+    JD.object4 Session
+        ( "series" := JD.string )
+        ( JD.maybe <| "ipAddress" := JD.string )
+        ( JD.maybe <| "userAgent" := JD.string )
+        ( JD.maybe <| "formattedTokenDate" := JD.string )
 
 
 type alias AccountModel m =
@@ -119,7 +131,7 @@ userEmailDecoder =
     JD.object3 UserEmail
         ("id" := JD.int)
         ("email" := emailDecoder)
-        ("user" := JD.maybe userDecoder)
+        (JD.maybe <| "user" := userDecoder)
 
 type alias Email =
     { id : Int
