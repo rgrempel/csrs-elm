@@ -20,11 +20,21 @@ import Maybe exposing (withDefault)
 import Task exposing (Task)
 
 
+wiring : SubWiring x (FocusModel x) Action
+wiring =
+    { initialModel = initialModel
+    , actions = .signal actions
+    , update = update
+    , reaction = Just reaction
+    , initialTask = Nothing
+    }
+
+
 initialModel : m -> FocusModel m
 initialModel model = FocusModel (Home HomeTypes.Home) model
 
 
-reaction : Action -> Model -> Maybe (Task () ())
+reaction : Action -> FocusModel x -> Maybe (Task () ())
 reaction action model =
     case action of
         FocusAccount action ->
@@ -108,7 +118,7 @@ route hash =
             Just <| FocusError ErrorTypes.FocusError
 
 
-update : Action -> Model -> Model
+update : Action -> FocusModel x -> FocusModel x
 update action model =
     let
         focus' =

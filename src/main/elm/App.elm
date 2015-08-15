@@ -14,6 +14,14 @@ import Html exposing (Html, div)
 import Signal exposing (Signal, Mailbox, filter, mailbox, filterMap, merge, foldp, dropRepeats, sampleOn)
 import Signal.Extra exposing (foldp', passiveMap2)
 import Task exposing (Task, andThen, onError)
+import Task.Util exposing (batch)
+
+
+{- Collect the wiring for submodules -}
+
+accountWiring = SuperWiring AccountService.wiring AccountAction
+focusWiring = SuperWiring FocusUI.wiring FocusAction 
+languageWiring = SuperWiring LanguageService.wiring LanguageAction
 
 
 {-| The initial model.
@@ -23,11 +31,15 @@ the parts of the model.
 -}
 initialModel : Model
 initialModel =
-    AccountServiceTypes.initialModel ( 
-    FocusUI.initialModel (
-    LanguageTypes.initialModel (
+    let
+        apply wiring =
+            wiring.sub.initialModel
+
+    in
+        apply accountWiring <|
+        apply focusWiring <|
+        apply languageWiring <|
         {}
-    )))
 
 
 {-| The actions our app can perform
@@ -45,11 +57,16 @@ type Action
 {-| The merger of all the action signals defined by various modules. -}
 actions : Signal Action
 actions =
-    Signal.mergeMany
-        [ Signal.map FocusAction <| .signal FocusTypes.actions
-        , Signal.map AccountAction <| .signal AccountServiceTypes.actions
-        , Signal.map LanguageAction <| .signal LanguageTypes.actions
-        ]
+    let 
+        apply wiring =
+            Signal.map wiring.actionTag <| wiring.sub.actions
+    
+    in
+        Signal.mergeMany
+            [ apply focusWiring
+            , apply accountWiring
+            , apply languageWiring
+            ]
 
 
 {-| The update function.
@@ -58,17 +75,22 @@ Just dispatch to the various models that can handle actions.
 -}
 update : Action -> Model -> Model
 update action model =
-    case action of
-        AccountAction accountAction ->
-            AccountService.update accountAction model
+    let
+        apply wiring subaction =
+           wiring.sub.update subaction model
 
-        FocusAction focusAction ->
-            FocusUI.update focusAction model
-        
-        LanguageAction languageAction ->
-            LanguageService.update languageAction model
+    in
+        case action of
+            AccountAction subaction ->
+                apply accountWiring subaction
 
-        _ -> model
+            FocusAction subaction ->
+                apply focusWiring subaction
+
+            LanguageAction subaction ->
+                apply languageWiring subaction
+
+            _ -> model
 
 
 {-| Like update, except returns an additional task to perform in response to
@@ -88,15 +110,25 @@ model, then it can simply include a Task that sends the appropriate message.
 -}
 reaction : Action -> Model -> Maybe (Task () ())
 reaction action model =
-    case action of
-        FocusAction action ->
-            FocusUI.reaction action model
+    let
+        apply wiring subaction =
+            wiring.sub.reaction
+            `Maybe.andThen` 
+            \reaction -> reaction subaction model
 
-        AccountAction action ->
-            AccountService.reaction action model
+    in
+        case action of
+            FocusAction subaction ->
+                apply focusWiring subaction
 
-        _ ->
-            Nothing
+            AccountAction subaction ->
+                apply accountWiring subaction
+
+            LanguageAction subaction ->
+                apply languageWiring subaction
+
+            _ ->
+                Nothing
 
 
 {-| A task to perform when the app starts.
@@ -107,13 +139,16 @@ one task so far, since one could easily want more tasks at some point.
 initialTask : Task () () 
 initialTask =
     let
-        ignore =
-            Task.map (always ()) << Task.mapError (always ())
-    
+        apply wiring =
+            wiring.sub.initialTask
+
     in
-        ignore <| Task.sequence
-            [ ignore AccountService.initialTask
-            ]
+        batch <|
+            List.filterMap identity
+                [ apply accountWiring
+                , apply focusWiring
+                , apply languageWiring
+                ]
 
 
 {-| Actually executes the reaction tasks.

@@ -6,6 +6,7 @@ import Language.LanguageTypes as LanguageTypes exposing (Language(..))
 
 import Http exposing (uriEncode, url, string, defaultSettings, fromJson, Settings, Request, Response, Error(BadResponse), RawError(RawTimeout, RawNetworkError))
 import Task exposing (Task, map, mapError, succeed, fail, onError, andThen, toResult)
+import Task.Util exposing (ignore)
 import Http.Csrf exposing (withCsrf)
 import Http.CacheBuster exposing (withCacheBuster)
 import Json.Encode as JE
@@ -13,7 +14,17 @@ import Json.Decode as JD
 import String exposing (join)
 
 
-update : Action -> Model -> Model
+wiring : SubWiring x (AccountModel x) Action
+wiring =
+    { initialModel = initialModel
+    , actions = .signal actions
+    , update = update
+    , reaction = Just reaction
+    , initialTask = Just <| ignore fetchCurrentUser 
+    }
+
+
+update : Action -> AccountModel x -> AccountModel x
 update action model =
     case action of
         SetCurrentUser user ->
@@ -23,7 +34,7 @@ update action model =
             model
 
 
-reaction : Action -> Model -> Maybe (Task () ())
+reaction : Action -> AccountModel x -> Maybe (Task () ())
 reaction action model =
     case action of
         SetCurrentUser user ->
@@ -176,10 +187,6 @@ attemptLogout =
         }
     |> mapError promoteError)
     `andThen` always (fetchCurrentUser)
-
-
-initialTask : Task Http.Error (Maybe User)
-initialTask = fetchCurrentUser
 
 
 fetchCurrentUser : Task Http.Error (Maybe User) 

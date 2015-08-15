@@ -37,9 +37,14 @@ alwaysNotify address action result =
 {-| Given a list of tasks, produce a task which executes each task in parallel,
 ignoring the results.
 -}
-batch : List (Task.Task x a) -> Task () ()
+batch : List (Task x a) -> Task () ()
 batch =
-    Task.map (always ()) <<
+    ignore <<
         Task.sequence <<
             List.map Task.spawn
 
+
+ignore : Task a b -> Task () ()
+ignore =
+    Task.map (always ()) <<
+        Task.mapError (always ())
