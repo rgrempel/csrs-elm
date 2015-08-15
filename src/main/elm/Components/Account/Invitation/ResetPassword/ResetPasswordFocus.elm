@@ -21,6 +21,7 @@ import Html.Events exposing (..)
 import Html.Util exposing (role, glyphicon, unbreakableSpace, showError, onlyOnSubmit)
 import Maybe exposing (withDefault)
 import Task exposing (Task, andThen, onError)
+import Task.Util exposing (..)
 import List exposing (all, isEmpty)
 
 
@@ -38,12 +39,6 @@ reaction address action focus =
     case action of
         ResetPassword password confirmPassword activation ->
             let
-                handleError error =
-                    Signal.send address (FocusError error)
-
-                handleLoginError error =
-                    Signal.send address (FocusLoginError error)
-
                 goHome =
                     FocusTypes.do (FocusTypes.FocusHome HomeTypes.FocusHome)
                 
@@ -54,7 +49,7 @@ reaction address action focus =
                         , rememberMe = False
                         }
                     `andThen` always goHome
-                    `onError` handleLoginError
+                    `onError` notify address FocusLoginError
 
             in
                 if isEmpty (checkPasswords password confirmPassword)
@@ -62,7 +57,7 @@ reaction address action focus =
                         Just <|
                             AccountService.resetPassword password activation.activationKey
                             `andThen` always attemptLogin
-                            `onError` handleError
+                            `onError` notify address FocusError 
 
                     else 
                         Nothing

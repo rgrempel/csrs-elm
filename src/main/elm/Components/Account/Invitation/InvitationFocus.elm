@@ -21,6 +21,7 @@ import Html.Util exposing (role, glyphicon, unbreakableSpace, showError, onlyOnS
 import Signal exposing (Address)
 import Maybe exposing (withDefault)
 import Task exposing (Task, andThen, onError)
+import Task.Util exposing (..)
 import List exposing (all, isEmpty)
 import Http
 
@@ -83,7 +84,7 @@ reaction address action focus =
                     then
                         Just <|
                             (AccountService.fetchInvitation key)
-                                `andThen` (Signal.send address << FocusInvitationFound)
+                                `andThen` notify address FocusInvitationFound
                                 `onError` handleError
                     else
                         Nothing

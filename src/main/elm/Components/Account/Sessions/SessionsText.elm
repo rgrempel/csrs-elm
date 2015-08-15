@@ -2,7 +2,6 @@ module Components.Account.Sessions.SessionsText where
 
 import Language.LanguageTypes exposing (Language(..))
 import Html exposing (Html, text, span, strong, a)
-import Html.Events exposing (onClick)
 
 type Message
     = Title String

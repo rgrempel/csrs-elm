@@ -19,6 +19,7 @@ import Html.Events exposing (..)
 import Html.Util exposing (role, glyphicon, unbreakableSpace, onlyOnSubmit)
 import Maybe exposing (withDefault)
 import Task exposing (Task, andThen, onError)
+import Task.Util exposing (..)
 import List exposing (all, isEmpty)
 
 
@@ -40,8 +41,8 @@ reaction address action focus =
             if isEmpty (checkEmail email)
                 then Just <|
                     AccountService.sendInvitationToCreateAccount email language
-                    `andThen` (always (Signal.send address FocusInvitationSent))
-                    `onError` (Signal.send address << FocusSendInvitationError)
+                    `andThen` alwaysNotify address FocusInvitationSent
+                    `onError` notify address FocusSendInvitationError
 
                 else
                     Nothing

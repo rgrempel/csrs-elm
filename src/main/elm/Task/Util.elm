@@ -29,6 +29,11 @@ notify address tag result =
     Signal.send address (tag result)
 
 
+alwaysNotify : Address action -> action -> result -> Task x ()
+alwaysNotify address action result =
+    Signal.send address action
+
+
 {-| Given a list of tasks, produce a task which executes each task in parallel,
 ignoring the results.
 -}

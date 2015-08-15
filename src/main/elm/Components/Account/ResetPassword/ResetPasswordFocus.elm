@@ -19,6 +19,7 @@ import Html.Events exposing (onSubmit, on, targetValue)
 import Html.Util exposing (role, glyphicon, unbreakableSpace, onlyOnSubmit)
 import Maybe exposing (withDefault)
 import Task exposing (Task, andThen, onError)
+import Task.Util exposing (..)
 import List exposing (all, isEmpty)
 
 
@@ -42,8 +43,8 @@ reaction address action focus =
             if isEmpty (checkEmail email)
                 then Just <|
                     AccountService.sendInvitationToResetPassword email language
-                    `andThen` (always (Signal.send address FocusTokenSent))
-                    `onError` (Signal.send address << FocusSendTokenError)
+                    `andThen` alwaysNotify address FocusTokenSent
+                    `onError` notify address FocusSendTokenError
 
                 else
                     Nothing

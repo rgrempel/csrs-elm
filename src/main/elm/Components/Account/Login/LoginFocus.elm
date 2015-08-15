@@ -20,6 +20,7 @@ import Html.Util exposing (role, glyphicon, unbreakableSpace, showError, onlyOnS
 import Signal exposing (Address)
 import Maybe exposing (withDefault)
 import Task exposing (Task)
+import Task.Util exposing (..)
 import List exposing (all, isEmpty)
 
 
@@ -41,12 +42,10 @@ reaction address action focus =
             if checkCredentials credentials
                 then
                     Just <|
-                        (AccountService.attemptLogin credentials)
-                        `Task.andThen` (\user -> 
-                            FocusTypes.do (FocusTypes.FocusHome HomeTypes.FocusHome)
-                        ) `Task.onError` (\error ->
-                            Signal.send address (FocusLoginError error)
-                        )
+                        AccountService.attemptLogin credentials
+                        `Task.andThen` always (FocusTypes.do (FocusTypes.FocusHome HomeTypes.FocusHome))
+                        `Task.onError` notify address FocusLoginError
+                
                 else
                     Nothing
 

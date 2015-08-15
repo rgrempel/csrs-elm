@@ -17,6 +17,7 @@ import Html.Util exposing (role, glyphicon, unbreakableSpace)
 import Signal exposing (Address)
 import Maybe exposing (withDefault)
 import Task exposing (Task)
+import Task.Util exposing (..)
 
 
 route : List String -> Maybe Action
@@ -36,11 +37,8 @@ reaction address action focus =
         AttemptLogout ->
             Just <|
                 AccountService.attemptLogout
-                `Task.andThen` (\user ->
-                    Signal.send address FocusSuccess
-                ) `Task.onError` (\error ->
-                    Signal.send address (FocusError error)
-                )
+                `Task.andThen` alwaysNotify address FocusSuccess
+                `Task.onError` notify address FocusError
 
         FocusSuccess ->
             Just <| 
