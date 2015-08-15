@@ -31,7 +31,20 @@ type alias SubModule x model action =
     }
 
 type alias SuperModule x submodel subaction superaction =
-    { actionTag : subaction -> superaction
-    , sub : SubModule x submodel subaction
+    { initialModel : x -> submodel
+    , actions : Signal superaction
+    , update : subaction -> submodel -> submodel
+    , reaction : subaction -> submodel -> Maybe (Task () ())
+    , initialTask : Maybe (Task () ())
+    }
+
+
+superModule : (subaction -> superaction) -> SubModule x submodel subaction -> SuperModule x submodel subaction superaction
+superModule actionTag submodule =
+    { initialModel = submodule.initialModel
+    , actions = Signal.map actionTag submodule.actions
+    , update = submodule.update
+    , reaction subaction submodel = submodule.reaction `Maybe.andThen` \reaction -> reaction subaction submodel
+    , initialTask = submodule.initialTask
     }
 

@@ -19,9 +19,9 @@ import Task.Util exposing (batch)
 
 {- Collect the wiring for submodules -}
 
-accountModule = SuperModule AccountAction AccountService.submodule
-focusModule = SuperModule FocusAction FocusUI.submodule
-languageModule = SuperModule LanguageAction LanguageService.submodule
+accountModule = superModule AccountAction AccountService.submodule
+focusModule = superModule FocusAction FocusUI.submodule
+languageModule = superModule LanguageAction LanguageService.submodule
 
 
 {-| The initial model.
@@ -31,15 +31,10 @@ the parts of the model.
 -}
 initialModel : Model
 initialModel =
-    let
-        apply wiring =
-            wiring.sub.initialModel
-
-    in
-        apply accountModule <|
-        apply focusModule <|
-        apply languageModule <|
-        {}
+    .initialModel accountModule <|
+    .initialModel focusModule <|
+    .initialModel languageModule <|
+    {}
 
 
 {-| The actions our app can perform
@@ -57,16 +52,11 @@ type Action
 {-| The merger of all the action signals defined by various modules. -}
 actions : Signal Action
 actions =
-    let 
-        apply wiring =
-            Signal.map wiring.actionTag <| wiring.sub.actions
-    
-    in
-        Signal.mergeMany
-            [ apply focusModule
-            , apply accountModule
-            , apply languageModule
-            ]
+    Signal.mergeMany
+        [ .actions focusModule
+        , .actions accountModule
+        , .actions languageModule
+        ]
 
 
 {-| The update function.
@@ -75,22 +65,19 @@ Just dispatch to the various models that can handle actions.
 -}
 update : Action -> Model -> Model
 update action model =
-    let
-        apply wiring subaction =
-           wiring.sub.update subaction model
-
-    in
+    model |>
         case action of
             AccountAction subaction ->
-                apply accountModule subaction
+                .update accountModule subaction
 
             FocusAction subaction ->
-                apply focusModule subaction
+                .update focusModule subaction
 
             LanguageAction subaction ->
-                apply languageModule subaction
+                .update languageModule subaction
 
-            _ -> model
+            _ ->
+                identity
 
 
 {-| Like update, except returns an additional task to perform in response to
@@ -110,25 +97,19 @@ model, then it can simply include a Task that sends the appropriate message.
 -}
 reaction : Action -> Model -> Maybe (Task () ())
 reaction action model =
-    let
-        apply wiring subaction =
-            wiring.sub.reaction
-            `Maybe.andThen` 
-            \reaction -> reaction subaction model
-
-    in
+    model |>
         case action of
             FocusAction subaction ->
-                apply focusModule subaction
+                .reaction focusModule subaction
 
             AccountAction subaction ->
-                apply accountModule subaction
+                .reaction accountModule subaction
 
             LanguageAction subaction ->
-                apply languageModule subaction
+                .reaction languageModule subaction
 
             _ ->
-                Nothing
+                always Nothing 
 
 
 {-| A task to perform when the app starts.
@@ -145,9 +126,9 @@ initialTask =
     in
         batch <|
             List.filterMap identity
-                [ apply accountModule
-                , apply focusModule
-                , apply languageModule
+                [ .initialTask accountModule
+                , .initialTask focusModule
+                , .initialTask languageModule
                 ]
 
 
