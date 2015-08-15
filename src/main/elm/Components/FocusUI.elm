@@ -20,8 +20,8 @@ import Maybe exposing (withDefault)
 import Task exposing (Task)
 
 
-wiring : SubWiring x (FocusModel x) Action
-wiring =
+submodule : SubModule x (FocusModel x) Action
+submodule =
     { initialModel = initialModel
     , actions = .signal actions
     , update = update

@@ -22,7 +22,7 @@ type alias Model =
     )))
 
 
-type alias SubWiring x model action =
+type alias SubModule x model action =
     { initialModel : x -> model
     , actions : Signal action
     , update : action -> model -> model
@@ -30,8 +30,8 @@ type alias SubWiring x model action =
     , initialTask : Maybe (Task () ())
     }
 
-type alias SuperWiring x submodel subaction superaction =
-    { sub : SubWiring x submodel subaction
-    , actionTag : subaction -> superaction
+type alias SuperModule x submodel subaction superaction =
+    { actionTag : subaction -> superaction
+    , sub : SubModule x submodel subaction
     }
 

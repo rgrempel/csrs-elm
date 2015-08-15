@@ -14,8 +14,8 @@ import Json.Decode as JD
 import String exposing (join)
 
 
-wiring : SubWiring x (AccountModel x) Action
-wiring =
+submodule : SubModule x (AccountModel x) Action
+submodule =
     { initialModel = initialModel
     , actions = .signal actions
     , update = update

@@ -19,9 +19,9 @@ import Task.Util exposing (batch)
 
 {- Collect the wiring for submodules -}
 
-accountWiring = SuperWiring AccountService.wiring AccountAction
-focusWiring = SuperWiring FocusUI.wiring FocusAction 
-languageWiring = SuperWiring LanguageService.wiring LanguageAction
+accountModule = SuperModule AccountAction AccountService.submodule
+focusModule = SuperModule FocusAction FocusUI.submodule
+languageModule = SuperModule LanguageAction LanguageService.submodule
 
 
 {-| The initial model.
@@ -36,9 +36,9 @@ initialModel =
             wiring.sub.initialModel
 
     in
-        apply accountWiring <|
-        apply focusWiring <|
-        apply languageWiring <|
+        apply accountModule <|
+        apply focusModule <|
+        apply languageModule <|
         {}
 
 
@@ -63,9 +63,9 @@ actions =
     
     in
         Signal.mergeMany
-            [ apply focusWiring
-            , apply accountWiring
-            , apply languageWiring
+            [ apply focusModule
+            , apply accountModule
+            , apply languageModule
             ]
 
 
@@ -82,13 +82,13 @@ update action model =
     in
         case action of
             AccountAction subaction ->
-                apply accountWiring subaction
+                apply accountModule subaction
 
             FocusAction subaction ->
-                apply focusWiring subaction
+                apply focusModule subaction
 
             LanguageAction subaction ->
-                apply languageWiring subaction
+                apply languageModule subaction
 
             _ -> model
 
@@ -119,13 +119,13 @@ reaction action model =
     in
         case action of
             FocusAction subaction ->
-                apply focusWiring subaction
+                apply focusModule subaction
 
             AccountAction subaction ->
-                apply accountWiring subaction
+                apply accountModule subaction
 
             LanguageAction subaction ->
-                apply languageWiring subaction
+                apply languageModule subaction
 
             _ ->
                 Nothing
@@ -145,9 +145,9 @@ initialTask =
     in
         batch <|
             List.filterMap identity
-                [ apply accountWiring
-                , apply focusWiring
-                , apply languageWiring
+                [ apply accountModule
+                , apply focusModule
+                , apply languageModule
                 ]
 
 

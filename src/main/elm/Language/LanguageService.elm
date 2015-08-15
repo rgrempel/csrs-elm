@@ -4,8 +4,8 @@ import AppTypes exposing (..)
 import Language.LanguageTypes exposing (..)
 
 
-wiring : SubWiring x (LanguageModel x) Action
-wiring =
+submodule : SubModule x (LanguageModel x) Action
+submodule =
     { initialModel = initialModel
     , actions = .signal actions
     , update = update
