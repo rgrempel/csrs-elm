@@ -18,6 +18,17 @@ import Task.Util exposing (notify)
 import List exposing (all, isEmpty)
 
 
+subcomponent : SubComponent Action Focus 
+subcomponent =
+    { route = route
+    , path = path
+    , reaction = Just reaction
+    , update = update
+    , view = view
+    , menu = Just menuItem 
+    }
+
+
 route : List String -> Maybe Action
 route hashList = Just Fetch
 

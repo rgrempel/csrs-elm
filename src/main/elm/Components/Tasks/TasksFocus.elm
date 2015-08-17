@@ -13,6 +13,17 @@ import Html.Util exposing (dropdownMenu, dropdownToggle, dropdownPointer, glyphi
 import Signal exposing (Address, forwardTo)
 
 
+subcomponent : SubComponent Action Focus 
+subcomponent =
+    { route = route
+    , path = path
+    , reaction = Nothing
+    , update = update
+    , view = view
+    , menu = Just menu 
+    }
+
+
 route : List String -> Maybe Action
 route list =
     case list of

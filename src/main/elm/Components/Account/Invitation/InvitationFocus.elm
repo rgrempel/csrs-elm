@@ -26,6 +26,26 @@ import List exposing (all, isEmpty)
 import Http
 
 
+subcomponent : SubComponent Action Focus 
+subcomponent =
+    { route = route
+    , path = path
+    , reaction = Just reaction
+    , update = update
+    , view = view
+    , menu = Nothing 
+    }
+
+
+resetPassword =
+    superComponent <|
+        MakeComponent "" FocusResetPassword ResetPassword resetPasswordFocus ResetPasswordFocus.subcomponent
+
+register =
+    superComponent <|
+        MakeComponent "" FocusRegister Register registerFocus RegisterFocus.subcomponent
+
+
 route : List String -> Maybe Action
 route hashList = 
     case hashList of
@@ -59,10 +79,10 @@ reaction : Address InvitationTypes.Action -> InvitationTypes.Action -> Maybe Inv
 reaction address action focus =
     case action of
         FocusRegister subaction ->
-            RegisterFocus.reaction (forwardTo address FocusRegister) subaction <| focus `Maybe.andThen` registerFocus
+            register.reaction address subaction focus
 
         FocusResetPassword subaction ->
-            ResetPasswordFocus.reaction (forwardTo address FocusResetPassword) subaction <| focus `Maybe.andThen` resetPasswordFocus
+            resetPassword.reaction address subaction focus
 
         FocusInvitationFound activation ->
             if activation.userEmail.user == Nothing
@@ -104,10 +124,10 @@ update action focus =
     in
         case action of
             FocusRegister subaction ->
-                Maybe.map Register <| RegisterFocus.update subaction <| focus `Maybe.andThen` registerFocus
+                register.update subaction focus
 
             FocusResetPassword subaction ->
-                Maybe.map ResetPassword <| ResetPasswordFocus.update subaction <| focus `Maybe.andThen` resetPasswordFocus 
+                resetPassword.update subaction focus
 
             FocusKey key ->
                 Just <| Invitation <| {invitation | key <- key}
@@ -142,19 +162,15 @@ checkRequired = checkString [Required]
 
 view : Address InvitationTypes.Action -> Model -> Focus -> Html
 view address model focus =
-    let
-        forward = forwardTo address
+    case focus of
+        Register subfocus ->
+            register.view address model subfocus
 
-    in
-        case focus of
-            Register subfocus ->
-                RegisterFocus.view (forward FocusRegister) model subfocus
+        ResetPassword subfocus ->
+            resetPassword.view address model subfocus
 
-            ResetPassword subfocus ->
-                ResetPasswordFocus.view (forward FocusResetPassword) model subfocus
-
-            Invitation subfocus ->
-                viewInvitation address model subfocus
+        Invitation subfocus ->
+            viewInvitation address model subfocus
 
 
 viewInvitation : Address InvitationTypes.Action -> Model -> InvitationFocus -> Html

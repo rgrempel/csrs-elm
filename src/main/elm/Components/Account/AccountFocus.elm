@@ -15,106 +15,115 @@ import Components.Account.AccountText as AccountText
 
 import Html exposing (Html, h1, text, div, li, ul, a, span)
 import Html.Attributes exposing (class, classList, href, id)
-import Html.Events exposing (onClick)
 import Signal exposing (Address, forwardTo)
 import Html.Util exposing (dropdownMenu, dropdownToggle, dropdownPointer, glyphicon, unbreakableSpace)
 import Task exposing (Task)
 
 
+subcomponent : SubComponent Action Focus
+subcomponent =
+    { route = route
+    , path = path
+    , reaction = Just reaction
+    , update = update
+    , view = view
+    , menu = Just menu
+    }
+
+
+login =
+    superComponent <|
+        MakeComponent "login" FocusLogin Login loginFocus LoginFocus.subcomponent
+
+logout =
+    superComponent <|
+        MakeComponent "logout" FocusLogout Logout logoutFocus LogoutFocus.subcomponent
+
+register =
+    superComponent <|
+        MakeComponent "register" FocusRegister Register registerFocus RegisterFocus.subcomponent
+
+resetPassword =
+    superComponent <|
+        MakeComponent "reset-password" FocusResetPassword ResetPassword resetPasswordFocus ResetPasswordFocus.subcomponent
+
+invitation =
+    superComponent <|
+        MakeComponent "invitation" FocusInvitation Invitation invitationFocus InvitationFocus.subcomponent
+
+changePassword =
+    superComponent <|
+        MakeComponent "change-password" FocusChangePassword ChangePassword changePasswordFocus ChangePasswordFocus.subcomponent
+
+sessions =
+    superComponent <|
+        MakeComponent "sessions" FocusSessions Sessions sessionsFocus SessionsFocus.subcomponent
+
+
 route : List String -> Maybe Action
-route hashList =
-    case hashList of
-        first :: rest ->
-            case first of
-                "login" ->
-                    Maybe.map FocusLogin <| LoginFocus.route rest
-
-                "logout" ->
-                    Maybe.map FocusLogout <| LogoutFocus.route rest
-
-                "register" ->
-                    Maybe.map FocusRegister <| RegisterFocus.route rest
-
-                "reset-password" ->
-                    Maybe.map FocusResetPassword <| ResetPasswordFocus.route rest
-               
-                "invitation" ->
-                    Maybe.map FocusInvitation <| InvitationFocus.route rest
-
-                "settings" ->
-                    Just FocusSettings
-
-                "change-password" ->
-                    Maybe.map FocusChangePassword <| ChangePasswordFocus.route rest
-
-                "sessions" ->
-                    Maybe.map FocusSessions <| SessionsFocus.route rest
-
-                _ ->
-                    Nothing
-
-        _ ->
-            Nothing
+route list =
+    Maybe.oneOf
+        [ login.route list
+        , logout.route list
+        , register.route list
+        , resetPassword.route list
+        , invitation.route list
+        , changePassword.route list
+        , sessions.route list
+        ]
 
 
 path : Maybe Focus -> Focus -> Maybe PathAction
 path focus focus' =
-    let
-        prepend prefix =
-            Maybe.map (RouteService.map ((::) prefix))
-    
-    in
-        case focus' of
-            Login subfocus ->
-                prepend "login" (LoginFocus.path (focus `Maybe.andThen` loginFocus) subfocus)
+    case focus' of
+        Login subfocus ->
+            login.path focus subfocus
 
-            Logout subfocus ->
-                prepend "logout" (LogoutFocus.path (focus `Maybe.andThen` logoutFocus) subfocus)
+        Logout subfocus ->
+            logout.path focus subfocus
 
-            Register subfocus ->
-                prepend "register" (RegisterFocus.path (focus `Maybe.andThen` registerFocus) subfocus)
+        Register subfocus ->
+            register.path focus subfocus
 
-            ResetPassword subfocus ->
-                prepend "reset-password" (ResetPasswordFocus.path (focus `Maybe.andThen` resetPasswordFocus) subfocus)
+        ResetPassword subfocus ->
+            resetPassword.path focus subfocus
 
-            Invitation subfocus ->
-                prepend "invitation" (InvitationFocus.path (focus `Maybe.andThen` invitationFocus) subfocus)
+        Invitation subfocus ->
+            invitation.path focus subfocus
 
-            Settings ->
-                if focus == Just Settings
-                    then Nothing 
-                    else Just <| SetPath ["settings"]
-            
-            ChangePassword subfocus ->
-                prepend "change-password" (ChangePasswordFocus.path (focus `Maybe.andThen` changePasswordFocus) subfocus)
+        ChangePassword subfocus ->
+            changePassword.path focus subfocus
 
-            Sessions subfocus ->
-                prepend "sessions" (SessionsFocus.path (focus `Maybe.andThen` sessionsFocus) subfocus)
+        Sessions subfocus ->
+            sessions.path focus subfocus
+
+        _ ->
+            Nothing
 
 
 reaction : Address Action -> Action -> Maybe Focus -> Maybe (Task () ())
 reaction address action focus =
     case action of
         FocusLogin subaction ->
-            LoginFocus.reaction (forwardTo address FocusLogin) subaction <| focus `Maybe.andThen` loginFocus
+            login.reaction address subaction focus
 
         FocusLogout subaction ->
-            LogoutFocus.reaction (forwardTo address FocusLogout) subaction <| focus `Maybe.andThen` logoutFocus
+            logout.reaction address subaction focus
         
         FocusRegister subaction ->
-            RegisterFocus.reaction (forwardTo address FocusRegister) subaction <| focus `Maybe.andThen` registerFocus
+            register.reaction address subaction focus
         
         FocusResetPassword subaction ->
-            ResetPasswordFocus.reaction (forwardTo address FocusResetPassword) subaction <| focus `Maybe.andThen` resetPasswordFocus
+            resetPassword.reaction address subaction focus
         
         FocusInvitation subaction ->
-            InvitationFocus.reaction (forwardTo address FocusInvitation) subaction <| focus `Maybe.andThen` invitationFocus
+            invitation.reaction address subaction focus
         
         FocusSessions subaction ->
-            SessionsFocus.reaction (forwardTo address FocusSessions) subaction <| focus `Maybe.andThen` sessionsFocus
+            sessions.reaction address subaction focus
         
         FocusChangePassword subaction ->
-            ChangePasswordFocus.reaction (forwardTo address FocusChangePassword) subaction <| focus `Maybe.andThen` changePasswordFocus
+            changePassword.reaction address subaction focus
         
         _ ->
             Nothing
@@ -124,28 +133,25 @@ update : Action -> Maybe Focus -> Maybe Focus
 update action focus =
     case action of
         FocusLogin subaction ->
-            Maybe.map Login <| LoginFocus.update subaction <| focus `Maybe.andThen` loginFocus
+            login.update subaction focus
 
         FocusLogout subaction  ->
-            Maybe.map Logout <| LogoutFocus.update subaction <| focus `Maybe.andThen` logoutFocus
+            logout.update subaction focus
 
         FocusRegister subaction ->
-            Maybe.map Register <| RegisterFocus.update subaction <| focus `Maybe.andThen` registerFocus
+            register.update subaction focus
 
         FocusResetPassword subaction ->
-            Maybe.map ResetPassword <| ResetPasswordFocus.update subaction <| focus `Maybe.andThen` resetPasswordFocus
+            resetPassword.update subaction focus
 
         FocusInvitation subaction  ->
-            Maybe.map Invitation <| InvitationFocus.update subaction <| focus `Maybe.andThen` invitationFocus
-
-        FocusSettings ->
-            Just Settings
+            invitation.update subaction focus
 
         FocusChangePassword subaction  ->
-            Maybe.map ChangePassword <| ChangePasswordFocus.update subaction <| focus `Maybe.andThen` changePasswordFocus
+            changePassword.update subaction focus
 
         FocusSessions subaction  ->
-            Maybe.map Sessions <| SessionsFocus.update subaction <| focus `Maybe.andThen` sessionsFocus
+            sessions.update subaction focus
 
         _ ->
             Nothing
@@ -153,39 +159,27 @@ update action focus =
 
 view : Address Action -> Model -> Focus -> Html
 view address model focus =
-    let 
-        v s =
-            div [ class "container" ]
-                [ h1 [] [ text s ]
-                ]
-
-        forward =
-            forwardTo address
-
-    in
-        case focus of
-            Settings -> v "Settings"
-            
-            Sessions subfocus ->
-                SessionsFocus.view (forward FocusSessions) model subfocus
-            
-            ResetPassword subfocus ->
-                ResetPasswordFocus.view (forward FocusResetPassword) model subfocus
-            
-            ChangePassword subfocus ->
-                ChangePasswordFocus.view (forward FocusChangePassword) model subfocus
-            
-            Invitation subfocus ->
-                InvitationFocus.view (forward FocusInvitation) model subfocus
-            
-            Register subfocus ->
-                RegisterFocus.view (forward FocusRegister) model subfocus
-            
-            Logout subfocus ->
-                LogoutFocus.view (forward FocusLogout) model subfocus
-            
-            Login subfocus ->
-                LoginFocus.view (forward FocusLogin) model subfocus
+    case focus of
+        Sessions subfocus ->
+            sessions.view address model subfocus
+        
+        ResetPassword subfocus ->
+            resetPassword.view address model subfocus
+        
+        ChangePassword subfocus ->
+            changePassword.view address model subfocus
+        
+        Invitation subfocus ->
+            invitation.view address model subfocus
+        
+        Register subfocus ->
+            register.view address model subfocus
+        
+        Logout subfocus ->
+            logout.view address model subfocus
+        
+        Login subfocus ->
+            login.view address model subfocus
  
 
 menu : Address Action -> Model -> Maybe Focus -> Html
@@ -197,18 +191,6 @@ menu address model focus =
         user =
             model.currentUser
 
-        standardMenuItem icon message action newFocus =
-            li [ classList [ ( "active", focus == Just newFocus ) ] ]
-                [ a [ onClick address action ]
-                    [ glyphicon icon
-                    , text unbreakableSpace
-                    , trans message
-                    ]
-                ]
-
-        forward =
-            forwardTo address
- 
     in
         dropdownPointer [ classList [ ( "active", focus /= Nothing ) ] ]
             [ dropdownToggle [ id "navbar-account-menu" ]
@@ -219,15 +201,15 @@ menu address model focus =
                 , span [ class "text-bold caret" ] []
                 ]
             , dropdownMenu <|
-                if user == Nothing then
-                    [ LoginFocus.menuItem (forward FocusLogin) model (focus `Maybe.andThen` loginFocus)
-                    , RegisterFocus.menuItem (forward FocusRegister) model (focus `Maybe.andThen` registerFocus)
-                    ]
-                else
-                    [ LogoutFocus.menuItem (forward FocusLogout) model (focus `Maybe.andThen` logoutFocus)
-                    , ChangePasswordFocus.menuItem (forward FocusChangePassword) model (focus `Maybe.andThen` changePasswordFocus)
-                    , SessionsFocus.menuItem (forward FocusSessions) model (focus `Maybe.andThen` sessionsFocus)
-                    , standardMenuItem "wrench" AccountText.Settings FocusSettings Settings
-                    ]
+                List.filterMap identity <|
+                    if user == Nothing then
+                        [ login.menu address model focus
+                        , register.menu address model focus
+                        ]
+                    else
+                        [ logout.menu address model focus
+                        , changePassword.menu address model focus
+                        , sessions.menu address model focus
+                        ]
             ]
 

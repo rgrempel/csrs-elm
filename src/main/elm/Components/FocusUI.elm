@@ -14,7 +14,6 @@ import Components.Error.ErrorTypes as ErrorTypes
 import Components.Error.ErrorFocus as ErrorFocus
 import Components.NavBar.NavBarUI as NavBarUI
 
-import Signal exposing (Mailbox, mailbox, Address, forwardTo)
 import Html exposing (Html, div)
 import Maybe exposing (withDefault)
 import Task exposing (Task)
@@ -30,44 +29,80 @@ submodule =
     }
 
 
+account =
+    superComponent <|
+        MakeComponent "account" FocusAccount Account accountFocus AccountFocus.subcomponent
+
+admin =
+    superComponent <|
+        MakeComponent "admin" FocusAdmin Admin adminFocus AdminFocus.subcomponent
+
+error =
+    superComponent <|
+        MakeComponent "error" FocusError Error errorFocus ErrorFocus.subcomponent
+
+home =
+    superComponent <|
+        MakeComponent "" FocusHome Home homeFocus HomeFocus.subcomponent
+
+tasks =
+    superComponent <|
+        MakeComponent "tasks" FocusTasks Tasks tasksFocus TasksFocus.subcomponent
+
+
 initialModel : m -> FocusModel m
 initialModel model = FocusModel (Home HomeTypes.Home) model
 
 
 reaction : Action -> FocusModel x -> Maybe (Task () ())
 reaction action model =
-    case action of
-        FocusAccount action ->
-            AccountFocus.reaction (forward FocusAccount) action (accountFocus model.focus)
+    let
+        focus =
+            Just model.focus
+    
+    in
+        case action of
+            FocusAccount subaction ->
+                account.reaction actions.address subaction focus 
 
-        _ ->
-            Nothing
+            FocusAdmin subaction ->
+                admin.reaction actions.address subaction focus
+
+            FocusError subaction ->
+                error.reaction actions.address subaction focus
+
+            FocusHome subaction ->
+                home.reaction actions.address subaction focus
+
+            FocusTasks subaction ->
+                tasks.reaction actions.address subaction focus
+
+            _ ->
+                Nothing
 
 
 path : Focus -> Focus -> Maybe PathAction
 path focus focus' =
-    let
-        prepend prefix =
-            Maybe.map (RouteService.map ((::) prefix))
-    
-    in
-        if focus == focus'
-            then Nothing
-            else case focus' of
-                Home subfocus ->
-                    (HomeFocus.path (homeFocus focus) subfocus)
+    if focus == focus'
+        then Nothing
+        else case focus' of
+            Home subfocus ->
+                home.path (Just focus) subfocus
 
-                Error subfocus ->
-                    Nothing 
+            Error subfocus ->
+                error.path (Just focus) subfocus 
 
-                Account subfocus ->
-                    prepend "account" (AccountFocus.path (accountFocus focus) subfocus)
+            Account subfocus ->
+                account.path (Just focus) subfocus
 
-                Admin subfocus ->
-                    prepend "admin" (AdminFocus.path (adminFocus focus) subfocus)
+            Admin subfocus ->
+                admin.path (Just focus) subfocus
 
-                Tasks subfocus ->
-                    prepend "tasks" (TasksFocus.path (tasksFocus focus) subfocus)
+            Tasks subfocus ->
+                tasks.path (Just focus) subfocus
+
+            _ ->
+                Nothing
 
 
 {-| Given a new focus and an old focus, calculate whether we should
@@ -96,47 +131,37 @@ delta2path delta current =
 
 route : List String -> Maybe Action
 route hash =
-    case hash of
-        first :: rest ->
-            case first of
-                "" ->
-                    Maybe.map FocusHome <| HomeFocus.route rest
-                
-                "account" ->
-                    Maybe.map FocusAccount <| AccountFocus.route rest
-                
-                "admin" ->
-                    Maybe.map FocusAdmin <| AdminFocus.route rest
-
-                "tasks" ->
-                    Maybe.map FocusTasks <| TasksFocus.route rest
-                
-                _ ->
-                    Just <| FocusError ErrorTypes.FocusError
-
-        _ ->
-            Just <| FocusError ErrorTypes.FocusError
+    Maybe.oneOf
+        [ home.route hash
+        , account.route hash
+        , admin.route hash
+        , tasks.route hash
+        , Just (FocusError ErrorTypes.FocusError)
+        ]
 
 
 update : Action -> FocusModel x -> FocusModel x
 update action model =
     let
+        focus =
+            Just model.focus
+
         focus' =
             case action of
                 FocusAccount subaction ->
-                    Maybe.map Account <| AccountFocus.update subaction (accountFocus model.focus)
+                    account.update subaction focus
 
                 FocusHome subaction ->
-                    Maybe.map Home <| HomeFocus.update subaction (homeFocus model.focus)
+                    home.update subaction focus
                 
                 FocusAdmin subaction ->
-                    Maybe.map Admin <| AdminFocus.update subaction (adminFocus model.focus)
+                    admin.update subaction focus
                 
                 FocusTasks subaction ->
-                    Maybe.map Tasks <| TasksFocus.update subaction (tasksFocus model.focus)
+                    tasks.update subaction focus
                 
                 FocusError subaction ->
-                    Maybe.map Error <| ErrorFocus.update subaction (errorFocus model.focus)
+                    error.update subaction focus
 
                 _ ->
                     Nothing
@@ -145,40 +170,41 @@ update action model =
         {model | focus <- withDefault model.focus focus'}
 
 
-forward : (a -> Action) -> Address a
-forward = forwardTo actions.address
-
-
 {-| Creates the NavBar, and then generates whatever virtual page we're on.
 -}
 view : Model -> Html
 view model =
     let
+        focus =
+            Just model.focus
+
         menus =
-            NavBarUI.view model
-                [ HomeFocus.menu (forward FocusHome) model (homeFocus model.focus)
-                , TasksFocus.menu (forward FocusTasks) model (tasksFocus model.focus)
-                , AccountFocus.menu (forward FocusAccount) model (accountFocus model.focus)
-                , AdminFocus.menu (forward FocusAdmin) model (adminFocus model.focus)
-                , LanguageUI.menu model
-                ]
+            NavBarUI.view model <|
+                List.filterMap identity
+                    [ home.menu actions.address model focus
+                    , tasks.menu actions.address model focus
+                    , account.menu actions.address model focus
+                    , admin.menu actions.address model focus
+                    , error.menu actions.address model focus
+                    ]
+                ++ [ LanguageUI.menu model ]
 
         page =
             case model.focus of
                 Home subfocus ->
-                    HomeFocus.view (forward FocusHome) model subfocus
+                    home.view actions.address model subfocus
                      
                 Error subfocus->
-                    ErrorFocus.view (forward FocusError) model subfocus
+                    error.view actions.address model subfocus
                 
                 Account subfocus ->
-                    AccountFocus.view (forward FocusAccount) model subfocus
+                    account.view actions.address model subfocus
                 
                 Admin subfocus ->
-                    AdminFocus.view (forward FocusAdmin) model subfocus
+                    admin.view actions.address model subfocus
 
                 Tasks subfocus ->
-                    TasksFocus.view (forward FocusTasks) model subfocus
+                    tasks.view actions.address model subfocus
 
     in
         div [] [ menus, page ]

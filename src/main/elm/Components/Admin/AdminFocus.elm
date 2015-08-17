@@ -13,6 +13,17 @@ import Signal exposing (Address, forwardTo)
 import Html.Util exposing (dropdownMenu, dropdownToggle, dropdownPointer, glyphicon, unbreakableSpace)
 
 
+subcomponent : SubComponent Action Focus 
+subcomponent =
+    { route = route
+    , path = path
+    , reaction = Nothing 
+    , update = update
+    , view = view
+    , menu = Just menu 
+    }
+
+
 route : List String -> Maybe Action
 route hashList =
     case hashList of

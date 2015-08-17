@@ -15,6 +15,17 @@ import Html.Attributes exposing (..)
 import Html.Util exposing (glyphicon, unbreakableSpace)
 
 
+subcomponent : SubComponent Action Focus 
+subcomponent =
+    { route = route
+    , path = path
+    , reaction = Nothing
+    , update = update
+    , view = view
+    , menu = Just menu 
+    }
+
+
 route : List String -> Maybe Action
 route list = Just FocusHome
 

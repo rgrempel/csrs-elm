@@ -11,6 +11,17 @@ import Html exposing (Html, div, button, text, span, h1, p, ul, li)
 import Html.Attributes exposing (class, key)
 
 
+subcomponent : SubComponent Action Focus 
+subcomponent =
+    { route = route
+    , path = path
+    , reaction = Nothing 
+    , update = update
+    , view = view
+    , menu = Nothing 
+    }
+
+
 route : List String -> Maybe Action
 route list = Just FocusError
 
