@@ -8,7 +8,7 @@ import Http exposing (uriEncode, url, string, defaultSettings, fromJson, Setting
 import Task exposing (Task, map, mapError, succeed, fail, onError, andThen, toResult)
 import Task.Util exposing (ignore)
 import Http.Csrf exposing (withCsrf)
-import Http.CacheBuster exposing (withCacheBuster)
+import Http.Decorators exposing (addCacheBuster, interpretStatus)
 import Json.Encode as JE
 import Json.Decode as JD
 import String exposing (join)
@@ -46,8 +46,12 @@ reaction action model =
             Nothing
 
 
-send : Request -> Task RawError Response
-send = (withCacheBuster (withCsrf Http.send)) defaultSettings
+send : Request -> Task Error Response
+send = interpretStatus << sendRaw
+
+
+sendRaw : Request -> Task RawError Response
+sendRaw = addCacheBuster (withCsrf Http.send) defaultSettings
 
 
 attemptLogin : Credentials -> Task LoginError (Maybe User) 
@@ -69,15 +73,15 @@ attemptLogin credentials =
             , body = string params
             }
 
-        handleResponse response =
-            case response.status of
-                200 -> fetchCurrentUser |> mapError LoginHttpError
-                401 -> fail LoginWrongPassword
-                _ -> fail <| LoginHttpError (BadResponse response.status response.statusText)
+        handleError error =
+            case error of
+                BadResponse 401 _ -> LoginWrongPassword
+                _ -> LoginHttpError error
 
     in
-        (send request |> mapError (promoteError >> LoginHttpError))
-        `andThen` handleResponse
+        mapError handleError
+            (send request)
+                `andThen` always (fetchCurrentUser |> mapError LoginHttpError)
         
 
 createAccount : CreateAccountInfo -> Task CreateAccountError ()
@@ -99,28 +103,21 @@ createAccount info =
                             ]
             }
 
-        handleResponse response =
-            case response.status of
-                201 ->
-                    succeed ()
-                
-                400 ->
-                    fail <| UserAlreadyExists info.username 
-                
-                _ ->
-                    fail <|
-                        CreateAccountHttpError <|
-                            BadResponse response.status response.statusText
+        handleError error =
+            case error of
+                BadResponse 400 _ -> UserAlreadyExists info.username 
+                _ -> CreateAccountHttpError error
 
     in
-        (send request |> mapError (CreateAccountHttpError << promoteError))
-        `andThen` handleResponse
+        mapError handleError <|
+            map (always ()) <|
+                send request
 
 
 resetPassword : String -> String -> Task Error ()
 resetPassword password key =
-    let
-        request =
+    map (always ()) <|
+        send
             { verb = "POST"
             , headers =
                 [ ("Content-Type", "application/json")
@@ -134,11 +131,6 @@ resetPassword password key =
                             , ("newPassword", JE.string password)
                             ]
             }
-
-    in
-        map (always ()) <|
-            mapError promoteError <|
-                send request
 
 
 changePassword : String -> String -> Task LoginError ()
@@ -159,40 +151,32 @@ changePassword old new =
                             ]
             }
 
-        handleResponse response =
-            case response.status of
-                200 -> succeed ()
-                403 -> fail LoginWrongPassword
-                _ -> fail <| LoginHttpError (BadResponse response.status response.statusText)
+        handleError error =
+            case error of
+                BadResponse 403 _ -> LoginWrongPassword
+                _ -> LoginHttpError error
 
     in
-        (send request |> mapError (promoteError >> LoginHttpError))
-        `andThen` handleResponse
-
-
-promoteError : RawError -> Error
-promoteError error =
-    case error of
-        Http.RawTimeout -> Http.Timeout
-        Http.RawNetworkError -> Http.NetworkError
+        mapError handleError <|
+            map (always ()) <|
+                send request
 
 
 attemptLogout : Task Error (Maybe User)
 attemptLogout =
-    (send
+    send 
         { verb = "POST"
         , headers = []
         , url = url "/api/logout" []
         , body = Http.empty
         }
-    |> mapError promoteError)
-    `andThen` always (fetchCurrentUser)
+    `andThen` always fetchCurrentUser
 
 
 fetchCurrentUser : Task Http.Error (Maybe User) 
 fetchCurrentUser =
     Http.fromJson userDecoder (
-        send
+        sendRaw 
             { verb = "GET"
             , headers = []
             , url = url "/api/account" []
@@ -204,7 +188,7 @@ fetchCurrentUser =
         case error of
             BadResponse 401 _ ->
                 -- This is actually success ... it just means that the user
-                -- is not logged int.
+                -- is not logged in.
                 (do <| SetCurrentUser Nothing) |> map (always Nothing)
 
             _ ->
@@ -214,26 +198,25 @@ fetchCurrentUser =
 
 sendInvitation : Bool -> String -> Language -> Task Http.Error ()
 sendInvitation resetPassword email language =
-    send
-        { verb = "POST"
-        , headers =
-            [ ("Content-Type", "application/json")
-            , ("Accept", "application/json")
-            ]
-        , url =
-            url "/api/invitation/account"
-                [ ("passwordReset", if resetPassword then "true" else "false")
+    always () `map`
+        send 
+            { verb = "POST"
+            , headers =
+                [ ("Content-Type", "application/json")
+                , ("Accept", "application/json")
                 ]
-        , body =
-            Http.string <|
-                JE.encode 0 <|
-                    JE.object
-                        [ ("email", JE.string email)
-                        , ("langKey", LanguageTypes.encode language)
-                        ]
-        }
-    |> mapError promoteError
-    |> map (always ())
+            , url =
+                url "/api/invitation/account"
+                    [ ("passwordReset", if resetPassword then "true" else "false")
+                    ]
+            , body =
+                Http.string <|
+                    JE.encode 0 <|
+                        JE.object
+                            [ ("email", JE.string email)
+                            , ("langKey", LanguageTypes.encode language)
+                            ]
+            }
 
 
 sendInvitationToCreateAccount : String -> Language -> Task Http.Error ()
@@ -246,8 +229,8 @@ sendInvitationToResetPassword = sendInvitation True
 
 fetchInvitation : String -> Task Http.Error UserEmailActivation 
 fetchInvitation key =
-    Http.fromJson userEmailActivationDecoder (
-        send
+    Http.fromJson userEmailActivationDecoder <|
+        sendRaw
             { verb = "GET"
             , headers =
                 [ ("Accept", "application/json")
@@ -255,13 +238,12 @@ fetchInvitation key =
             , url = url ("/api/invitation/" ++ key) []
             , body = Http.empty
             }
-    )
 
 
 allSessions : Task Http.Error (List Session)
 allSessions =
     Http.fromJson (JD.list sessionDecoder) <|
-        send
+        sendRaw
             { verb = "GET"
             , headers =
                 [ ("Accept", "application/json")
@@ -273,31 +255,27 @@ allSessions =
 
 deleteSession : Session -> Task Http.Error Session
 deleteSession session =
-    (send
-        { verb = "DELETE"
-        , headers = []
-        , url = url ("/api/account/sessions/" ++ session.series) []
-        , body = Http.empty
-        }
-    |> mapError promoteError)
-    `andThen` \response ->
-        case response.status of
-            200 -> succeed session
-            _ -> fail <| BadResponse response.status response.statusText
+    always session `map`
+        send 
+            { verb = "DELETE"
+            , headers = []
+            , url = url ("/api/account/sessions/" ++ session.series) []
+            , body = Http.empty
+            }
 
 
 userExists : String -> Task Http.Error Bool
 userExists user =
-    (send
-        { verb = "HEAD"
-        , headers = []
-        , url = url ("/api/users/" ++ user) []
-        , body = Http.empty
-        }
-    |> mapError promoteError)
-    `andThen` (\response ->
-        case response.status of
-            200 -> succeed True
-            404 -> succeed False
-            _ -> fail <| BadResponse response.status response.statusText
-    )
+    always True `map`
+        send
+            { verb = "HEAD"
+            , headers = []
+            , url = url ("/api/users/" ++ user) []
+            , body = Http.empty
+            }
+        `onError` \error ->
+            -- This is actually success ... it just means that the user wasn't
+            -- found, so we report that on the success path.
+            case error of
+                BadResponse 404 _ -> succeed False
+                _ -> fail error
