@@ -10,15 +10,15 @@ type Action
     | FocusLoginError LoginError
     | AttemptLogin Credentials
 
-type LoginStatus
-    = LoginNotAttempted
-    | LoginInProgress
-    | LoginSuccess
-    | LoginError LoginError
+type Status
+    = Start 
+    | LoggingIn 
+    | LoggedIn
+    | Error LoginError
 
 type alias Focus =
     { credentials: Credentials
-    , loginStatus: LoginStatus
+    , status: Status
     }
 
 

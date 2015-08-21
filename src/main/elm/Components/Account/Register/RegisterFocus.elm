@@ -96,19 +96,19 @@ update action focus =
                     {focus' | invitation <- invitation}
 
                 SendInvitation invitation language ->
-                    {focus' | registerStatus <- SendingInvitation}
+                    {focus' | status <- Sending}
                    
                 UseInvitation invitation ->
-                    {focus' | registerStatus <- UsingInvitation}
+                    {focus' | status <- Using}
 
                 FocusInvitationSent ->
-                    {focus' | registerStatus <- InvitationSent}
+                    {focus' | status <- Sent}
 
                 _ -> focus'
 
 
 defaultFocus : Focus
-defaultFocus = Focus RegistrationStart "" ""
+defaultFocus = Focus Start "" ""
 
 
 checkEmail : String -> List StringValidator
@@ -142,7 +142,7 @@ view address model focus =
         emailForm =
             let
                 errors =
-                    if focus.registerStatus == SendingInvitation
+                    if focus.status == Sending
                         then checkEmail focus.email
                         else []
 
@@ -189,7 +189,7 @@ view address model focus =
         invitationForm =
             let
                 errors =
-                    if focus.registerStatus == UsingInvitation
+                    if focus.status == Using
                         then checkInvitation focus.invitation
                         else []
 
@@ -235,8 +235,8 @@ view address model focus =
                     ]
 
         invitationSent =
-            case focus.registerStatus of
-                InvitationSent ->
+            case focus.status of
+                Sent ->
                     div [ id "invitation-sent"
                         , class "alert alert-success text-left"
                         ]

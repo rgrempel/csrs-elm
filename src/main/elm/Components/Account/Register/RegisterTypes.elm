@@ -12,15 +12,15 @@ type Action
     | SendInvitation String Language
     | UseInvitation String
 
-type RegisterStatus
-    = RegistrationStart
-    | SendingInvitation
-    | InvitationSent
-    | UsingInvitation
-    | IntivationUsed
+type Status
+    = Start
+    | Sending
+    | Sent
+    | Using
+    | Used
 
 type alias Focus =
-    { registerStatus : RegisterStatus
+    { status : Status
     , email : String
     , invitation : String
     }

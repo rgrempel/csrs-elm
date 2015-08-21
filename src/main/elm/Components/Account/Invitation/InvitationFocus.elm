@@ -135,15 +135,15 @@ update action focus =
             CheckInvitation key ->
                 Just <| Invitation <|
                     { invitation
-                        | status <- CheckingInvitation
+                        | status <- Checking
                         , key <- key
                     }
 
             FocusInvitationNotFound ->
-                Just <| Invitation <| {invitation | status <- InvitationNotFound}
+                Just <| Invitation <| {invitation | status <- NotFound}
 
             FocusInvitationFound activation ->
-                Just <| Invitation <| {invitation | status <- InvitationFound activation}
+                Just <| Invitation <| {invitation | status <- Found activation}
 
             FocusError error ->
                 Just <| Invitation <| {invitation | status <- Error error}
@@ -153,7 +153,7 @@ update action focus =
 
 
 defaultFocus : InvitationFocus
-defaultFocus = InvitationFocus "" InvitationStart
+defaultFocus = InvitationFocus "" Start
 
 
 checkRequired : String -> List StringValidator
@@ -195,12 +195,12 @@ viewInvitation address model focus =
 
         errors =
             case focus.status of
-                InvitationStart -> []
+                Start -> []
                 _ -> checkRequired focus.key
 
         failureMessage =
             case focus.status of
-                InvitationNotFound ->
+                NotFound ->
                     [ div [ class "alert invitation-not-found alert-danger text-left" ]
                         [ h4 [] [ trans InvitationText.NotFound ]
                         , p [] [ trans InvitationText.TryAgain ]
@@ -214,7 +214,7 @@ viewInvitation address model focus =
                 Error error ->
                     [ showError language error ] 
 
-                InvitationFound invitation ->
+                Found invitation ->
                     [ div [ class "alert alert-success" ]
                         [ text (toString invitation) ]
                     ]

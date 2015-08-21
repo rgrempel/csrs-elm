@@ -155,7 +155,7 @@ update action focus =
         
             (CreateAccount accountInfo activation language, Just focus') ->
                 Just
-                    { focus' | status <- CreatingAccount }
+                    { focus' | status <- Creating }
 
             (FocusError error, Just focus') ->
                 Just
@@ -177,7 +177,7 @@ update action focus =
 
 
 defaultFocus : UserEmailActivation -> Focus
-defaultFocus = Focus RegisterStart defaultAccountInfo Dict.empty
+defaultFocus = Focus Start defaultAccountInfo Dict.empty
 
 
 defaultAccountInfo : AccountInfo
@@ -234,7 +234,7 @@ view address model focus =
             let
                 errors =
                     case focus.status of
-                        RegisterStart -> checkUserNameAvailable focus.users focus.accountInfo.username 
+                        Start -> checkUserNameAvailable focus.users focus.accountInfo.username 
                         _ -> checkUserName focus.users focus.accountInfo.username
 
             in
@@ -272,7 +272,7 @@ view address model focus =
             let
                 errors =
                     case focus.status of
-                        RegisterStart -> []
+                        Start -> []
                         _ -> checkPassword focus.accountInfo.password
 
             in
@@ -302,7 +302,7 @@ view address model focus =
             let
                 errors =
                     case focus.status of
-                        RegisterStart -> []
+                        Start -> []
                         _ -> checkConfirmPassword focus.accountInfo.confirmPassword focus.accountInfo.password
 
             in

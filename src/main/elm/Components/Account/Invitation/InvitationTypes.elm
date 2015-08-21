@@ -17,10 +17,10 @@ type Action
     | FocusError Http.Error
 
 type Status
-    = InvitationStart
-    | CheckingInvitation
-    | InvitationNotFound
-    | InvitationFound UserEmailActivation
+    = Start
+    | Checking
+    | NotFound
+    | Found UserEmailActivation
     | Error Http.Error
 
 type Focus

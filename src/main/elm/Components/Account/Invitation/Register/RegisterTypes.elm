@@ -16,9 +16,9 @@ type Action
     | FocusError CreateAccountError 
     | FocusLoginError LoginError
 
-type RegisterStatus
-    = RegisterStart
-    | CreatingAccount
+type Status
+    = Start
+    | Creating
     | CreationError CreateAccountError 
     | LoginError LoginError
 
@@ -29,7 +29,7 @@ type alias AccountInfo =
     }
 
 type alias Focus =
-    { status : RegisterStatus
+    { status : Status
     , accountInfo : AccountInfo
     , users : Dict String Bool
     , activation : UserEmailActivation

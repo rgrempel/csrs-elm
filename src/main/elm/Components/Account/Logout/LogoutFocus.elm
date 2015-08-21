@@ -70,17 +70,17 @@ update action focus =
         Just <|
             case action of
                 FocusError error ->
-                    {focus' | logoutStatus <- LogoutError error}
+                    {focus' | status <- Error error}
 
                 FocusSuccess ->
-                    {focus' | logoutStatus <- LogoutSuccess}
+                    {focus' | status <- LoggedOut}
 
                 _ -> focus'
 
 
 defaultFocus : Focus
 defaultFocus =
-    { logoutStatus = LogoutNotAttempted
+    { status = Start
     }
 
 

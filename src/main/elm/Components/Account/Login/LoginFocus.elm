@@ -89,16 +89,16 @@ update action focus =
                     updateCredentials {credentials | rememberMe <- rememberMe}
 
                 FocusLoginError loginError ->
-                    {focus' | loginStatus <- LoginError loginError}
+                    {focus' | status <- Error loginError}
 
                 AttemptLogin credentials ->
-                    {focus' | loginStatus <- LoginInProgress}
+                    {focus' | status <- LoggingIn}
 
                 _ -> focus'
 
 
 defaultFocus : Focus
-defaultFocus = Focus blankCredentials LoginNotAttempted
+defaultFocus = Focus blankCredentials Start
 
 
 blankCredentials : Credentials
@@ -132,7 +132,7 @@ view address model focus =
         usernameField =
             let
                 errors =
-                    if focus.loginStatus == LoginNotAttempted
+                    if focus.status == Start
                         then []
                         else checkRequired focus.credentials.username
 
@@ -160,7 +160,7 @@ view address model focus =
         passwordField =
             let
                 errors =
-                    if focus.loginStatus == LoginNotAttempted
+                    if focus.status == Start
                         then []
                         else checkRequired focus.credentials.password
 
@@ -210,8 +210,8 @@ view address model focus =
                 ] [ transHtml LoginText.Button ]
 
         result =
-            case focus.loginStatus of
-                LoginError LoginWrongPassword -> 
+            case focus.status of
+                Error LoginWrongPassword -> 
                     p
                         [ key "result"
                         , class "alert alert-danger"
@@ -219,14 +219,14 @@ view address model focus =
                         ]
                         [ transHtml LoginText.Failed ]
                 
-                LoginError (LoginHttpError error) ->
+                Error (LoginHttpError error) ->
                     p
                         [ key "result"
                         , id "loginFailed"
                         ]
                         [ showError language error ]
 
-                LoginSuccess ->
+                LoggedIn ->
                     p 
                         [ key "result"
                         , class "alert alert-success"

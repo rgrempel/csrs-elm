@@ -99,19 +99,22 @@ update action focus =
                     {focus' | token <- token}
 
                 SendToken token language ->
-                    {focus' | resetPasswordStatus <- SendingToken}
+                    {focus' | status <- Sending}
 
                 UseToken token ->
-                    {focus' | resetPasswordStatus <- UsingToken}
+                    {focus' | status <- Using}
 
                 FocusTokenSent ->
-                    {focus' | resetPasswordStatus <- TokenSent}
+                    {focus' | status <- Sent}
+
+                FocusSendTokenError error ->
+                    {focus' | status <- ErrorSending error}
 
                 _ -> focus'
 
 
 defaultFocus : Focus
-defaultFocus = Focus ResetPasswordStart "" ""
+defaultFocus = Focus Start "" ""
 
 
 checkEmail : String -> List StringValidator
@@ -142,7 +145,7 @@ view address model focus =
         tokenForm =
             let
                 errors =
-                    if focus.resetPasswordStatus == UsingToken
+                    if focus.status == Using
                         then checkToken focus.token
                         else []
 
@@ -190,7 +193,7 @@ view address model focus =
         emailForm =
             let
                 errors =
-                    if focus.resetPasswordStatus == SendingToken
+                    if focus.status == Sending
                         then checkEmail focus.email
                         else []
 
@@ -235,8 +238,8 @@ view address model focus =
                     ]
 
         tokenSent =
-            case focus.resetPasswordStatus of
-                TokenSent ->
+            case focus.status of
+                Sent ->
                     div [ class "alert alert-success text-left" 
                         , id "invitation-sent"
                         ]

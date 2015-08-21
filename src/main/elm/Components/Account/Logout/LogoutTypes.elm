@@ -8,12 +8,12 @@ type Action
     | FocusSuccess
     | AttemptLogout
 
-type LogoutStatus
-    = LogoutNotAttempted
-    | LogoutInProgress
-    | LogoutSuccess
-    | LogoutError Error
+type Status
+    = Start
+    | LoggingOut
+    | LoggedOut
+    | Error Error
 
 type alias Focus =
-    { logoutStatus: LogoutStatus
+    { status: Status
     }

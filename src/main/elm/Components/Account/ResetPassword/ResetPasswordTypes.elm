@@ -12,15 +12,16 @@ type Action
     | SendToken String Language
     | UseToken String
 
-type ResetPasswordStatus
-    = ResetPasswordStart
-    | SendingToken
-    | TokenSent
-    | UsingToken
-    | TokenUsed
+type Status
+    = Start
+    | Sending
+    | Sent
+    | Using
+    | Used
+    | ErrorSending Http.Error
 
 type alias Focus =
-    { resetPasswordStatus : ResetPasswordStatus
+    { status : Status
     , email : String
     , token : String
     }
