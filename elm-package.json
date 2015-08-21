@@ -1,10 +1,11 @@
 {
     "version": "1.0.0",
-    "summary": "helpful summary of your project, less than 80 characters",
-    "repository": "https://github.com/USER/PROJECT.git",
+    "summary": "Membership directory for the Canadian Society for Renaissance Studies",
+    "repository": "https://github.com/rgrempel/csrs-elm.git",
     "license": "BSD3",
     "source-directories": [
-        "src/main/elm"
+        "src/main/elm",
+        "src/vendor/elm/elm-cookies/src"
     ],
     "exposed-modules": [],
     "native-modules": true,

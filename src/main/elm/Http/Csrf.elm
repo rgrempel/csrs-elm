@@ -3,7 +3,7 @@ module Http.Csrf where
 import Http exposing (Settings, Request, RawError, Response, send)
 import Task exposing (Task, andThen)
 import Dict exposing (get)
-import Cookies exposing (getCookies)
+import Cookies
 
 
 csrfCookie : String
@@ -29,5 +29,5 @@ withCsrf func settings request =
                     func settings request
 
     in
-        getCookies `andThen` funcWithCookies
+        Cookies.get `andThen` funcWithCookies
 
