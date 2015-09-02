@@ -121,19 +121,20 @@ view address model focus =
             ]
 
 
-menu : Address Action -> Model -> Maybe Focus -> Html
+menu : Address Action -> Model -> Maybe Focus -> Maybe Html
 menu address model focus =
     let 
         trans = HomeText.translate model.useLanguage
 
     in
-        li [ classList [ ( "active", focus /= Nothing ) ] ]
-            [ a
-                [ onClick address FocusHome
-                , id "navbar-link-home" 
+        Just <|
+            li [ classList [ ( "active", focus /= Nothing ) ] ]
+                [ a
+                    [ onClick address FocusHome
+                    , id "navbar-link-home" 
+                    ]
+                    [ glyphicon "home"
+                    , text unbreakableSpace
+                    , trans HomeText.MenuItem
+                    ]
                 ]
-                [ glyphicon "home"
-                , text unbreakableSpace
-                , trans HomeText.MenuItem
-                ]
-            ]

@@ -61,17 +61,43 @@ superModule actionTag submodule =
         , reaction = reaction
         , initialTask = submodule.initialTask
         }
-        
 
+
+{-| A record which represents the functions present in the subComponent which
+participate in the standard wiring between subComponents and superComponents.
+Note that it should be possible to define the whole record from the subComponent's
+point of view, so it should always be possible to do this inside the subComponent's
+module. (Of course, the functions referred to here don't actually have to be defined
+in a single Elm module, but that will be a typical pattern.
+-}
 type alias SubComponent subaction subfocus =
     { route : List String -> Maybe subaction
     , path : Maybe subfocus -> subfocus -> Maybe PathAction
     , reaction : Maybe (Address subaction -> subaction -> Maybe subfocus -> Maybe (Task () ()))
     , update : subaction -> Maybe subfocus -> Maybe subfocus
     , view : Address subaction -> Model -> subfocus -> Html
-    , menu : Maybe (Address subaction -> Model -> Maybe subfocus -> Html)
+
+    {- The menu property is wrapped in a Maybe so that you can specify that
+    there is no menu function at all. It returns a Maybe Html so that you can
+    decide at runtime not to show the menu. The subfocus is Maybe because we
+    typcially show all the menus -- that is, even for virtual pages that don't
+    have the focus.  The state of the menu might depend on whether the submodule
+    has the focus, for instance, the 'active' class might be applied.
+    -}
+    , menu : Maybe (Address subaction -> Model -> Maybe subfocus -> Maybe Html)
     }
 
+
+{-| This record represents some SubComponent after it has been 'wired' to a
+specific SuperComponent. So perhaps the naming is a bit off -- this isn't the
+SuperComponent itself, but the SubComponent as combined with a specific
+SuperComponent. So, it represents the functions that the SuperComponent would
+actually call in order to call the SubComponent's functions. And, of course,
+the point of the indirection is to get the standard 'sugar' that is provided
+below by the superComponent method.
+
+TODO: Rethink the naming here.
+-}
 type alias SuperComponent subaction superaction subfocus superfocus =
     { route : List String -> Maybe superaction
     , path : Maybe superfocus -> subfocus -> Maybe PathAction
@@ -81,6 +107,12 @@ type alias SuperComponent subaction superaction subfocus superfocus =
     , menu : Address superaction -> Model -> Maybe superfocus -> Maybe Html
     }
 
+
+{-| This record represents the arguments to the superComponent function.
+Its purpose is simply to avoid a five-argument function. Essentially,
+the properties of this record are the various things we need to know in
+order to dispatch from the superComponent to the subComponent.
+-}
 type alias MakeComponent subaction superaction subfocus superfocus =
     { prefix : String
     , actionTag : subaction -> superaction
@@ -90,6 +122,15 @@ type alias MakeComponent subaction superaction subfocus superfocus =
     }
 
 
+{-| This is the function that actually wires together the subComponent and
+the superComponent. Essentially, it adapts between two things:
+
+* The way it is most convenient to call the functions from the superComponent; and
+* The way it is most convenient to define the functions in the subComponent.
+
+That way, both the call-site and the called function can be kept simpler than
+they would otherwise be -- the complexity is handled here, once and for all.
+-}
 superComponent : MakeComponent a b c d -> SuperComponent a b c d
 superComponent args =
     let
@@ -124,8 +165,11 @@ superComponent args =
             args.sub.view (forwardTo address args.actionTag) model focus
 
         menu address model focus =
-            (\menu -> menu (forwardTo address args.actionTag) model (focus `Maybe.andThen` args.reverseFocusTag))
-            `Maybe.map` args.sub.menu
+            args.sub.menu `Maybe.andThen` \menu ->
+                menu 
+                    (forwardTo address args.actionTag)
+                    model
+                    (focus `Maybe.andThen` args.reverseFocusTag)
 
     in
         { route = route 

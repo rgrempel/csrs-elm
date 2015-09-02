@@ -165,8 +165,9 @@ update : Action -> Maybe Focus -> Maybe Focus
 view : Address Action -> Model -> Focus -> Html
 
 {-| Given an address, the whole model, and the focus (if we are being
-    focused on) produce HTML for the menu. -}
-menu : Address Action -> Model -> Maybe Focus -> Html
+    focused on) produce HTML for the menu, or Nothing if the menu
+    should not be shown. -}
+menu : Address Action -> Model -> Maybe Focus -> Maybe Html
 ```
 
 The `route` and `path` functions implement the location changes and reactions.

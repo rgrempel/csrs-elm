@@ -289,15 +289,19 @@ view address model focus =
             ]
 
 
-menuItem : Address Action -> Model -> Maybe Focus -> Html
+menuItem : Address Action -> Model -> Maybe Focus -> Maybe Html
 menuItem address model focus =
-    li [ classList [ ( "active", focus /= Nothing ) ] ]
-        [ a [ onClick address FocusBlank
-            , id "navbar-account-change-password"
-            ]
-            [ glyphicon "lock" 
-            , text unbreakableSpace
-            , ChangePasswordText.translateHtml model.useLanguage ChangePasswordText.Title
-            ]
-        ]
-
+    let
+        menu =
+            li [ classList [ ( "active", focus /= Nothing ) ] ]
+                [ a [ onClick address FocusBlank
+                    , id "navbar-account-change-password"
+                    ]
+                    [ glyphicon "lock" 
+                    , text unbreakableSpace
+                    , ChangePasswordText.translateHtml model.useLanguage ChangePasswordText.Title
+                    ]
+                ]
+        in
+            -- Only show menu item if we have a user logged in.
+            Maybe.map (always menu) model.currentUser

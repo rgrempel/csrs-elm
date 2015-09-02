@@ -264,13 +264,20 @@ view address model focus =
             ]
 
 
-menuItem : Address RegisterTypes.Action -> Model -> Maybe Focus -> Html
+menuItem : Address RegisterTypes.Action -> Model -> Maybe Focus -> Maybe Html
 menuItem address model focus =
-    li [ classList [ ( "active", focus /= Nothing ) ] ]
-        [ a [ onClick address FocusBlank ]
-            [ glyphicon "plus-sign" 
-            , text unbreakableSpace
-            , RegisterText.translateHtml model.useLanguage RegisterText.CreateNewAccount 
-            ]
-        ]
+    let
+        menu =
+            li [ classList [ ( "active", focus /= Nothing ) ] ]
+                [ a [ onClick address FocusBlank ]
+                    [ glyphicon "plus-sign" 
+                    , text unbreakableSpace
+                    , RegisterText.translateHtml model.useLanguage RegisterText.CreateNewAccount 
+                    ]
+                ]
 
+    in
+        -- Only show menu if user not logged in
+        if model.currentUser == Nothing
+            then Just menu
+            else Nothing

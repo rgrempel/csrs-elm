@@ -102,15 +102,21 @@ view address model focus =
             ]
 
 
-menuItem : Address LogoutTypes.Action -> Model -> Maybe Focus -> Html
+menuItem : Address LogoutTypes.Action -> Model -> Maybe Focus -> Maybe Html
 menuItem address model focus =
-    li [ classList [ ( "active", focus /= Nothing ) ] ]
-        [ a [ onClick address AttemptLogout
-            , id "navbar-link-account-logout"
-            ]
-            [ glyphicon "log-out" 
-            , text unbreakableSpace
-            , LogoutText.translate model.useLanguage LogoutText.Title 
-            ]
-        ]
+    let
+        menu =
+            li [ classList [ ( "active", focus /= Nothing ) ] ]
+                [ a [ onClick address AttemptLogout
+                    , id "navbar-link-account-logout"
+                    ]
+                    [ glyphicon "log-out" 
+                    , text unbreakableSpace
+                    , LogoutText.translate model.useLanguage LogoutText.Title 
+                    ]
+                ]
+
+    in
+        -- Only show menu if user logged in
+        Maybe.map (always menu) model.currentUser
 

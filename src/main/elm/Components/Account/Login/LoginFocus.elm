@@ -270,15 +270,21 @@ view address model focus =
             ]
 
 
-menuItem : Address LoginTypes.Action -> Model -> Maybe Focus -> Html
+menuItem : Address LoginTypes.Action -> Model -> Maybe Focus -> Maybe Html
 menuItem address model focus =
-    li [ classList [ ( "active", focus /= Nothing ) ] ]
-        [ a [ onClick address FocusBlank
-            , id "navbar-account-login"
-            ]
-            [ glyphicon "log-in" 
-            , text unbreakableSpace
-            , LoginText.translateHtml model.useLanguage LoginText.Title 
-            ]
-        ]
+    let
+        menu =
+            li [ classList [ ( "active", focus /= Nothing ) ] ]
+                [ a [ onClick address FocusBlank
+                    , id "navbar-account-login"
+                    ]
+                    [ glyphicon "log-in" 
+                    , text unbreakableSpace
+                    , LoginText.translateHtml model.useLanguage LoginText.Title 
+                    ]
+                ]
 
+    in
+        if model.currentUser == Nothing
+            then Just menu
+            else Nothing

@@ -82,7 +82,7 @@ view address model focus =
 
 
 -- TODO: ONly show to admins
-menu : Address Action -> Model -> Maybe Focus -> Html
+menu : Address Action -> Model -> Maybe Focus -> Maybe Html
 menu address model focus =
     let
         trans =
@@ -98,18 +98,17 @@ menu address model focus =
                 ]
     
     in
-        dropdownPointer [ classList [ ( "active", focus /= Nothing ) ] ]
-            [ dropdownToggle []
-                [ glyphicon "tower"
-                , text unbreakableSpace
-                , span [ class "hidden-tablet" ] [ trans TasksText.Title ]
-                , text unbreakableSpace
-                , span [ class "text-bold caret" ] []
+        Just <|
+            dropdownPointer [ classList [ ( "active", focus /= Nothing ) ] ]
+                [ dropdownToggle []
+                    [ glyphicon "tower"
+                    , text unbreakableSpace
+                    , span [ class "hidden-tablet" ] [ trans TasksText.Title ]
+                    , text unbreakableSpace
+                    , span [ class "text-bold caret" ] []
+                    ]
+                , dropdownMenu 
+                    [ standardMenuItem "dashboard" TasksText.ProcessForms FocusProcessForms ProcessForms
+                    , standardMenuItem "dashboard" TasksText.MembershipByYear FocusMembershipByYear MembershipByYear
+                    ]
                 ]
-            , dropdownMenu 
-                [ standardMenuItem "dashboard" TasksText.ProcessForms FocusProcessForms ProcessForms
-                , standardMenuItem "dashboard" TasksText.MembershipByYear FocusMembershipByYear MembershipByYear
-                ]
-            ]
-
-

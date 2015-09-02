@@ -182,7 +182,7 @@ view address model focus =
             login.view address model subfocus
  
 
-menu : Address Action -> Model -> Maybe Focus -> Html
+menu : Address Action -> Model -> Maybe Focus -> Maybe Html
 menu address model focus =
     let
         trans =
@@ -192,24 +192,24 @@ menu address model focus =
             model.currentUser
 
     in
-        dropdownPointer [ classList [ ( "active", focus /= Nothing ) ] ]
-            [ dropdownToggle [ id "navbar-account-menu" ]
-                [ glyphicon "user"
-                , text unbreakableSpace
-                , span [ class "hidden-tablet" ] [ trans AccountText.Title ]
-                , text unbreakableSpace
-                , span [ class "text-bold caret" ] []
-                ]
-            , dropdownMenu <|
-                List.filterMap identity <|
-                    if user == Nothing then
+        Just <|
+            dropdownPointer [ classList [ ( "active", focus /= Nothing ) ] ]
+                [ dropdownToggle [ id "navbar-account-menu" ]
+                    [ glyphicon "user"
+                    , text unbreakableSpace
+                    , span [ class "hidden-tablet" ] [ trans AccountText.Title ]
+                    , text unbreakableSpace
+                    , span [ class "text-bold caret" ] []
+                    ]
+                , dropdownMenu <|
+                    List.filterMap identity
+                        -- Note that each of these manages for itself whether
+                        -- to be shown depending on whether a user is logged in.
                         [ login.menu address model focus
                         , register.menu address model focus
-                        ]
-                    else
-                        [ logout.menu address model focus
+                        , logout.menu address model focus
                         , changePassword.menu address model focus
                         , sessions.menu address model focus
                         ]
-            ]
+                ]
 

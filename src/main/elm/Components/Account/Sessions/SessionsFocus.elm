@@ -171,12 +171,18 @@ view address model focus =
             ]
 
 
-menuItem : Address Action -> Model -> Maybe Focus -> Html
+menuItem : Address Action -> Model -> Maybe Focus -> Maybe Html
 menuItem address model focus =
-    li [ classList [ ( "active", focus /= Nothing ) ] ]
-        [ a [ onClick address Fetch ]
-            [ glyphicon "cloud" 
-            , text unbreakableSpace
-            , SessionsText.translate model.useLanguage SessionsText.Sessions
-            ]
-        ]
+    let
+        menu =
+            li [ classList [ ( "active", focus /= Nothing ) ] ]
+                [ a [ onClick address Fetch ]
+                    [ glyphicon "cloud" 
+                    , text unbreakableSpace
+                    , SessionsText.translate model.useLanguage SessionsText.Sessions
+                    ]
+                ]
+
+    in
+        -- Only show if logged in
+        Maybe.map (always menu) model.currentUser
