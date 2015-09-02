@@ -6,8 +6,9 @@ buildscript {
 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}")
-        classpath('com.moowork.gradle:gradle-node-plugin:0.8')    
-        classpath('com.moowork.gradle:gradle-gulp-plugin:0.1')        
+        classpath('com.moowork.gradle:gradle-node-plugin:0.8')
+        classpath('com.moowork.gradle:gradle-gulp-plugin:0.1')
+        classpath("org.gebish:geb-gradle:$geb_version")
     }
 }
 
@@ -16,6 +17,7 @@ apply plugin: 'groovy'
 apply plugin: 'maven'
 apply plugin: 'spring-boot'
 apply plugin: 'war'
+apply plugin: 'geb-saucelabs'
 
 apply from: 'yeoman.gradle'
 apply from: 'liquibase.gradle'
@@ -109,6 +111,7 @@ repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/releases' }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url 'http://repo.maven.apache.org/maven2' }
+    maven { url 'http://repository-saucelabs.forge.cloudbees.com/release' }
 }
 
 dependencies {
@@ -219,6 +222,8 @@ dependencies {
     testCompile group: 'org.gebish', name: 'geb-junit4', version: geb_version
     testCompile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: selenium_version
     testRuntime group: 'org.seleniumhq.selenium', name: 'selenium-support', version: selenium_version
+
+    sauceConnect group: 'com.saucelabs', name: 'ci-sauce', version: ci_sauce_version
 }
 
 test {
@@ -230,4 +235,29 @@ task wrapper(type: Wrapper) {
 }
 
 task stage(dependsOn: 'bootRepackage') {
+}
+
+sauceLabs {
+    browsers {
+       firefox_linux_19
+       chrome_mac
+       delegate."internet explorer_vista_9"
+       nexus4 {
+         capabilities(
+            browserName: "android",
+            platform: "Linux",
+            version: "4.4",
+            deviceName: "LG Nexus 4"
+         )
+       }
+    }
+    task {
+       testClassesDir = test.testClassesDir
+       testSrcDirs = test.testSrcDirs
+       classpath = test.classpath
+    }
+    account {
+       username = System.getenv("GEB_SAUCE_LABS_USER")
+       accessKey = System.getenv("GEB_SAUCE_LABS_ACCESS_PASSWORD")
+    }
 }
