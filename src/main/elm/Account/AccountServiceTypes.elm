@@ -6,6 +6,7 @@ import Signal exposing (Mailbox, Address, mailbox)
 import Task exposing (Task, map, mapError, succeed, fail, onError, andThen, toResult)
 import Json.Decode as JD exposing ((:=), oneOf)
 import String exposing (toUpper)
+import Result
 
 
 type LoginError
@@ -33,18 +34,22 @@ type Role
     | RoleAdmin
 
 
+roleFromString : String -> Result String Role
+roleFromString s =
+    case (toUpper s) of
+        "ROLE_ADMIN" ->
+            Result.Ok RoleAdmin
+
+        "ROLE_USER" ->
+            Result.Ok RoleUser
+
+        _ ->
+            Result.Err <| s ++ " is not a role I recognize"
+
+
 roleDecoder : JD.Decoder Role
 roleDecoder =
-    JD.string `JD.andThen` \s ->
-        case (toUpper s) of
-            "ROLE_ADMIN" ->
-                JD.succeed RoleAdmin
-
-            "ROLE_USER" ->
-                JD.succeed RoleUser
-
-            _ ->
-                JD.fail <| s ++ " is not a role I recognize"
+    JD.customDecoder JD.string roleFromString
 
 
 type alias User =
