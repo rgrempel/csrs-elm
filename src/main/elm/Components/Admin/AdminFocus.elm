@@ -2,92 +2,81 @@ module Components.Admin.AdminFocus where
 
 import AppTypes exposing (..)
 import Route.RouteService exposing (PathAction(..))
+import Account.AccountServiceTypes exposing (hasRole, Role(..))
 
 import Components.Admin.AdminText as AdminText
 import Components.Admin.AdminTypes exposing (..)
+import Components.Admin.Audits.AuditsFocus as AuditsFocus
 
 import Html exposing (Html, h1, text, div, li, ul, a, span)
-import Html.Attributes exposing (class, classList, href)
+import Html.Attributes exposing (class, classList, href, id)
 import Html.Events exposing (onClick)
 import Signal exposing (Address, forwardTo)
 import Html.Util exposing (dropdownMenu, dropdownToggle, dropdownPointer, glyphicon, unbreakableSpace)
+import Task exposing (Task)
 
 
 subcomponent : SubComponent Action Focus 
 subcomponent =
     { route = route
     , path = path
-    , reaction = Nothing 
+    , reaction = Just reaction 
     , update = update
     , view = view
     , menu = Just menu 
     }
 
+audits =
+    superComponent <|
+        MakeComponent "audits" FocusAudits Audits auditsFocus AuditsFocus.subcomponent
+
 
 route : List String -> Maybe Action
-route hashList =
-    case hashList of
-        first :: rest ->
-            case first of
-                "metrics" ->
-                    Just FocusMetrics
+route list =
+    Maybe.oneOf
+        [ audits.route list
+        ]
 
-                "health" ->
-                    Just FocusHealth
 
-                "configuration" ->
-                    Just FocusConfiguration
+path : Maybe Focus -> Focus -> Maybe PathAction
+path focus focus' =
+    case focus' of
+        Metrics ->
+            Just <| SetPath ["metrics"]
 
-                "audits" ->
-                    Just FocusAudits
+        Health ->
+            Just <| SetPath ["health"]
 
-                "logs" ->
-                    Just FocusLogs
+        Configuration ->
+            Just <| SetPath ["configuration"]
 
-                "api" ->
-                    Just FocusApiDocs
+        Audits subfocus ->
+            audits.path focus subfocus
 
-                "templates" ->
-                    Just FocusTemplates
+        Logs ->
+            Just <| SetPath ["logs"]
 
-                "images" ->
-                    Just FocusImages
+        ApiDocs ->
+            Just <| SetPath ["api"]
 
-                _ ->
-                    Nothing
+        Templates ->
+            Just <| SetPath ["templates"]
+
+        Images ->
+            Just <| SetPath ["images"]
 
         _ ->
             Nothing
 
 
-path : Maybe Focus -> Focus -> Maybe PathAction
-path focus focus' =
-    if (focus == Just focus')
-        then Nothing
-        else case focus' of
-            Metrics ->
-                Just <| SetPath ["metrics"]
+reaction : Address Action -> Action -> Maybe Focus -> Maybe (Task () ())
+reaction address action focus =
+    case action of
+        FocusAudits subaction ->
+            audits.reaction address subaction focus
 
-            Health ->
-                Just <| SetPath ["health"]
-
-            Configuration ->
-                Just <| SetPath ["configuration"]
-
-            Audits ->
-                Just <| SetPath ["audits"]
-
-            Logs ->
-                Just <| SetPath ["logs"]
-
-            ApiDocs ->
-                Just <| SetPath ["api"]
-
-            Templates ->
-                Just <| SetPath ["templates"]
-
-            Images ->
-                Just <| SetPath ["images"]
+        _ ->
+            Nothing
 
 
 update : Action -> Maybe Focus -> Maybe Focus
@@ -102,8 +91,8 @@ update action focus =
         FocusConfiguration ->
             Just Configuration
 
-        FocusAudits ->
-            Just Audits
+        FocusAudits subaction ->
+            audits.update subaction focus
 
         FocusLogs ->
             Just Logs
@@ -123,57 +112,63 @@ update action focus =
 
 view : Address Action -> Model -> Focus -> Html
 view address model focus =
-    let 
-        v s =
-            div [ class "container" ]
-                [ h1 [] [ text s ]
-                ]
+    case focus of
+        Audits subfocus ->
+            audits.view address model subfocus
 
-    in
-        case focus of
-            Metrics -> v "Metrics"
-            Health -> v "Health"
-            Configuration -> v "Configuration"
-            Audits -> v "Audits"
-            Logs -> v "Logs"
-            ApiDocs -> v "API Docs"
-            Templates -> v "Templates"
-            Images -> v "Images"
+        _ ->
+            div [] []
 
 
--- TODO: ONly show to admins
-menu : Address Action -> Model -> Maybe Focus -> Html
+menu : Address Action -> Model -> Maybe Focus -> Maybe Html
 menu address model focus =
     let
         trans =
             AdminText.translate model.useLanguage
 
+        user =
+            model.currentUser
+
         standardMenuItem icon message action newFocus =
-            li [ classList [ ( "active", focus == Just newFocus ) ] ]
-                [ a [ onClick address action ]
-                    [ glyphicon icon
-                    , text unbreakableSpace
-                    , trans message
+            Just <|
+                li [ classList [ ( "active", focus == Just newFocus ) ] ]
+                    [ a [ onClick address action ]
+                        [ glyphicon icon
+                        , text unbreakableSpace
+                        , trans message
+                        ]
                     ]
+   
+        menu =
+            dropdownPointer
+                [ classList [ ( "active", focus /= Nothing ) ]
+                , id "navbar-admin-menu"
                 ]
-    
+                [ dropdownToggle []
+                    [ glyphicon "tower"
+                    , text unbreakableSpace
+                    , span [ class "hidden-tablet" ] [ trans AdminText.Title ]
+                    , text unbreakableSpace
+                    , span [ class "text-bold caret" ] []
+                    ]
+                , dropdownMenu <|
+                    List.filterMap identity <|
+                        [ audits.menu address model focus
+                        ]
+                        ++
+                        [ standardMenuItem "dashboard" AdminText.Metrics FocusMetrics Metrics
+                        , standardMenuItem "heart" AdminText.Health FocusHealth Health
+                        , standardMenuItem "list-alt" AdminText.Configuration FocusConfiguration Configuration
+                        , standardMenuItem "tasks" AdminText.Logs FocusLogs Logs
+                        , standardMenuItem "book" AdminText.ApiDocs FocusApiDocs ApiDocs
+                        , standardMenuItem "blackboard" AdminText.Templates FocusTemplates Templates
+                        , standardMenuItem "picture" AdminText.Images FocusImages Images
+                        ]
+                ]
+
     in
-        dropdownPointer [ classList [ ( "active", focus /= Nothing ) ] ]
-            [ dropdownToggle []
-                [ glyphicon "tower"
-                , text unbreakableSpace
-                , span [ class "hidden-tablet" ] [ trans AdminText.Title ]
-                , text unbreakableSpace
-                , span [ class "text-bold caret" ] []
-                ]
-            , dropdownMenu 
-                [ standardMenuItem "dashboard" AdminText.Metrics FocusMetrics Metrics
-                , standardMenuItem "heart" AdminText.Health FocusHealth Health
-                , standardMenuItem "list-alt" AdminText.Configuration FocusConfiguration Configuration
-                , standardMenuItem "bell" AdminText.Audits FocusAudits Audits
-                , standardMenuItem "tasks" AdminText.Logs FocusLogs Logs
-                , standardMenuItem "book" AdminText.ApiDocs FocusApiDocs ApiDocs
-                , standardMenuItem "blackboard" AdminText.Templates FocusTemplates Templates
-                , standardMenuItem "picture" AdminText.Images FocusImages Images
-                ]
-            ]
+        user
+            `Maybe.andThen` hasRole RoleAdmin
+                `Maybe.andThen` \isAdmin ->
+                    if isAdmin then Just menu else Nothing
+

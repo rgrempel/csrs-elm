@@ -59,6 +59,13 @@ type alias User =
     }
 
 
+-- A 'Nothing' answer means we don't have a list of the user's roles. Whereas
+-- (Just False) means that we do have a list, and the Role isn't in it.
+hasRole : Role -> User -> Maybe Bool
+hasRole role user =
+    Maybe.map (List.member role) user.roles
+
+
 userDecoder : JD.Decoder User
 userDecoder =
     JD.object3 User
