@@ -19,7 +19,10 @@ update action model =
     case action of
         -- TODO: Should generate a reaction to update the language preference on the server
         SwitchLanguage language ->
-            { model | useLanguage <- language }
+            { model
+                | useLanguage <- language
+                , formatDate <- dateFormatter language
+            }
 
         _ ->
             model
