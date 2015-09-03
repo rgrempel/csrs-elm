@@ -5,8 +5,8 @@ jdk: oraclejdk8
 sudo: false
 
 before_script:
-    - psql -c 'create database csrs-test;' -U postgres
-    - psql -d csrs-test -c "CREATE EXTENSION unaccent;" -U postgres
+    - psql -c 'create database csrs_test;' -U postgres
+    - psql -d csrs_test -c "CREATE EXTENSION unaccent;" -U postgres
 
 before_install:
     - npm install

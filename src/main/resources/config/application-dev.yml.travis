@@ -9,7 +9,7 @@ spring:
         # The app depends on Postgres-specific stuff
         dataSourceClassName: org.postgresql.ds.PGSimpleDataSource
         url:
-        databaseName: csrs-dev
+        databaseName: csrs_dev
         serverName: localhost
         username: postgres
         password:
