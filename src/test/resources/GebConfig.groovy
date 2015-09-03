@@ -11,6 +11,11 @@ atCheckWaiting = true
 
 def sauceLabsBrowser = System.getProperty("geb.saucelabs.browser")
 if (sauceLabsBrowser) {
+    waiting {
+        timeout = 10
+        retryInterval = 0.5
+    }
+
     driver = {
        def username = System.getenv("GEB_SAUCE_LABS_USER")
        assert username
