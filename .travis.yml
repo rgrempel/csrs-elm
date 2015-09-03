@@ -16,6 +16,8 @@ before_script:
 
 before_install:
     - npm install
+    - cabal update
+    - cabal install Cabal cabal-install
     - git clone https://github.com/elm-lang/elm-platform.git
     - runhaskell elm-platform/installers/BuildFromSource.hs 0.15.1
     - export PATH=`pwd`/elm-platform/Elm-Platform/0.15.1/.cabal-sandbox/bin:$PATH
