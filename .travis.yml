@@ -21,7 +21,7 @@ before_install:
     - export PATH=$HOME/.cabal/bin:$PATH
     - git clone https://github.com/elm-lang/elm-platform.git
     - runhaskell elm-platform/installers/BuildFromSource.hs 0.15.1
-    - export PATH=`pwd`/elm-platform/Elm-Platform/0.15.1/.cabal-sandbox/bin:$PATH
+    - export PATH=`pwd`/Elm-Platform/0.15.1/.cabal-sandbox/bin:$PATH
     - elm-package install --yes
 
 script:
