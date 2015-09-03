@@ -14,7 +14,7 @@ before_install:
     - git clone https://github.com/elm-lang/elm-platform.git
     - runhaskell elm-platform/installers/BuildFromSource.hs 0.15.1
     - export PATH=`pwd`/elm-platform/Elm-Platform/0.15.1/.cabal-sandbox/bin:$PATH
-    - elm-package -y install
+    - elm-package install --yes
 
 script:
     - ./gradlew chromeMacTest
