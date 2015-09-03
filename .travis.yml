@@ -4,11 +4,6 @@ jdk: oraclejdk8
 
 sudo: false
 
-addons:
-    apt:
-        packages:
-            - haskell-platform
-
 before_script:
     - psql -c 'create database csrs-test;' -U postgres
     - psql -d csrs-test -c "CREATE EXTENSION unaccent;" -U postgres
@@ -16,13 +11,7 @@ before_script:
 
 before_install:
     - npm install
-    - cabal update
-    - cabal install Cabal cabal-install
-    - export PATH=$HOME/.cabal/bin:$PATH
-    - git clone https://github.com/elm-lang/elm-platform.git
-    - runhaskell elm-platform/installers/BuildFromSource.hs 0.15.1
-    - export PATH=`pwd`/Elm-Platform/0.15.1/.cabal-sandbox/bin:$PATH
-    - elm-package install --yes
+    - node_modules/elm/bin/elm-package install --yes
 
 script:
     - ./gradlew chromeMacTest

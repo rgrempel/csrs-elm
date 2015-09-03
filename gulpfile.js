@@ -27,7 +27,7 @@ gulp.task('web', function (cb) {
 gulp.task('app.js', ['web'], function (cb) {
     var exec = require('child_process').exec;
     
-    exec('elm-make src/main/elm/App.elm --output build/resources/main/public/app.js', function (err, stdout, stderr) {
+    exec('node_modules/elm/bin/elm-make src/main/elm/App.elm --output build/resources/main/public/app.js', function (err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
         cb(err);
@@ -37,7 +37,7 @@ gulp.task('app.js', ['web'], function (cb) {
 gulp.task('test', function (cb) {
     var exec = require('child_process').exec;
     
-    exec('elm-make src/main/elm/Test.elm --output build/test.html', function (err, stdout, stderr) {
+    exec('node_modules/elm/bin/elm-make src/main/elm/Test.elm --output build/test.html', function (err, stdout, stderr) {
         console.log(stdout);
         console.log(stderr);
 

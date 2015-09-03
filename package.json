@@ -15,6 +15,7 @@
   "devDependencies": {
     "bower": "^1.4.1",
     "del": "^1.2.0",
+    "elm": "^2.0.0",
     "event-stream": "^3.3.1",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
