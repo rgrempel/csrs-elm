@@ -2,6 +2,13 @@ language: java
 
 jdk: oraclejdk8
 
+sudo: false
+
+addons:
+    apt:
+        packages:
+            - haskell-platform
+
 before_script:
     - psql -c 'create database csrs-test;' -U postgres
     - psql -d csrs-test -c "CREATE EXTENSION unaccent;" -U postgres
@@ -9,8 +16,6 @@ before_script:
 
 before_install:
     - npm install
-    - sudo apt-get update -qq
-    - sudo apt-get install -qq haskell-platform
     - git clone https://github.com/elm-lang/elm-platform.git
     - runhaskell elm-platform/installers/BuildFromSource.hs 0.15.1
     - export PATH=`pwd`/elm-platform/Elm-Platform/0.15.1/.cabal-sandbox/bin:$PATH
