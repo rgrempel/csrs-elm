@@ -8,6 +8,9 @@ before_script:
     - psql -c 'create database csrs-test;' -U postgres
     - psql -d csrs-test -c "CREATE EXTENSION unaccent;" -U postgres
     - cp src/test/resources/config/application.yml.travis src/test/resources/config/application.yml
+    - cp src/main/resources/config/application.yml.travis src/main/resources/config/application.yml
+    - cp src/main/resources/config/application-dev.yml.travis src/main/resources/config/application-dev.yml
+    - cp src/main/resources/config/application-prod.yml.travis src/main/resources/config/application-prod.yml
 
 before_install:
     - npm install

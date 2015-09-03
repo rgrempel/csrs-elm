@@ -1,0 +1,41 @@
+# Disable the spring security default configuration from spring-boot-actuator
+management.security.enabled: true
+security.basic.enabled: false
+
+# Disable Jolokia - An http/json bridge for remote JMX access
+endpoints.jolokia.enabled: false
+
+# security configuration (this key should be unique for your application, and kept secret)
+jhipster.security.rememberme.key: 1234567890ABCDEF
+
+spring.jackson.mapper.use_getters_as_setters: false
+
+async:
+    corePoolSize: 2
+    maxPoolSize: 50
+    queueCapacity: 10000
+
+server:
+    tomcat:
+        basedir: run/tomcat
+
+spring:
+    mail:
+        # Adjust as needed
+        host: localhost 
+        port: 25
+        protocol: smtp
+        tls: false
+        auth: false
+        from: # Enter the from address you'd like to use
+
+    messageSource:
+        cacheSeconds: 1
+
+swagger:
+    title: csrs API
+    description: csrs applications and beyond!
+    termsOfServiceUrl: http://jhipster.github.io/
+    contact:
+    license: Apache 2.0
+    licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
