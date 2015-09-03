@@ -1,0 +1,25 @@
+language: java
+
+jdk: oraclejdk8
+
+before_script:
+    - psql -c 'create database csrs-test;' -U postgres
+    - psql -d csrs-test -c "CREATE EXTENSION unaccent;" -U postgres
+    - cp src/test/resources/config/application.yml.travis src/test/resources/config/application.yml
+
+before_install:
+    - npm install
+    - sudo apt-get update -qq
+    - sudo apt-get install -qq haskell-platform
+    - git clone https://github.com/elm-lang/elm-platform.git
+    - runhaskell elm-platform/installers/BuildFromSource.hs 0.15.1
+    - export PATH=`pwd`/elm-platform/Elm-Platform/0.15.1/.cabal-sandbox/bin:$PATH
+    - elm-package -y install
+
+script:
+    - ./gradlew chromeMacTest
+
+env:
+    global:
+        - secure: wUqMApsxCrFBysvM5zr7wuevjUqOUfjMzmwErjh1bKTN3T3ylFPUkPHA5qrgX6A/EHOqMTbGZY19isE84HjuhcAOee0h/beU+6z1HAZW7/z8wT2flfIytUntCsoYkGBA8nzJAncAujH+0Yts4sQoYojXhAQEWlGopsQJH/J/TSV4rGvsaBRQ7Mp4KfUO3FIrLXIr35FEUovIZEVDIC+a9NYorqCZ9TYAp+qg76jftBES5fIda+0s2NRlRp5qNLDdsTaRVXeXAZN+AncGOEHI+nsiK8WKahEjSAZh/vZ+pZ3MKtZaUHqnlswgJP7CRbF/7MbzZia4Ej4X/D3wyap/wAbiv5Om2zqdu+azKjzmI/oPIrO037++LXMqBcg8CMVOVc3ZOewAV/6LcOhzHNvh94ch+jKVS+ng+VDUnxd1cQU3FEx1ihBq1p3mCbazwhYHm0YQETy3WIWJ4HfjjiOqlJCCSPNZXYclhVXRKPNXfDBVizmnX1DYESedrDLnzm9DQjx7uXfBqAFRVEC1JPqqGguZxoO7XK9MJeTt2t3as0U8FlHyhDycWGYf6giLCDifuBBPBbTgU8eDTG0LZZup4P3LaVnD9VJqES8J9J6462VJB7PPZw4rA1cslaIkJdKfm8fGAsk8oVGfaeucmt5vpxmw9cwwa3OPwCg7xxlMN/Y=
+        - secure: YSlRRBcKi/yVapRmdp7D6k2gKuHR84ZWXtZfn9GOW+VLe/2fshoPvy7ALlicUPshm2aZmKNxhA+Jax+1xeS6IzbII6XpxbldEs6266dIr2TE+NSoiw1dPdEHZ1ctSow/LgybBks2SW3wlsFP8iyPiO4CqPiDf07vVD75hV0dRWTS9VKz+zNM2w+Yo0BCuoZOCQI7VjhlVlnQYwbDAD/RnXRQUFdFJakyvRTvjaWvLP4bij+7dOs53rAlW8cbdACFk88fyKZ+p/fYOCZK/yv1lgQYI97omRyRlc7oXxMrjGpk54xM1Kv8PjsWc1tIxdYUFvu+p4dO9KYwgrSs+nS09T7TAonrnf1lZpR2sUZJBzhELAYke/8eZrxOHha4wYoyUE9SOyOD8rGTQPpYp3hwzuFQxPRFrjNL9EbHF4e9a/lxTK2TRkM84qiEhtxtRXri2sLBePgjXP2P2JwWJlpx1xEulQEs72/hUGOP0zrG/AhV0GCL5iwayTkkRi6oHruyES0gWkSE8lbH8tMMiAs8g/bkQvFmH6FlMsfkk4nk2ENUxizBAJN2XgWtndh7Jepz9jchQvX2PiXt/VwiM4RTbl8EaPL5M47hcwngyIuoIui1k4gjKWBZDVT63NT2Rw5Um7cLux1HJuJE5pZ+2we8u2kpKd1v3CFwrKsjQGpOo8E=
