@@ -11,6 +11,7 @@ before_script:
 before_install:
     - npm install
     - node_modules/elm/bin/elm-package install --yes
+    - node_modules/elm/bin/elm-make src/main/elm/App.elm --output build/resources/main/public/app.js
     - cp src/test/resources/config/application.yml.travis src/test/resources/config/application.yml
     - cp src/main/resources/config/application.yml.travis src/main/resources/config/application.yml
     - cp src/main/resources/config/application-dev.yml.travis src/main/resources/config/application-dev.yml
