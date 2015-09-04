@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/rgrempel/csrs-elm.svg)](https://travis-ci.org/rgrempel/csrs-elm)
+
 # CSRS Membership Web Site
 
 This is the code for a membership database that I am working on for the
