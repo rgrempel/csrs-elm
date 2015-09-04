@@ -17,7 +17,7 @@ before_install:
     - cp src/main/resources/config/application-prod.yml.travis src/main/resources/config/application-prod.yml
 
 script:
-    - ./gradlew chromeMacTest
+    - ./gradlew firefoxLinux19Test
 
 env:
     global:
