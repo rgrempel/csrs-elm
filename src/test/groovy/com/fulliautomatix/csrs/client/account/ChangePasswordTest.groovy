@@ -18,7 +18,8 @@ class ChangePasswordTest extends BaseTest {
         doOldLogin()
         
         fetch ChangePasswordPage
-
+        assert oldPassword.displayed
+        
         oldPassword.value "wrong"
         newPassword.value "andrew"
         confirmPassword.value "andrew"
@@ -33,6 +34,7 @@ class ChangePasswordTest extends BaseTest {
         doOldLogin()
 
         fetch ChangePasswordPage
+        assert oldPassword.displayed
 
         oldPassword.value "admin"
         newPassword.value "andrew"

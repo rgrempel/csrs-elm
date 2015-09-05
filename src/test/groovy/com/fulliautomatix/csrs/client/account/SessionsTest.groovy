@@ -34,7 +34,7 @@ class SessionsTest extends BaseTest {
 
         to HomePage
         deleteCookieNamed "JSESSIONID"
-        refresh()
+        refresh HomePage
         assert notLoggedInMessage.displayed
     }
 }

@@ -54,16 +54,14 @@ class RegisterTest extends BaseTest {
     void correct_invitation_url_goes_to_registration_page () {
         String activationKey = sends_invitation()
         via InvitationPage, activationKey
-        refresh()
-        at InvitationRegisterPage
+        refresh InvitationRegisterPage
     }
 
     @Test
     void wrong_invitation_url_stays_on_invitation_page () {
         String activationKey = sends_invitation()
         via InvitationPage, "wrongkey" 
-        refresh()
-        at InvitationPage
+        refresh InvitationPage
     }
 
     @Test

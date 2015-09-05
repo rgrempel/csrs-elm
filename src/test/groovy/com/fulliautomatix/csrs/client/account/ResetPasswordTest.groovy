@@ -51,8 +51,7 @@ class ResetPasswordTest extends BaseTest {
     void correct_invitation_url_goes_to_reset_password_page () {
         String activationKey = sends_invitation()
         via InvitationPage, activationKey
-        refresh()
-        at InvitationResetPasswordPage
+        refresh InvitationResetPasswordPage
     }
 
     @Test
@@ -60,8 +59,7 @@ class ResetPasswordTest extends BaseTest {
     void wrong_invitation_url_stays_on_invitation_page () {
         String activationKey = sends_invitation()
         via InvitationPage, "wrongkey" 
-        refresh()
-        at InvitationPage
+        refresh InvitationPage
     }
 
     @Test

@@ -40,7 +40,7 @@ class LoginTest extends BaseTest {
         assert loggedInMessage.displayed
 
         deleteCookieNamed "JSESSIONID"
-        refresh()
+        refresh HomePage
         assert notLoggedInMessage.displayed
     }
     
@@ -51,7 +51,7 @@ class LoginTest extends BaseTest {
         assert loggedInMessage.displayed
 
         deleteCookieNamed "JSESSIONID"
-        refresh()
+        refresh HomePage
         assert loggedInMessage.displayed
     }
     
@@ -65,7 +65,7 @@ class LoginTest extends BaseTest {
         at HomePage
 
         deleteCookieNamed "JSESSIONID"
-        refresh()
+        refresh HomePage
         assert notLoggedInMessage.displayed
     }
 }

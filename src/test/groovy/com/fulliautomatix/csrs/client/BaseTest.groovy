@@ -23,8 +23,9 @@ abstract class BaseTest extends GebReportingTest {
         configuration
     }
 
-    void refresh () {
+    void refresh (page) {
         driver.navigate().refresh()
+        at page
     }
 
     def getCookies () {
@@ -37,6 +38,6 @@ abstract class BaseTest extends GebReportingTest {
 
     def fetch (page) {
         to page
-        refresh()
+        refresh(page)
     }
 }
