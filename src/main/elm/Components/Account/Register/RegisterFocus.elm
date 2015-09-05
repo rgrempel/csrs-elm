@@ -123,7 +123,7 @@ view : Address RegisterTypes.Action -> Model -> Focus -> Html
 view address model focus =
     let
         language =
-            model.useLanguage
+            model.language.useLanguage
 
         trans =
             RegisterText.translateHtml language
@@ -272,12 +272,12 @@ menuItem address model focus =
                 [ a [ onClick address FocusBlank ]
                     [ glyphicon "plus-sign" 
                     , text unbreakableSpace
-                    , RegisterText.translateHtml model.useLanguage RegisterText.CreateNewAccount 
+                    , RegisterText.translateHtml model.language.useLanguage RegisterText.CreateNewAccount 
                     ]
                 ]
 
     in
         -- Only show menu if user not logged in
-        if model.currentUser == Nothing
+        if model.account.currentUser == Nothing
             then Just menu
             else Nothing

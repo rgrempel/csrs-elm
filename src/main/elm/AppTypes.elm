@@ -16,50 +16,71 @@ import List exposing (head)
 Note that we don't define any of the substance of the model at this highest
 level.  Instead, we just collect model definitions from modules that define
 model stuff.
-
 -}
 type alias Model =
-    LanguageModel (
-    AccountModel (
-    FocusModel (
-      {}
-    )))
-
-
-type alias SubModule x model action =
-    { initialModel : x -> model
-    , actions : Signal action
-    , update : action -> model -> model
-    , reaction : Maybe (action -> model -> Maybe (Task () ()))
-    , initialTask : Maybe (Task () ())
+    { language : LanguageModel
+    , account : AccountModel
+    , focus : FocusModel
     }
 
-type alias SuperModule x submodel subaction superaction =
-    { initialModel : x -> submodel
-    , actions : Signal superaction
+
+{-| A record which represents the things needed in a sub-module in order to wire
+it into a super-module.
+-}
+type alias SubModule submodel subaction =
+    { initialModel : submodel
+    , actions : Signal subaction
     , update : subaction -> submodel -> submodel
-    , reaction : subaction -> submodel -> Maybe (Task () ())
+    , reaction : Maybe (subaction -> submodel -> Maybe (Task () ()))
     , initialTask : Maybe (Task () ())
     }
 
 
-superModule : (subaction -> superaction) -> SubModule x submodel subaction -> SuperModule x submodel subaction superaction
-superModule actionTag submodule =
+{-| This record represents a sub-module after it has been wired to a
+super-module. So perhaps the naming is a bit off -- this isn't the SuperModule
+itself, but the SubModule as combined with a specific SuperModule. So, it
+represents the functions that the SuperModule would actually call in order to
+call the SubModule's functions. And, of course, the point of the indirection is
+to get the standard 'sugar' that is provided below by the superModule method.
+-}
+type alias SuperModule submodel supermodel subaction superaction =
+    { initialModel : submodel
+    , actions : Signal superaction
+    , update : subaction -> supermodel -> submodel
+    , reaction : subaction -> supermodel -> Maybe (Task () ())
+    , initialTask : Maybe (Task () ())
+    }
+
+
+{-| This is the function that actually wires together the subModule and
+the superModule. Essentially, it adapts between two things:
+
+* The way it is most convenient to call the functions from the superModule; and
+* The way it is most convenient to define the functions in the subModule.
+
+That way, both the call-site and the called function can be kept simpler than
+they would otherwise be -- the complexity is handled here, once and for all.
+-}
+superModule : (supermodel -> submodel) -> (subaction -> superaction) -> SubModule submodel subaction -> SuperModule submodel supermodel subaction superaction
+superModule modelTag actionTag submodule =
     let
         actions =
             Signal.map actionTag submodule.actions
 
-        reaction subaction submodel =
+        reaction subaction supermodel =
             submodule.reaction
                 `Maybe.andThen` \reaction ->
-                    reaction subaction submodel
+                    reaction subaction (modelTag supermodel)
+
+        update subaction supermodel =
+            submodule.update subaction (modelTag supermodel)
     
     in
         { initialModel = submodule.initialModel
-        , actions = actions
-        , update = submodule.update
-        , reaction = reaction
         , initialTask = submodule.initialTask
+        , actions = actions
+        , update = update
+        , reaction = reaction
         }
 
 

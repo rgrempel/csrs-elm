@@ -121,7 +121,7 @@ view : Address LoginTypes.Action -> Model -> Focus -> Html
 view address model focus =
     let
         language =
-            model.useLanguage
+            model.language.useLanguage
 
         transHtml =
             LoginText.translateHtml language 
@@ -280,11 +280,11 @@ menuItem address model focus =
                     ]
                     [ glyphicon "log-in" 
                     , text unbreakableSpace
-                    , LoginText.translateHtml model.useLanguage LoginText.Title 
+                    , LoginText.translateHtml model.language.useLanguage LoginText.Title 
                     ]
                 ]
 
     in
-        if model.currentUser == Nothing
+        if model.account.currentUser == Nothing
             then Just menu
             else Nothing

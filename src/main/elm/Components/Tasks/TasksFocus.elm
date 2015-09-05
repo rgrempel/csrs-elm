@@ -86,7 +86,7 @@ menu : Address Action -> Model -> Maybe Focus -> Maybe Html
 menu address model focus =
     let
         trans =
-            TasksText.translate model.useLanguage
+            TasksText.translate model.language.useLanguage
 
         standardMenuItem icon message action newFocus =
             li [ classList [ ( "active", focus == Just newFocus ) ] ]

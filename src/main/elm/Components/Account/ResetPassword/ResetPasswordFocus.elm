@@ -129,7 +129,7 @@ view : Address ResetPasswordTypes.Action -> Model -> Focus -> Html
 view address model focus =
     let
         trans =
-            ResetPasswordText.translateHtml model.useLanguage
+            ResetPasswordText.translateHtml model.language.useLanguage
 
         wrap contents =
             div [ class "csrs-resetPassword container" ]
@@ -187,7 +187,7 @@ view address model focus =
                             ]
                         ]
                         ++
-                        ( List.map (helpBlock model.useLanguage) errors )
+                        ( List.map (helpBlock model.language.useLanguage) errors )
                     ]
 
         emailForm =
@@ -201,7 +201,7 @@ view address model focus =
                 Html.form
                     [ role "form"
                     , class "form"
-                    , onlyOnSubmit address (SendToken focus.email model.useLanguage)
+                    , onlyOnSubmit address (SendToken focus.email model.language.useLanguage)
                     ]
                     [ div
                         [ classList
@@ -234,7 +234,7 @@ view address model focus =
                             ]
                         ]
                         ++
-                        ( List.map (helpBlock model.useLanguage) errors )
+                        ( List.map (helpBlock model.language.useLanguage) errors )
                     ]
 
         tokenSent =

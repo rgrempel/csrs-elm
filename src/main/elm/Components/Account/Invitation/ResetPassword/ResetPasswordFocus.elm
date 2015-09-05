@@ -132,7 +132,7 @@ view : Address ResetPasswordTypes.Action -> Model -> Focus -> Html
 view address model focus =
     let
         language =
-            model.useLanguage
+            model.language.useLanguage
 
         trans =
             ResetPasswordText.translateText language

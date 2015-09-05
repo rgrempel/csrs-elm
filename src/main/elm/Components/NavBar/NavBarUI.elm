@@ -12,7 +12,7 @@ view : Model -> List Html -> Html
 view model menus =
     let 
         trans =
-            NavBarText.translate model.useLanguage 
+            NavBarText.translate model.language.useLanguage 
 
         navbarHeader = 
             div [ class "navbar-header" ]

@@ -44,7 +44,7 @@ update action focus =
 view : Address Action -> Model -> Focus -> Html
 view address model focus =
     let 
-        trans = ErrorText.translate model.useLanguage
+        trans = ErrorText.translate model.language.useLanguage
 
     in
         div [ class "error-page container" ]

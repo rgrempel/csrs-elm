@@ -51,10 +51,10 @@ view : Address Action -> Model -> Focus -> Html
 view address model focus =
     let 
         trans = 
-            HomeText.translate model.useLanguage
+            HomeText.translate model.language.useLanguage
 
         user =
-            model.currentUser
+            model.account.currentUser
 
         loginHtml =
             case user of
@@ -124,7 +124,7 @@ view address model focus =
 menu : Address Action -> Model -> Maybe Focus -> Maybe Html
 menu address model focus =
     let 
-        trans = HomeText.translate model.useLanguage
+        trans = HomeText.translate model.language.useLanguage
 
     in
         Just <|

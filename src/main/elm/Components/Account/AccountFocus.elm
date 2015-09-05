@@ -186,10 +186,10 @@ menu : Address Action -> Model -> Maybe Focus -> Maybe Html
 menu address model focus =
     let
         trans =
-            AccountText.translate model.useLanguage
+            AccountText.translate model.language.useLanguage
 
         user =
-            model.currentUser
+            model.account.currentUser
 
     in
         Just <|

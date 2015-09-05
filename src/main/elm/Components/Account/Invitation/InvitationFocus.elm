@@ -177,7 +177,7 @@ viewInvitation : Address InvitationTypes.Action -> Model -> InvitationFocus -> H
 viewInvitation address model focus =
     let
         language =
-            model.useLanguage
+            model.language.useLanguage
     
         trans =
             InvitationText.translate language

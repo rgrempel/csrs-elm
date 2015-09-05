@@ -124,10 +124,10 @@ menu : Address Action -> Model -> Maybe Focus -> Maybe Html
 menu address model focus =
     let
         trans =
-            AdminText.translate model.useLanguage
+            AdminText.translate model.language.useLanguage
 
         user =
-            model.currentUser
+            model.account.currentUser
 
         standardMenuItem icon message action newFocus =
             Just <|

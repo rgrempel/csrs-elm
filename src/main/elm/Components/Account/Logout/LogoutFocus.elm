@@ -88,7 +88,7 @@ view : Address LogoutTypes.Action -> Model -> Focus -> Html
 view address model focus =
     let
         trans =
-            LogoutText.translate model.useLanguage
+            LogoutText.translate model.language.useLanguage
  
     in
         div [ class "csrs-auth-logout container" ]
@@ -112,11 +112,11 @@ menuItem address model focus =
                     ]
                     [ glyphicon "log-out" 
                     , text unbreakableSpace
-                    , LogoutText.translate model.useLanguage LogoutText.Title 
+                    , LogoutText.translate model.language.useLanguage LogoutText.Title 
                     ]
                 ]
 
     in
         -- Only show menu if user logged in
-        Maybe.map (always menu) model.currentUser
+        Maybe.map (always menu) model.account.currentUser
 

@@ -27,8 +27,8 @@ type Action
     | NoOp
 
 
-type alias FocusModel m =
-    { m | focus : Focus }
+type alias FocusModel =
+    { focus : Focus }
 
 
 actions : Mailbox Action

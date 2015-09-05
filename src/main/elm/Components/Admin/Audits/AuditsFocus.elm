@@ -129,13 +129,13 @@ view : Address Action -> Model -> Focus -> Html
 view address model focus =
     let
         language =
-            model.useLanguage
+            model.language.useLanguage
 
         trans =
             AuditsText.translate language
        
         formatDate =
-            text << model.formatDate "Y M j" 
+            text << model.language.formatDate "Y M j" 
 
         makeRow audit =
             tr []
@@ -209,9 +209,9 @@ menuItem address model focus =
                     ]
                     [ glyphicon "bell" 
                     , text unbreakableSpace
-                    , AuditsText.translate model.useLanguage AuditsText.Title 
+                    , AuditsText.translate model.language.useLanguage AuditsText.Title 
                     ]
                 ]
  
     in
-        Maybe.map (always menu) model.currentUser
+        Maybe.map (always menu) model.account.currentUser

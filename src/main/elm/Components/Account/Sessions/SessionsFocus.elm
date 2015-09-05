@@ -108,10 +108,10 @@ view : Address Action -> Model -> Focus -> Html
 view address model focus =
     let
         trans =
-            SessionsText.translate model.useLanguage
+            SessionsText.translate model.language.useLanguage
 
         username =
-            withDefault "" <| Maybe.map .username model.currentUser
+            withDefault "" <| Maybe.map .username model.account.currentUser
 
         result =
             case focus.status of
@@ -122,10 +122,10 @@ view address model focus =
                         ]
 
                 Error error ->
-                    showError model.useLanguage error
+                    showError model.language.useLanguage error
 
                 DeletionError session error ->
-                    showError model.useLanguage error
+                    showError model.language.useLanguage error
 
                 _ ->
                     p [] []
@@ -179,10 +179,10 @@ menuItem address model focus =
                 [ a [ onClick address Fetch ]
                     [ glyphicon "cloud" 
                     , text unbreakableSpace
-                    , SessionsText.translate model.useLanguage SessionsText.Sessions
+                    , SessionsText.translate model.language.useLanguage SessionsText.Sessions
                     ]
                 ]
 
     in
         -- Only show if logged in
-        Maybe.map (always menu) model.currentUser
+        Maybe.map (always menu) model.account.currentUser

@@ -19,7 +19,7 @@ import Maybe exposing (withDefault)
 import Task exposing (Task)
 
 
-submodule : SubModule x (FocusModel x) Action
+submodule : SubModule FocusModel Action
 submodule =
     { initialModel = initialModel
     , actions = .signal actions
@@ -50,11 +50,11 @@ tasks =
         MakeComponent "tasks" FocusTasks Tasks tasksFocus TasksFocus.subcomponent
 
 
-initialModel : m -> FocusModel m
-initialModel model = FocusModel (Home HomeTypes.Home) model
+initialModel : FocusModel
+initialModel = FocusModel (Home HomeTypes.Home)
 
 
-reaction : Action -> FocusModel x -> Maybe (Task () ())
+reaction : Action -> FocusModel -> Maybe (Task () ())
 reaction action model =
     let
         focus =
@@ -112,10 +112,10 @@ delta2path : (Model, Model) -> List String -> Maybe PathAction
 delta2path delta current =
     let
         focus =
-            .focus (fst delta)
+            .focus <| .focus (fst delta)
 
         focus' = 
-            .focus (snd delta)
+            .focus <| .focus (snd delta)
         
         action =
             path focus focus'
@@ -140,7 +140,7 @@ route hash =
         ]
 
 
-update : Action -> FocusModel x -> FocusModel x
+update : Action -> FocusModel -> FocusModel
 update action model =
     let
         focus =
@@ -176,7 +176,7 @@ view : Model -> Html
 view model =
     let
         focus =
-            Just model.focus
+            Just model.focus.focus
 
         menus =
             NavBarUI.view model <|
@@ -190,7 +190,7 @@ view model =
                 ++ [ LanguageUI.menu model ]
 
         page =
-            case model.focus of
+            case model.focus.focus of
                 Home subfocus ->
                     home.view actions.address model subfocus
                      

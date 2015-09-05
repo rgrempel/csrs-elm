@@ -13,7 +13,7 @@ import Json.Decode as JD
 import String exposing (join)
 
 
-submodule : SubModule x (AccountModel x) Action
+submodule : SubModule AccountModel Action
 submodule =
     { initialModel = initialModel
     , actions = .signal actions
@@ -23,7 +23,7 @@ submodule =
     }
 
 
-update : Action -> AccountModel x -> AccountModel x
+update : Action -> AccountModel -> AccountModel
 update action model =
     case action of
         SetCurrentUser user ->
@@ -33,7 +33,7 @@ update action model =
             model
 
 
-reaction : Action -> AccountModel x -> Maybe (Task () ())
+reaction : Action -> AccountModel -> Maybe (Task () ())
 reaction action model =
     case action of
         SetCurrentUser user ->

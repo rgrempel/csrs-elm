@@ -13,12 +13,12 @@ menu : Model -> Html
 menu model =
     let
         trans =
-            LanguageText.translate model.useLanguage
+            LanguageText.translate model.language.useLanguage
 
         languageItem lang =
             li
                 [ classList
-                    [ ( "active", model.useLanguage == lang ) ]
+                    [ ( "active", model.language.useLanguage == lang ) ]
                 ]
                 [ a
                     [ onClick actions.address <| SwitchLanguage lang ]

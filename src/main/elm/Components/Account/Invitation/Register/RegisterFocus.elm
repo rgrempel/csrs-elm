@@ -211,7 +211,7 @@ view : Address RegisterTypes.Action -> Model -> Focus -> Html
 view address model focus =
     let
         language =
-            model.useLanguage
+            model.language.useLanguage
 
         trans =
             RegisterText.translateText language
@@ -363,7 +363,7 @@ view address model focus =
             Html.form
                 [ role "form"
                 , class "form"
-                , onlyOnSubmit address (CreateAccount focus.accountInfo focus.activation model.useLanguage)
+                , onlyOnSubmit address (CreateAccount focus.accountInfo focus.activation language)
                 ]
                 [ div [ class "row" ]
                     [ div

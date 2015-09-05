@@ -117,7 +117,7 @@ view : Address Action -> Model -> Focus -> Html
 view address model focus =
     let
         language =
-            model.useLanguage
+            model.language.useLanguage
 
         transHtml =
             ChangePasswordText.translateHtml language 
@@ -280,7 +280,7 @@ view address model focus =
                             [ transHtml <|
                                 ChangePasswordText.FullTitle <|
                                     withDefault "" <|
-                                        Maybe.map .username model.currentUser
+                                        Maybe.map .username model.account.currentUser
                             ]
                         , changePasswordForm
                         ]
@@ -299,9 +299,9 @@ menuItem address model focus =
                     ]
                     [ glyphicon "lock" 
                     , text unbreakableSpace
-                    , ChangePasswordText.translateHtml model.useLanguage ChangePasswordText.Title
+                    , ChangePasswordText.translateHtml model.language.useLanguage ChangePasswordText.Title
                     ]
                 ]
         in
             -- Only show menu item if we have a user logged in.
-            Maybe.map (always menu) model.currentUser
+            Maybe.map (always menu) model.account.currentUser

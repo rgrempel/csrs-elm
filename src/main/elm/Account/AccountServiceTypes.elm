@@ -94,12 +94,12 @@ sessionDecoder =
         ( JD.maybe <| "formattedTokenDate" := JD.string )
 
 
-type alias AccountModel m =
-    { m | currentUser : Maybe User }
+type alias AccountModel =
+    { currentUser : Maybe User }
 
 
-initialModel : m -> AccountModel m
-initialModel model = AccountModel Nothing model
+initialModel : AccountModel
+initialModel = AccountModel Nothing
 
 
 actions : Mailbox Action

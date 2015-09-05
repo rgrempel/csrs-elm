@@ -20,10 +20,9 @@ type Action
     = SwitchLanguage Language
     | NoOp
 
-type alias LanguageModel m =
-    { m
-        | useLanguage : Language
-        , formatDate : String -> Date -> String
+type alias LanguageModel =
+    { useLanguage : Language
+    , formatDate : String -> Date -> String
     }
 
 
@@ -35,8 +34,8 @@ defaultLanguage : Language
 defaultLanguage = EN
 
 
-initialModel : m -> LanguageModel m
-initialModel model = LanguageModel defaultLanguage (dateFormatter defaultLanguage) model
+initialModel : LanguageModel
+initialModel = LanguageModel defaultLanguage (dateFormatter defaultLanguage)
 
 
 dateFormatter : Language -> String -> Date -> String

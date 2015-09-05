@@ -19,9 +19,9 @@ import Task.Util exposing (batch)
 
 {- Collect the wiring for submodules -}
 
-accountModule = superModule AccountAction AccountService.submodule
-focusModule = superModule FocusAction FocusUI.submodule
-languageModule = superModule LanguageAction LanguageService.submodule
+accountModule = superModule .account AccountAction AccountService.submodule
+focusModule = superModule .focus FocusAction FocusUI.submodule
+languageModule = superModule .language LanguageAction LanguageService.submodule
 
 
 {-| The initial model.
@@ -31,10 +31,10 @@ the parts of the model.
 -}
 initialModel : Model
 initialModel =
-    .initialModel accountModule <|
-    .initialModel focusModule <|
-    .initialModel languageModule <|
-    {}
+    { language = languageModule.initialModel
+    , account = accountModule.initialModel
+    , focus = focusModule.initialModel
+    }
 
 
 {-| The actions our app can perform
@@ -65,19 +65,18 @@ Just dispatch to the various models that can handle actions.
 -}
 update : Action -> Model -> Model
 update action model =
-    model |>
-        case action of
-            AccountAction subaction ->
-                .update accountModule subaction
+    case action of
+        AccountAction subaction ->
+            { model | account <- accountModule.update subaction model }
 
-            FocusAction subaction ->
-                .update focusModule subaction
+        FocusAction subaction ->
+            { model | focus <- focusModule.update subaction model }
 
-            LanguageAction subaction ->
-                .update languageModule subaction
+        LanguageAction subaction ->
+            { model | language <- languageModule.update subaction model }
 
-            _ ->
-                identity
+        _ ->
+            model
 
 
 {-| Like update, except returns an additional task to perform in response to

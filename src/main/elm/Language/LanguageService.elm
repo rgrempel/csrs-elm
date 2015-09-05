@@ -4,7 +4,7 @@ import AppTypes exposing (..)
 import Language.LanguageTypes exposing (..)
 
 
-submodule : SubModule x (LanguageModel x) Action
+submodule : SubModule LanguageModel Action
 submodule =
     { initialModel = initialModel
     , actions = .signal actions
@@ -14,7 +14,7 @@ submodule =
     }
 
 
-update : Action -> LanguageModel x -> LanguageModel x
+update : Action -> LanguageModel -> LanguageModel
 update action model =
     case action of
         -- TODO: Should generate a reaction to update the language preference on the server
