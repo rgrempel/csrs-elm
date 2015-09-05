@@ -112,23 +112,15 @@ reaction action model =
 
 
 {-| A task to perform when the app starts.
-
-Note that we've defined this as a sequence, even though it's just
-one task so far, since one could easily want more tasks at some point.
 -}
 initialTask : Task () () 
 initialTask =
-    let
-        apply wiring =
-            wiring.sub.initialTask
-
-    in
-        batch <|
-            List.filterMap identity
-                [ .initialTask accountModule
-                , .initialTask focusModule
-                , .initialTask languageModule
-                ]
+    batch <|
+        List.filterMap identity
+            [ .initialTask accountModule
+            , .initialTask focusModule
+            , .initialTask languageModule
+            ]
 
 
 {-| Actually executes the reaction tasks.
