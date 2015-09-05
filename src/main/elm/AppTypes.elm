@@ -46,9 +46,22 @@ to get the standard 'sugar' that is provided below by the superModule method.
 type alias SuperModule submodel supermodel subaction superaction =
     { initialModel : submodel
     , actions : Signal superaction
-    , update : subaction -> supermodel -> submodel
+    , update : subaction -> supermodel -> supermodel
     , reaction : subaction -> supermodel -> Maybe (Task () ())
     , initialTask : Maybe (Task () ())
+    }
+
+
+{-| This record represents the arguments to the superModule function.
+Its purpose is simply to avoid a long function signature. Essentially,
+the properties of this record are the various things we need to know in
+order to dispatch from the superModule to the subModule.
+-}
+type alias MakeModule submodel supermodel subaction superaction =
+    { modelTag : supermodel -> submodel
+    , modelUpdater : submodel -> supermodel -> supermodel
+    , actionTag : subaction -> superaction
+    , submodule : SubModule submodel subaction
     }
 
 
@@ -61,23 +74,25 @@ the superModule. Essentially, it adapts between two things:
 That way, both the call-site and the called function can be kept simpler than
 they would otherwise be -- the complexity is handled here, once and for all.
 -}
-superModule : (supermodel -> submodel) -> (subaction -> superaction) -> SubModule submodel subaction -> SuperModule submodel supermodel subaction superaction
-superModule modelTag actionTag submodule =
+superModule : MakeModule submodel supermodel subaction superaction -> SuperModule submodel supermodel subaction superaction
+superModule args =
     let
         actions =
-            Signal.map actionTag submodule.actions
+            Signal.map args.actionTag args.submodule.actions
 
         reaction subaction supermodel =
-            submodule.reaction
+            args.submodule.reaction
                 `Maybe.andThen` \reaction ->
-                    reaction subaction (modelTag supermodel)
+                    reaction subaction (args.modelTag supermodel)
 
         update subaction supermodel =
-            submodule.update subaction (modelTag supermodel)
+            args.modelUpdater
+                (args.submodule.update subaction (args.modelTag supermodel))
+                supermodel
     
     in
-        { initialModel = submodule.initialModel
-        , initialTask = submodule.initialTask
+        { initialModel = args.submodule.initialModel
+        , initialTask = args.submodule.initialTask
         , actions = actions
         , update = update
         , reaction = reaction

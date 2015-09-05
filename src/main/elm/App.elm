@@ -19,9 +19,29 @@ import Task.Util exposing (batch)
 
 {- Collect the wiring for submodules -}
 
-accountModule = superModule .account AccountAction AccountService.submodule
-focusModule = superModule .focus FocusAction FocusUI.submodule
-languageModule = superModule .language LanguageAction LanguageService.submodule
+accountModule =
+    superModule
+        { modelTag = .account
+        , modelUpdater = \a b -> {b | account <- a}
+        , actionTag = AccountAction
+        , submodule = AccountService.submodule
+        }
+
+focusModule =
+    superModule
+        { modelTag = .focus
+        , modelUpdater = \a b -> {b | focus <- a}
+        , actionTag = FocusAction
+        , submodule = FocusUI.submodule
+        }
+
+languageModule =
+    superModule
+        { modelTag = .language
+        , modelUpdater = \a b -> {b | language <- a}
+        , actionTag = LanguageAction
+        , submodule = LanguageService.submodule
+        }
 
 
 {-| The initial model.
@@ -67,13 +87,13 @@ update : Action -> Model -> Model
 update action model =
     case action of
         AccountAction subaction ->
-            { model | account <- accountModule.update subaction model }
+            accountModule.update subaction model
 
         FocusAction subaction ->
-            { model | focus <- focusModule.update subaction model }
+            focusModule.update subaction model
 
         LanguageAction subaction ->
-            { model | language <- languageModule.update subaction model }
+            languageModule.update subaction model
 
         _ ->
             model
