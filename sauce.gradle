@@ -1,0 +1,49 @@
+sauceLabs {
+    browsers {
+        firefox_linux_19 {
+            capabilities(
+                browserName: "firefox",
+                platform: "Linux",
+                version: "19",
+                recordVideo: "false",
+                recordScreenshots: "false"
+            )
+        }
+        chrome_mac
+        ie10windows8 {
+            capabilities(
+                browserName: "internet explorer",
+                platform: "Windows 8",
+                version: "10.0"
+            )
+        }
+        nexus4 {
+            capabilities(
+                browserName: "android",
+                platform: "Linux",
+                version: "4.4",
+                deviceName: "LG Nexus 4"
+            )
+        }
+        iphone6 {
+            capabilities(
+                browserName: "iphone",
+                platform: "OS X 10.10",
+                version: "9.0",
+                deviceName: "iPhone 6",
+                deviceOrientation: "portrait"
+            )
+        }
+    }
+    
+    task {
+        testClassesDir = test.testClassesDir
+        testSrcDirs = test.testSrcDirs
+        classpath = test.classpath
+    }
+    
+    account {
+        username = System.getenv("GEB_SAUCE_LABS_USER")
+        accessKey = System.getenv("GEB_SAUCE_LABS_ACCESS_PASSWORD")
+    }
+}

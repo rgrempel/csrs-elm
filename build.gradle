@@ -22,6 +22,7 @@ apply plugin: 'geb-saucelabs'
 apply from: 'yeoman.gradle'
 apply from: 'liquibase.gradle'
 apply from: 'gatling.gradle'
+apply from: 'sauce.gradle'
 
 // apply from: 'querydsl.gradle'
 apply from: 'jpa_meta_model.gradle'
@@ -235,29 +236,4 @@ task wrapper(type: Wrapper) {
 }
 
 task stage(dependsOn: 'bootRepackage') {
-}
-
-sauceLabs {
-    browsers {
-       firefox_linux_19
-       chrome_mac
-       delegate."internet explorer_vista_9"
-       nexus4 {
-         capabilities(
-            browserName: "android",
-            platform: "Linux",
-            version: "4.4",
-            deviceName: "LG Nexus 4"
-         )
-       }
-    }
-    task {
-       testClassesDir = test.testClassesDir
-       testSrcDirs = test.testSrcDirs
-       classpath = test.classpath
-    }
-    account {
-       username = System.getenv("GEB_SAUCE_LABS_USER")
-       accessKey = System.getenv("GEB_SAUCE_LABS_ACCESS_PASSWORD")
-    }
 }
