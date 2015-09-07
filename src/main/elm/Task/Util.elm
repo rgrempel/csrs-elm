@@ -34,6 +34,15 @@ alwaysNotify address action result =
     Signal.send address action
 
 
+{-| A convenience for handling the results of tasks
+-}
+dispatch : Task x a -> Address action -> (x -> action) -> (a -> action) -> Task () ()
+dispatch task address errorTag successTag =
+    task
+        `Task.andThen` (Signal.send address << successTag)
+        `Task.onError` (Signal.send address << errorTag)
+
+
 {-| Given a list of tasks, produce a task which executes each task in parallel,
 ignoring the results.
 -}

@@ -51,9 +51,9 @@ reaction address action focus =
         SendInvitation email language ->
             if isEmpty (checkEmail email)
                 then Just <|
-                    AccountService.sendInvitationToCreateAccount email language
-                    `andThen` alwaysNotify address FocusInvitationSent
-                    `onError` notify address FocusSendInvitationError
+                    dispatch
+                        (AccountService.sendInvitationToCreateAccount email language)
+                        address FocusSendInvitationError (always FocusInvitationSent)
 
                 else
                     Nothing

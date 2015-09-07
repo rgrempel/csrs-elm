@@ -47,9 +47,7 @@ reaction address action focus =
     case action of
         AttemptLogout ->
             Just <|
-                AccountService.attemptLogout
-                `Task.andThen` alwaysNotify address FocusSuccess
-                `Task.onError` notify address FocusError
+                dispatch AccountService.attemptLogout address FocusError (always FocusSuccess)
 
         FocusSuccess ->
             Just <| 

@@ -20,7 +20,7 @@ import Html.Util exposing (role, glyphicon, unbreakableSpace, showError, onlyOnS
 import Signal exposing (Address)
 import Maybe exposing (withDefault)
 import Task exposing (Task)
-import Task.Util exposing (notify, alwaysNotify)
+import Task.Util exposing (..)
 import List exposing (all, isEmpty)
 
 
@@ -53,9 +53,9 @@ reaction address action focus =
             if isEmpty (checkAllPasswords old new confirm)
                 then
                     Just <|
-                        AccountService.changePassword old new
-                            `Task.andThen` alwaysNotify address FocusSuccess
-                            `Task.onError` notify address FocusError
+                        dispatch
+                            (AccountService.changePassword old new)
+                            address FocusError (always FocusSuccess)
                 
                 else
                     Nothing

@@ -53,9 +53,9 @@ reaction address action focus =
         SendToken email language ->
             if isEmpty (checkEmail email)
                 then Just <|
-                    AccountService.sendInvitationToResetPassword email language
-                    `andThen` alwaysNotify address FocusTokenSent
-                    `onError` notify address FocusSendTokenError
+                    dispatch
+                        (AccountService.sendInvitationToResetPassword email language)
+                        address FocusSendTokenError (always FocusTokenSent)
 
                 else
                     Nothing
