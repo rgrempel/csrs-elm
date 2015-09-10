@@ -2,6 +2,7 @@ module Admin.AdminService where
 
 import Json.Decode as JD exposing ((:=))
 import Date exposing (Date)
+import Date.TimeStamp exposing (TimeStamp, toDate)
 import Dict exposing (Dict)
 import Http.Util exposing (send, sendRaw)
 import Http exposing (url)
@@ -9,7 +10,8 @@ import Task exposing (Task)
 
 
 type alias AuditEvent =
-    { principal : String
+    { id : Int
+    , principal : String
     , timestamp : Date
     , type' : String
     , data : Dict String String 
@@ -18,16 +20,19 @@ type alias AuditEvent =
 
 auditEventDecoder : JD.Decoder AuditEvent
 auditEventDecoder =
-    JD.object4 AuditEvent
+    JD.object5 AuditEvent
+        ( "id" := JD.int )
         ( "principal" := JD.string )
-        ( "timestamp" := dateDecoder )
-        ( "type" := JD.string )
+        ( "auditEventDate" := dateDecoder )
+        ( "auditEventType" := JD.string )
         ( "data" := JD.dict JD.string )
 
 
 dateDecoder : JD.Decoder Date
 dateDecoder =
-    JD.object1 Date.fromTime JD.float
+    -- This may be slow -- might be better to construct timestamp on server
+    JD.tuple7 (\y month d h minute s ms -> toDate (TimeStamp y month d h minute s ms))
+        JD.int JD.int JD.int JD.int JD.int JD.int JD.int
 
 
 allAuditEvents : Task Http.Error (List AuditEvent)
@@ -38,7 +43,7 @@ allAuditEvents =
             , headers =
                 [ ("Accept", "application/json")
                 ]
-            , url = url "/api/audits/all" []
+            , url = url "/api/audits/allNative" []
             , body = Http.empty
             }
 
@@ -51,7 +56,7 @@ auditEventsByDate from to =
             , headers =
                 [ ("Accept", "application/json")
                 ]
-            , url = url "/api/audits/byDates"
+            , url = url "/api/audits/byDatesNative"
                 [ ("fromDate", toString from)
                 , ("toDate", toString to)
                 ]

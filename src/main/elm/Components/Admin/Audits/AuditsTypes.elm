@@ -7,6 +7,7 @@ type Action
     = FetchAll
     | ShowEvents (List AuditEvent)
     | ShowError Http.Error
+    | ClickedHeader Header
 
 type Status
     = Start
@@ -17,5 +18,15 @@ type Status
 type alias Focus =
     { status: Status
     , events: List AuditEvent
+    , sortBy: Header
+    , sortReversed: Bool
     }
 
+type Header
+    = Timestamp
+    | Principal
+    | Type
+
+
+defaultFocus : Focus
+defaultFocus = Focus Start [] Timestamp True

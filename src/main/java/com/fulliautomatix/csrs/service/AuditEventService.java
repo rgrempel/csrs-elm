@@ -1,15 +1,17 @@
 package com.fulliautomatix.csrs.service;
 
-import com.fulliautomatix.csrs.config.audit.AuditEventConverter;
-import com.fulliautomatix.csrs.domain.PersistentAuditEvent;
-import com.fulliautomatix.csrs.repository.PersistenceAuditEventRepository;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import org.joda.time.LocalDateTime;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import java.util.List;
+import com.fulliautomatix.csrs.config.audit.AuditEventConverter;
+import com.fulliautomatix.csrs.domain.PersistentAuditEvent;
+import com.fulliautomatix.csrs.repository.PersistenceAuditEventRepository;
 
 /**
  * Service for managing audit events.
@@ -28,6 +30,9 @@ public class AuditEventService {
     @Inject
     private AuditEventConverter auditEventConverter;
 
+    @Inject
+    private LazyService lazyService;
+    
     public List<AuditEvent> findAll() {
         return auditEventConverter.convertToAuditEvent(persistenceAuditEventRepository.findAll());
     }
@@ -37,5 +42,19 @@ public class AuditEventService {
             persistenceAuditEventRepository.findAllByAuditEventDateBetween(fromDate, toDate);
 
         return auditEventConverter.convertToAuditEvent(persistentAuditEvents);
+    }
+    
+    public List<PersistentAuditEvent> findAllNative () {
+        List<PersistentAuditEvent> events = persistenceAuditEventRepository.findAll();
+        lazyService.initializeForJsonView(events, PersistentAuditEvent.WithData.class);
+        return events;
+    }
+
+    public List<PersistentAuditEvent> findByDatesNative (LocalDateTime fromDate, LocalDateTime toDate) {
+        List<PersistentAuditEvent> events =
+            persistenceAuditEventRepository.findAllByAuditEventDateBetween(fromDate, toDate);
+
+        lazyService.initializeForJsonView(events, PersistentAuditEvent.WithData.class);
+        return events;
     }
 }

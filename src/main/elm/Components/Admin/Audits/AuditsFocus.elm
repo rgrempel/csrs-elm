@@ -16,7 +16,8 @@ import Signal exposing (Address)
 import Maybe exposing (withDefault)
 import Task exposing (Task)
 import Task.Util exposing (..)
-import List exposing (all, isEmpty)
+import List exposing (all, isEmpty, sortWith)
+import Date exposing (toTime)
 import Dict
 
 
@@ -40,14 +41,6 @@ path focus focus' =
     if focus == Nothing
         then Just <| SetPath []
         else Nothing
-
-
--- Should move this one up
-dispatch : Task x a -> Address action -> (x -> action) -> (a -> action) -> Task () ()
-dispatch task address errorTag successTag =
-    task
-        `Task.andThen` (Signal.send address << successTag)
-        `Task.onError` (Signal.send address << errorTag)
 
 
 reaction : Address Action -> Action -> Maybe Focus -> Maybe (Task () ())
@@ -111,18 +104,50 @@ update action focus =
                 ShowEvents events ->
                     { focus'
                         | status <- Showing
-                        , events <- events
+                        , events <- sortedEvents focus'.sortBy focus'.sortReversed events
                     }
 
                 ShowError error ->
                     { focus' | status <- Error error }
 
+                ClickedHeader value ->
+                    let
+                        reverse =
+                            if focus'.sortBy == value
+                                then not focus'.sortReversed
+                                else focus'.sortReversed
+
+                    in
+                        { focus'
+                            | sortBy <- value
+                            , sortReversed <- reverse
+                            , events <- sortedEvents value reverse focus'.events
+                        }
+
                 _ ->
                     focus'
 
 
-defaultFocus : Focus
-defaultFocus = Focus Start []
+sortedEvents : Header -> Bool -> List AuditEvent -> List AuditEvent
+sortedEvents sortBy sortReversed events =
+    let
+        sorter a b =
+            possiblyReverse <|
+                case sortBy of
+                    Timestamp -> compare (toTime a.timestamp) (toTime b.timestamp)
+                    Principal -> compare a.principal b.principal
+                    Type -> compare a.type' b.type'
+            
+        possiblyReverse order =
+            if sortReversed
+                then case order of
+                    LT -> GT
+                    EQ -> EQ
+                    GT -> LT
+                else order
+
+    in
+        sortWith sorter events
 
 
 view : Address Action -> Model -> Focus -> Html
@@ -138,17 +163,22 @@ view address model focus =
             text << model.language.formatDate "Y M j" 
 
         makeRow audit =
-            tr []
-                [ td [] [ formatDate audit.timestamp ] 
-                , td [] [ small [] [ text audit.principal ] ]
-                , td [] [ text audit.type' ]
-                , td []
-                    [ text <| withDefault "" <| Dict.get "message" audit.data
-                    , trans AuditsText.TableDataRemoteAddress
-                    , text <| withDefault "" <| Dict.get "remoteAddress" audit.data
+            let
+                entry2html key value =
+                    div []
+                        -- TODO: Could translate some of the common keys
+                        [ text <| key ++ ": " ++ value ]
+
+            in
+                tr [ key (toString audit.id) ]
+                    [ td [] [ formatDate audit.timestamp ] 
+                    , td [] [ small [] [ text audit.principal ] ]
+                    , td [] [ text audit.type' ]
+                    , td [] <|
+                        Dict.values <|
+                            Dict.map entry2html audit.data
                     ]
-                ]
-        
+
         result =
             case focus.status of
                 Error error -> 
@@ -185,10 +215,10 @@ view address model focus =
                     , table [ class "table table-condensed table-striped table-bordered table-responsive" ]
                         [ thead []
                             [ tr []
-                                [ th [ {- onClick "predicate = 'timestamp'; reverse=!reverse" -} ] [ trans AuditsText.TableHeaderDate ]
-                                , th [ {- onClick "predicate = 'principal'; reverse=!reverse" -} ] [ trans AuditsText.TableHeaderPrincipal ]
-                                , th [ {- onClick "predicate = 'type'; reverse=!reverse" -} ] [ trans AuditsText.TableHeaderStatus ]
-                                , th [ {- onClick "predicate = 'data.message'; reverse=!reverse" -} ] [ trans AuditsText.TableHeaderData ]
+                                [ th [ onClick address (ClickedHeader Timestamp) ] [ trans AuditsText.TableHeaderDate ]
+                                , th [ onClick address (ClickedHeader Principal) ] [ trans AuditsText.TableHeaderPrincipal ]
+                                , th [ onClick address (ClickedHeader Type) ] [ trans AuditsText.TableHeaderStatus ]
+                                , th [] [ trans AuditsText.TableHeaderData ]
                                 ]
                             ]
                         , tbody []
