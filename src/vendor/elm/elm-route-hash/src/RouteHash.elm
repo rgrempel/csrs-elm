@@ -28,7 +28,7 @@ as described below.
 import String exposing (uncons, split)
 import Http exposing (uriDecode, uriEncode)
 import Signal exposing (Signal, Address, send, merge)
-import Signal.Extra exposing (passiveMap2)
+import Signal.Extra exposing (passiveMap2, foldp')
 import Task exposing (Task)
 import History
 
@@ -120,9 +120,6 @@ extract action =
 *   `models` is your signal of models. This is required so that we can react to
     changes in the model, possibly generating a new location.
 
-*   `initialModel` is your initial model. It is used when processing
-    the first model change that your app generates.
-
 *   `delta2update` is a function which takes two arguments and possibly
     returns a location update. The first argument is the previous model.
     The second argument is the current model.
@@ -173,7 +170,6 @@ extract action =
 type alias Config model action =
     { prefix : String
     , models : Signal model
-    , initialModel : model
     , delta2update : model -> model -> Maybe HashUpdate
     , location2action : List String -> Maybe action
     , address : Address action
@@ -198,7 +194,6 @@ like this:
         RouteHash.start
             { prefix = RouteHash.defaultPrefix
             , models = models
-            , initialModel = initialModel
             , delta2update = delta2update 
             , address = address
             , location2action = location2action
@@ -215,7 +210,7 @@ start config =
             changes : Signal (model, model)
         -}
         changes =
-            deltas config.initialModel config.models
+            deltas config.models
 
 
         {-  A signal of the hash in the location bar, but normalized to a List
@@ -351,15 +346,19 @@ list2hash prefix list =
     prefix ++ String.join "/" (List.map uriEncode list)
         
 
-{-| Takes an initial value and a Signal. Returns a Signal of changes to the value,
+{-| Takes a Signal, and returns a Signal of changes to the value,
 where the first part of the tuple is the old value and the second is the new value.
 -}
-deltas : a -> Signal a -> Signal (a, a)
-deltas initial signal =
+deltas : Signal a -> Signal (a, a)
+deltas signal =
     let
-        step model delta = (snd delta, model)
+        step model delta =
+            (snd delta, model)
+
+        initial value =
+            (value, value)
 
     in
-        Signal.foldp step (initial, initial) signal
+        foldp' step initial signal
 
 

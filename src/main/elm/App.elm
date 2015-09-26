@@ -184,7 +184,6 @@ port routeTasks =
     RouteHash.start
         { prefix = RouteHash.defaultPrefix
         , models = models
-        , initialModel = initialModel
         , delta2update = FocusUI.delta2path
         , address = FocusTypes.address
         , location2action = FocusUI.route
