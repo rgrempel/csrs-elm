@@ -2,7 +2,7 @@ module Components.FocusUI where
 
 import AppTypes exposing (..)
 import Language.LanguageUI as LanguageUI
-import Route.RouteService as RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 
 import Components.FocusTypes exposing (..)
 import Components.Home.HomeTypes as HomeTypes
@@ -81,7 +81,7 @@ reaction action model =
                 Nothing
 
 
-path : Focus -> Focus -> Maybe PathAction
+path : Focus -> Focus -> Maybe HashUpdate
 path focus focus' =
     if focus == focus'
         then Nothing
@@ -108,25 +108,9 @@ path focus focus' =
 {-| Given a new focus and an old focus, calculate whether we should
     set or replace the path.
 -}
-delta2path : (Model, Model) -> List String -> Maybe PathAction 
-delta2path delta current =
-    let
-        focus =
-            .focus <| .focus (fst delta)
-
-        focus' = 
-            .focus <| .focus (snd delta)
-        
-        action =
-            path focus focus'
-
-        checkCurrent pathAction =
-            if current == RouteService.return pathAction
-                then Nothing
-                else (Just pathAction)
-
-    in
-        action `Maybe.andThen` checkCurrent
+delta2path : Model -> Model -> Maybe HashUpdate 
+delta2path model model' =
+    path model.focus.focus model'.focus.focus
 
 
 route : List String -> Maybe Action

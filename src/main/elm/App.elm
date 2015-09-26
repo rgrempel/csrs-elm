@@ -5,7 +5,7 @@ import Account.AccountService as AccountService
 import Account.AccountServiceTypes as AccountServiceTypes
 import Language.LanguageService as LanguageService
 import Language.LanguageTypes as LanguageTypes
-import Route.RouteService as RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 
 import Components.FocusTypes as FocusTypes
 import Components.FocusUI as FocusUI
@@ -66,7 +66,6 @@ type Action
     = AccountAction AccountServiceTypes.Action
     | FocusAction FocusTypes.Action
     | LanguageAction LanguageTypes.Action
-    | NoOp
 
 
 {-| The merger of all the action signals defined by various modules. -}
@@ -180,60 +179,13 @@ main : Signal Html
 main = Signal.map view models 
 
 
-{-| A signal of changes to the model.
-
-The tuple has the previous model first and then the current model.
-
-We use this to calculate possible changes to the location. We need the previous
-model because whether to make the change, and whether to make it a "setPath" or
-"replacePath", depends on the previous state.  Well, I suppose it could depend
-on the previous location, but this seems simpler ... we just assume that the
-previous location was propertly set (which seems safe, since this is what is
-doing it ...).
--}
-deltas : Signal (Model, Model)
-deltas =
-    let
-        update model delta = (snd delta, model)
-
-    in
-        Signal.foldp update (initialModel, initialModel) models
-
-
-paths : Signal (Maybe PathAction)
-paths =
-    passiveMap2 FocusUI.delta2path deltas RouteService.routes
-
-
-port pathTasks : Signal (Task () ())
-port pathTasks =
-    Signal.Extra.filter
-        (Task.succeed ())
-        (Signal.map (Maybe.map RouteService.do) paths)
-
-
-route : List String -> Maybe PathAction -> Maybe (Task () ())
-route list action =
-    Maybe.map
-        FocusTypes.do
-        (case action of
-            Just (SetPath current) ->
-                if current == list
-                    then Nothing
-                    else FocusUI.route list
-
-            Just (ReplacePath current) ->
-                if current == list
-                    then Nothing
-                    else FocusUI.route list
-
-            Nothing ->
-                FocusUI.route list
-        )
-
-
-port routes : Signal (Task () ())
-port routes =
-    Signal.Extra.filter
-        (Task.succeed ())
-        (passiveMap2 route RouteService.routes paths)
+port routeTasks : Signal (Task () ())
+port routeTasks =
+    RouteHash.start
+        { prefix = RouteHash.defaultPrefix
+        , models = models
+        , initialModel = initialModel
+        , delta2update = FocusUI.delta2path
+        , address = FocusTypes.address
+        , location2action = FocusUI.route
+        }

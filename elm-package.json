@@ -5,7 +5,8 @@
     "license": "BSD3",
     "source-directories": [
         "src/main/elm",
-        "src/vendor/elm/elm-cookies/src"
+        "src/vendor/elm/elm-cookies/src",
+        "src/vendor/elm/elm-route-hash/src"
     ],
     "exposed-modules": [],
     "native-modules": true,

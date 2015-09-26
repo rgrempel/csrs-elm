@@ -1,7 +1,7 @@
 module Components.Account.AccountFocus where
 
 import AppTypes exposing (..)
-import Route.RouteService as RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 
 import Components.Account.AccountTypes exposing (..)
 import Components.Account.Login.LoginFocus as LoginFocus
@@ -73,7 +73,7 @@ route list =
         ]
 
 
-path : Maybe Focus -> Focus -> Maybe PathAction
+path : Maybe Focus -> Focus -> Maybe HashUpdate
 path focus focus' =
     case focus' of
         Login subfocus ->

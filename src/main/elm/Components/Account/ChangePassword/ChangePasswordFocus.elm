@@ -6,7 +6,7 @@ import Account.AccountService as AccountService exposing (attemptLogin)
 import Account.PasswordStrengthBar.PasswordStrengthBar as PasswordStrengthBar
 import Validation.Validation exposing (checkString, helpBlock)
 import Validation.ValidationTypes exposing (StringValidator, Validator(..))
-import Route.RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 
 import Components.Account.ChangePassword.ChangePasswordTypes as ChangePasswordTypes exposing (..)
 import Components.Account.ChangePassword.ChangePasswordText as ChangePasswordText
@@ -39,10 +39,10 @@ route : List String -> Maybe Action
 route hashList = Just FocusBlank
 
 
-path : Maybe Focus -> Focus -> Maybe PathAction
+path : Maybe Focus -> Focus -> Maybe HashUpdate
 path focus focus' =
     if focus == Nothing
-        then Just <| SetPath []
+        then Just <| RouteHash.set []
         else Nothing
 
 

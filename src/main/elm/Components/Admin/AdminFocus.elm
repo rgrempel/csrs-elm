@@ -1,7 +1,7 @@
 module Components.Admin.AdminFocus where
 
 import AppTypes exposing (..)
-import Route.RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 import Account.AccountServiceTypes exposing (hasRole, Role(..))
 
 import Components.Admin.AdminText as AdminText
@@ -38,32 +38,32 @@ route list =
         ]
 
 
-path : Maybe Focus -> Focus -> Maybe PathAction
+path : Maybe Focus -> Focus -> Maybe HashUpdate
 path focus focus' =
     case focus' of
         Metrics ->
-            Just <| SetPath ["metrics"]
+            Just <| RouteHash.set ["metrics"]
 
         Health ->
-            Just <| SetPath ["health"]
+            Just <| RouteHash.set ["health"]
 
         Configuration ->
-            Just <| SetPath ["configuration"]
+            Just <| RouteHash.set ["configuration"]
 
         Audits subfocus ->
             audits.path focus subfocus
 
         Logs ->
-            Just <| SetPath ["logs"]
+            Just <| RouteHash.set ["logs"]
 
         ApiDocs ->
-            Just <| SetPath ["api"]
+            Just <| RouteHash.set ["api"]
 
         Templates ->
-            Just <| SetPath ["templates"]
+            Just <| RouteHash.set ["templates"]
 
         Images ->
-            Just <| SetPath ["images"]
+            Just <| RouteHash.set ["images"]
 
         _ ->
             Nothing

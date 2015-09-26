@@ -4,7 +4,7 @@ import AppTypes exposing (..)
 import Validation.Validation exposing (checkString, helpBlock)
 import Validation.ValidationTypes exposing (StringValidator, Validator(Required, Email))
 import Account.AccountService as AccountService
-import Route.RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 
 import Components.Account.ResetPassword.ResetPasswordTypes as ResetPasswordTypes exposing (..)
 import Components.Account.ResetPassword.ResetPasswordText as ResetPasswordText
@@ -40,10 +40,10 @@ route hashList = Just FocusBlank
 
 -- If we came from elsewhere ... i.e. focus was nothing ...
 -- then set the path, otherwise not
-path : Maybe Focus -> Focus -> Maybe PathAction
+path : Maybe Focus -> Focus -> Maybe HashUpdate
 path focus focus' =
     if focus == Nothing
-        then Just <| SetPath []
+        then Just <| RouteHash.set []
         else Nothing
 
 

@@ -3,7 +3,7 @@ module AppTypes where
 import Language.LanguageTypes exposing (LanguageModel)
 import Account.AccountServiceTypes exposing (AccountModel)
 import Components.FocusTypes exposing (FocusModel)
-import Route.RouteService as RouteService exposing (PathAction)
+import RouteHash exposing (HashUpdate)
 
 import Task exposing (Task)
 import Signal exposing (Address, forwardTo)
@@ -108,7 +108,7 @@ in a single Elm module, but that will be a typical pattern.
 -}
 type alias SubComponent subaction subfocus =
     { route : List String -> Maybe subaction
-    , path : Maybe subfocus -> subfocus -> Maybe PathAction
+    , path : Maybe subfocus -> subfocus -> Maybe HashUpdate
     , reaction : Maybe (Address subaction -> subaction -> Maybe subfocus -> Maybe (Task () ()))
     , update : subaction -> Maybe subfocus -> Maybe subfocus
     , view : Address subaction -> Model -> subfocus -> Html
@@ -136,7 +136,7 @@ TODO: Rethink the naming here.
 -}
 type alias SuperComponent subaction superaction subfocus superfocus =
     { route : List String -> Maybe superaction
-    , path : Maybe superfocus -> subfocus -> Maybe PathAction
+    , path : Maybe superfocus -> subfocus -> Maybe HashUpdate
     , reaction : Address superaction -> subaction -> Maybe superfocus -> Maybe (Task () ())
     , update : subaction -> Maybe superfocus -> Maybe superfocus
     , view : Address superaction -> Model -> subfocus -> Html
@@ -181,7 +181,7 @@ superComponent args =
                     Nothing
         
         path focus focus' =
-            Maybe.map (RouteService.map ((::) args.prefix))
+            RouteHash.map ((::) args.prefix)
                 (args.sub.path (focus `Maybe.andThen` args.reverseFocusTag) focus')
 
         reaction address action focus =

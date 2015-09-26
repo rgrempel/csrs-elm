@@ -1,7 +1,7 @@
 module Components.Error.ErrorFocus where
 
 import AppTypes exposing (..)
-import Route.RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 
 import Components.Error.ErrorTypes exposing (..)
 import Components.Error.ErrorText as ErrorText
@@ -27,7 +27,7 @@ route list = Just FocusError
 
 
 -- This is display only ... don't change the URL
-path : Maybe Focus -> Focus -> Maybe PathAction
+path : Maybe Focus -> Focus -> Maybe HashUpdate
 path focus focus' = Nothing
 
 

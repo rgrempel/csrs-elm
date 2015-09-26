@@ -4,7 +4,7 @@ import AppTypes exposing (..)
 import Validation.Validation exposing (checkString, helpBlock)
 import Validation.ValidationTypes exposing (StringValidator, Validator(Required, Email))
 import Account.AccountService as AccountService
-import Route.RouteService exposing (PathAction (..))
+import RouteHash exposing (HashUpdate)
 
 import Components.Account.Invitation.InvitationTypes as InvitationTypes exposing (..)
 import Components.Account.Invitation.InvitationText as InvitationText
@@ -56,13 +56,13 @@ route hashList =
             Just <| FocusBlank
 
 
-path : Maybe Focus -> Focus -> Maybe PathAction 
+path : Maybe Focus -> Focus -> Maybe HashUpdate 
 path focus focus' =
     let
         operation =
             if focus == Nothing
-                then Just << SetPath
-                else Just << ReplacePath
+                then Just << RouteHash.set
+                else Just << RouteHash.replace
 
     in
         case focus' of

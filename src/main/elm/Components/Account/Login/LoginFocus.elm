@@ -5,7 +5,7 @@ import Account.AccountServiceTypes exposing (Credentials, LoginError(..))
 import Account.AccountService as AccountService exposing (attemptLogin)
 import Validation.Validation exposing (checkString, helpBlock)
 import Validation.ValidationTypes exposing (StringValidator, Validator(Required))
-import Route.RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 
 import Components.Account.Login.LoginTypes as LoginTypes exposing (..)
 import Components.Account.Login.LoginText as LoginText
@@ -39,10 +39,10 @@ route : List String -> Maybe Action
 route hashList = Just FocusBlank
 
 
-path : Maybe Focus -> Focus -> Maybe PathAction
+path : Maybe Focus -> Focus -> Maybe HashUpdate
 path focus focus' =
     if focus == Nothing
-        then Just <| SetPath []
+        then Just <| RouteHash.set []
         else Nothing
 
 

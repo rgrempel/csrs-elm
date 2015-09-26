@@ -2,7 +2,7 @@ module Components.Account.Sessions.SessionsFocus where
 
 import AppTypes exposing (..)
 import Account.AccountService as AccountService
-import Route.RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 
 import Components.Account.Sessions.SessionsTypes as SessionsTypes exposing (..)
 import Components.Account.Sessions.SessionsText as SessionsText
@@ -33,10 +33,10 @@ route : List String -> Maybe Action
 route hashList = Just Fetch
 
 
-path : Maybe Focus -> Focus -> Maybe PathAction
+path : Maybe Focus -> Focus -> Maybe HashUpdate
 path focus focus' =
     if focus == Nothing
-        then Just <| SetPath []
+        then Just <| RouteHash.set []
         else Nothing
 
 

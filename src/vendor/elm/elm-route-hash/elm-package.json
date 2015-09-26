@@ -1,0 +1,16 @@
+{
+    "version": "1.0.0",
+    "summary": "Router for single-page-apps in Elm",
+    "repository": "https://github.com/rgrempel/elm-route-hash.git",
+    "license": "BSD3",
+    "source-directories": [
+        "src"
+    ],
+    "exposed-modules": [
+        "RouteHash"
+    ],
+    "dependencies": {
+        "elm-lang/core": "2.0.0 <= v < 3.0.0"
+    },
+    "elm-version": "0.15.0 <= v < 0.16.0"
+}

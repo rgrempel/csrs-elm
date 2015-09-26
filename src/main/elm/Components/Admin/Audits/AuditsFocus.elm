@@ -1,7 +1,7 @@
 module Components.Admin.Audits.AuditsFocus where
 
 import AppTypes exposing (..)
-import Route.RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 import Admin.AdminService exposing (AuditEvent, allAuditEvents)
 
 import Components.Admin.Audits.AuditsTypes as AuditsTypes exposing (..)
@@ -36,10 +36,10 @@ route : List String -> Maybe Action
 route hashList = Just FetchAll 
 
 
-path : Maybe Focus -> Focus -> Maybe PathAction
+path : Maybe Focus -> Focus -> Maybe HashUpdate
 path focus focus' =
     if focus == Nothing
-        then Just <| SetPath []
+        then Just <| RouteHash.set []
         else Nothing
 
 

@@ -1,7 +1,7 @@
 module Components.Home.HomeFocus where
 
 import AppTypes exposing (..)
-import Route.RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 
 import Components.FocusTypes as FocusTypes 
 import Components.Account.AccountTypes as AccountTypes 
@@ -30,11 +30,11 @@ route : List String -> Maybe Action
 route list = Just FocusHome
 
 
-path : Maybe Focus -> Focus -> Maybe PathAction
+path : Maybe Focus -> Focus -> Maybe HashUpdate
 path focus focus' =
     if focus == Just focus'
         then Nothing
-        else Just <| SetPath []
+        else Just <| RouteHash.set []
 
 
 update : Action -> Maybe Focus -> Maybe Focus

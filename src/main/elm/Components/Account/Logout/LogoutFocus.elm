@@ -2,7 +2,7 @@ module Components.Account.Logout.LogoutFocus where
 
 import AppTypes exposing (..)
 import Account.AccountService as AccountService
-import Route.RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 
 import Components.Account.Logout.LogoutTypes as LogoutTypes exposing (..)
 import Components.Account.Logout.LogoutText as LogoutText
@@ -35,10 +35,10 @@ route : List String -> Maybe Action
 route hashList = Just FocusBlank
 
 
-path : Maybe Focus -> Focus -> Maybe PathAction
+path : Maybe Focus -> Focus -> Maybe HashUpdate
 path focus focus' =
     if focus == Nothing
-        then Just <| SetPath []
+        then Just <| RouteHash.set []
         else Nothing
 
 

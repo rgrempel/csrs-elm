@@ -1,7 +1,7 @@
 module Components.Tasks.TasksFocus where
 
 import AppTypes exposing (..)
-import Route.RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 
 import Components.Tasks.TasksTypes exposing (..)
 import Components.Tasks.TasksText as TasksText
@@ -42,16 +42,16 @@ route list =
             Nothing
 
 
-path : Maybe Focus -> Focus -> Maybe PathAction
+path : Maybe Focus -> Focus -> Maybe HashUpdate
 path focus focus' =
     if focus == Just focus'
         then Nothing
         else case focus' of
             ProcessForms ->
-                Just <| SetPath ["process-forms"]
+                Just <| RouteHash.set ["process-forms"]
 
             MembershipByYear ->
-                Just <| SetPath ["membership-by-year"]
+                Just <| RouteHash.set ["membership-by-year"]
 
 
 update : Action -> Maybe Focus -> Maybe Focus

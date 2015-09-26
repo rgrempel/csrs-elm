@@ -6,7 +6,7 @@ import Validation.ValidationTypes exposing (StringValidator, Validator(..))
 import Account.AccountServiceTypes as AccountServiceTypes exposing (UserEmailActivation, LoginError(..))
 import Account.AccountService as AccountService
 import Account.PasswordStrengthBar.PasswordStrengthBar as PasswordStrengthBar
-import Route.RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 import Components.FocusTypes as FocusTypes
 import Components.Home.HomeTypes as HomeTypes
 import Components.Account.Login.LoginText as LoginText
@@ -41,7 +41,7 @@ route : List String -> Maybe Action
 route hashList = Nothing
 
 
-path : Maybe Focus -> Focus -> Maybe PathAction
+path : Maybe Focus -> Focus -> Maybe HashUpdate
 path focus focus' = Nothing
 
 

@@ -4,7 +4,7 @@ import AppTypes exposing (..)
 import Validation.Validation exposing (checkString, helpBlock)
 import Validation.ValidationTypes exposing (StringValidator, Validator(Required, Email))
 import Account.AccountService as AccountService
-import Route.RouteService exposing (PathAction(..))
+import RouteHash exposing (HashUpdate)
 
 import Components.Account.Register.RegisterTypes as RegisterTypes exposing (..)
 import Components.Account.Register.RegisterText as RegisterText
@@ -38,10 +38,10 @@ route : List String -> Maybe Action
 route hashList = Just FocusBlank 
 
 
-path : Maybe Focus -> Focus -> Maybe PathAction
+path : Maybe Focus -> Focus -> Maybe HashUpdate
 path focus focus' =
     if focus == Nothing
-        then Just <| SetPath []
+        then Just <| RouteHash.set []
         else Nothing
 
 
