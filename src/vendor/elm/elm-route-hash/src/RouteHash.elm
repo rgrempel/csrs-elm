@@ -352,8 +352,8 @@ where the first part of the tuple is the old value and the second is the new val
 deltas : Signal a -> Signal (a, a)
 deltas signal =
     let
-        step model delta =
-            (snd delta, model)
+        step value delta =
+            (snd delta, value)
 
         initial value =
             (value, value)
