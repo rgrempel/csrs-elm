@@ -1,13 +1,27 @@
 module RouteHash
-    ( HashUpdate, set, replace, map, extract
+    ( HashUpdate, set, replace, apply, map, extract 
     , Config, defaultPrefix, start
     ) where
 
 
-{-| Module docs
+{-| This module provides routing for single-page apps based on changes to the
+hash portion of the browser's location. The routing happens in both directions
+-- that is, changes to the browser's location hash are translated to actions
+your app performs, and changes to your model are translated to changes in the
+browser's location hash. The net effect is to make it possible for the 'back'
+and 'forward' buttons in the browser to do useful things, and for the state of
+your app to be partially bookmark-able.
 
-@doc HashUpdate, set, replace, none, map, extract
-@doc Config, defaultPrefix, start
+To use this module, you will need to configure it using the `start` function,
+as described below.
+
+# Configuration
+
+@docs Config, defaultPrefix, start
+
+# HashUpdate
+
+@docs HashUpdate, set, replace, apply, map, extract
 -}
 
 
@@ -21,8 +35,6 @@ import History
 
 {-| An opaque type which represents an update to the hash portion of the
 browser's location.
-
-Manipulated via set, replace, update or extract.
 -}
 type HashUpdate 
     = SetPath (List String)
@@ -31,13 +43,23 @@ type HashUpdate
 
 {-| Returns a HashUpdate that will update the browser's location, creating
 a new history entry.
+
+The `List String` represents the hash portion of the location. Each element of
+the list will be uriEncoded, and then the list will be joined using slashes
+("?"). Finally, a prefix will be applied (by default, "#!/", but it is
+configurable)
 -}
 set : List String -> HashUpdate
 set = SetPath
 
 
-{-| Returns a HashUpdate that will update the browser's location, without
-creating a new history entry.
+{-| Returns a HashUpdate that will update the browser's location, replacing
+the current history entry.
+
+The `List String` represents the hash portion of the location. Each element of
+the list will be uriEncoded, and then the list will be joined using slashes
+("?"). Finally, a prefix will be applied (by default, "#!/", but it is
+configurable)
 -}
 replace : List String -> HashUpdate
 replace = ReplacePath
@@ -54,13 +76,30 @@ apply func update =
             ReplacePath (func list)
 
 
-{-| Applies the supplied function to the HashUpdate. -}
+{-| Applies the supplied function to the HashUpdate.
+
+You might use this function when dispatching in a modular application.
+For instance, your `delta2update` function might look something like this:
+
+    delta2update : Model -> Model -> Maybe HashUpdate
+    delta2update old new =
+        case new.virtualPage of
+            PageTag1 ->
+                RouteHash.map ((::) "page-tag-1") PageModule1.delta2update old new
+
+            PageTag2 ->
+                RouteHash.map ((::) "page-tag-2") PageModule2.delta2update old new
+
+Of course, your model and modules may be set up differently. However you do it,
+the `map` function allows you to dispatch `delta2update` to a lower-level module,
+and then modify the `Maybe HashUpdate` which it returns.
+-}
 map : (List String -> List String) -> Maybe HashUpdate -> Maybe HashUpdate
 map func update =
     Maybe.map (apply func) update
     
 
-{-| Extracts the List String from the HashUpdate. -}
+{-| Extracts the `List String` from the HashUpdate. -}
 extract : HashUpdate -> List String
 extract action =
     case action of
@@ -73,62 +112,71 @@ extract action =
 
 {-| Represents the configuration necessary to use this module.
 
-* `prefix` is the initial characters that should be stripped from
-   the hash (if present) when reacting to location changes, and
-   added to the hash when generating location changes. Normally,
-   you'll likely want to use `defaultPrefix`, which is "#!/"
+*  `prefix` is the initial characters that should be stripped from the hash (if
+    present) when reacting to location changes, and added to the hash when
+    generating location changes. Normally, you'll likely want to use
+    `defaultPrefix`, which is "#!/"
 
-* `models` is your signal of models. This is used so that we can
-  react to changes in the model, possibly generating a new location.
-  If you're using start-app, then this is the `app.models` that is
-  returned when you call `StartApp.start`.
+*   `models` is your signal of models. This is required so that we can react to
+    changes in the model, possibly generating a new location.
 
-* `initialModel` is your initial model. It is used when processing
-  the first model change that your app generates. If you're using
-  start-app, then this is the `initialModel` that you supply to
-  `StartApp.start`.
+*   `initialModel` is your initial model. It is used when processing
+    the first model change that your app generates.
 
-* `delta2update` is a function which takes two arguments and possibly
-  generates a location update. The first argument is the previous model.
-  The second argument is the current model.
+*   `delta2update` is a function which takes two arguments and possibly
+    returns a location update. The first argument is the previous model.
+    The second argument is the current model.
 
-  The reason you are provided with both the previous and current models
-  is that sometimes the nature of the location update depends on the
-  difference between the two, not just on the latest model. For instance,
-  if the user is typing in a form, you might want to use `replace` rather
-  than `set`. Of course, in cases where you only need to consult the
-  current model, you can ignore the first parameter.
+    The reason you are provided with both the previous and current models is
+    that sometimes the nature of the location update depends on the difference
+    between the two, not just on the latest model. For instance, if the user is
+    typing in a form, you might want to use `replace` rather than `set`. Of
+    course, in cases where you only need to consult the current model, you
+    can ignore the first parameter.
 
-  This module will process the `List String` in the update in the following
-  way. It will:
+    This module will process the `List String` in the update in the following
+    way. It will:
 
-  * uriEncode the strings
-  * join them with "/"
-  * add the `prefix` to the beginning
+    * uriEncode the strings
+    * join them with "/"
+    * add the `prefix` to the beginning
 
-  In a modular application, you may well want to use `map` after dispatching
-  to a lower level.
+    In a modular application, you may well want to use `map` after dispatching
+    to a lower level -- see the example in the `map` documentation.
 
-  Note that this module will automatically detect cases where you return
-  a HashUpdate which would set the same location that is already set, and
-  do nothing. Thus, you don't need to try to detect that yourself.
+    Note that this module will automatically detect cases where you return
+    a HashUpdate which would set the same location that is already set, and
+    do nothing. Thus, you don't need to try to detect that yourself.
 
-  The content of the individual strings is up to you ... essentially it
-  should be something that your `location2action` function can deal with.
+    The content of the individual strings is up to you ... essentially it
+    should be something that your `location2action` function can deal with.
 
-* `location2action` is a function which takes a `List String` and returns
-  an action. The argument is a decoded version of the hash portion of
-  the location. First, the `prefix` is stripped from the hash, and then
-  the result is converted to a `List` by using '/' as a delimiter. Note
-  that the individual `String` values have already been uriDecoded for you.
+*   `location2action` is a function which takes a `List String` and possibly 
+    returns an action your app can perform. 
+    
+    The argument is a decoded version of the hash portion of the location.
+    First, the `prefix` is stripped from the hash, and then the result is
+    converted to a `List` by using '/' as a delimiter. Note that the individual
+    `String` values have already been uriDecoded for you.
+
+    Essentially, your `location2action` should return an action that is the
+    reverse of what your `delta2update` function produced. That is, the
+    `List String` you get back in `location2action` is the `List String` that
+    your `delta2path` used to create a `HashUpdate`. So, however you encoded
+    your state in `delta2path`, you now need to interpret that in
+    `location2action` in order to return an action which will produce the
+    desired state.
+
+*   `address` is a `Signal.Address` to which the actions returned by
+    `location2action` can be sent.
 -} 
 type alias Config model action =
     { prefix : String
     , models : Signal model
     , initialModel : model
     , delta2update : model -> model -> Maybe HashUpdate
-    , address : Address action
     , location2action : List String -> Maybe action
+    , address : Address action
     }
 
 
@@ -139,16 +187,30 @@ defaultPrefix : String
 defaultPrefix = "#!/"
 
 
-{-| Call this function once with your configuration, and then use
-the returned value as part of your app setup.
+{-| Call this function once with your configuration.
+
+The signal of tasks returned by this function need to be sent to a port
+to be executed. So, you might call it in your main module something
+like this:
+
+    port routeTasks : Signal (Task () ())
+    port routeTasks =
+        RouteHash.start
+            { prefix = RouteHash.defaultPrefix
+            , models = models
+            , initialModel = initialModel
+            , delta2update = delta2update 
+            , address = address
+            , location2action = location2action
+            }
 
 See `Config` for the documentation of the parameter you need to supply.
 -}
 start : Config model action -> Signal (Task () ())
 start config =
     let
-        {-  A signal of the model changes ... first element in the tuple is
-            previous, second is current.
+        {-  A signal of the model changes ... the first element in the tuple is
+            old value, and the second is the new value.
         
             changes : Signal (model, model)
         -}
@@ -195,25 +257,21 @@ start config =
             updateTasks : Signal (Task () ())
         -}
         updateTasks =
-            Signal.map update2task actualUpdates
+            Signal.filterMap (Maybe.map update2task) (Task.succeed ()) actualUpdates
 
         
         {-  Converts an a HashUpdate to a Task.
 
-            update2task : Maybe HashUpdate -> Task () ()
+            update2task : HashUpdate -> Task () ()
         -}
         update2task update =
-            case update of
-                Just (SetPath list) ->
-                    History.setPath <|
-                        list2hash config.prefix list
+            list2hash config.prefix (extract update) |>
+                case update of
+                    SetPath list ->
+                        History.setPath
 
-                Just (ReplacePath list) ->
-                    History.replacePath <|
-                        list2hash config.prefix list
- 
-                Nothing ->
-                    Task.succeed ()
+                    ReplacePath list ->
+                        History.replacePath
 
 
         -- actions : Signal (Maybe action)
@@ -237,6 +295,7 @@ start config =
                 Nothing ->
                     config.location2action location
 
+
         actionTasks =
             Signal.filterMap action2task (Task.succeed ()) actions
 
@@ -251,19 +310,10 @@ start config =
 {-|  Tests whether an update would actually change our location. -}
 dropIfCurrent : Maybe HashUpdate -> List String -> Maybe HashUpdate
 dropIfCurrent update current =
-    case update of
-        Just (SetPath list) ->
-            if list == current
-                then Nothing
-                else update
-
-        Just (ReplacePath list) ->
-            if list == current
-                then Nothing
-                else update
-
-        Nothing ->
-            Nothing
+    update `Maybe.andThen` \u ->
+        if extract u == current
+            then Nothing
+            else update
 
 
 {-| Remove the character from the string if it is the first character -}
@@ -301,16 +351,8 @@ list2hash prefix list =
     prefix ++ String.join "/" (List.map uriEncode list)
         
 
-{-| A signal of changes to the model.
-
-The tuple has the previous model first and then the current model.
-
-We use this to calculate possible changes to the location. We need the previous
-model because whether to make the change, and whether to make it a "setPath" or
-"replacePath", depends on the previous state.  Well, I suppose it could depend
-on the previous location, but this seems simpler ... we just assume that the
-previous location was propertly set (which seems safe, since this is what is
-doing it ...).
+{-| Takes an initial value and a Signal. Returns a Signal of changes to the value,
+where the first part of the tuple is the old value and the second is the new value.
 -}
 deltas : a -> Signal a -> Signal (a, a)
 deltas initial signal =
