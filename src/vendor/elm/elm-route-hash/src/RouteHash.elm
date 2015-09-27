@@ -28,7 +28,7 @@ as described below.
 import String exposing (uncons, split)
 import Http exposing (uriDecode, uriEncode)
 import Signal exposing (Signal, Address, send, merge)
-import Signal.Extra exposing (passiveMap2, foldp')
+import Signal.Extra exposing (passiveMap2, deltas)
 import Task exposing (Task)
 import History
 
@@ -344,21 +344,3 @@ hash2list prefix =
 list2hash : String -> List String -> String
 list2hash prefix list =
     prefix ++ String.join "/" (List.map uriEncode list)
-        
-
-{-| Takes a Signal, and returns a Signal of changes to the value,
-where the first part of the tuple is the old value and the second is the new value.
--}
-deltas : Signal a -> Signal (a, a)
-deltas signal =
-    let
-        step value delta =
-            (snd delta, value)
-
-        initial value =
-            (value, value)
-
-    in
-        foldp' step initial signal
-
-
