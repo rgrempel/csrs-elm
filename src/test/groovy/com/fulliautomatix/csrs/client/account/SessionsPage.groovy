@@ -10,7 +10,7 @@ class SessionsPage extends NavBarPage {
     }
     
     static content = {
-        buttons (wait: 1, required: false) {
+        buttons (wait: 3, required: false) {
             $(".delete-session-button") 
         }
     }
