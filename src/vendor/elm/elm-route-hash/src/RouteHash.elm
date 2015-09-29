@@ -171,7 +171,7 @@ type alias Config model action =
     { prefix : String
     , models : Signal model
     , delta2update : model -> model -> Maybe HashUpdate
-    , location2action : List String -> Maybe action
+    , location2action : List String -> List action
     , address : Address action
     }
 
@@ -269,34 +269,49 @@ start config =
                         History.replacePath
 
 
-        -- actions : Signal (Maybe action)
+        -- actions : Signal (List action)
         actions =
             passiveMap2 route locations actualUpdates
 
 
-        -- route : List String -> Maybe HashUpdate -> Maybe action
+        -- route : List String -> Maybe HashUpdate -> List action
         route location update =
             case update of
                 Just (SetPath list) ->
                     if list == location
-                        then Nothing
+                        then [] 
                         else config.location2action location
 
                 Just (ReplacePath list) ->
                     if list == location
-                        then Nothing
+                        then []
                         else config.location2action location
 
                 Nothing ->
                     config.location2action location
 
 
+        -- actionTasks : Signal (Task () ())
         actionTasks =
             Signal.filterMap action2task (Task.succeed ()) actions
 
-        
-        action2task action =
-            Maybe.map (Signal.send config.address) action
+
+        -- action2task : List action -> Maybe (Task () ())
+        action2task actions =
+            case actions of
+                [] ->
+                    Nothing
+
+                [action] ->
+                    Just <|
+                        Signal.send config.address action
+                
+                _ ->
+                    Just <|
+                        Task.map (always ()) <|
+                            Task.sequence <|
+                                List.map (Signal.send config.address) actions  
+
 
     in
         Signal.merge actionTasks updateTasks

@@ -113,15 +113,27 @@ delta2path model model' =
     path model.focus.focus model'.focus.focus
 
 
-route : List String -> Maybe Action
+-- I changed the RouteHash API from Maybe Action to List Action.  Instead of
+-- changing it everywhere below, I'm just adapting here for now.
+route : List String -> List Action
 route hash =
-    Maybe.oneOf
-        [ home.route hash
-        , account.route hash
-        , admin.route hash
-        , tasks.route hash
-        , Just (FocusError ErrorTypes.FocusError)
-        ]
+    let
+        subaction =
+            Maybe.oneOf
+                [ home.route hash
+                , account.route hash
+                , admin.route hash
+                , tasks.route hash
+                , Just (FocusError ErrorTypes.FocusError)
+                ]
+
+    in
+        case subaction of
+            Just action ->
+                [action]
+
+            Nothing ->
+                []
 
 
 update : Action -> FocusModel -> FocusModel
