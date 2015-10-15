@@ -22,6 +22,9 @@
     },
     "angular-file-upload/angular-file-upload.d.ts": {
       "commit": "f3244190e20af6901e865f4cc58127d19216baa1"
+    },
+    "angular-ui-router/angular-ui-router.d.ts": {
+      "commit": "3a6e1b8988eba0ba74fe4db20c950242552857e2"
     }
   }
 }

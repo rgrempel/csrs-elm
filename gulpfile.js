@@ -2,6 +2,8 @@
 /* jshint camelcase: false */
 'use strict';
 
+// The main thing you want is `gulp inject`
+
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
     prefix = require('gulp-autoprefixer'),

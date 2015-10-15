@@ -762,6 +762,9 @@ declare module CodeMirror {
         You should usually leave it at its default, 10. Can be set to Infinity to make sure the whole document is always rendered,
         and thus the browser's text search works on it. This will have bad effects on performance of big documents. */
         viewportMargin?: number;
+
+        // Added to make things compile ...
+        onLoad: any;
     }
 
     interface TextMarkerOptions {
