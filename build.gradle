@@ -120,6 +120,9 @@ dependencies {
 
     compile group: 'com.voodoodyne.jackson.jsog', name: 'jackson-jsog', version: '1.1'
     
+    compile group: 'org.apache.poi', name: 'poi', version: apache_poi_version
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: apache_poi_version
+
     compile(group: 'org.apache.xmlgraphics', name: 'fop', version: '1.1') {
         exclude(module: 'avalon-framework-api')
         exclude(module: 'avalon-framework-impl')
