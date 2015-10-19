@@ -1,6 +1,10 @@
 package com.fulliautomatix.csrs.web.template;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -55,8 +59,18 @@ public class ExportController {
         Collection<Contact> contacts = contactRepository.findAll(
             objectMapper.readValue(filterString, Filter.class).getSpec()
         );
-        lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class);
+        lazyService.initializeForJsonView(contacts, Contact.WithEverything.class);
 
-        return new ModelAndView(new ExcelContacts(), "contacts", contacts);
+        List<Integer> years = contacts.stream().flatMap(contact ->
+            contact.getAnnuals().stream()
+        ).map(annual ->
+            annual.getYear()
+        ).distinct().collect(Collectors.toList());
+        
+        Map<String, Object> map = new HashMap<>();
+        map.put("contacts", contacts);
+        map.put("years", years);
+
+        return new ModelAndView(new ExcelContacts(), map);
     }
 }

@@ -2,6 +2,7 @@ package com.fulliautomatix.csrs.domain;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -197,6 +198,12 @@ public class Contact implements Serializable, HasOwner {
     @JsonView(WithAnnuals.class)
     private Set<Annual> annuals = new HashSet<>();
 
+    public Optional<Annual> annualForYear (Integer year) {
+        return annuals.stream().filter(annual ->
+            year.equals(annual.getYear())
+        ).findFirst();
+    }
+
     @OneToMany(mappedBy="contact")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @lombok.Getter @lombok.Setter
@@ -214,6 +221,18 @@ public class Contact implements Serializable, HasOwner {
     @Override
     public Set<Contact> findOwners () {
         return Stream.of(this).collect(Collectors.toSet());
+    }
+
+    public String formattedEmail (String delimiter) {
+        return contactEmails.stream().map(ce ->
+            ce.getEmail().getEmailAddress()
+        ).collect(Collectors.joining(delimiter));
+    }
+
+    public String formattedInterests (String delimiter) {
+        return interests.stream().map(interest ->
+            interest.getInterest()
+        ).collect(Collectors.joining(delimiter));
     }
 
     public String fullName () {
