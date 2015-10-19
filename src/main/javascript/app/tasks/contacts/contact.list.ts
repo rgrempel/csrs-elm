@@ -252,6 +252,14 @@ module CSRS {
 
             return "/letters/" + this.selectedTemplate.code + ".pdf?filter=" + this.filterString;
         }
+        
+        getExportURL () {
+            if (!this.filterString) {
+                return "#";
+            }
+
+            return "/export/contacts.xls?filter=" + this.filterString;
+        }
 
         initYearSelection (year: number) : void {
             if (!this.selections[year]) this.selections[year] = {

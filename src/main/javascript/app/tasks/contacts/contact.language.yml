@@ -10,6 +10,11 @@ membership:
             fr: Affichage {{number}} membres.
             la: Ostendens {{number}} membra.
 
+        exportToXLS:
+            en: Export to Excel
+            fr: Exporter vers Excel
+            la: Educendo ad Excel
+
         instructions:
             1:
                 en: >-

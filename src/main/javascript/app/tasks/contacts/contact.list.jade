@@ -97,6 +97,17 @@
                                 ui-sref="template-detail({id: contactList.selectedTemplate.id})"
                                 translate="entity.action.edit"
                             ) Edit
+
+                    p
+
+                    button(
+                        type = "button"
+                        class = "btn btn-default"
+                    )
+                        a(
+                            ng-href = "{{contactList.getExportURL()}}"
+                            translate = "membership.byYear.exportToXLS"
+                        ) Export XLS
             
     p(
         translate = "membership.byYear.showingMembers"
