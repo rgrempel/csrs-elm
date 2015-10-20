@@ -23,6 +23,12 @@ import com.fulliautomatix.csrs.domain.Annual;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 public class ExcelContacts extends AbstractExcelView {
+    protected HSSFCell createCell (HSSFRow row, HSSFCellStyle style, int pos) {
+        HSSFCell cell = row.createCell(pos);
+        if (style != null) cell.setCellStyle(style);
+        return cell;
+    }
+
     protected void buildExcelDocument (
         Map<String, Object> model,
         HSSFWorkbook workbook,
@@ -40,7 +46,7 @@ public class ExcelContacts extends AbstractExcelView {
             , Collections.reverseOrder()
             );
 
-        HSSFSheet sheet = workbook.createSheet("Spring");
+        HSSFSheet sheet = workbook.createSheet("CSRS");
         sheet.setDefaultColumnWidth(12);
 
         // Write a text at A1.
@@ -49,7 +55,9 @@ public class ExcelContacts extends AbstractExcelView {
 
         // Write the current date at A2.
         HSSFCellStyle dateStyle = workbook.createCellStyle();
-        dateStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("m/d/yy"));
+        HSSFDataFormat dataFormat = workbook.createDataFormat();
+        dateStyle.setDataFormat(dataFormat.getFormat("yyyy-m-d"));
+
         cell = getCell(sheet, 1, 0);
         cell.setCellValue(new Date());
         cell.setCellStyle(dateStyle);
@@ -58,6 +66,7 @@ public class ExcelContacts extends AbstractExcelView {
 
         // Write headers ...
         HSSFRow headers = sheet.createRow(3);
+
         headers.createCell(0).setCellValue("Full Name");
         headers.createCell(1).setCellValue("Full Address");
         headers.createCell(2).setCellValue("First Name");
@@ -71,6 +80,20 @@ public class ExcelContacts extends AbstractExcelView {
         headers.createCell(10).setCellValue("Email");
         headers.createCell(11).setCellValue("Interests");
 
+        // In 1/256 of a character width
+        sheet.setColumnWidth(0, 24 * 256);
+        sheet.setColumnWidth(1, 36 * 256);
+        sheet.setColumnWidth(2, 10 * 256);
+        sheet.setColumnWidth(3, 10 * 256);
+        sheet.setColumnWidth(4, 12 * 256);
+        sheet.setColumnWidth(5, 6 * 256);
+        sheet.setColumnWidth(6, 6 * 256);
+        sheet.setColumnWidth(7, 8 * 256);
+        sheet.setColumnWidth(8, 6 * 256);
+        sheet.setColumnWidth(9, 6 * 256);
+        sheet.setColumnWidth(10, 24 * 256);
+        sheet.setColumnWidth(11, 24 * 256);
+
         int headerCell = 12;
         HSSFRow headers2 = sheet.createRow(4);
         
@@ -82,22 +105,30 @@ public class ExcelContacts extends AbstractExcelView {
             headers2.createCell(headerCell++).setCellValue("R & R");
         }
 
+        HSSFCellStyle dataStyle = workbook.createCellStyle();
+        dataStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_TOP);
+        dataStyle.setWrapText(true);
+
         // Write contact names
         int rowIndex = 5;
         for (Contact c : contacts) {
             HSSFRow sheetRow = sheet.createRow(rowIndex++);
-            sheetRow.createCell(0).setCellValue(c.fullName());
-            sheetRow.createCell(1).setCellValue(c.abbreviatedAddress());
-            sheetRow.createCell(2).setCellValue(c.getFirstName());
-            sheetRow.createCell(3).setCellValue(c.getLastName());
-            sheetRow.createCell(4).setCellValue(c.getCity());
-            sheetRow.createCell(5).setCellValue(c.getRegion());
-            sheetRow.createCell(6).setCellValue(c.getCountry());
-            sheetRow.createCell(7).setCellValue(c.getPostalCode());
-            sheetRow.createCell(8).setCellValue(c.getOmitNameFromDirectory());
-            sheetRow.createCell(9).setCellValue(c.getOmitEmailFromDirectory());
-            sheetRow.createCell(10).setCellValue(c.formattedEmail("\n"));
-            sheetRow.createCell(11).setCellValue(c.formattedInterests("\n"));
+            
+            // In 1/20 of a pt
+            sheetRow.setHeight((short) (48 * 20));
+           
+            createCell(sheetRow, dataStyle, 0).setCellValue(c.fullName());
+            createCell(sheetRow, dataStyle, 1).setCellValue(c.abbreviatedAddress());
+            createCell(sheetRow, dataStyle, 2).setCellValue(c.getFirstName());
+            createCell(sheetRow, dataStyle, 3).setCellValue(c.getLastName());
+            createCell(sheetRow, dataStyle, 4).setCellValue(c.getCity());
+            createCell(sheetRow, dataStyle, 5).setCellValue(c.getRegion());
+            createCell(sheetRow, dataStyle, 6).setCellValue(c.getCountry());
+            createCell(sheetRow, dataStyle, 7).setCellValue(c.getPostalCode());
+            createCell(sheetRow, dataStyle, 8).setCellValue(c.getOmitNameFromDirectory() ? "x" : "");
+            createCell(sheetRow, dataStyle, 9).setCellValue(c.getOmitEmailFromDirectory() ? "x" : "");
+            createCell(sheetRow, dataStyle, 10).setCellValue(c.formattedEmail("\n"));
+            createCell(sheetRow, dataStyle, 11).setCellValue(c.formattedInterests("\n"));
 
             int rowCell = 12;
             for (Integer year : years) {
