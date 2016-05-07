@@ -276,7 +276,7 @@
                 "required": "Required"
             }
         },
-        "title": "CSRS Membership",
+        "title": "CSRS Member Database",
         "total": "Total"
     },
     "health": {
@@ -367,7 +367,7 @@
         },
         "question": "For more information about the Canadian Society for Renaissance Studies, see our main website, at:",
         "seeDirectory": "Download the membership directory",
-        "subtitle": "This is the Canadian Society for Renaissance Studies membership site.",
+        "subtitle": "This is the Canadian Society for Renaissance Studies membership database.",
         "title": "Welcome, Renaissance Scholar!"
     },
     "membership": {
