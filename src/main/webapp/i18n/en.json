@@ -252,7 +252,7 @@
                 "authenticated": "Been here before? <a href=\"#!/login\">Login with your account.</a>",
                 "register": "Don't have an account yet? <a href=\"#!/account/create\">Register a new account.</a>"
             },
-            "translation": "Use the language menu to switch to <a href=\"\" ng-click=\"changeLanguage('fr')\">French</a> or <a href=\"\" ng-click=\"changeLanguage('la')\">Latin</a>.",
+            "translation": "Use the language menu to switch to <a href=\"\" ng-click=\"changeLanguage('fr')\">French</a>.",
             "validate": {
                 "alreadyTaken": "Already taken",
                 "confirmpassword": {

@@ -716,8 +716,7 @@ global:
         translation:
             en: >-
                 Use the language menu to switch to
-                <a href="" ng-click="changeLanguage('fr')">French</a> or
-                <a href="" ng-click="changeLanguage('la')">Latin</a>.
+                <a href="" ng-click="changeLanguage('fr')">French</a>.
             fr: "La traduction française est un travail en cours. Corrections seraient les bienvenus."
             la: "Idcirco Latina est opus in progressionem. Suadentur gratum foret."
 
