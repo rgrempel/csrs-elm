@@ -23,11 +23,13 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -67,7 +69,7 @@ import com.voodoodyne.jackson.jsog.JSOGGenerator;
         }
     )
 })
-@lombok.ToString(of={"id", "salutation", "firstName", "lastName", "department", "affiliation"})
+@lombok.ToString(of={"id", "salutation", "firstName", "lastName", "department", "affiliation", "lastVerified"})
 public class Contact implements Serializable, HasOwner {
     private static final long serialVersionUID = 1L;
 
@@ -162,6 +164,12 @@ public class Contact implements Serializable, HasOwner {
     @lombok.Getter @lombok.Setter
     @JsonView(Scalar.class)
     private String postalCode;
+
+    @lombok.Getter @lombok.Setter
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    @Column(name = "last_verified")
+    @JsonView(Scalar.class)
+    private DateTime lastVerified;
 
     @Column(name = "email")
     @lombok.Getter @lombok.Setter
