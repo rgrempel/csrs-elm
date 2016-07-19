@@ -26,6 +26,15 @@ angular.module('csrsApp').factory('UserContact', function ($resource, _, JSOG) {
                 return angular.toJson(_.omit(data, ['annuals', 'interests', 'contactEmails']));
             }
         },
+
+        'markVerified': {
+            method: 'PUT',
+            url: 'api/account/contacts/mark-verified/:id',
+            transformRequest: function (data) {
+                // By default, don't send the annuals or interests ...
+                return angular.toJson(_.omit(data, ['annuals', 'interests', 'contactEmails']));
+            }
+        },
     
         'save': {
             method: 'POST',

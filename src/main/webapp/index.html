@@ -78,6 +78,12 @@
         <script src="bower_components/codemirror/addon/search/searchcursor.js"></script>
         <!-- endbuild -->
 
+        <!-- Manually add angular-moment stuff -->
+        <script src="bower_components/moment/moment.js"></script>
+        <script src="bower_components/moment/locale/en-ca.js"></script>
+        <script src="bower_components/moment/locale/fr-ca.js"></script>
+        <script src="bower_components/angular-moment/angular-moment.js"></script>
+
         <!-- build:js({.tmp,src/main/webapp}) scripts/app.js --> 
         <!-- inject:js -->
         <script src="scripts/types/app.js"></script>
@@ -129,6 +135,7 @@
         <script src="scripts/app/tasks/state.js"></script>
         <script src="scripts/app/tasks/processForms/search.js"></script>
         <script src="scripts/app/tasks/processForms/detail.js"></script>
+        <script src="scripts/app/tasks/processForms/contactVerification.js"></script>
         <script src="scripts/app/tasks/processForms/contactLabel.js"></script>
         <script src="scripts/app/tasks/processForms/contactInterests.js"></script>
         <script src="scripts/app/tasks/processForms/contactFormModal.js"></script>

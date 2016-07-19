@@ -566,6 +566,17 @@
         },
         "title": "User settings for [<b>{{username}}</b>]"
     },
+    "tasks": {
+        "processForms": {
+            "contactVerification": {
+                "body": "Auxilium recte servare volumus database. Placere recensebimus notitia inferius edit opus fuerit. Quondam vos es contentus, placere click in \"Confirmare verificatur\" puga pyga ut sciamus recte teneo notitia.",
+                "lastVerified": "Novissimus verificetur: ",
+                "markVerified": "Confirmare verificatur",
+                "never": "Numquam",
+                "verification": "Verificatur"
+            }
+        }
+    },
     "templates": {
         "code": "Codice",
         "detail": {

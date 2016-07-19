@@ -6,6 +6,14 @@
     <div ng-show="settingsController.contacts.length > 0">
         <div ng-repeat="contact in settingsController.contacts">
             <div class="row">
+                <div
+                    csrs-contact-verification="contact"
+                    reload="settingsController.loadContacts()"
+                    class="col-xs-12 col-sm-12 col-md-11 col-lg-10"
+                />
+            </div>
+
+            <div class="row">
                 <div class="col-xs-6">
                     <div class="panel panel-default">
                         <div class="panel-heading clearfix">
@@ -20,7 +28,7 @@
                             <button class="btn btn-primary btn-sm pull-right" ng-click="settingsController.startEditing(contact)">
                                 <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit">Edit</span>
                             </button>
-                            <div class="clearfix vertical-align-middle" translate="csrsApp.contact.home.pleaseEdit">Please edit if needed.</div>
+                            <div class="clearfix vertical-align-middle">&nbsp;</div>
                         </div>
                     </div>
                 </div>

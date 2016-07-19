@@ -1,0 +1,36 @@
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <div class="pull-right">
+            <span translate="tasks.processForms.contactVerification.lastVerified">Last verified: </span>
+
+            <span
+                ng-hide="verificationCtrl.contact.lastVerified"
+                translate="tasks.processForms.contactVerification.never"
+            >Never</span>
+
+            <span
+                ng-show="verificationCtrl.contact.lastVerified"
+                am-time-ago="verificationCtrl.contact.lastVerified"
+            >5 minutes ago</span>
+        </div>
+
+        <h3 class="panel-title" translate="tasks.processForms.contactVerification.verification">Verification</h3>
+    </div>
+
+    <div class="panel-body" ng-if="verificationCtrl.show()">
+        <div translate="tasks.processForms.contactVerification.body" >
+            We would like your help to keep our database
+            accurate. Please review the information below,
+            and edit it if necessary. Once you are
+            satisified, please click on the "Mark Verified"
+            button to let us know that we've got the right
+            information.
+        </div>
+    </div>
+
+    <div class="panel-footer" ng-if="verificationCtrl.show()">
+        <button class="btn btn-primary btn-sm" ng-click="verificationCtrl.markVerified(contact)">
+            <span class="glyphicon glyphicon-ok"></span>&nbsp;<span translate="tasks.processForms.contactVerification.markVerified">Mark Verified</span>
+        </button>
+    </div>
+</div>

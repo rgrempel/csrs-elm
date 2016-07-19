@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('csrsApp')
-    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, Account, Register, Activate, Password) {
+    .factory('Auth', function Auth($rootScope, $state, $q, $translate, Principal, AuthServerProvider, Account, Register, Activate, Password, amMoment) {
         return {
             login: function (credentials, callback) {
                 var cb = callback || angular.noop;
@@ -16,6 +16,8 @@ angular.module('csrsApp')
                             $translate.use(account.langKey);
                             $translate.refresh();
                             $translate.use(account.langKey);
+
+                            amMoment.changeLocale(account.langKey + "-ca");
                         }
                     });
                     deferred.resolve(data);

@@ -231,6 +231,10 @@ public class Contact implements Serializable, HasOwner {
         return Stream.of(this).collect(Collectors.toSet());
     }
 
+    public void markVerified () {
+        setLastVerified(new DateTime());
+    }
+
     public String formattedEmail (String delimiter) {
         return contactEmails.stream().map(ce ->
             ce.getEmail().getEmailAddress()

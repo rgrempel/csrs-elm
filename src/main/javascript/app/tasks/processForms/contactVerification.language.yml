@@ -1,0 +1,36 @@
+tasks:
+    processForms:
+        contactVerification:
+            lastVerified:
+                en: "Last verified: "
+                fr: "Dernière vérification: "
+                la: "Novissimus verificetur: "
+
+            never:
+                en: "Never"
+                fr: "Jamais"
+                la: "Numquam"
+
+            verification:
+                en: "Verification"
+                fr: "Vérification"
+                la: "Verificatur"
+
+            markVerified:
+                en: "Mark Verified"
+                fr: "Marque comme vérifié"
+                la: "Confirmare verificatur"
+
+            body:
+                en: >-
+                    We would like your help to keep our database accurate.
+                    Please review the information below, and edit it if necessary.
+                    Once you are satisified, please click on the "Mark Verified" button to let us know that we've got the right information.
+                fr: >-
+                    Nous aimerions votre aide pour garder notre base de données précise.
+                    S'il vous plaît examiner les informations ci-dessous, et le modifier si nécessaire.
+                    Une fois que vous êtes satisfait, s'il vous plaît cliquer sur le bouton "Marque comme vérifié" pour nous faire savoir que nous avons la bonne information.
+                la: >-
+                    Auxilium recte servare volumus database.
+                    Placere recensebimus notitia inferius edit opus fuerit.
+                    Quondam vos es contentus, placere click in "Confirmare verificatur" puga pyga ut sciamus recte teneo notitia.

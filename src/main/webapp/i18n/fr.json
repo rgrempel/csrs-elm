@@ -566,6 +566,17 @@
         },
         "title": "Profil de l'utilisateur [{{username}}]"
     },
+    "tasks": {
+        "processForms": {
+            "contactVerification": {
+                "body": "Nous aimerions votre aide pour garder notre base de données précise. S'il vous plaît examiner les informations ci-dessous, et le modifier si nécessaire. Une fois que vous êtes satisfait, s'il vous plaît cliquer sur le bouton \"Marque comme vérifié\" pour nous faire savoir que nous avons la bonne information.",
+                "lastVerified": "Dernière vérification: ",
+                "markVerified": "Marque comme vérifié",
+                "never": "Jamais",
+                "verification": "Vérification"
+            }
+        }
+    },
     "templates": {
         "code": "Code",
         "detail": {

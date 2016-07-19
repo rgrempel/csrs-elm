@@ -3,7 +3,7 @@
 
     angular.module('csrsApp').run(StateTracker);
 
-    function StateTracker ($rootScope, $state, _, Language, $translate, ENV, VERSION, Principal, Auth, $window) {
+    function StateTracker ($rootScope, $state, _, Language, $translate, ENV, VERSION, Principal, Auth, $window, amMoment) {
         'ngInject';
 
         $rootScope._ = _;
@@ -23,6 +23,8 @@
                     $translate.use(language);
                     $translate.refresh();
                     $translate.use(language);
+
+                    amMoment.changeLocale(language + "-ca");
                 }
             });
         });

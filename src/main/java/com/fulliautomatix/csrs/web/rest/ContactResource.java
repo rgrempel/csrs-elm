@@ -51,10 +51,10 @@ public class ContactResource {
     @Inject
     private ContactRepository contactRepository;
 
-    @Inject 
+    @Inject
     private EmailRepository emailRepository;
 
-    @Inject 
+    @Inject
     private ContactEmailRepository contactEmailRepository;
 
     @Inject
@@ -83,7 +83,7 @@ public class ContactResource {
         }
 
         contact = contactRepository.save(contact);
-        
+
         return ResponseEntity.created(new URI("/api/contacts/" + contact.getId())).build();
     }
 
@@ -106,7 +106,7 @@ public class ContactResource {
         }
 
         final Contact saved = contactRepository.save(contact);
-        
+
         // Hook up all the emails ...
         emailRepository.findAllForLogin(securityUtils.getCurrentLogin()).stream().forEach(e -> {
             ContactEmail ce = new ContactEmail();
@@ -114,7 +114,7 @@ public class ContactResource {
             ce.setContact(saved);
             contactEmailRepository.save(ce);
         });
-        
+
         return ResponseEntity.created(new URI("/api/contacts/" + contact.getId())).build();
     }
 
@@ -129,17 +129,17 @@ public class ContactResource {
     @Timed
     public ResponseEntity<Void> update(@Valid @RequestBody Contact contact) throws URISyntaxException {
         log.debug("REST request to update Contact : {}", contact);
-         
+
         if (contact.getId() == null) {
             return ResponseEntity.badRequest().header("Failure", "An existing must already have an ID").build();
         }
-        
+
         contact = contactRepository.save(contact);
         return ResponseEntity.ok().build();
     }
 
     /**
-     * PUT  /contacts -> Updates an existing contact for the user
+     * PUT  /account/contacts -> Updates an existing contact for the user
      */
     @RequestMapping(
         value = "/account/contacts",
@@ -164,6 +164,30 @@ public class ContactResource {
     }
 
     /**
+     * PUT  /account/contacts/mark-verified/:id -> mark the "id" contact as verified.
+     */
+    @RequestMapping(
+        value = "/account/contacts/mark-verified/{id}",
+        method = RequestMethod.PUT,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Timed
+    @RolesAllowed(AuthoritiesConstants.USER)
+    public ResponseEntity<Void> markVerified(@PathVariable Long id) {
+        log.debug("REST request to markVerified Contact : {}", id);
+
+        return ownerService.findOneForLogin(
+            contactRepository, id
+        ).map((contact) -> {
+            contact.markVerified();
+            contactRepository.save(contact);
+            return ResponseEntity.ok().build();
+        }).orElse(
+            new ResponseEntity<>(HttpStatus.NOT_FOUND)
+        );
+    }
+
+    /**
      * GET  /contacts get all the contacts.
      */
     @RequestMapping(
@@ -175,7 +199,7 @@ public class ContactResource {
     @JsonView(Contact.WithAnnuals.class)
     @RolesAllowed(AuthoritiesConstants.ADMIN)
     @Transactional(readOnly=true)
-    public ResponseEntity<Collection<Contact>> getAll ( 
+    public ResponseEntity<Collection<Contact>> getAll (
         @RequestParam(value = "yr", required = false) Set<Integer> yearsRequired,
         @RequestParam(value = "yf", required = false) Set<Integer> yearsForbidden
     ) throws URISyntaxException {
@@ -202,7 +226,7 @@ public class ContactResource {
     @Transactional(readOnly=true)
     public ResponseEntity<Collection<Contact>> filter (@RequestBody Filter<Contact> filter) throws URISyntaxException {
         log.debug("REST filter request");
-        
+
         Collection<Contact> contacts = contactRepository.findAll(filter.getSpec());
         lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class);
         return new ResponseEntity<>(contacts, HttpStatus.OK);
@@ -242,11 +266,11 @@ public class ContactResource {
     @Transactional(readOnly = true)
     public ResponseEntity<List<Contact>> getAll (@RequestParam(value = "fullNameSearch") String search) throws URISyntaxException {
         List<Contact> contacts = contactRepository.searchByFullNameLikeLower(("%" + search + "%"));
-        lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class); 
+        lazyService.initializeForJsonView(contacts, Contact.WithAnnuals.class);
 
         return new ResponseEntity<>(contacts, HttpStatus.OK);
     }
-    
+
     /**
      * GET  /contacts/:id -> get the "id" contact with annuals
      */

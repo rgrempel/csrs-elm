@@ -566,6 +566,17 @@
         },
         "title": "User settings for [<b>{{username}}</b>]"
     },
+    "tasks": {
+        "processForms": {
+            "contactVerification": {
+                "body": "We would like your help to keep our database accurate. Please review the information below, and edit it if necessary. Once you are satisified, please click on the \"Mark Verified\" button to let us know that we've got the right information.",
+                "lastVerified": "Last verified: ",
+                "markVerified": "Mark Verified",
+                "never": "Never",
+                "verification": "Verification"
+            }
+        }
+    },
     "templates": {
         "code": "Code",
         "detail": {
