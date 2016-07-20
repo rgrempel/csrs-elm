@@ -32,6 +32,8 @@ public class UserEmail implements Serializable, HasOwner {
     public interface WithUser extends Scalar, User.Scalar {};
     public interface WithUserEmailActivations extends Scalar, UserEmailActivation.Scalar {};
 
+    public interface WithEmailAndActivations extends WithEmail, WithUserEmailActivations {};
+
     public interface WithEverything extends WithEmail, WithUser, WithUserEmailActivations {};
 
     @Id

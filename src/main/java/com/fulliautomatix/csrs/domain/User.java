@@ -25,6 +25,8 @@ public class User extends AbstractAuditingEntity implements Serializable, HasOwn
 
     public interface WithUserEmails extends Scalar, UserEmail.Scalar {};
 
+    public interface WithUserEmailsAndActivations extends WithUserEmails, UserEmail.WithEmailAndActivations {};
+
     @Id
     @SequenceGenerator(name="t_user_id_seq", sequenceName="t_user_id_seq", allocationSize=1)
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="t_user_id_seq")

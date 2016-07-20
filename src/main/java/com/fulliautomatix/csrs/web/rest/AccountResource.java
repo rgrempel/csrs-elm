@@ -3,6 +3,7 @@ package com.fulliautomatix.csrs.web.rest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
+import java.util.Set;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.fasterxml.jackson.annotation.*;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +37,7 @@ import com.fulliautomatix.csrs.repository.UserEmailRepository;
 import com.fulliautomatix.csrs.repository.UserRepository;
 import com.fulliautomatix.csrs.security.SecurityUtils;
 import com.fulliautomatix.csrs.service.UserService;
+import com.fulliautomatix.csrs.service.LazyService;
 import com.fulliautomatix.csrs.web.rest.dto.PasswordChangeDTO;
 import com.fulliautomatix.csrs.web.rest.dto.PasswordResetDTO;
 import com.fulliautomatix.csrs.web.rest.dto.UserDTO;
@@ -53,6 +56,9 @@ public class AccountResource {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private LazyService lazyService;
 
     @Inject
     private PersistentTokenRepository persistentTokenRepository;
@@ -174,6 +180,26 @@ public class AccountResource {
                 ), HttpStatus.OK
             )
         ).orElse(
+            new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
+        );
+    }
+
+    /**
+     * GET  /account/email -- Get the UserEmails for the current user.
+     */
+    @RequestMapping(
+        value = "/account/email",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Timed
+    @JsonView(User.WithUserEmailsAndActivations.class)
+    @Transactional(readOnly = true)
+    public ResponseEntity<Set<UserEmail>> getAccountEmails() {
+        return userService.getUser().map((user) -> {
+            lazyService.initializeForJsonView(user, User.WithUserEmailsAndActivations.class);
+            return new ResponseEntity<>(user.getUserEmails(), HttpStatus.OK);
+        }).orElse(
             new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR)
         );
     }
