@@ -21,6 +21,11 @@ tasks:
                 fr: "Marque comme vérifié"
                 la: "Confirmare verificatur"
 
+            considerAdding:
+                en: "Consider adding:"
+                fr: "Pensez à ajouter:"
+                la: "Considerate addendo:"
+
             body:
                 en: >-
                     We would like your help to keep our database accurate.

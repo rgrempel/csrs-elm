@@ -26,6 +26,26 @@
             button to let us know that we've got the right
             information.
         </div>
+        <div ng-show="
+            !verificationCtrl.contact.street ||
+            !verificationCtrl.contact.city ||
+            !verificationCtrl.contact.region ||
+            !verificationCtrl.contact.postalCode ||
+            !verificationCtrl.contact.department ||
+            !verificationCtrl.contact.affiliation
+        " style="margin-top: 6pt;">
+            <span translate="tasks.processForms.contactVerification.considerAdding">Consider adding:</span>
+
+            <ul>
+                <li ng-show="!verificationCtrl.contact.street" translate="csrsApp.contact.street">Street</li>
+                <li ng-show="!verificationCtrl.contact.city" translate="csrsApp.contact.city">City</li>
+                <li ng-show="!verificationCtrl.contact.region" translate="csrsApp.contact.region">Region</li>
+                <li ng-show="!verificationCtrl.contact.postalCode" translate="csrsApp.contact.postalCode">Postal Code</li>
+                <li ng-show="!verificationCtrl.contact.department" translate="csrsApp.contact.department">Department</li>
+                <li ng-show="!verificationCtrl.contact.affiliation" translate="csrsApp.contact.affiliation">Affiliation</li>
+            </ul>
+            <!-- Interests -->
+        </div>
     </div>
 
     <div class="panel-footer" ng-if="verificationCtrl.show()">
