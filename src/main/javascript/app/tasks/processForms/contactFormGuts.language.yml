@@ -1,0 +1,10 @@
+contactFormGuts:
+    departmentHelp:
+        en: "If unaffiliated, enter your discipline."
+        fr: "Si non affilié, entrez votre discipline."
+        la: "Nisi foederata, intra disciplina."
+
+    affiliationHelp:
+        en: "If unaffiliated, use \"Independent Scholar\"."
+        fr: "Si non affilié, utiliser \"Scholar indépendant\"."
+        la: "Nisi foederata, intra \"Scolaris libre\"."

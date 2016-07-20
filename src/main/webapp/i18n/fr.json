@@ -39,6 +39,10 @@
         },
         "title": "Configuration"
     },
+    "contactFormGuts": {
+        "affiliationHelp": "Si non affilié, utiliser \"Scholar indépendant\".",
+        "departmentHelp": "Si non affilié, entrez votre discipline."
+    },
     "csrsApp": {
         "annual": {
             "contact": "contact",

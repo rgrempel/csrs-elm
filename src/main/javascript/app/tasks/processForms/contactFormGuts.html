@@ -123,13 +123,19 @@
         <div csrs-form-group class="col-xs-6">
             <label>
                 <span translate="csrsApp.contact.department">Department</span>
-                <input type="text" csrs-form-control name="department" ng-model="guts.contact.department" />
+                <input type="text" csrs-form-control name="department" ng-model="guts.contact.department" aria-describedby="department-help" />
+                <span id="department-help" class="help-block" translate="contactFormGuts.departmentHelp">
+                    If unaffiliated, enter your discipline.
+                </span>
             </label>
         </div>
 
         <div csrs-form-group class="col-xs-6">
             <label><span translate="csrsApp.contact.affiliation">Affiliation</span>
-                <input type="text" csrs-form-control name="affiliation" ng-model="guts.contact.affiliation" />
+                <input type="text" csrs-form-control name="affiliation" ng-model="guts.contact.affiliation" aria-describedby="affiliation-help" />
+                <span id="affiliation-help" class="help-block" translate="contactFormGuts.affiliationHelp">
+                    If unaffiliated, use "Independent Scholar".
+                </span>
             </label>
         </div>
     </div>

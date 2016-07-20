@@ -39,6 +39,10 @@
         },
         "title": "Configuration"
     },
+    "contactFormGuts": {
+        "affiliationHelp": "If unaffiliated, use \"Independent Scholar\".",
+        "departmentHelp": "If unaffiliated, enter your discipline."
+    },
     "csrsApp": {
         "annual": {
             "contact": "contact",

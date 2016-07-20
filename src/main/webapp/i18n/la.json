@@ -39,6 +39,10 @@
         },
         "title": "Configuration"
     },
+    "contactFormGuts": {
+        "affiliationHelp": "Nisi foederata, intra \"Scolaris libre\".",
+        "departmentHelp": "Nisi foederata, intra disciplina."
+    },
     "csrsApp": {
         "annual": {
             "contact": "contactum",
