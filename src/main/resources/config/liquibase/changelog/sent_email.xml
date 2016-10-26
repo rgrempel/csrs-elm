@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <changeSet id="sentEmail" author="ryan">
+        <createTable tableName="T_SENT_EMAIL">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="email_to" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="email_from" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="email_subject" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="email_content" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            
+            <column name="created_by" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            
+            <column name="created_date" type="timestamp with time zone" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            
+            <column name="last_modified_by" type="varchar"/>
+            
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+
+        <createIndex tableName="T_SENT_EMAIL" indexName="idx_sent_email_to">
+            <column name="email_to" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="addSuccess" author="ryan">
+        <addColumn tableName="T_SENT_EMAIL">
+            <column name="email_sent" type="timestamp with time zone" />
+        </addColumn>
+
+        <createIndex tableName="T_SENT_EMAIL" indexName="idx_sent_email_sent">
+            <column name="email_sent" />
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>

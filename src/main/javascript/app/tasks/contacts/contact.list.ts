@@ -261,6 +261,18 @@ module CSRS {
             return "/export/contacts.xls?filter=" + this.filterString;
         }
 
+        sendInvitations () {
+            var ids = Stream(this.filtered).map('id').toArray();
+
+            this.$http.post("/api/invitation/contacts", {
+                contactIDs: ids
+            }).success(() => {
+                alert("Invitations have been sent!");
+            }).error((data, status, headers, config) => {
+                alert(angular.toJson(data));
+            });
+        }
+
         initYearSelection (year: number) : void {
             if (!this.selections[year]) this.selections[year] = {
                 allStatus: 0,

@@ -156,7 +156,138 @@ email:
             la: >-
                 Si non placet instare nexus epistola transcursorium, quo vadant ad paginam
                 rogavit invitantis codice et utuntur:
-        
+
+    existingMember:
+        title:
+            en: "CSRS Account Invitation"
+            fr: "Invitation pour un compte au SCÉR"
+            la: "Invitamentum ad tesseram SCSR"
+
+        dear:
+            en: "Dear "
+            fr: "Cher/Chère "
+            la: "Salutem "
+
+        text1:
+            en: >-
+                The Canadian Society for Renaissance Studies has developed a
+                membership database, which we have been using to keep track of
+                contact information, subscriptions, and of course, membership
+                itself. Until now, the database has been accessible only to the
+                Executive, but we have now developed a member interface that
+                will allow you to update and confirm your information,
+                including address and scholarly interests.
+            fr: >-
+                La Société canadienne d'études de la Renaissance a
+                développé une base de données d'adhésion, que nous avons
+                utilisé pour garder la trace des informations de contact, des
+                abonnements, et bien sûr, l'adhésion elle-même. Jusqu'à
+                présent, la base de données a été accessible qu'à l'exécutif,
+                mais nous avons maintenant mis au point une interface de membre
+                qui vous permettra de mettre à jour et de confirmer vos
+                informations, y compris l'adresse et les intérêts
+                scientifiques.
+            la: >-
+                Studiis Societatis Canadian Renaissance sociari database
+                processit, ut servo semita of volutpat quam hactenus,
+                subscriptiones et utique se sociari. Usque modo non fuerit
+                datorum exsecutiva solis autem iam exculta membrum confirmabit
+                interface update vestri notitia quod mos sino vos ut etiam
+                oratione erudita studiis.
+
+        text2:
+            en: >-
+                By clicking on the following link, you will be taken to the
+                database, for a two-step process. First, create a username and
+                password for the site. Next, you will see your information,
+                which you can then edit and/or confirm.
+            fr: >-
+                En cliquant sur le lien suivant, vous serez redirigé vers la
+                base de données, pour un processus en deux étapes. Tout
+                d'abord, créer un nom d'utilisateur et mot de passe pour le
+                site. Ensuite, vous verrez vos informations, que vous pouvez
+                ensuite modifier et/ou confirmer.
+            la: >-
+                In consequat clicking te accipiatur datorum ad duos gradus
+                elit. Primo enim loco eligēre creare. Deinde videbis notitiam,
+                vos can creare et / vel confirmationem concedere.
+
+        text3:
+            en: >-
+                We appreciate your participation in this. Later this fall, we
+                hope to do our membership renewals through the database, and if
+                you have already signed in and updated your information, the
+                process then will be all the easier.
+            fr: >-
+                Nous vous remercions de votre participation à ce. Plus tard cet
+                automne, nous espérons faire nos renouvellements d'adhésion
+                grâce à la base de données, et si vous avez déjà signé et mis à
+                jour vos informations, le processus sera alors d'autant plus
+                facile.
+            la: >-
+                Nous vous remercions de votre participation à ce. Plus tard cet
+                automne, nous espérons faire nos renouvellements d'adhésion
+                grâce à la base de données, et si vous avez déjà signé et mis à
+                jour vos informations, le processus sera alors d'autant plus
+                facile.
+
+        text4:
+            en: "Best regards,"
+            fr: "Meilleures salutations,"
+            la: "Bene vale,"
+
+    specialOffer:
+        title:
+            en: "CSRS Special Offer"
+            fr: "Offre spéciale SCÉR"
+            la: "Offerunt insolita SCSR"
+
+        dear:
+            en: "Dear "
+            fr: "Cher/Chère "
+            la: "Salutem "
+
+        text1:
+            en: >-
+                We are pleased to announce that Renaissance and Reformation is
+                giving (at no cost to us) copies of its fiftieth anniversary issue
+                to all 2015 CSRS members.
+            fr: >-
+                Nous sommes heureux d'annoncer que la Renaissance et la Réforme
+                est de donner (sans frais pour nous) exemplaires de son édition
+                du cinquantième anniversaire à tous les 2015 membres SCÉR.
+            la: >-
+                Reformatio Renascentiae et laetanter nuntiamus nos gratias
+                (prorsus gratis nobis) codices exitum anniversarii sui omnes MMXV
+                membra SCSR.
+
+        text2:
+            en: >-
+                To receive your free issue, we ask you only to verify your mailing
+                address by logging into the membership database. Please refer to
+                the message I emailed earlier today for instructions. Once you have
+                verified your address, it will automatically be added to the
+                Renaissance and Reformation mail-out list.
+            fr: >-
+                Pour recevoir votre numéro gratuit, nous vous demandons
+                seulement de vérifier votre adresse postale en vous connectant
+                à la base de données des membres. S'il vous plaît se référer au
+                message que j'envoyé plus tôt aujourd'hui pour obtenir des
+                instructions. Une fois que vous avez vérifié votre adresse, il
+                sera automatiquement ajouté à la liste de courrier-out
+                Renaissance et la Réforme.
+            la: >-
+                Gratis accipiens subolem ficare digneris, te rogamus, ut per
+                colligationem in gremio vestri database Duis tempus ipsum.
+                Obsecro hodie mandata referre sermones emailed ante. Quondam
+                vos certiores tua, erit futura e-mail ad Renascentiae
+                Reformatione et elit.
+
+        text3:
+            en: "Best regards,"
+            fr: "Meilleures salutations,"
+            la: "Bene vale,"
+
     passwordReset:
         title:
             en: "CSRS Password Reset"

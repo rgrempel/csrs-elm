@@ -384,6 +384,7 @@
                 "4": "Ou, pour déterminer qui n'a pas renouvelé, appuyez sur l'année en cours pour la rendre rouge, et appuyez sur certaines années précédentes pour les rendre vert.",
                 "5": "Pour fusionner un modèle PDF avec tous les membres affichés, sélectionnez celui ci-dessous."
             },
+            "sendInvitations": "Envoyer des invitations",
             "showingMembers": "Affichage {{number}} membres.",
             "title": "Adhésion par année"
         }

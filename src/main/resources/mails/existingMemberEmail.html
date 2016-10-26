@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:text="#{email.existingMember.title}">CSRS Account Invitation</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+
+    <body>
+        <p>
+            <span th:text="#{email.existingMember.dear}">Dear </span>
+            <span th:text="${contact.fullName()}">Paul Dyck</span>
+            <span>,</span>
+        </p>
+
+        <p th:text="#{email.existingMember.text1}">
+            The Canadian Society for Renaissance Studies has developed a membership
+            database, which we have been using to keep track of contact information,
+            subscriptions, and of course, membership itself. Until now, the database has
+            been accessible only to the Executive, but we have now developed a member
+            interface that will allow you to update and confirm your information, including
+            address and scholarly interests.
+        </p>
+
+        <p th:text="#{email.existingMember.text2}">
+            By clicking on the following link, you will be taken to the database, for a
+            two-step process. First, create a username and password for the site. Next,
+            you will see your information, which you can then edit and/or confirm.
+        </p>
+
+        <p th:each="userEmail : ${email.userEmails.?[user == null]}">
+            <span th:utext="#{email.accountCreation.toCreateAccountFollowLink(@{|${baseUrl}/#!/invitation/${userEmail.userEmailActivations[0].activationKey}|})}">
+                To create a new account, follow <a href="/invitation/2348272">this link</a>.
+            </span>
+        </p>
+
+        <p th:text="#{email.existingMember.text3}">
+            We appreciate your participation in this. By this fall, we hope to do our
+            membership renewals through the database, and if you have already signed in
+            and updated your information, the process then will be all the easier.
+        </p>
+
+        <p th:text="#{email.existingMember.text4}">
+            Best regards,
+        </p>
+
+        <p>Paul Dyck</p>
+    </body>
+</html>

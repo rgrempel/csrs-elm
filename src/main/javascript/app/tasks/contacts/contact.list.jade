@@ -109,6 +109,15 @@
                             translate = "membership.byYear.exportToXLS"
                         ) Export XLS
             
+                    button(
+                        type = "button"
+                        class = "btn btn-default"
+                    )
+                        a(
+                            ng-click = "contactList.sendInvitations()"
+                            translate = "membership.byYear.sendInvitations"
+                        ) Send Invitations
+
     p(
         translate = "membership.byYear.showingMembers"
         translate-values = "{number: '{{contactList.filtered.length}}'}"

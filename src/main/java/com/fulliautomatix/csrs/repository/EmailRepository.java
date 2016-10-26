@@ -25,4 +25,7 @@ public interface EmailRepository extends FindsForLogin<Email, Long> {
     @Override
     Optional<Email> findOneForLogin (String login, Long id);
 
+    @Query("SELECT DISTINCT e FROM Email e JOIN e.contactEmails ce JOIN ce.contact c WHERE c.id in ?1 AND NOT EXISTS (SELECT u FROM e.userEmails ue JOIN ue.user u)")
+    Set<Email> forExistingContactsWithoutUsers (Set<Long> contactIDs);
+
 }

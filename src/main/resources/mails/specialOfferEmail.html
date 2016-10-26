@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:text="#{email.specialOffer.title}">CSRS Account Invitation</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+
+    <body>
+        <p>
+            <span th:text="#{email.specialOffer.dear}">Dear </span>
+            <span th:text="${email.fullName}">Paul Dyck</span>
+            <span>,</span>
+        </p>
+
+        <p th:text="#{email.specialOffer.text1}">
+            We are pleased to announce that Renaissance and Reformation is
+            giving (at no cost to us) copies of its fiftieth anniversary issue
+            to all 2015 CSRS-SCER members.
+        </p>
+
+        <p th:text="#{email.specialOffer.text2}">
+            To receive your free issue, we ask you only to verify your mailing
+            address by logging into the membership database. Please refer to
+            the message I emailed earlier today for instructions. Once you have
+            verified your address, it will automatically be added to the
+            Renaissance and Reformation mail-out list.
+        </p>
+
+        <p th:text="#{email.specialOffer.text3}">
+            Best regards,
+        </p>
+
+        <p>Paul Dyck</p>
+    </body>
+</html>

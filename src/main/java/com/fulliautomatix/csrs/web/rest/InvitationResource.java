@@ -12,6 +12,7 @@ import com.fulliautomatix.csrs.repository.UserEmailActivationRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.web.rest.util.PaginationUtil;
 import com.fulliautomatix.csrs.web.rest.dto.AccountCreationDTO;
+import com.fulliautomatix.csrs.web.rest.dto.ExistingContactDTO;
 import com.fulliautomatix.csrs.service.util.RandomUtil;
 import com.fulliautomatix.csrs.service.MailService;
 import com.fulliautomatix.csrs.service.LazyService;
@@ -147,6 +148,76 @@ public class InvitationResource {
             mailService.sendPasswordResetEmail(email, request.getLangKey(), baseUrl);
         } else {
             mailService.sendAccountCreationEmail(email, request.getLangKey(), baseUrl);
+        }
+
+        // And, if we had no exceptions, we'll get here and just return OK
+        return ResponseEntity.ok().build();
+    }
+    
+    /**
+     * POST  /invitation/contacts -> Send an invitation for existing contacts 
+     */
+    @RequestMapping(
+        value = "/invitation/contacts",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Timed
+    @Transactional
+    @RolesAllowed(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<Void> sendExistingContactInvitation (
+        @RequestBody @Valid ExistingContactDTO request,
+        HttpServletRequest servletRequest
+    ) throws URISyntaxException {
+        log.debug("REST request to send invitations to existing contacts : {}", request);
+
+        // Given the conteactIDs, get all the email addresses for which there are no users yet
+        Set<Email> emails = emailRepository.forExistingContactsWithoutUsers(request.getContactIDs());
+
+        // Now, we iterate over the emails.
+        for (Email email : emails) {
+            // Given the query used above, we'll only have emails that have no userEmail, or a userEmail
+            // without a user (i.e. an activation was already created). So, either get the userEmail without
+            // a user, or create one.
+            UserEmail userEmail = email.getUserEmails().stream().findFirst().orElseGet(() -> {
+                UserEmail created = new UserEmail();
+                created.setEmail(email);
+                created = userEmailRepository.save(created);
+                email.getUserEmails().add(created);
+                return created;
+            });
+            
+            // Now, create an activation for the userEmail, unless it has one already ... in that case,
+            // just update the dateSent.
+            UserEmailActivation activation = userEmail.getUserEmailActivations().stream().findFirst().orElseGet(() -> {
+                UserEmailActivation created = new UserEmailActivation();
+                created.setUserEmail(userEmail);
+                created.setActivationKey(RandomUtil.generateActivationKey());
+                userEmail.getUserEmailActivations().add(created);
+                return created;
+            });
+
+            // This updates whether we've just created it or not
+            activation.setDateSent(new DateTime());
+            
+            activation = userEmailActivationRepository.save(activation);
+
+            // Now, find an owner contact, so we can say their name
+            Contact owner = email.findOwners().stream().findFirst().orElseGet(() -> {
+                Contact unknown = new Contact();
+                unknown.setFirstName("Colleague");
+                unknown.setLastName("");
+                return unknown;
+            });
+
+            String baseUrl = servletRequest.getScheme() + // "http"
+            "://" +                                // "://"
+            servletRequest.getServerName() +              // "myhost"
+            ":" +                                  // ":"
+            servletRequest.getServerPort();               // "80"
+            
+            // OK, now we've done all the work ... time to send the email!
+            mailService.sendExistingMemberEmail(email, owner, baseUrl);
         }
 
         // And, if we had no exceptions, we'll get here and just return OK

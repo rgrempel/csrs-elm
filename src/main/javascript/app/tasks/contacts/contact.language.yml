@@ -15,6 +15,11 @@ membership:
             fr: Exporter vers Excel
             la: Educendo ad Excel
 
+        sendInvitations:
+            en: Email Invitations
+            fr: Envoyer des invitations
+            la: Mitte invitare
+
         instructions:
             1:
                 en: >-

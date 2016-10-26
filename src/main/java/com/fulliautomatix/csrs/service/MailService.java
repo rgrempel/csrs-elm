@@ -2,7 +2,11 @@ package com.fulliautomatix.csrs.service;
 
 import com.fulliautomatix.csrs.domain.User;
 import com.fulliautomatix.csrs.domain.Email;
+import com.fulliautomatix.csrs.domain.Contact;
+import com.fulliautomatix.csrs.domain.SentEmail;
+import com.fulliautomatix.csrs.repository.SentEmailRepository;
 import org.apache.commons.lang.CharEncoding;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -41,6 +45,9 @@ public class MailService {
     private MessageSource messageSource;
     
     @Inject
+    private SentEmailRepository sentEmailRepository;
+    
+    @Inject
     private SpringTemplateEngine templateEngine;
 
     /**
@@ -58,6 +65,13 @@ public class MailService {
         log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
                 isMultipart, isHtml, to, subject, content);
 
+        // I suppose I should set this, and then create the MimeMessageHelper from it.
+        SentEmail sentEmail = new SentEmail();
+        sentEmail.setEmailTo(to);
+        sentEmail.setEmailFrom(from);
+        sentEmail.setEmailSubject(subject);
+        sentEmail.setEmailContent(content);
+            
         // Prepare message using a Spring helper
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
@@ -66,10 +80,17 @@ public class MailService {
             message.setFrom(from);
             message.setSubject(subject);
             message.setText(content, isHtml);
+            
             javaMailSender.send(mimeMessage);
             log.debug("Sent e-mail to User '{}'", to);
+
+            // If we get this far, we appear to have sent it
+            sentEmail.setEmailSent(DateTime.now());
         } catch (Exception e) {
             log.warn("E-mail could not be sent to user '{}', exception is: {}", to, e.getMessage());
+        } finally {
+            // We store the email in either case ... if not sent, the email_sent field will be null
+            sentEmailRepository.save(sentEmail);
         }
     }
 
@@ -112,5 +133,63 @@ public class MailService {
         String content = templateEngine.process("passwordResetEmail", context);
         String subject = messageSource.getMessage("email.passwordReset.title", null, locale);
         sendEmail(email.getEmailAddress(), subject, content, false, true);
+    }
+
+    @Async
+    public void sendExistingMemberEmail (Email email, Contact contact, String baseUrl) {
+        log.debug("Sending existing member email to '{}'", email.getEmailAddress());
+
+        Locale enLocale = Locale.forLanguageTag("en");
+        Context enContext = new Context(enLocale);
+        enContext.setVariable("email", email);
+        enContext.setVariable("contact", contact);
+        enContext.setVariable("baseUrl", baseUrl);
+
+        String enContent = templateEngine.process("existingMemberEmail", enContext);
+        String enSubject = messageSource.getMessage("email.existingMember.title", null, enLocale);
+
+        Locale frLocale = Locale.forLanguageTag("fr");
+        Context frContext = new Context(frLocale);
+        frContext.setVariable("email", email);
+        frContext.setVariable("contact", contact);
+        frContext.setVariable("baseUrl", baseUrl);
+
+        String frContent = templateEngine.process("existingMemberEmail", frContext);
+        String frSubject = messageSource.getMessage("email.existingMember.title", null, frLocale);
+
+        sendEmail(
+            email.getEmailAddress(),
+            enSubject + "/" + frSubject,
+            enContent + frContent,
+            false,
+            true
+        );
+    }
+    
+    @Async
+    public void sendSpecialOfferEmail (Email email) {
+        log.debug("Sending special offer email to '{}'", email.getEmailAddress());
+
+        Locale enLocale = Locale.forLanguageTag("en");
+        Context enContext = new Context(enLocale);
+        enContext.setVariable("email", email);
+
+        String enContent = templateEngine.process("specialOfferEmail", enContext);
+        String enSubject = messageSource.getMessage("email.specialOffer.title", null, enLocale);
+
+        Locale frLocale = Locale.forLanguageTag("fr");
+        Context frContext = new Context(frLocale);
+        frContext.setVariable("email", email);
+
+        String frContent = templateEngine.process("specialOfferEmail", frContext);
+        String frSubject = messageSource.getMessage("email.specialOffer.title", null, frLocale);
+
+        sendEmail(
+            email.getEmailAddress(),
+            enSubject + "/" + frSubject,
+            enContent + frContent,
+            false,
+            true
+        );
     }
 }
