@@ -88,6 +88,7 @@ module CSRS {
             private Stream: streamjs.Stream,
             private $state: angular.ui.IStateService,
             private $location: angular.ILocationService,
+            private $translate: any,
             private $window: angular.IWindowService
         ) {
             'ngInject';
@@ -267,7 +268,9 @@ module CSRS {
             this.$http.post("/api/invitation/contacts", {
                 contactIDs: ids
             }).success(() => {
-                alert("Invitations have been sent!");
+                this.$translate("membership.byYear.invitationsHaveBeenSent").then((msg: any) => {
+                    alert(msg);
+                });
             }).error((data, status, headers, config) => {
                 alert(angular.toJson(data));
             });

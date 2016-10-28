@@ -385,6 +385,7 @@
                 "4": "Or, to find out who has not renewed, click on the current year to make it red, and click on some previous years to make them green.",
                 "5": "To merge a PDF template with all of the displayed members, select one below."
             },
+            "invitationsHaveBeenSent": "Invitations have been sent",
             "sendInvitations": "Email Invitations",
             "showingMembers": "Showing {{number}} members",
             "title": "Membership by Year"

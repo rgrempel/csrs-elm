@@ -20,6 +20,11 @@ membership:
             fr: Envoyer des invitations
             la: Mitte invitare
 
+        invitationsHaveBeenSent:
+            en: Invitations have been sent
+            fr: Invitations ont été envoyées
+            la: Quod invitatio misit
+
         instructions:
             1:
                 en: >-
