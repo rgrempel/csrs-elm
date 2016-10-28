@@ -4,7 +4,7 @@ angular.module('csrsApp').directive('csrsContactUsers', function () {
     return {
         templateUrl: 'scripts/app/tasks/processForms/contactUsers.html',
         scope: {
-            'contactID': '=csrsContactUsers'
+            'contact': '=csrsContactUsers'
         },
         controllerAs: 'usersCtrl',
         bindToController: true,
@@ -12,21 +12,25 @@ angular.module('csrsApp').directive('csrsContactUsers', function () {
     };
 });
 
-angular.module('csrsApp').controller('ContactUsersCtrl', function (Contact) {
+angular.module('csrsApp').controller('ContactUsersCtrl', function (Contact, $scope) {
     var self = this;
 
     this.users = [];
     this.fetched = false;
 
-    if (this.contactID) {
-        Contact.users({
-            id: this.contactID
-        }, function (result) {
-            self.users = result;
-            self.fetched = true;
-        }, function (error) {
-            alert(angular.toJson(error));
-        });
-    }
+    $scope.$watch(function () {
+        return self.contact.id;
+    }, function (newValue, oldValue) {
+        if (newValue) {
+            Contact.users({
+                id: newValue
+            }, function (result) {
+                self.users = result;
+                self.fetched = true;
+            }, function (error) {
+                alert(angular.toJson(error));
+            });
+        }
+    });
 });
 
