@@ -112,7 +112,8 @@
             "postalCode": "Code postal",
             "region": "Région",
             "salutation": "Salutation",
-            "street": "Rue"
+            "street": "Rue",
+            "users": "Utilisateurs"
         },
         "processForms": {
             "annualData": "Données annuelles",

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+import java.util.Set;
 import java.util.Optional;
 
 /**
@@ -22,6 +22,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //    Optional<User> findOneByEmail(String email);
 
     Optional<User> findOneByLogin(String login);
+
+    @Query("SELECT DISTINCT u from User u JOIN u.userEmails ue JOIN ue.email e JOIN e.contactEmails ce JOIN ce.contact c WHERE c.id = ?1")
+    Set<User> usersForContact (Long id);
 
     void delete(User t);
 

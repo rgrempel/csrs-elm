@@ -3,6 +3,7 @@
 angular.module('csrsApp').controller('ProcessFormsDetailController', function ($scope, $state, $stateParams, Contact) { 
     this.contact = {};
     this.error = null;
+    this.contactID = $stateParams.id;
 
     this.load = function (id) {
         var self = this;

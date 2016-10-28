@@ -27,10 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codahale.metrics.annotation.Timed;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fulliautomatix.csrs.domain.Contact;
+import com.fulliautomatix.csrs.domain.User;
 import com.fulliautomatix.csrs.domain.ContactEmail;
 import com.fulliautomatix.csrs.repository.ContactEmailRepository;
 import com.fulliautomatix.csrs.repository.ContactRepository;
 import com.fulliautomatix.csrs.repository.EmailRepository;
+import com.fulliautomatix.csrs.repository.UserRepository;
 import com.fulliautomatix.csrs.security.AuthoritiesConstants;
 import com.fulliautomatix.csrs.security.OwnerService;
 import com.fulliautomatix.csrs.security.SecurityUtils;
@@ -56,6 +58,9 @@ public class ContactResource {
 
     @Inject
     private ContactEmailRepository contactEmailRepository;
+
+    @Inject
+    private UserRepository userRepository;
 
     @Inject
     private OwnerService ownerService;
@@ -167,7 +172,7 @@ public class ContactResource {
      * PUT  /account/contacts/mark-verified/:id -> mark the "id" contact as verified.
      */
     @RequestMapping(
-        value = "/account/contacts/mark-verified/{id}",
+        value = "/account/contacts/mark-verified/{id:\\d+}",
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -253,6 +258,25 @@ public class ContactResource {
     }
 
     /**
+     * GET  /contacts/users/:id
+     *
+     * All the users who are associated with this contact.
+     */
+    @RequestMapping(
+        value = "/contacts/{id:\\d+}/users",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Timed
+    @RolesAllowed(AuthoritiesConstants.USER)
+    @JsonView(User.Scalar.class)
+    @Transactional(readOnly = true)
+    public ResponseEntity<Set<User>> getUsersForContact (@PathVariable Long id) throws URISyntaxException {
+        log.debug("Users associated with contact");
+        return new ResponseEntity<>(userRepository.usersForContact(id), HttpStatus.OK);
+    }
+
+    /**
      * GET  /contacts?fullNameSearch=bob -> do a fullNameSearch.
      */
     @RequestMapping(
@@ -275,7 +299,7 @@ public class ContactResource {
      * GET  /contacts/:id -> get the "id" contact with annuals
      */
     @RequestMapping(
-        value = "/contacts/{id}",
+        value = "/contacts/{id:\\d+}",
         params = "withAnnualsAndInterests",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE
@@ -296,7 +320,7 @@ public class ContactResource {
      * GET  /contacts/:id -> get the "id" contact.
      */
     @RequestMapping(
-        value = "/contacts/{id}",
+        value = "/contacts/{id:\\d+}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -319,7 +343,7 @@ public class ContactResource {
      * DELETE  /contacts/:id -> delete the "id" contact.
      */
     @RequestMapping(
-        value = "/contacts/{id}",
+        value = "/contacts/{id:\\d+}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )

@@ -112,7 +112,8 @@
             "postalCode": "Codicem Postal",
             "region": "Regio",
             "salutation": "Salutatio",
-            "street": "Via"
+            "street": "Via",
+            "users": "Usoris"
         },
         "processForms": {
             "annualData": "Notitia annua",

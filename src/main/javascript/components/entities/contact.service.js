@@ -18,6 +18,16 @@ angular.module('csrsApp').factory('Contact', function ($resource, _, JSOG) {
                 return data;
             }
         },
+        
+        'users': {
+            method: 'GET',
+            url: 'api/contacts/:id/users',
+            isArray: true,
+            transformResponse: function (data) {
+                data = JSOG.decode(angular.fromJson(data));
+                return data;
+            }
+        },
 
         'update': {
             method: 'PUT',

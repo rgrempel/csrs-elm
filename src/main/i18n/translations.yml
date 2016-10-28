@@ -356,6 +356,11 @@ csrsApp:
             fr: "Domaines de recherche"
             la: "Interesse Academicistica"
 
+        users:
+            en: "Users"
+            fr: "Utilisateurs"
+            la: "Usoris"
+
         data: 
             omit:
                 en: "Omit"
