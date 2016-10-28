@@ -13,6 +13,9 @@
         </tbody>
     </table>
 
-    <div class="panel-footer text-left">
+    <div class="panel-footer text-right" ng-show="usersCtrl.showSendInvitations">
+        <button class="btn btn-info btn-sm" ng-click="usersCtrl.sendInvitation()">
+            <span translate="membership.byYear.sendInvitations">Send Invitation</span>
+        </button>
     </div>
 </div>
