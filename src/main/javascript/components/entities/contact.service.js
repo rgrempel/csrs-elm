@@ -29,6 +29,16 @@ angular.module('csrsApp').factory('Contact', function ($resource, _, JSOG) {
             }
         },
 
+        'sentEmail': {
+            method: 'GET',
+            url: 'api/contacts/:id/email',
+            isArray: true,
+            transformResponse: function (data) {
+                data = JSOG.decode(angular.fromJson(data));
+                return data;
+            }
+        },
+
         'update': {
             method: 'PUT',
             transformRequest: function (data) {

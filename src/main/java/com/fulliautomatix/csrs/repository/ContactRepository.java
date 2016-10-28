@@ -1,6 +1,7 @@
 package com.fulliautomatix.csrs.repository;
 
 import com.fulliautomatix.csrs.domain.Contact;
+import com.fulliautomatix.csrs.domain.SentEmail;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,4 +42,7 @@ public interface ContactRepository extends FindsForLogin<Contact, Long>, JpaSpec
         type = EntityGraph.EntityGraphType.LOAD
     ) */
     Contact findOneWithAnnualsAndInterestsAndEmail (Long id);
+
+    @Query("SELECT DISTINCT se FROM SentEmail se, ContactEmail ce JOIN ce.email em JOIN ce.contact c WHERE em.emailAddress = se.emailTo AND c.id = ?1")
+    List<SentEmail> emailSentToContact (Long id);
 }

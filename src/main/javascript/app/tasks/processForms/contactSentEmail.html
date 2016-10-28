@@ -1,0 +1,25 @@
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <h3 class="panel-title" translate="membership.byYear.sentEmail">Sent Email</h3>
+    </div>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td translate="sentEmail.from">From</td>
+                <td translate="sentEmail.to">To</td>
+                <td translate="sentEmail.subject">Subject</td>
+                <td translate="sentEmail.sent">Sent</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="email in sentEmailCtrl.sentEmail">
+                <td ng-bind="email.emailFrom" />
+                <td ng-bind="email.emailTo" />
+                <td ng-bind="email.emailSubject" />
+                <td ng-bind="email.emailSent" />
+            </tr>
+        </tbody>
+    </table>
+</div>

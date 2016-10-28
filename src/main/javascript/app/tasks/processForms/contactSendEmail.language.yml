@@ -1,0 +1,21 @@
+sentEmail:
+    from:
+        en: From
+        fr: De
+        la: Ex
+
+    to:
+        en: To
+        fr: À
+        la: Ad
+
+    subject:
+        en: Subject
+        fr: Sujet
+        la: Causa
+
+    sent:
+        en: Sent
+        fr: Envoyé
+        la: Missus
+

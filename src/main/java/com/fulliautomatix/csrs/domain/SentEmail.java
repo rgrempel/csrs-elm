@@ -29,6 +29,7 @@ import java.util.stream.*;
 public class SentEmail extends AbstractAuditingEntity implements Serializable {
     // For JsonView
     public interface Scalar {};
+    public interface WithContent extends Scalar {};
     
     @Id
     @SequenceGenerator(name="t_sent_email_id_seq", sequenceName="t_sent_email_id_seq", allocationSize=1)
@@ -58,7 +59,7 @@ public class SentEmail extends AbstractAuditingEntity implements Serializable {
     @Column(name="email_content", nullable=false)
     @NotNull
     @lombok.Getter @lombok.Setter
-    @JsonView(Scalar.class)
+    @JsonView(WithContent.class)
     private String emailContent;
     
     @Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")

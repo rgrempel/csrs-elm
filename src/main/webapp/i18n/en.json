@@ -387,6 +387,7 @@
             },
             "invitationsHaveBeenSent": "Invitations have been sent",
             "sendInvitations": "Email Invitations",
+            "sentEmail": "Sent Email",
             "showingMembers": "Showing {{number}} members",
             "title": "Membership by Year"
         }
@@ -526,6 +527,12 @@
             "subscriptionFormat": "Subscription format",
             "subscriptionType": "Subscription type"
         }
+    },
+    "sentEmail": {
+        "from": "From",
+        "sent": "Sent",
+        "subject": "Subject",
+        "to": "To"
     },
     "sessions": {
         "messages": {

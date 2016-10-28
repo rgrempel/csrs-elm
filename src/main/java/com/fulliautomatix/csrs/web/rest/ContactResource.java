@@ -29,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fulliautomatix.csrs.domain.Contact;
 import com.fulliautomatix.csrs.domain.User;
 import com.fulliautomatix.csrs.domain.ContactEmail;
+import com.fulliautomatix.csrs.domain.SentEmail;
 import com.fulliautomatix.csrs.repository.ContactEmailRepository;
 import com.fulliautomatix.csrs.repository.ContactRepository;
 import com.fulliautomatix.csrs.repository.EmailRepository;
@@ -258,7 +259,7 @@ public class ContactResource {
     }
 
     /**
-     * GET  /contacts/users/:id
+     * GET  /contacts/:id/users
      *
      * All the users who are associated with this contact.
      */
@@ -276,6 +277,25 @@ public class ContactResource {
         return new ResponseEntity<>(userRepository.usersForContact(id), HttpStatus.OK);
     }
 
+    /**
+     * GET  /contacts/:id/email
+     *
+     * All the email sent to an address associated with this contact.
+     */
+    @RequestMapping(
+        value = "/contacts/{id:\\d+}/email",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Timed
+    @RolesAllowed(AuthoritiesConstants.ADMIN)
+    @JsonView(SentEmail.Scalar.class)
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<SentEmail>> getSentEmailForContact (@PathVariable Long id) throws URISyntaxException {
+        log.debug("Sent Email associated with contact");
+        return new ResponseEntity<>(contactRepository.emailSentToContact(id), HttpStatus.OK);
+    }
+    
     /**
      * GET  /contacts?fullNameSearch=bob -> do a fullNameSearch.
      */

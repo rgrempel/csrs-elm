@@ -387,6 +387,7 @@
             },
             "invitationsHaveBeenSent": "Invitations ont été envoyées",
             "sendInvitations": "Envoyer des invitations",
+            "sentEmail": "E-mail envoyé",
             "showingMembers": "Affichage {{number}} membres.",
             "title": "Adhésion par année"
         }
@@ -526,6 +527,12 @@
             "subscriptionFormat": "Format de abonnement",
             "subscriptionType": "Type d'abonnement"
         }
+    },
+    "sentEmail": {
+        "from": "De",
+        "sent": "Envoyé",
+        "subject": "Sujet",
+        "to": "À"
     },
     "sessions": {
         "messages": {

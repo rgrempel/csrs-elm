@@ -387,6 +387,7 @@
             },
             "invitationsHaveBeenSent": "Quod invitatio misit",
             "sendInvitations": "Mitte invitare",
+            "sentEmail": "Missus Email",
             "showingMembers": "Ostendens {{number}} membra.",
             "title": "Sodalitas per annos"
         }
@@ -526,6 +527,12 @@
             "subscriptionFormat": "Forma subscriptionis",
             "subscriptionType": "Genus subscriptionis"
         }
+    },
+    "sentEmail": {
+        "from": "Ex",
+        "sent": "Missus",
+        "subject": "Causa",
+        "to": "Ad"
     },
     "sessions": {
         "messages": {

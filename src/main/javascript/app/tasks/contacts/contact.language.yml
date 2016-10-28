@@ -25,6 +25,11 @@ membership:
             fr: Invitations ont été envoyées
             la: Quod invitatio misit
 
+        sentEmail:
+            en: Sent Email
+            fr: E-mail envoyé
+            la: Missus Email
+
         instructions:
             1:
                 en: >-
