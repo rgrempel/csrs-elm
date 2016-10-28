@@ -268,7 +268,7 @@ public class ContactResource {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Timed
-    @RolesAllowed(AuthoritiesConstants.USER)
+    @RolesAllowed(AuthoritiesConstants.ADMIN)
     @JsonView(User.Scalar.class)
     @Transactional(readOnly = true)
     public ResponseEntity<Set<User>> getUsersForContact (@PathVariable Long id) throws URISyntaxException {
