@@ -62,8 +62,7 @@ public class MailService {
 
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
-        log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
-                isMultipart, isHtml, to, subject, content);
+        log.debug("Send e-mail to '{}' with subject '{}'", to, subject);
 
         // I suppose I should set this, and then create the MimeMessageHelper from it.
         SentEmail sentEmail = new SentEmail();
@@ -82,7 +81,6 @@ public class MailService {
             message.setText(content, isHtml);
             
             javaMailSender.send(mimeMessage);
-            log.debug("Sent e-mail to User '{}'", to);
 
             // If we get this far, we appear to have sent it
             sentEmail.setEmailSent(DateTime.now());
