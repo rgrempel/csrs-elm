@@ -377,6 +377,7 @@
     },
     "membership": {
         "byYear": {
+            "confirmSendInvitations": "{{howMany}}, si haec non propter tactus mitte Invitare?",
             "exportToXLS": "Educendo ad Excel",
             "instructions": {
                 "1": "Qui erant in enumera finire annum, quo anno latet insiste uireret. Debet intelligi quod multiplex lectio senos sodalem fuisse anno.",

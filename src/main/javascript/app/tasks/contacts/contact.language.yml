@@ -25,6 +25,11 @@ membership:
             fr: Invitations ont été envoyées
             la: Quod invitatio misit
 
+        confirmSendInvitations:
+            en: Send invitations to these {{howMany}} contacts if they have no account?
+            fr: Envoyer des invitations à ces {{howMany}} contacts si elles ont pas de compte?
+            la: "{{howMany}}, si haec non propter tactus mitte Invitare?"
+
         sentEmail:
             en: Sent Email
             fr: E-mail envoyé

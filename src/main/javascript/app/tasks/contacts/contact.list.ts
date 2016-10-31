@@ -264,15 +264,20 @@ module CSRS {
 
         sendInvitations () {
             var ids = Stream(this.filtered).map('id').toArray();
-
-            this.$http.post("/api/invitation/contacts", {
-                contactIDs: ids
-            }).success(() => {
-                this.$translate("membership.byYear.invitationsHaveBeenSent").then((msg: any) => {
-                    alert(msg);
-                });
-            }).error((data, status, headers, config) => {
-                alert(angular.toJson(data));
+            this.$translate("membership.byYear.confirmSendInvitations", {
+                howMany: ids.length
+            }).then((message: any) => {
+                if (confirm(message)) {
+                    this.$http.post("/api/invitation/contacts", {
+                        contactIDs: ids
+                    }).success(() => {
+                        this.$translate("membership.byYear.invitationsHaveBeenSent").then((msg: any) => {
+                            alert(msg);
+                        });
+                    }).error((data: any) => {
+                        alert(angular.toJson(data));
+                    });
+                }
             });
         }
 

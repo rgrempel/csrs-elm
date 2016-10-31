@@ -377,6 +377,7 @@
     },
     "membership": {
         "byYear": {
+            "confirmSendInvitations": "Send invitations to these {{howMany}} contacts if they have no account?",
             "exportToXLS": "Export to Excel",
             "instructions": {
                 "1": "To limit the list to people who were members in a particular year, click on the year so that its background is green. Multiple selections mean that the person must have been a member in each selected year.",
