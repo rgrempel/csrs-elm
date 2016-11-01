@@ -60,6 +60,7 @@ public class ExcelContacts extends AbstractExcelView {
         HSSFCellStyle headerStyle = workbook.createCellStyle();
         headerStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         headerStyle.setFont(boldFont);
+        headerStyle.setWrapText(true);
 
         HSSFCellStyle centeredStyle = workbook.createCellStyle();
         centeredStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
@@ -108,8 +109,14 @@ public class ExcelContacts extends AbstractExcelView {
         sheet.setDefaultColumnWidth(12);
         sheet.setZoom(3, 2);
 
+        // Create the sheet for Congress format
+        HSSFSheet congress = workbook.createSheet("Congress");
+        congress.setDefaultColumnWidth(12);
+        congress.setZoom(3, 2);
+        
         // Default line height
         int oneLineHeight = sheet.getDefaultRowHeight();
+        int congressLineHeight = congress.getDefaultRowHeight();
 
         // Write a title
         HSSFCell cell = getCell(sheet, 0, 0);
@@ -130,6 +137,9 @@ public class ExcelContacts extends AbstractExcelView {
 
         // Write headers ...
         HSSFRow headers = sheet.createRow(2);
+        HSSFRow congressHeaders = congress.createRow(0);
+            
+        congressHeaders.setHeight((short) (3 * congressLineHeight));
 
         createCell(headers, headerStyle, 0).setCellValue("Full Name");
         createCell(headers, headerStyle, 1).setCellValue("Full Address");
@@ -143,6 +153,19 @@ public class ExcelContacts extends AbstractExcelView {
         createCell(headers, headerStyle, 9).setCellValue("Omit email");
         createCell(headers, headerStyle, 10).setCellValue("Email");
         createCell(headers, headerStyle, 11).setCellValue("Interests");
+
+        createCell(congressHeaders, headerStyle, 0).setCellValue("First Name | Prénom*");
+        createCell(congressHeaders, headerStyle, 1).setCellValue("Last Name | Nom*");
+        createCell(congressHeaders, headerStyle, 2).setCellValue("Email | Courriel*");
+        createCell(congressHeaders, headerStyle, 3).setCellValue("Department or Faculty | Département ou Faculté");
+        createCell(congressHeaders, headerStyle, 4).setCellValue("University or Organization | Université ou Organisation");
+        createCell(congressHeaders, headerStyle, 5).setCellValue("Address | Adresse");
+        createCell(congressHeaders, headerStyle, 6).setCellValue("Adress 2 | Adresse 2");
+        createCell(congressHeaders, headerStyle, 7).setCellValue("City | Ville");
+        createCell(congressHeaders, headerStyle, 8).setCellValue("Province or State | Province ou État");
+        createCell(congressHeaders, headerStyle, 9).setCellValue("Postal Code | Code postal");
+        createCell(congressHeaders, headerStyle, 10).setCellValue("Country | Pays");
+        createCell(congressHeaders, headerStyle, 11).setCellValue("Work or home address? | Adresse au travail ou à la maison?");
 
         // In 1/256 of a character width
         sheet.setColumnWidth(0, 24 * 256);
@@ -158,6 +181,19 @@ public class ExcelContacts extends AbstractExcelView {
         sheet.setColumnWidth(10, 24 * 256);
         sheet.setColumnWidth(11, 24 * 256);
 
+        congress.setColumnWidth(0, 24 * 256);
+        congress.setColumnWidth(1, 24 * 256);
+        congress.setColumnWidth(2, 24 * 256);
+        congress.setColumnWidth(3, 24 * 256);
+        congress.setColumnWidth(4, 24 * 256);
+        congress.setColumnWidth(5, 24 * 256);
+        congress.setColumnWidth(6, 24 * 256);
+        congress.setColumnWidth(7, 24 * 256);
+        congress.setColumnWidth(8, 24 * 256);
+        congress.setColumnWidth(9, 24 * 256);
+        congress.setColumnWidth(10, 24 * 256);
+        congress.setColumnWidth(11, 24 * 256);
+        
         int headerCell = 12;
         HSSFRow headers2 = sheet.createRow(1);
         
@@ -177,9 +213,12 @@ public class ExcelContacts extends AbstractExcelView {
         // Write contact names
         int rowIndex = 3;
         int rowCell = 12;
-        
+       
+        int congressIndex = 1;
+
         for (Contact c : contacts) {
             HSSFRow sheetRow = sheet.createRow(rowIndex++);
+            HSSFRow congressRow = congress.createRow(congressIndex++);
             
             sheetRow.setHeight((short) (4 * oneLineHeight));
            
@@ -195,6 +234,21 @@ public class ExcelContacts extends AbstractExcelView {
             createCell(sheetRow, centeredDataStyle, 9).setCellValue(c.getOmitEmailFromDirectory() ? "x" : "");
             createCell(sheetRow, dataStyle, 10).setCellValue(c.formattedEmail("\n"));
             createCell(sheetRow, dataStyle, 11).setCellValue(c.formattedInterests("\n"));
+
+            createCell(congressRow, dataStyle, 0).setCellValue(c.getFirstName());
+            createCell(congressRow, dataStyle, 1).setCellValue(c.getLastName());
+            createCell(congressRow, dataStyle, 2).setCellValue(c.formattedEmail("; "));
+            createCell(congressRow, dataStyle, 3).setCellValue(c.getDepartment());
+            createCell(congressRow, dataStyle, 4).setCellValue(c.getAffiliation());
+            
+            String[] street = c.plainStreet();
+            if (street.length > 0) createCell(congressRow, dataStyle, 5).setCellValue(street[0]);
+            if (street.length > 1) createCell(congressRow, dataStyle, 6).setCellValue(street[1]);
+
+            createCell(congressRow, dataStyle, 7).setCellValue(c.getCity());
+            createCell(congressRow, dataStyle, 8).setCellValue(c.getRegion());
+            createCell(congressRow, dataStyle, 9).setCellValue(c.getPostalCode());
+            createCell(congressRow, dataStyle, 10).setCellValue(c.getCountry());
 
             rowCell = 12;
             for (Integer year : years) {

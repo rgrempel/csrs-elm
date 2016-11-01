@@ -262,6 +262,12 @@ public class Contact implements Serializable, HasOwner {
         }
     }
 
+    public String[] plainStreet () {
+        return Stream.of(StringUtils.split(street, "\n")).filter(s ->
+            !s.equals(affiliation) && !s.equals(department)
+        ).toArray(String[]::new);
+    }
+
     public String abbreviatedAddress () {
         StringBuilder sb = new StringBuilder();
        
