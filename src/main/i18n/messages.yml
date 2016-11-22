@@ -142,7 +142,7 @@ email:
             la: "Cura ut valeas,"
 
         toCreateAccountFollowLink: 
-            en: "To create a new account, follow <a href=\"{0}\" mc:disable-tracking>this link</a>."
+            en: "To create your username and password, follow <a href=\"{0}\" mc:disable-tracking>this link</a>."
             fr: "Pour créer un nouveau compte, suivez <a href=\"{0}\" mc:disable-tracking>ce lien</a>."
             la: "Ad novum tesseram, propter hoc sequitur <a href=\"{0}\" mc:disable-tracking>hunc nexum</a>."
                 
@@ -235,6 +235,11 @@ email:
             en: "Best regards,"
             fr: "Meilleures salutations,"
             la: "Bene vale,"
+
+        treasurer:
+            en: "Treasurer"
+            fr: "Trésorier"
+            la: "Confiscator"
 
     specialOffer:
         title:

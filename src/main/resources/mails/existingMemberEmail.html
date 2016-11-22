@@ -29,7 +29,7 @@
 
         <p th:each="userEmail : ${email.userEmails.?[user == null]}">
             <span th:utext="#{email.accountCreation.toCreateAccountFollowLink(@{|${baseUrl}/#!/invitation/${userEmail.userEmailActivations[0].activationKey}|})}">
-                To create a new account, follow <a href="/invitation/2348272">this link</a>.
+                To create your username and password, follow <a href="/invitation/2348272">this link</a>.
             </span>
         </p>
 
@@ -43,6 +43,6 @@
             Best regards,
         </p>
 
-        <p>Paul Dyck</p>
+        <p>Paul Dyck, <span th:text="#{email.existingMember.treasurer}">Treasurer</span></p>
     </body>
 </html>
