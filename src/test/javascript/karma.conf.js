@@ -43,6 +43,8 @@ module.exports = function (config) {
             'main/webapp/bower_components/angular-ui-codemirror/ui-codemirror.js',
             'main/webapp/bower_components/ng-file-upload/ng-file-upload.js',
             'main/webapp/bower_components/angular-resizable/src/angular-resizable.js',
+            'main/webapp/bower_components/moment/moment.js',
+            'main/webapp/bower_components/angular-moment/angular-moment.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

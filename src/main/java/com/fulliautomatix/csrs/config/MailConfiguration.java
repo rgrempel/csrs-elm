@@ -19,14 +19,15 @@ public class MailConfiguration implements EnvironmentAware {
     private static final String PROP_HOST = "host";
     private static final String DEFAULT_PROP_HOST = "localhost";
     private static final String PROP_PORT = "port";
-    private static final String PROP_USER = "user";
+    private static final String PROP_USER = "username";
     private static final String PROP_PASSWORD = "password";
     private static final String PROP_PROTO = "protocol";
     private static final String PROP_TLS = "tls";
     private static final String PROP_AUTH = "auth";
-    private static final String PROP_SMTP_AUTH = "mail.smtp.auth";
+    private static final String PROP_SMTPS_AUTH = "mail.smtps.auth";
     private static final String PROP_STARTTLS = "mail.smtp.starttls.enable";
     private static final String PROP_TRANSPORT_PROTO = "mail.transport.protocol";
+    private static final String PROP_SSL_ENABLE = "mail.smtp.ssl.enable";
     private static final String PROP_SSL_TRUST = "mail.smtp.ssl.trust";
     private static final String PROP_SSL_CHECK_IDENTITY = "mail.smtp.ssl.checkserveridentity";
 
@@ -53,6 +54,7 @@ public class MailConfiguration implements EnvironmentAware {
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
         if (host != null && !host.isEmpty()) {
             sender.setHost(host);
+            log.warn("Host is: " + host);
         } else {
             log.warn("Warning! Your SMTP server is not configured. We will try to use one on localhost.");
             log.debug("Did you configure your SMTP settings in your application.yml?");
@@ -61,13 +63,13 @@ public class MailConfiguration implements EnvironmentAware {
         sender.setPort(port);
         sender.setUsername(user);
         sender.setPassword(password);
+        sender.setProtocol(protocol);
 
         Properties sendProperties = new Properties();
-        sendProperties.setProperty(PROP_SMTP_AUTH, auth.toString());
-        sendProperties.setProperty(PROP_STARTTLS, tls.toString());
+        sendProperties.setProperty(PROP_SMTPS_AUTH, auth.toString());
+        sendProperties.setProperty(PROP_SSL_ENABLE, "true");
         sendProperties.setProperty(PROP_TRANSPORT_PROTO, protocol);
-        sendProperties.setProperty(PROP_SSL_TRUST, "*");
-        sendProperties.setProperty(PROP_SSL_CHECK_IDENTITY, "false");
+        // sendProperties.setProperty("mail.debug", "true");
         sender.setJavaMailProperties(sendProperties);
         return sender;
     }

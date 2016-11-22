@@ -3,6 +3,7 @@ src/test/resources/config/application*.yml
 elm-stuff
 elm.js
 target
+config
 node
 node_modules
 .idea
