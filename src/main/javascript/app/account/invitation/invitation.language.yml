@@ -118,7 +118,7 @@ invitation:
     createAccount: 
         title:
             en: "Create Account"
-            fr: "Création de compte utilisateur"
+            fr: "Création du compte utilisateur"
             la: "Tesseram creare"
 
         blurb:
@@ -146,8 +146,8 @@ invitation:
                 To create your account, provide whatever username and password
                 you would like to use.
             fr: >-
-                Pour créer votre compte, fournir toutes les nom d'utilisateur
-                et mot de passe vous souhaitez utiliser.
+                Pour créer votre compte, veuillez fournir le nom d'utilisateur
+                et le mot de passe que vous souhaitez utiliser.
             la: >-
                 Tesseram creare, provideat nomine usoris et signum vos amo
                 utor.

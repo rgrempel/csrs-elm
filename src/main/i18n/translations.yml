@@ -754,7 +754,7 @@ entity:
 
         edit:
             en: "Edit"
-            fr: "Supprimer"
+            fr: "Éditer"
             la: "Recensere"
 
         save:

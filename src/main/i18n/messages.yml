@@ -179,13 +179,13 @@ email:
                 including address and scholarly interests.
             fr: >-
                 La Société canadienne d'études de la Renaissance a
-                développé une base de données d'adhésion, que nous avons
-                utilisé pour garder la trace des informations de contact, des
-                abonnements, et bien sûr, l'adhésion elle-même. Jusqu'à
-                présent, la base de données a été accessible qu'à l'exécutif,
-                mais nous avons maintenant mis au point une interface de membre
+                développé une base de données d'adhésion que nous prévoyons
+                utiliser pour enregistrer les informations de contact, les
+                abonnements et, bien sûr, l'adhésion elle-même. Jusqu'à
+                présent, la base de données n’était accessible que pour l'exécutif,
+                mais nous avons maintenant mis au point une interface pour les membres
                 qui vous permettra de mettre à jour et de confirmer vos
-                informations, y compris l'adresse et les intérêts
+                informations, y compris votre adresse et vos intérêts
                 scientifiques.
             la: >-
                 Studiis Societatis Canadian Renaissance sociari database
@@ -203,10 +203,10 @@ email:
                 which you can then edit and/or confirm.
             fr: >-
                 En cliquant sur le lien suivant, vous serez redirigé vers la
-                base de données, pour un processus en deux étapes. Tout
-                d'abord, créer un nom d'utilisateur et mot de passe pour le
-                site. Ensuite, vous verrez vos informations, que vous pouvez
-                ensuite modifier et/ou confirmer.
+                base de données pour un processus en deux étapes. Tout
+                d'abord, vous devrez créer un nom d'utilisateur et un mot de passe pour le
+                site. Ensuite, vous accèderez à vos informations que vous pourrez
+                modifier ou confirmer à loisir.
             la: >-
                 In consequat clicking te accipiatur datorum ad duos gradus
                 elit. Primo enim loco eligēre creare. Deinde videbis notitiam,
@@ -219,8 +219,8 @@ email:
                 you have already signed in and updated your information, the
                 process then will be all the easier.
             fr: >-
-                Nous vous remercions de votre participation à ce. Plus tard cet
-                automne, nous espérons faire nos renouvellements d'adhésion
+                Nous vous remercions de votre participation. Plus tard cet
+                automne, nous espérons entreprendre nos renouvellements d'adhésion
                 grâce à la base de données, et si vous avez déjà signé et mis à
                 jour vos informations, le processus sera alors d'autant plus
                 facile.
@@ -233,7 +233,7 @@ email:
 
         text4:
             en: "Best regards,"
-            fr: "Meilleures salutations,"
+            fr: "Salutations distinguées,"
             la: "Bene vale,"
 
         treasurer:
@@ -290,7 +290,7 @@ email:
 
         text3:
             en: "Best regards,"
-            fr: "Meilleures salutations,"
+            fr: "Salutations distinguées,"
             la: "Bene vale,"
 
     passwordReset:

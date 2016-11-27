@@ -40,7 +40,7 @@
         "title": "Configuration"
     },
     "contactFormGuts": {
-        "affiliationHelp": "Si non affilié, utiliser \"Scholar indépendant\".",
+        "affiliationHelp": "Si non affilié, utiliser \"Chercheur indépendant\".",
         "departmentHelp": "Si non affilié, entrez votre discipline."
     },
     "csrsApp": {
@@ -172,7 +172,7 @@
             "back": "Retour",
             "cancel": "Annuler",
             "delete": "Editer",
-            "edit": "Supprimer",
+            "edit": "Éditer",
             "merge": "Fusionner",
             "save": "Sauvegarder",
             "view": "Voir"
@@ -308,10 +308,10 @@
             "email": "Email",
             "invitationMessage": "Votre invitation a été envoyée, et devrait arriver bientôt.",
             "invitationSent": "Invitation a été envoyée",
-            "loginBlurb": "Pour créer votre compte, fournir toutes les nom d'utilisateur et mot de passe vous souhaitez utiliser.",
+            "loginBlurb": "Pour créer votre compte, veuillez fournir le nom d'utilisateur et le mot de passe que vous souhaitez utiliser.",
             "passwordReset": "Si vous avez déjà un compte, mais vous avez oublié le nom d'utilisateur ou mot de passe, puis essayez le  <a href=\"#!/password-reset\">mot de passe réinitialiser</a>.",
             "sendInvitation": "Envoyer une invitation",
-            "title": "Création de compte utilisateur"
+            "title": "Création du compte utilisateur"
         },
         "request": {
             "title": "Obtenir une invitation"
@@ -584,7 +584,7 @@
     "tasks": {
         "processForms": {
             "contactVerification": {
-                "body": "Nous aimerions votre aide pour garder notre base de données précise. S'il vous plaît examiner les informations ci-dessous, et le modifier si nécessaire. Une fois que vous êtes satisfait, s'il vous plaît cliquer sur le bouton \"Marque comme vérifié\" pour nous faire savoir que nous avons la bonne information.",
+                "body": "Nous aurions besoin de votre aide pour maintenir notre base de données à jour. Examinez les informations ci-dessous et modifiez-les si nécessaire. Une fois les modifications effectuées, cliquez sur le bouton \"Marquer comme vérifié\" pour nous faire savoir que nous disposons des bonnes informations.",
                 "considerAdding": "Pensez à ajouter:",
                 "lastVerified": "Dernière vérification: ",
                 "markVerified": "Marque comme vérifié",
