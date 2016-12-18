@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.apache.fop.apps.FopFactory;
+import org.xml.sax.SAXException;
+import java.io.File;
 import javax.xml.transform.TransformerFactory;
 
 @Configuration
@@ -19,7 +21,12 @@ public class FopConfiguration {
     @Bean
     @Description("FopFactory")
     public FopFactory fopFactory () {
-        return FopFactory.newInstance();
+        FopFactory factory = FopFactory.newInstance();
+        try {
+            factory.setUserConfig(new File("/home/csrs/config/fop.xml"));
+        } catch (Exception e) {
+        }
+        return factory;
     }
 
     @Bean
