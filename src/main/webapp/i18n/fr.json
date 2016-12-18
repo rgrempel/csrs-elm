@@ -384,7 +384,8 @@
                 "2": "Pour exclure les personnes qui étaient membres d'une année donnée, appuyez sur l'année à nouveau de sorte que son fond est rouge.",
                 "3": "Donc, pour savoir qui est un nouveau membre, cliquez sur l'année en cours pour faire le vert, et cliquez sur quelques années précédentes pour les rendre rouge.",
                 "4": "Ou, pour déterminer qui n'a pas renouvelé, appuyez sur l'année en cours pour la rendre rouge, et appuyez sur certaines années précédentes pour les rendre vert.",
-                "5": "Pour fusionner un modèle PDF avec tous les membres affichés, sélectionnez celui ci-dessous."
+                "5": "Pour fusionner un modèle PDF avec tous les membres affichés, sélectionnez celui ci-dessous.",
+                "1a": "To require that a person have been a member in a particular year, click again so that its background is yellow. Multiple yellow selections mean that the person must have been a member in each of the selected years."
             },
             "invitationsHaveBeenSent": "Invitations ont été envoyées",
             "sendInvitations": "Envoyer des invitations",

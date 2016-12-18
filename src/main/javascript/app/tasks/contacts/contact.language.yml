@@ -38,10 +38,10 @@ membership:
         instructions:
             1:
                 en: >-
-                    To limit the list to people who were members in a particular
+                    To include members in a particular
                     year, click on the year so that its background is green.
                     Multiple selections mean that the person must have been a
-                    member in each selected year.
+                    member in any of the selected years.
                 fr: >-
                     Pour limiter la liste à des gens qui étaient membres dans
                     un particulier année, cliquez sur l'année de sorte que son
@@ -52,6 +52,23 @@ membership:
                     Qui erant in enumera finire annum, quo anno latet insiste
                     uireret. Debet intelligi quod multiplex lectio senos
                     sodalem fuisse anno.
+
+            1a:
+                en: >-
+                    To require that a person have been a member in a particular
+                    year, click again so that its background is yellow. Multiple
+                    yellow selections mean that the person must have been a member
+                    in each of the selected years.
+                fr: >-
+                    To require that a person have been a member in a particular
+                    year, click again so that its background is yellow. Multiple
+                    yellow selections mean that the person must have been a member
+                    in each of the selected years.
+                la: >-
+                    To require that a person have been a member in a particular
+                    year, click again so that its background is yellow. Multiple
+                    yellow selections mean that the person must have been a member
+                    in each of the selected years.
 
             2:
                 en: >-

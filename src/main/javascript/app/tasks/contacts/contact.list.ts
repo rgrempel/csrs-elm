@@ -172,59 +172,65 @@ module CSRS {
 
         updateFilter () : void {
             // Default the filter to anyone who has been a member
-            var specs: Array<Specification<Contact>> = [];
-            var hadPositive = false;
+            var ands: Array<Specification<Contact>> = [];
+            var ors: Array<Specification<Contact>> = [];
+            var nots: Array<Specification<Contact>> = [];
 
             angular.forEach(this.selections, (yearSelection: YearSelection, year: number) => {
                 if (yearSelection.allStatus) {
                     // We're requiring the year as a whole
                     var spec : Specification<Contact> = new ContactWasMemberInYear(year);
                     
-                    if (yearSelection.allStatus < 0) {
-                        spec = spec.not(); 
-                    } else {
-                        hadPositive = true;
+                    if (yearSelection.allStatus == 1) {
+                        ors.push(spec);
+                    } else if (yearSelection.allStatus == 2) {
+                        ands.push(spec);
+                    } else if (yearSelection.allStatus == 3) {
+                        nots.push(spec.not());
                     }
-
-                    specs.push(spec);
                 } else {
                     angular.forEach(yearSelection.memberships, (required, membership) => {
                         if (required) {
                             var spec : Specification<Contact> = new ContactHadMembershipTypeInYear(membership, year);
                             
-                            if (required < 0) {
-                                spec = spec.not();
-                            } else {
-                                hadPositive = true;
+                            if (required == 1) {
+                                ors.push(spec);
+                            } else if (required == 2) {
+                                ands.push(spec);
+                            } else if (required == 3) {
+                                nots.push(spec.not());
                             }
-
-                            specs.push(spec);
                         }
                     });
                 }
             });
 
-            if (!hadPositive) {
+            if (ors.length == 0 && ands.length == 0) {
                 // If no positive specs, then limit to members
-                specs.push(new ContactWasEverMember());
+                ors.push(new ContactWasEverMember());
             }
 
             var filter : Filter<Contact>;
 
-            if (specs.length == 0) {
-                // If there are no specs, then use ContactWasEverMember
+            if (ands.length > 0) {
+                // If we have some ands, the ors don't matter, because you have
+                // to meet the and requirement.
                 filter = {
-                    spec: new ContactWasEverMember()
-                }
-            } else if (specs.length == 1) {
-                // If just one, then use it directly
-                filter = {
-                    spec: specs[0]
-                }
+                    spec: new AndSpec(ands.concat(nots))
+                };
             } else {
-                // If more than one, then and them
-                filter = {
-                    spec: new AndSpec(specs)
+                // So here we just have ors and nots
+                if (nots.length > 0) {
+                    filter = {
+                        spec: new AndSpec([
+                            new OrSpec(ors),
+                            new AndSpec(nots)
+                        ])
+                    };
+                } else {
+                    filter = {
+                        spec: new OrSpec(ors)
+                    };
                 }
             }
 
@@ -281,6 +287,12 @@ module CSRS {
             });
         }
 
+        // So:
+        //
+        // 0 means nothing
+        // 1 means or'd ... i.e. include multiple
+        // 2 means and'd ... i.e. require all
+        // 3 means not'd ... i.e. exclude
         initYearSelection (year: number) : void {
             if (!this.selections[year]) this.selections[year] = {
                 allStatus: 0,
@@ -288,50 +300,73 @@ module CSRS {
             };
         }
 
+        isYearIncluded (year: number) : boolean {
+            this.initYearSelection(year);
+            return this.selections[year].allStatus == 1;
+        }
+
+        isIncluded (year: number, membershipType: number) : boolean {
+            this.initYearSelection(year);
+            let membership = this.selections[year].memberships[membershipType];
+            return membership == 1;
+        }
+
         isYearRequired (year: number) : boolean {
             this.initYearSelection(year);
-            return this.selections[year].allStatus > 0;
+            return this.selections[year].allStatus == 2;
         }
 
         isRequired (year: number, membershipType: number) : boolean {
             this.initYearSelection(year);
             let membership = this.selections[year].memberships[membershipType];
-            return membership > 0;
+            return membership == 2;
         }
 
         isYearForbidden (year: number) : boolean {
             this.initYearSelection(year);
-            return this.selections[year].allStatus < 0;
+            return this.selections[year].allStatus == 3;
         }
         
         isForbidden (year: number, membershipType: number) : boolean {
             this.initYearSelection(year);
             let membership = this.selections[year].memberships[membershipType];
-            return membership < 0;
+            return membership == 3;
+        }
+
+        setYearIncluded (year: number) : void {
+            this.initYearSelection(year);
+            this.selections[year].allStatus = 1;
+            this.selections[year].memberships = {};
+        }
+
+        setIncluded (year: number, membershipType: number) : void {
+            this.initYearSelection(year);
+            this.selections[year].allStatus = 0;
+            this.selections[year].memberships[membershipType] = 1;
         }
 
         setYearRequired (year: number) : void {
             this.initYearSelection(year);
-            this.selections[year].allStatus = 1;
+            this.selections[year].allStatus = 2;
             this.selections[year].memberships = {};
         }
 
         setRequired (year: number, membershipType: number) : void {
             this.initYearSelection(year);
             this.selections[year].allStatus = 0;
-            this.selections[year].memberships[membershipType] = 1;
+            this.selections[year].memberships[membershipType] = 2;
         }
 
         setYearForbidden (year: number) : void {
             this.initYearSelection(year);
-            this.selections[year].allStatus = -1;
+            this.selections[year].allStatus = 3;
             this.selections[year].memberships = {};
         }
         
         setForbidden (year: number, membershipType: number) : void {
             this.initYearSelection(year);
             this.selections[year].allStatus = 0;
-            this.selections[year].memberships[membershipType] = -1;
+            this.selections[year].memberships[membershipType] = 3;
         }
 
         setYearIndifferent (year: number) : void {
@@ -345,15 +380,18 @@ module CSRS {
         }
 
         cycleYearRequired (year: number) : void {
-            if (this.isYearRequired(year))
+            if (this.isYearIncluded(year)) {
+                // Cycle from included to required
+                this.setYearRequired(year);
+            } else if (this.isYearRequired(year)) {
                 // Cycle from required to forbidden
                 this.setYearForbidden(year);
-            else if (this.isYearForbidden(year)) {
+            } else if (this.isYearForbidden(year)) {
                 // Cycle from forbidden to indifferent
                 this.setYearIndifferent(year);
             } else {
-                // Cycle from indifferent to required
-                this.setYearRequired(year);
+                // Cycle from indifferent to included
+                this.setYearIncluded(year);
             }
             
             this.updateLocation();
@@ -361,12 +399,14 @@ module CSRS {
         }
  
         cycleRequired (year: number, membershipType: number) : void {
-            if (this.isRequired(year, membershipType)) {
+            if (this.isIncluded(year, membershipType)) {
+                this.setRequired(year, membershipType);
+            } else if (this.isRequired(year, membershipType)) {
                 this.setForbidden(year, membershipType);
             } else if (this.isForbidden(year, membershipType)) {
                 this.setIndifferent(year, membershipType);
             } else {
-                this.setRequired(year, membershipType);
+                this.setIncluded(year, membershipType);
             }
 
             this.updateLocation();

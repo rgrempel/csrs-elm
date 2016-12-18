@@ -20,7 +20,8 @@
                         ng-click = "contactList.cycleYearRequired(year.year)"
                         ng-class = [
                             "{",
-                                "'success': contactList.isYearRequired(year.year),",
+                                "'success': contactList.isYearIncluded(year.year),",
+                                "'warning': contactList.isYearRequired(year.year),",
                                 "'danger':  contactList.isYearForbidden(year.year)",
                             "}"
                         ].join("")
@@ -29,7 +30,8 @@
                         ng-click = "contactList.cycleRequired(year.year, membership)"
                         ng-class = [
                             "{",
-                                "'success': contactList.isRequired(year.year, membership),",
+                                "'success': contactList.isIncluded(year.year, membership),",
+                                "'warning': contactList.isRequired(year.year, membership),",
                                 "'danger':  contactList.isForbidden(year.year, membership)",
                             "}"
                         ].join("")
@@ -46,6 +48,9 @@
                     | year, click on the year so that its background is green.
                     | Multiple selections mean that the person must have been a
                     | member in each selected year.
+
+                p(translate = "membership.byYear.instructions.1a")
+                    | Blah Blah Blah 
 
                 p(translate = "membership.byYear.instructions.2")
                     | To exclude people who were members in a particular year,
