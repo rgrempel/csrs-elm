@@ -88,12 +88,14 @@ dependencies {
     compile group: 'org.apache.poi', name: 'poi', version: apache_poi_version
     compile group: 'org.apache.poi', name: 'poi-ooxml', version: apache_poi_version
 
-    compile(group: 'org.apache.xmlgraphics', name: 'fop', version: '1.1') {
-        exclude(module: 'avalon-framework-api')
-        exclude(module: 'avalon-framework-impl')
-    }
-    compile group: 'org.apache.avalon.framework', name: 'avalon-framework-api', version: '4.3.1'
-    compile group: 'org.apache.avalon.framework', name: 'avalon-framework-impl', version: '4.3.1'
+    compile group: 'xalan', name: 'xalan', version: '2.7.2'
+    compile(group: 'org.apache.xmlgraphics', name: 'fop', version: '2.1')
+//    {
+//        exclude(module: 'avalon-framework-api')
+//        exclude(module: 'avalon-framework-impl')
+//    }
+//    compile group: 'org.apache.avalon.framework', name: 'avalon-framework-api', version: '4.3.1'
+//    compile group: 'org.apache.avalon.framework', name: 'avalon-framework-impl', version: '4.3.1'
 
     // Standard for JHipster
 

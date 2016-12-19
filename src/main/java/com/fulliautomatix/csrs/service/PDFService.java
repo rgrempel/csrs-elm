@@ -63,7 +63,7 @@ public class PDFService {
 
     public void createPDF (OutputStream output, Context context, String template) throws Exception {
         FOUserAgent ua = fopFactory.newFOUserAgent();
-        ua.setURIResolver(databaseURIResolver);
+        // ua.setURIResolver(databaseURIResolver);
 
         Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, ua, output);
 
