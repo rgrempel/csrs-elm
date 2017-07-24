@@ -255,7 +255,9 @@ public class Contact implements Serializable, HasOwner {
 
     public String abbreviatedStreet () {
         // If more than 2 lines, replace first LF with a comma
-        if (StringUtils.countMatches(street, "\n") > 1) {
+        if (StringUtils.isBlank(street)) {
+            return "";
+        } else if (StringUtils.countMatches(street, "\n") > 1) {
             return StringUtils.replace(street, "\n", ", ", 1);
         } else {
             return street;
@@ -263,9 +265,13 @@ public class Contact implements Serializable, HasOwner {
     }
 
     public String[] plainStreet () {
-        return Stream.of(StringUtils.split(street, "\n")).filter(s ->
-            !s.equals(affiliation) && !s.equals(department)
-        ).toArray(String[]::new);
+        if (StringUtils.isBlank(street)) {
+            return new String [0];
+        } else {
+            return Stream.of(StringUtils.split(street, "\n")).filter(s ->
+                !s.equals(affiliation) && !s.equals(department)
+            ).toArray(String[]::new);
+        }
     }
 
     public String abbreviatedAddress () {
